@@ -20,7 +20,7 @@ spring:
 
   docker:
     compose:
-      file: ./bootstrap/http/compose-local.yaml
+      file: ./idle-api/compose-local.yaml
 
 springdoc:
   swagger-ui:
@@ -54,12 +54,3 @@ spring:
 springdoc:
   swagger-ui:
     enabled: true
-
----
-spring:
-  config:
-    activate:
-      on-profile: integration-test
-  docker:
-    compose:
-      enabled: false
