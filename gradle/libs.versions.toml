@@ -4,6 +4,7 @@ java = "17"
 spring-boot = "3.3.0"
 spring-boot-dependency-management = "1.1.4"
 kotlin = "1.9.21"
+sonar-cloud = "4.4.1.3373"
 
 mockk = "1.13.7"
 spring-mockk = "4.0.2"
@@ -39,6 +40,8 @@ kotest-extensions-testcontainers = { group = "io.kotest.extensions", name = "kot
 testcontainers-junit-jupiter = { group = "org.testcontainers", name = "junit-jupiter", version.ref = "testcontainers" }
 
 [plugins]
+
+sonarqube = { id = "org.sonarqube", version.ref = "sonar-cloud" }
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
 spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-boot-dependency-management" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

@@ -5,5 +5,6 @@ include(
     "idle-domain",
     "idle-infrastructure",
     "idle-support:common",
-    "idle-support:logging"
+    "idle-support:logging",
+    "idle-support:jacoco"
 )
