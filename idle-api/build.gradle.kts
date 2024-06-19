@@ -1,4 +1,5 @@
 dependencies {
+    implementation(project(":idle-domain"))
     implementation(project(":idle-support:logging"))
     implementation(project(":idle-support:common"))
 
