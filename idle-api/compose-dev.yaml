@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  spring:
+    image: public.ecr.aws/${ECR_REGISTRY_ALIAS}/purple-ecr:${VERSION:-latest}
+    volumes:
+      - mysql-volume:/var/lib/mysql
+    environment:
+      - VERSION=${VERSION:-latest}
+    pull_policy: always
+    env_file:
+      - .env
+    depends_on:
+      - mysql
+    ports:
+      - "8080:8080"
+  mysql:
+    image: mysql:8.0.33
+    environment:
+      MYSQL_DATABASE: idle
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      TZ: Asia/Seoul
+    ports:
+      - "3306:3306"
+
+  redis:
+    image: redis:7.2.5
+    container_name: redis_dev
+    ports:
+      - "6379:6379"
+
+volumes:
+  mysql-volume:
