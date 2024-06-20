@@ -26,12 +26,15 @@ subprojects {
     apply(plugin = rootProject.libs.plugins.kotlin.jvm.get().pluginId)
     apply(plugin = rootProject.libs.plugins.kotlin.jpa.get().pluginId)
     apply(plugin = rootProject.libs.plugins.kotlin.spring.get().pluginId)
-    apply(plugin = rootProject.libs.plugins.spring.boot.get().pluginId)
     apply(plugin = rootProject.libs.plugins.kotlin.kapt.get().pluginId)
+    apply(plugin = rootProject.libs.plugins.spring.boot.get().pluginId)
     apply(plugin = rootProject.libs.plugins.spring.dependency.management.get().pluginId)
 
     dependencies {
+
         implementation(rootProject.libs.kotlin.reflect)
+
+        annotationProcessor(rootProject.libs.spring.boot.configuration.processor)
 
         testImplementation(rootProject.libs.mockk)
         testImplementation(rootProject.libs.spring.mockk)
@@ -47,14 +50,6 @@ subprojects {
         toolchain {
             languageVersion = JavaLanguageVersion.of(rootProject.libs.versions.java.get())
         }
-    }
-
-    tasks.getByName("bootJar") {
-        enabled = false
-    }
-
-    tasks.getByName("jar") {
-        enabled = true
     }
 
     kotlin {
@@ -94,4 +89,8 @@ project(":idle-support:jacoco") {
             add("jacocoAggregation", project(it.path))
         }
     }
+}
+
+springBoot {
+    mainClass.set("com.swm.IdleServerApplicationKt")
 }
