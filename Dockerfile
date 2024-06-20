@@ -2,7 +2,7 @@
 FROM gradle:jdk17 AS build
 COPY --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src
-RUN gradle :idle-api:bootJar --no-daemon
+RUN gradle :idle-api:bootJar --no-daemon --warning-mode
 
 # Package stage
 FROM openjdk:17
