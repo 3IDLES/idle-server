@@ -16,6 +16,7 @@ jobs:
           key: ${{ secrets.DEV_INSTANCE_KEY }}
           source: "./idle-api/compose-dev.yaml"
           target: "~/app/docker"
+          timeout: 120s
           overwrite: true
 
       - name: Install Docker if not present
