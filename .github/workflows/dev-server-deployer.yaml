@@ -14,7 +14,7 @@ jobs:
           host: ${{ secrets.DEV_INSTANCE_HOST }}
           username: ${{ secrets.DEV_INSTANCE_USERNAME }}
           key: ${{ secrets.DEV_INSTANCE_KEY }}
-          source: "./compose-dev.yaml"
+          source: "./idle-api/compose-dev.yaml"
           target: "~/app/docker"
           overwrite: true
 
