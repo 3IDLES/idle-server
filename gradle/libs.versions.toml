@@ -6,6 +6,8 @@ spring-boot-dependency-management = "1.1.4"
 kotlin = "1.9.21"
 sonar-cloud = "4.4.1.3373"
 
+springdoc-openapi = "2.3.0"
+
 mockk = "1.13.7"
 spring-mockk = "4.0.2"
 kotest = "5.6.0"
@@ -39,6 +41,7 @@ spring-boot-starter-test = { group = "org.springframework.boot", name = "spring-
 kotest-extensions-testcontainers = { group = "io.kotest.extensions", name = "kotest-extensions-testcontainers", version.ref = "kotest-extensions-testcontainers" }
 testcontainers-junit-jupiter = { group = "org.testcontainers", name = "junit-jupiter", version.ref = "testcontainers" }
 
+springdoc-openapi-starter-webmvc-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc-openapi" }
 [plugins]
 
 sonarqube = { id = "org.sonarqube", version.ref = "sonar-cloud" }
