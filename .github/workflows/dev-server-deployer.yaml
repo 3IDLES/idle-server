@@ -8,6 +8,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Get Public IP
+        id: ip
+        uses: haythem/public-ip@v1.3
+
+      - name: Add GitHub Actions IP
+        run: |
+          aws ec2 authorize-security-group-ingress \
+              --group-id ${{ secrets.SECURITY_GROUP_ID }} \
+              --protocol tcp \
+              --port 22 \
+              --cidr ${{ steps.ip.outputs.ipv4 }}/32
+
       - name: Copy Docker Compose file to server
         uses: appleboy/scp-action@master
         with:
@@ -52,3 +64,11 @@ jobs:
             sudo docker-compose -f ~/app/docker/compose-dev.yaml down --rmi all
             sudo docker-compose -f ~/app/docker/compose-dev.yaml pull
             sudo docker-compose -f ~/app/docker/compose-dev.yaml up -d --force-recreate
+
+      - name: Remove GitHub Actions IP
+        run: |
+          aws ec2 revoke-security-group-ingress \
+              --group-id ${{ secrets.SECURITY_GROUP_ID }} \
+              --protocol tcp \
+              --port 22 \
+              --cidr ${{ steps.ip.outputs.ipv4 }}/32
