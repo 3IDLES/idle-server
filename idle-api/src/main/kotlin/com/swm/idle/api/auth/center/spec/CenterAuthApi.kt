@@ -48,7 +48,7 @@ interface CenterAuthApi {
         @RequestBody request: RefreshTokenRequest,
     ): RefreshLoginTokenResponse
 
-    @Operation(summary = "Withdraw Account ")
+    @Operation(summary = "Withdraw Account")
     @PostMapping("/withdraw")
     @ResponseStatus(HttpStatus.OK)
     fun withDraw()
