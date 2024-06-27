@@ -12,6 +12,13 @@ jobs:
         id: ip
         uses: haythem/public-ip@v1.3
 
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
       - name: Add GitHub Actions IP
         run: |
           aws ec2 authorize-security-group-ingress \
