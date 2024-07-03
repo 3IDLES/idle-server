@@ -4,7 +4,7 @@ import com.swm.idle.domain.user.vo.PhoneNumber
 import com.swm.idle.domain.user.vo.SmsVerificationNumber
 import com.swm.idle.infrastructure.sms.util.SmsClient
 import org.springframework.stereotype.Service
-import java.util.*
+import java.security.SecureRandom
 
 @Service
 class SmsService(
@@ -21,7 +21,7 @@ class SmsService(
     }
 
     fun generateVerificationNumber(): SmsVerificationNumber {
-        val random = Random(System.currentTimeMillis())
+        val random = SecureRandom()
 
         return SmsVerificationNumber(
             MINIMUM_VERIFICATION_NUMBER + random.nextInt(
