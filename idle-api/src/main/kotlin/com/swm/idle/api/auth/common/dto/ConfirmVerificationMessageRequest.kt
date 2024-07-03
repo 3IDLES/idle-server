@@ -1,4 +1,4 @@
-package com.swm.idle.api.auth.center.dto
+package com.swm.idle.api.auth.common.dto
 
 import io.swagger.v3.oas.annotations.media.Schema
 
@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema
     description = "인증 번호 검증 요청"
 )
 data class ConfirmVerificationMessageRequest(
-    @Schema(description = "Verification Number")
+    @Schema(description = "Verification Number", example = "123456")
     val verificationNumber: String,
 )
 

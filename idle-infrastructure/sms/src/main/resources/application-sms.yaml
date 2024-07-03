@@ -1,0 +1,4 @@
+sms:
+  access-key: ${SMS_API_ACCESS_KEY}
+  secret-key: ${SMS_API_SECRET_KEY}
+  sending-number: ${SMS_SENDING_NUMBER}

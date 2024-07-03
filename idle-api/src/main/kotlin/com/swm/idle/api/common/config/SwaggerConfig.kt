@@ -1,4 +1,4 @@
-package com.swm.idle.common
+package com.swm.idle.api.common.config
 
 import io.swagger.v3.oas.models.Components
 import io.swagger.v3.oas.models.OpenAPI
@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class SwaggerConfig(
-    @Value("{SERVER_URL:http://localhost:8080}")
+    @Value("\${swagger.server.url:http://localhost:8080}")
     private val serverUrl: String,
 ) {
 
