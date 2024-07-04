@@ -8,9 +8,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Get Public IP
-        id: ip
-        uses: haythem/public-ip@v1.3
+      - name: Get Github Actions IP Addresses
+        id: publicip
+        run: |
+          response=$(curl -s canhazip.com)
+          echo "ip=$response" >> "$GITHUB_OUTPUT"
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -25,7 +27,7 @@ jobs:
               --group-id ${{ secrets.SECURITY_GROUP_ID }} \
               --protocol tcp \
               --port 22 \
-              --cidr ${{ steps.ip.outputs.ipv4 }}/32
+              --cidr ${{ steps.publicip.outputs.ip }}/32
 
       - name: Copy Docker Compose file to server
         uses: appleboy/scp-action@master
@@ -78,4 +80,4 @@ jobs:
               --group-id ${{ secrets.SECURITY_GROUP_ID }} \
               --protocol tcp \
               --port 22 \
-              --cidr ${{ steps.ip.outputs.ipv4 }}/32
+              --cidr ${{ steps.publicip.outputs.ip }}/32
