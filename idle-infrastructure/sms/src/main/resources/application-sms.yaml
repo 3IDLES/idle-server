@@ -1,4 +1,10 @@
 sms:
-  access-key: ${SMS_API_ACCESS_KEY}
-  secret-key: ${SMS_API_SECRET_KEY}
-  sending-number: ${SMS_SENDING_NUMBER}
+  api:
+    access-key: ${SMS_API_ACCESS_KEY}
+    secret-key: ${SMS_API_SECRET_KEY}
+    sending-number: ${SMS_SENDING_NUMBER}
+  verification:
+    expire-seconds: ${SMS_VERIFICATION_EXPIRE_SECONDS:300}
+    monitoring-seconds: ${SMS_REQUEST_MONITORING_SECONDS:600}
+    blocking-seconds: ${SMS_REQUEST_BLOCKING_SECONDS:1800}
+    max-count: ${SMS_REQUEST_MAXIMUM_COUNT:5}
