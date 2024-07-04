@@ -33,6 +33,7 @@ subprojects {
     dependencies {
 
         implementation(rootProject.libs.kotlin.reflect)
+        implementation(rootProject.libs.kotlin.coroutines.core)
 
         annotationProcessor(rootProject.libs.spring.boot.configuration.processor)
 
