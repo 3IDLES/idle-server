@@ -13,4 +13,3 @@ data class ConfirmSmsVerificationRequest(
     @Schema(description = "Verification Number", example = "123456")
     val verificationNumber: String,
 )
-
