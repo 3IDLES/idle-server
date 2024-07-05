@@ -1,7 +1,7 @@
 package com.swm.idle.infrastructure.sms.auth.service
 
-import com.swm.idle.domain.user.vo.PhoneNumber
-import com.swm.idle.domain.user.vo.UserSmsVerificationNumber
+import com.swm.idle.domain.sms.vo.PhoneNumber
+import com.swm.idle.domain.sms.vo.SmsVerificationNumber
 import com.swm.idle.infrastructure.sms.common.properties.SmsVerificationProperties
 import com.swm.idle.infrastructure.sms.common.vo.SmsVerificationInfo
 import com.swm.idle.infrastructure.sms.util.SmsClient
@@ -24,15 +24,15 @@ class SmsService(
 
         return SmsVerificationInfo(
             phoneNumber = phoneNumber,
-            userSmsVerificationNumber = smsVerificationNumber,
+            smsVerificationNumber = smsVerificationNumber,
             expireSeconds = smsVerificationProperties.expireSeconds,
         )
     }
 
-    fun generateVerificationNumber(): UserSmsVerificationNumber {
+    fun generateVerificationNumber(): SmsVerificationNumber {
         val random = SecureRandom()
 
-        return UserSmsVerificationNumber(
+        return SmsVerificationNumber(
             (MINIMUM_VERIFICATION_NUMBER + random.nextInt(VERIFICATION_NUMBER_SCALE)).toString()
         )
     }
