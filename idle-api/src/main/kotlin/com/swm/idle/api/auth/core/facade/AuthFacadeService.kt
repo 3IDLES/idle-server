@@ -2,6 +2,7 @@ package com.swm.idle.api.auth.core.facade
 
 import com.swm.idle.domain.user.service.UserSmsVerificationService
 import com.swm.idle.domain.user.vo.PhoneNumber
+import com.swm.idle.domain.user.vo.UserSmsVerificationNumber
 import com.swm.idle.infrastructure.sms.auth.service.SmsService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -28,6 +29,17 @@ class AuthFacadeService(
                 )
             }
         }
+    }
+
+    fun confirmVerificationMessage(
+        phoneNumber: PhoneNumber,
+        verificationNumber: UserSmsVerificationNumber,
+    ) {
+        userSmsVerificationService.findByPhoneNumber(phoneNumber)?.let {
+            if (it.first != phoneNumber || it.second != verificationNumber) {
+                throw IllegalArgumentException()
+            }
+        } ?: throw IllegalArgumentException()
     }
 
 }

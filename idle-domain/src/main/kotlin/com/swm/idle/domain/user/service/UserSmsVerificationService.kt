@@ -25,4 +25,13 @@ class UserSmsVerificationService(
         userSmsVerificationNumberRedisRepository.save(userSmsVerificationNumberRedisHash)
     }
 
+    fun findByPhoneNumber(phoneNumber: PhoneNumber): Pair<PhoneNumber, UserSmsVerificationNumber>? {
+        return userSmsVerificationNumberRedisRepository
+            .findById(phoneNumber.value)
+            .map {
+                PhoneNumber(it.phoneNumber) to UserSmsVerificationNumber(it.verificationNumber)
+            }
+            .orElse(null)
+    }
+
 }
