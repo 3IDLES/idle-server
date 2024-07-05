@@ -1,8 +1,5 @@
 package com.swm.idle.api.auth.core.facade
 
-import com.swm.idle.domain.user.service.UserSmsVerificationService
-import com.swm.idle.domain.user.vo.PhoneNumber
-import com.swm.idle.domain.user.vo.UserSmsVerificationNumber
 import com.swm.idle.domain.sms.exception.SmsException
 import com.swm.idle.domain.sms.service.SmsVerificationService
 import com.swm.idle.domain.sms.vo.PhoneNumber
