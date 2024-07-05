@@ -1,4 +1,4 @@
-package com.swm.idle.domain.user.vo
+package com.swm.idle.domain.sms.vo
 
 @JvmInline
 value class PhoneNumber(val value: String) {

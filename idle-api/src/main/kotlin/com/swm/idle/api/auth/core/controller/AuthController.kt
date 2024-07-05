@@ -4,8 +4,8 @@ import com.swm.idle.api.auth.core.dto.ConfirmSmsVerificationRequest
 import com.swm.idle.api.auth.core.dto.SendSmsVerificationRequest
 import com.swm.idle.api.auth.core.facade.AuthFacadeService
 import com.swm.idle.api.auth.core.spec.AuthApi
-import com.swm.idle.domain.user.vo.PhoneNumber
-import com.swm.idle.domain.user.vo.UserSmsVerificationNumber
+import com.swm.idle.domain.sms.vo.PhoneNumber
+import com.swm.idle.domain.sms.vo.SmsVerificationNumber
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -22,7 +22,7 @@ class AuthController(
     override fun confirmVerificationMessage(request: ConfirmSmsVerificationRequest) {
         authFacadeService.confirmVerificationMessage(
             phoneNumber = PhoneNumber(request.phoneNumber),
-            verificationNumber = UserSmsVerificationNumber(request.verificationNumber)
+            verificationNumber = SmsVerificationNumber(request.verificationNumber)
         )
     }
 

@@ -1,11 +1,11 @@
-package com.swm.idle.domain.user.entity
+package com.swm.idle.domain.sms.entity
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.redis.core.RedisHash
 import org.springframework.data.redis.core.TimeToLive
 
 @RedisHash("sms_verification_info")
-class UserSmsVerificationNumberRedisHash(
+class SmsVerificationNumberRedisHash(
     phoneNumber: String,
     verificationNumber: String,
     expireSeconds: Long,
