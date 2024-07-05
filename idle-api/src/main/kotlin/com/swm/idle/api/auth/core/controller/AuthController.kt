@@ -5,6 +5,7 @@ import com.swm.idle.api.auth.core.dto.SendSmsVerificationRequest
 import com.swm.idle.api.auth.core.facade.AuthFacadeService
 import com.swm.idle.api.auth.core.spec.AuthApi
 import com.swm.idle.domain.user.vo.PhoneNumber
+import com.swm.idle.domain.user.vo.UserSmsVerificationNumber
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -12,14 +13,17 @@ class AuthController(
     val authFacadeService: AuthFacadeService,
 ) : AuthApi {
 
-    override fun sendAuthenticationMessage(request: SendSmsVerificationRequest) {
+    override fun sendVerificationMessage(request: SendSmsVerificationRequest) {
         authFacadeService.sendVerificationMessage(
-            PhoneNumber(request.phoneNumber)
+            phoneNumber = PhoneNumber(request.phoneNumber)
         )
     }
 
-    override fun verifyAuthenticationMessage(request: ConfirmSmsVerificationRequest) {
-        TODO("Not yet implemented")
+    override fun confirmVerificationMessage(request: ConfirmSmsVerificationRequest) {
+        authFacadeService.confirmVerificationMessage(
+            phoneNumber = PhoneNumber(request.phoneNumber),
+            verificationNumber = UserSmsVerificationNumber(request.verificationNumber)
+        )
     }
 
 }

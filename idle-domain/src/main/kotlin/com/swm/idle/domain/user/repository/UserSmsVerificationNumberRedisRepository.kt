@@ -6,4 +6,4 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface UserSmsVerificationNumberRedisRepository :
-    CrudRepository<UserSmsVerificationNumberRedisHash, Long>
+    CrudRepository<UserSmsVerificationNumberRedisHash, String>
