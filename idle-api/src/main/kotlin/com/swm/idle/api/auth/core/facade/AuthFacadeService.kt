@@ -3,6 +3,10 @@ package com.swm.idle.api.auth.core.facade
 import com.swm.idle.domain.user.service.UserSmsVerificationService
 import com.swm.idle.domain.user.vo.PhoneNumber
 import com.swm.idle.domain.user.vo.UserSmsVerificationNumber
+import com.swm.idle.domain.sms.exception.SmsException
+import com.swm.idle.domain.sms.service.SmsVerificationService
+import com.swm.idle.domain.sms.vo.PhoneNumber
+import com.swm.idle.domain.sms.vo.SmsVerificationNumber
 import com.swm.idle.infrastructure.sms.auth.service.SmsService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -13,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class AuthFacadeService(
     private val smsService: SmsService,
-    private val userSmsVerificationService: UserSmsVerificationService,
+    private val smsVerificationService: SmsVerificationService,
 ) {
 
     @Transactional
@@ -22,9 +26,9 @@ class AuthFacadeService(
             smsService.sendVerificationMessage(
                 phoneNumber = phoneNumber
             ).run {
-                userSmsVerificationService.save(
+                smsVerificationService.save(
                     phoneNumber = this.phoneNumber,
-                    userSmsVerificationNumber = this.userSmsVerificationNumber,
+                    smsVerificationNumber = this.smsVerificationNumber,
                     expireSeconds = this.expireSeconds,
                 )
             }
@@ -33,13 +37,13 @@ class AuthFacadeService(
 
     fun confirmVerificationMessage(
         phoneNumber: PhoneNumber,
-        verificationNumber: UserSmsVerificationNumber,
+        verificationNumber: SmsVerificationNumber,
     ) {
-        userSmsVerificationService.findByPhoneNumber(phoneNumber)?.let {
+        smsVerificationService.findByPhoneNumber(phoneNumber)?.let {
             if (it.first != phoneNumber || it.second != verificationNumber) {
-                throw IllegalArgumentException()
+                throw SmsException.InvalidSmsVerificationNumber()
             }
-        } ?: throw IllegalArgumentException()
+        } ?: throw SmsException.SmsVerificationNumberNotFound()
     }
 
 }
