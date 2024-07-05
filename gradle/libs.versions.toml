@@ -15,6 +15,7 @@ testcontainers = "1.19.6"
 springdoc-openapi = "2.3.0"
 
 cool-sms = "4.3.0"
+uuid-creator = "5.3.3"
 
 mysql = "8.0.33"
 
@@ -35,6 +36,7 @@ spring-boot-starter-data-redis = { group = "org.springframework.boot", name = "s
 mysql-connector-java = { group = "mysql", name = "mysql-connector-java", version.ref = "mysql" }
 
 spring-boot-configuration-processor = { group = "org.springframework.boot", name = "spring-boot-configuration-processor", version.ref = "spring-boot" }
+uuid-creator = { group = "com.github.f4b6a3", name = "uuid-creator", version.ref = "uuid-creator" }
 
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 spring-mockk = { group = "com.ninja-squad", name = "springmockk", version.ref = "spring-mockk" }
