@@ -1,6 +1,6 @@
-package com.swm.idle.domain.common.redis.config
+package com.swm.idle.domain.common.config
 
-import com.swm.idle.domain.common.redis.properties.RedisProperties
+import com.swm.idle.domain.common.properties.RedisProperties
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
