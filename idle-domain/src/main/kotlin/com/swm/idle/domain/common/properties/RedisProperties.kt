@@ -1,4 +1,4 @@
-package com.swm.idle.domain.common.redis.properties
+package com.swm.idle.domain.common.properties
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 

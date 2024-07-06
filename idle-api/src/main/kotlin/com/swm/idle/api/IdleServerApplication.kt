@@ -1,7 +1,7 @@
 package com.swm.idle.api
 
 import com.swm.idle.domain.common.config.DomainConfig
-import com.swm.idle.domain.common.redis.config.RedisConfig
+import com.swm.idle.domain.common.config.RedisConfig
 import com.swm.idle.infrastructure.sms.common.config.SmsConfig
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
