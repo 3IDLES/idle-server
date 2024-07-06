@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class AuthController(
-    val authFacadeService: AuthFacadeService,
+    private val authFacadeService: AuthFacadeService,
 ) : AuthApi {
 
     override fun sendVerificationMessage(request: SendSmsVerificationRequest) {
