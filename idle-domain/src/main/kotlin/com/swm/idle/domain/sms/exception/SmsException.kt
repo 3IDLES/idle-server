@@ -13,6 +13,9 @@ sealed class SmsException(
     class SmsVerificationNumberNotFound(message: String = "인증번호가 만료되었거나 존재하지 않습니다.") :
         SmsException(codeNumber = 2, message = message)
 
+    class ClientException(message: String = "인증번호 발송에 실패하였습니다.") :
+        SmsException(codeNumber = 3, message = message)
+
     companion object {
         const val CODE_PREFIX = "SMS"
     }
