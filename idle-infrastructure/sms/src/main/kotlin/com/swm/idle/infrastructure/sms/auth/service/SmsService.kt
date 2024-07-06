@@ -1,5 +1,6 @@
 package com.swm.idle.infrastructure.sms.auth.service
 
+import com.swm.idle.domain.sms.exception.SmsException
 import com.swm.idle.domain.sms.vo.PhoneNumber
 import com.swm.idle.domain.sms.vo.SmsVerificationNumber
 import com.swm.idle.infrastructure.sms.common.properties.SmsVerificationProperties
@@ -17,10 +18,14 @@ class SmsService(
     fun sendVerificationMessage(phoneNumber: PhoneNumber): SmsVerificationInfo {
         val smsVerificationNumber = generateVerificationNumber()
 
-        smsClient.sendMessage(
-            to = phoneNumber.value.replace("-", ""),
-            content = CENTER_VERIFICATION_MESSAGE_FORMAT.format(smsVerificationNumber.value),
-        )
+        runCatching {
+            smsClient.sendMessage(
+                to = phoneNumber.value.replace("-", ""),
+                content = CENTER_VERIFICATION_MESSAGE_FORMAT.format(smsVerificationNumber.value),
+            )
+        }.onFailure {
+            throw SmsException.ClientException()
+        }
 
         return SmsVerificationInfo(
             phoneNumber = phoneNumber,
