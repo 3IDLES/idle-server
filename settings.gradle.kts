@@ -17,3 +17,6 @@ project(":idle-support:common").projectDir = file("idle-support/common")
 
 include(":idle-infrastructure:sms")
 project(":idle-infrastructure:sms").projectDir = file("idle-infrastructure/sms")
+
+include(":idle-support:security")
+project(":idle-support:security").projectDir = file("idle-support/security")
