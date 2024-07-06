@@ -35,6 +35,7 @@ subprojects {
         implementation(rootProject.libs.kotlin.reflect)
         implementation(rootProject.libs.kotlin.coroutines.core)
         implementation(rootProject.libs.uuid.creator)
+        implementation(rootProject.libs.jbcrypt)
 
         annotationProcessor(rootProject.libs.spring.boot.configuration.processor)
 
