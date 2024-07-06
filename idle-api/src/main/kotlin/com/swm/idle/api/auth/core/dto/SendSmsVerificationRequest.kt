@@ -9,6 +9,6 @@ import io.swagger.v3.oas.annotations.media.Schema
 )
 data class SendSmsVerificationRequest(
     @JsonProperty("phoneNumber")
-    @Schema(description = "Phone Number", example = "010-0000-0000")
+    @Schema(description = "핸드폰 번호", example = "010-0000-0000")
     val phoneNumber: String,
 )
