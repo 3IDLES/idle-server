@@ -7,9 +7,5 @@ bootJar.enabled = false
 jar.enabled = true
 
 dependencies {
-    implementation(project(":idle-domain"))
     implementation(project(":idle-support:common"))
-
-    implementation(libs.net.nurigo.sdk)
-    implementation(libs.spring.boot.starter.web)
 }
