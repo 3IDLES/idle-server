@@ -4,7 +4,9 @@ package com.swm.idle.domain.center.vo
 value class BusinessRegistrationNumber(val value: String) {
 
     init {
-        require(value.matches(Regex(VALIDATION_REGEX)))
+        require(value.matches(Regex(VALIDATION_REGEX))) {
+            "올바르지 않은 사업자 등록번호입니다."
+        }
     }
 
     companion object {
