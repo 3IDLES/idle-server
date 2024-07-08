@@ -20,3 +20,6 @@ project(":idle-infrastructure:sms").projectDir = file("idle-infrastructure/sms")
 
 include(":idle-support:security")
 project(":idle-support:security").projectDir = file("idle-support/security")
+
+include(":idle-infrastructure:client")
+project(":idle-infrastructure:client").projectDir = file("idle-infrastructure/client")
