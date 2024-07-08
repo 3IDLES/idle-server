@@ -10,6 +10,8 @@ import com.swm.idle.api.auth.center.dto.ValidateIdentifierRequest
 import com.swm.idle.api.auth.center.facade.CenterAuthFacadeService
 import com.swm.idle.api.auth.center.spec.CenterAuthApi
 import com.swm.idle.domain.center.vo.BusinessRegistrationNumber
+import com.swm.idle.domain.center.vo.Identifier
+import com.swm.idle.domain.center.vo.Password
 import com.swm.idle.domain.sms.vo.PhoneNumber
 import org.springframework.web.bind.annotation.RestController
 
@@ -20,8 +22,8 @@ class CenterAuthController(
 
     override fun join(request: JoinRequest) {
         centerAuthFacadeService.join(
-            identifier = request.identifier,
-            password = request.password,
+            identifier = Identifier(request.identifier),
+            password = Password(request.password),
             phoneNumber = PhoneNumber(request.phoneNumber),
             managerName = request.managerName,
             centerBusinessRegistrationNumber = BusinessRegistrationNumber(request.centerBusinessRegistrationNumber),

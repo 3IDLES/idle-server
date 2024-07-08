@@ -4,6 +4,8 @@ import com.swm.idle.domain.center.entity.CenterManager
 import com.swm.idle.domain.center.enums.CenterAccountStatus
 import com.swm.idle.domain.center.repository.CenterManagerJpaRepository
 import com.swm.idle.domain.center.vo.BusinessRegistrationNumber
+import com.swm.idle.domain.center.vo.Identifier
+import com.swm.idle.domain.center.vo.Password
 import com.swm.idle.domain.sms.vo.PhoneNumber
 import com.swm.idle.support.common.encrypt.PasswordEncryptor
 import com.swm.idle.support.common.uuid.UuidCreator
@@ -17,17 +19,17 @@ class CenterManagerService(
 
     @Transactional
     fun save(
-        identifier: String,
-        password: String,
+        identifier: Identifier,
+        password: Password,
         phoneNumber: PhoneNumber,
         managerName: String,
         centerBusinessRegistrationNumber: BusinessRegistrationNumber,
     ) {
-        val encryptedPassword = PasswordEncryptor.encrypt(rawPassword = password)
+        val encryptedPassword = PasswordEncryptor.encrypt(rawPassword = password.value)
 
         CenterManager(
             id = UuidCreator.create(),
-            identifier = identifier,
+            identifier = identifier.value,
             password = encryptedPassword,
             phoneNumber = phoneNumber.value,
             managerName = managerName,
