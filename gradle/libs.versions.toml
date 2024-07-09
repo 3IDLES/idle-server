@@ -23,6 +23,9 @@ mysql = "8.0.33"
 
 kotlin-coroutines = "1.8.0"
 
+auth0-java-jwt = "4.4.0"
+auth0-jwks-rsa = "0.22.1"
+
 [libraries]
 kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
 kotlin-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
@@ -53,6 +56,9 @@ spring-cloud-starter-openfeign = { group = "org.springframework.cloud", name = "
 springdoc-openapi-starter-webmvc-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc-openapi" }
 net-nurigo-sdk = { group = "net.nurigo", name = "sdk", version.ref = "cool-sms"}
 jbcrypt = { group = "org.mindrot", name = "jbcrypt", version.ref = "jbcrypt" }
+
+java-jwt = { group = "com.auth0", name = "java-jwt", version.ref = "auth0-java-jwt" }
+jwks-rsa = { group = "com.auth0", name = "jwks-rsa", version.ref = "auth0-jwks-rsa" }
 
 [plugins]
 

@@ -40,4 +40,8 @@ class CenterManagerService(
         }
     }
 
+    fun findByIdentifier(identifier: Identifier): CenterManager? {
+        return centerManagerJpaRepository.findByIdentifier(identifier.value)
+    }
+
 }

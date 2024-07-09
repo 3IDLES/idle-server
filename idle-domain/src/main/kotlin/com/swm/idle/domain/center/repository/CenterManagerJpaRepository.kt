@@ -7,4 +7,7 @@ import java.util.*
 
 @Repository
 interface CenterManagerJpaRepository : JpaRepository<CenterManager, UUID> {
+
+    fun findByIdentifier(value: String): CenterManager?
+
 }

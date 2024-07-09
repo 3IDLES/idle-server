@@ -14,6 +14,16 @@ spring:
       host: ${REDIS_HOST:localhost}
       port: ${REDIS_PORT:6379}
 
+auth:
+  jwt:
+    issuer: ${JWT_ISSUER:idle}
+    access:
+      expire-seconds: ${JWT_ACCESS_EXPIRE_SECONDS}
+      secret: ${JWT_ACCESS_SECRET_SIGNATURE}
+    refresh:
+      expire-seconds: ${JWT_REFRESH_EXPIRE_SECONDS}
+      secret: ${JWT_REFRESH_SECRET_SIGNATURE}
+
 ---
 spring:
   config:
