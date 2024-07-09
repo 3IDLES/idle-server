@@ -7,4 +7,7 @@ bootJar.enabled = false
 jar.enabled = true
 
 dependencies {
+    implementation(project(":idle-support:common"))
+    implementation(libs.java.jwt)
+    implementation(libs.jwks.rsa)
 }

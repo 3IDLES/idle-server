@@ -36,7 +36,12 @@ class CenterAuthController(
     }
 
     override fun login(request: LoginRequest): LoginResponse {
-        TODO("Not yet implemented")
+        val response = centerAuthFacadeService.login(
+            identifier = Identifier(request.identifier),
+            password = Password(request.password),
+        )
+
+        return response
     }
 
     override fun logout() {
