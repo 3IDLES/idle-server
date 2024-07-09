@@ -2,6 +2,7 @@ dependencies {
     implementation(project(":idle-domain"))
     implementation(project(":idle-support:logging"))
     implementation(project(":idle-support:common"))
+    implementation(project(":idle-support:security"))
     implementation(project(":idle-infrastructure:sms"))
     implementation(project(":idle-infrastructure:client"))
 
