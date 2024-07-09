@@ -1,6 +1,5 @@
 package com.swm.idle.api.auth.center.facade
 
-//import com.swm.idle.domain.user.util.JwtTokenService
 import com.swm.idle.api.auth.center.dto.LoginResponse
 import com.swm.idle.api.auth.center.dto.ValidateBusinessRegistrationNumberResponse
 import com.swm.idle.domain.center.exception.CenterException
