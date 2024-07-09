@@ -16,6 +16,9 @@ sealed class JwtException(
     class TokenExpired(message: String = "토큰이 만료되었습니다.") :
         JwtException(codeNumber = 3, message = message)
 
+    class TokenNotFound(message: String = "토큰을 찾을 수 없습니다.") :
+        JwtException(codeNumber = 4, message = message)
+
     companion object {
         const val CODE_PREFIX = "JWT"
     }

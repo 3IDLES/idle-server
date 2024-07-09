@@ -6,11 +6,13 @@ import com.swm.idle.domain.center.repository.CenterManagerJpaRepository
 import com.swm.idle.domain.center.vo.BusinessRegistrationNumber
 import com.swm.idle.domain.center.vo.Identifier
 import com.swm.idle.domain.center.vo.Password
+import com.swm.idle.domain.common.exception.PersistenceException
 import com.swm.idle.domain.sms.vo.PhoneNumber
 import com.swm.idle.support.common.encrypt.PasswordEncryptor
 import com.swm.idle.support.common.uuid.UuidCreator
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 
 @Service
 class CenterManagerService(
@@ -42,6 +44,12 @@ class CenterManagerService(
 
     fun findByIdentifier(identifier: Identifier): CenterManager? {
         return centerManagerJpaRepository.findByIdentifier(identifier.value)
+    }
+
+    fun getById(id: UUID): CenterManager {
+        return centerManagerJpaRepository
+            .findById(id)
+            .orElseThrow { PersistenceException.ResourceNotFound("유저(id: $id)를 찾을 수 없습니다.") }
     }
 
 }

@@ -49,7 +49,9 @@ class CenterAuthController(
     }
 
     override fun refreshLoginToken(request: RefreshTokenRequest): RefreshLoginTokenResponse {
-        TODO("Not yet implemented")
+        val response = centerAuthFacadeService.refreshLoginToken(request.refreshToken)
+
+        return response
     }
 
     override fun withDraw() {
