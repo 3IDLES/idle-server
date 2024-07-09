@@ -71,4 +71,14 @@ class JwtTokenService(
         )
     }
 
+    fun resolveRefreshToken(refreshToken: String): UserTokenClaims.RefreshToken {
+        val jwtClaims: JwtClaims = JwtTokenProvider
+            .verifyToken(refreshToken, jwtTokenProperties.refresh.secret)
+            .getOrThrow()
+
+        return UserTokenClaims.RefreshToken(
+            userId = UUID.fromString(jwtClaims.customClaims["userId"] as String),
+        )
+    }
+
 }
