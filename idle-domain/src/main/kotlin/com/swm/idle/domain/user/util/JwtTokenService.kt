@@ -2,9 +2,11 @@ package com.swm.idle.domain.user.util
 
 import com.swm.idle.domain.center.entity.CenterManager
 import com.swm.idle.domain.common.properties.JwtTokenProperties
+import com.swm.idle.domain.sms.vo.PhoneNumber
 import com.swm.idle.domain.user.common.enum.UserTokenType
 import com.swm.idle.domain.user.entity.UserRefreshTokenRedisHash
 import com.swm.idle.domain.user.repository.UserRefreshTokenRepository
+import com.swm.idle.domain.user.vo.UserTokenClaims
 import com.swm.idle.support.security.jwt.util.JwtTokenProvider
 import com.swm.idle.support.security.jwt.vo.JwtClaims
 import org.springframework.stereotype.Service
@@ -26,6 +28,7 @@ class JwtTokenService(
             customClaims {
                 this["type"] = UserTokenType.ACCESS_TOKEN.name
                 this["userId"] = centerManager.id.toString()
+                this["phoneNumber"] = centerManager.phoneNumber
             }
         }
 
@@ -55,6 +58,17 @@ class JwtTokenService(
                     )
                 )
             }
+    }
+
+    fun resolveAccessToken(accessToken: String): UserTokenClaims.AccessToken {
+        val jwtClaims: JwtClaims = JwtTokenProvider
+            .verifyToken(accessToken, jwtTokenProperties.access.secret)
+            .getOrThrow()
+
+        return UserTokenClaims.AccessToken(
+            userId = UUID.fromString(jwtClaims.customClaims["userId"] as String),
+            phoneNumber = PhoneNumber(jwtClaims.customClaims["phoneNumber"] as String),
+        )
     }
 
 }
