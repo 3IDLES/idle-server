@@ -12,7 +12,7 @@ object PasswordEncryptor {
         enteredPassword: String,
         password: String,
     ): Boolean {
-        return BCrypt.checkpw(password, enteredPassword)
+        return BCrypt.checkpw(enteredPassword, password)
     }
 
 }
