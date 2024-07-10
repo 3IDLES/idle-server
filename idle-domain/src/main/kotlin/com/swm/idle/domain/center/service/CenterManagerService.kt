@@ -2,6 +2,7 @@ package com.swm.idle.domain.center.service
 
 import com.swm.idle.domain.center.entity.CenterManager
 import com.swm.idle.domain.center.enums.CenterAccountStatus
+import com.swm.idle.domain.center.exception.CenterException
 import com.swm.idle.domain.center.repository.CenterManagerJpaRepository
 import com.swm.idle.domain.center.vo.BusinessRegistrationNumber
 import com.swm.idle.domain.center.vo.Identifier
@@ -50,6 +51,12 @@ class CenterManagerService(
         return centerManagerJpaRepository
             .findById(id)
             .orElseThrow { PersistenceException.ResourceNotFound("유저(id: $id)를 찾을 수 없습니다.") }
+    }
+
+    fun validateDuplicateIdentifier(identifier: Identifier) {
+        if (centerManagerJpaRepository.existsByIdentifier(identifier.value)) {
+            throw CenterException.DuplicateIdentifier()
+        }
     }
 
 }

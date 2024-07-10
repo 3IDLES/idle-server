@@ -10,4 +10,6 @@ interface CenterManagerJpaRepository : JpaRepository<CenterManager, UUID> {
 
     fun findByIdentifier(value: String): CenterManager?
 
+    fun existsByIdentifier(value: String): Boolean
+
 }
