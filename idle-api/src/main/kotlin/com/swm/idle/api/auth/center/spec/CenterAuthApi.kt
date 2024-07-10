@@ -7,6 +7,7 @@ import com.swm.idle.api.auth.center.dto.RefreshLoginTokenResponse
 import com.swm.idle.api.auth.center.dto.RefreshTokenRequest
 import com.swm.idle.api.auth.center.dto.ValidateBusinessRegistrationNumberResponse
 import com.swm.idle.api.common.exception.ErrorResponse
+import com.swm.idle.api.common.security.annotation.Secured
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -45,6 +46,7 @@ interface CenterAuthApi {
         @RequestBody request: LoginRequest,
     ): LoginResponse
 
+    @Secured
     @Operation(summary = "센터 로그아웃 API")
     @PostMapping("/logout")
     @ResponseStatus(HttpStatus.NO_CONTENT)

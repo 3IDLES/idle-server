@@ -59,4 +59,8 @@ class CenterManagerService(
         }
     }
 
+    fun existsById(centerManagerId: UUID): Boolean {
+        return centerManagerJpaRepository.existsById(centerManagerId)
+    }
+
 }

@@ -8,6 +8,7 @@ import com.swm.idle.domain.user.vo.UserTokenClaims
 import com.swm.idle.support.security.jwt.exception.JwtException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 
 @Service
 class RefreshTokenService(
@@ -40,6 +41,10 @@ class RefreshTokenService(
         if (userRefreshTokenRepository.existsById(token.userId).not()) {
             throw JwtException.TokenNotFound()
         }
+    }
+
+    fun delete(userId: UUID) {
+        userRefreshTokenRepository.deleteById(userId)
     }
 
 }
