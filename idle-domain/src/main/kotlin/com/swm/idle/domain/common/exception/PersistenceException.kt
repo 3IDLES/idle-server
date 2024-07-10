@@ -1,7 +1,6 @@
 package com.swm.idle.domain.common.exception
 
 import com.swm.idle.support.common.exception.CustomException
-import com.swm.idle.support.security.jwt.exception.JwtException.Companion.CODE_PREFIX
 
 sealed class PersistenceException(
     codeNumber: Int,
@@ -10,5 +9,9 @@ sealed class PersistenceException(
 
     class ResourceNotFound(message: String = "") :
         PersistenceException(codeNumber = 1, message = message)
+
+    companion object {
+        const val CODE_PREFIX = "PERSISTENCE"
+    }
 
 }
