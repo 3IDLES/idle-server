@@ -1,9 +1,9 @@
 package com.swm.idle.api.common.security.interceptor
 
-import com.swm.idle.api.common.exception.ApiException
 import com.swm.idle.api.common.security.annotation.Secured
 import com.swm.idle.domain.user.vo.UserAuthentication
 import com.swm.idle.support.security.jwt.context.SecurityContextHolder
+import com.swm.idle.support.security.jwt.exception.SecurityException
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.stereotype.Component
@@ -23,7 +23,7 @@ class JwtAuthorizationInterceptor : HandlerInterceptor {
         }
 
         if (hasSecuredAnnotation(handler) && isNotAuthenticated()) {
-            throw ApiException.UnauthorizedRequest()
+            throw SecurityException.UnAuthorizedRequest()
         }
 
         return super.preHandle(request, response, handler)

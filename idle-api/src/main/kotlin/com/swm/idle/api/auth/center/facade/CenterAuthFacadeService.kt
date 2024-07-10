@@ -60,7 +60,8 @@ class CenterAuthFacadeService(
     ): LoginResponse {
         val centerManager = centerManagerService.findByIdentifier(identifier)?.takeIf {
             PasswordEncryptor.matchPassword(password.value, it.password)
-        } ?: throw CenterException.ManagerNotFound()
+        }
+            ?: throw PersistenceException.ResourceNotFound("센터 관리자 identifier: $identifier 가 존재하지 않습니다.")
 
         return LoginResponse(
             accessToken = jwtTokenService.generateAccessToken(centerManager),
