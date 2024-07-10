@@ -1,4 +1,4 @@
-package com.swm.idle.support.security.jwt.vo
+package com.swm.idle.support.security.vo
 
 import com.auth0.jwt.interfaces.DecodedJWT
 import java.time.Instant

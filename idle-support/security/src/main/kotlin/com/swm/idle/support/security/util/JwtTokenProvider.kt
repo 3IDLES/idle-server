@@ -1,11 +1,11 @@
-package com.swm.idle.support.security.jwt.util
+package com.swm.idle.support.security.util
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.exceptions.JWTDecodeException
 import com.auth0.jwt.exceptions.TokenExpiredException
-import com.swm.idle.support.security.jwt.exception.JwtException
-import com.swm.idle.support.security.jwt.vo.JwtClaims
+import com.swm.idle.support.security.exception.JwtException
+import com.swm.idle.support.security.vo.JwtClaims
 
 object JwtTokenProvider {
 

@@ -1,4 +1,4 @@
-package com.swm.idle.support.security.jwt.exception
+package com.swm.idle.support.security.exception
 
 import com.swm.idle.support.common.exception.CustomException
 

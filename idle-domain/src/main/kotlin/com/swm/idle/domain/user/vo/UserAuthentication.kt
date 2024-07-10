@@ -1,7 +1,7 @@
 package com.swm.idle.domain.user.vo
 
 import com.swm.idle.domain.sms.vo.PhoneNumber
-import com.swm.idle.support.security.jwt.common.Authentication
+import com.swm.idle.support.security.common.Authentication
 import java.util.*
 
 data class UserAuthentication(

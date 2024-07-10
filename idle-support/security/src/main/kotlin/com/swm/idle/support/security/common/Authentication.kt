@@ -1,4 +1,4 @@
-package com.swm.idle.support.security.jwt.common
+package com.swm.idle.support.security.common
 
 import java.security.Principal
 
