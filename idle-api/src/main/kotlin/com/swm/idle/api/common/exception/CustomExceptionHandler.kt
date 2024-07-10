@@ -1,7 +1,8 @@
 package com.swm.idle.api.common.exception
 
 import com.swm.idle.support.common.exception.CustomException
-import com.swm.idle.support.security.jwt.exception.JwtException
+import com.swm.idle.support.security.exception.JwtException
+import com.swm.idle.support.security.exception.SecurityException
 import io.swagger.v3.oas.annotations.Hidden
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
@@ -28,6 +29,15 @@ class CustomExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(JwtException::class)
     fun handlerJwtException(exception: JwtException): ErrorResponse {
+        return ErrorResponse(
+            code = exception.code,
+            message = exception.message,
+        )
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(SecurityException::class)
+    fun handlerSecurityException(exception: SecurityException): ErrorResponse {
         return ErrorResponse(
             code = exception.code,
             message = exception.message,
