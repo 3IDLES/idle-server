@@ -10,17 +10,21 @@ import com.swm.idle.domain.center.vo.Password
 import com.swm.idle.domain.common.exception.PersistenceException
 import com.swm.idle.domain.common.util.getUserAuthentication
 import com.swm.idle.domain.sms.vo.PhoneNumber
+import com.swm.idle.domain.user.common.enum.UserRoleType
+import com.swm.idle.domain.user.service.DeletedUserInfoService
 import com.swm.idle.domain.user.service.RefreshTokenService
 import com.swm.idle.domain.user.util.JwtTokenService
 import com.swm.idle.infrastructure.client.center.service.CenterAuthClientService
 import com.swm.idle.infrastructure.client.common.exception.ClientException
 import com.swm.idle.support.common.encrypt.PasswordEncryptor
+import com.swm.idle.support.security.exception.SecurityException
 import org.springframework.stereotype.Service
 
 @Service
 class CenterAuthFacadeService(
     private val centerManagerService: CenterManagerService,
     private val centerAuthClientService: CenterAuthClientService,
+    private val deletedUserInfoService: DeletedUserInfoService,
     private val jwtTokenService: JwtTokenService,
     private val refreshTokenService: RefreshTokenService,
 ) {
@@ -60,8 +64,7 @@ class CenterAuthFacadeService(
     ): LoginResponse {
         val centerManager = centerManagerService.findByIdentifier(identifier)?.takeIf {
             PasswordEncryptor.matchPassword(password.value, it.password)
-        }
-            ?: throw PersistenceException.ResourceNotFound("센터 관리자 identifier: $identifier 가 존재하지 않습니다.")
+        } ?: throw SecurityException.InvalidLoginRequest()
 
         return LoginResponse(
             accessToken = jwtTokenService.generateAccessToken(centerManager),
@@ -93,6 +96,29 @@ class CenterAuthFacadeService(
         refreshTokenService.delete(
             userId = centerManagerId,
         )
+    }
+
+    fun withDraw(
+        reason: String,
+        password: Password,
+    ) {
+        val centerManagerId = getUserAuthentication().userId
+        val centerManager = centerManagerService.getById(centerManagerId)
+
+        runCatching {
+            PasswordEncryptor.matchPassword(password.value, centerManager.password)
+        }.onFailure {
+            throw SecurityException.InvalidPassword()
+        }
+
+        deletedUserInfoService.save(
+            id = centerManagerId,
+            phoneNumber = PhoneNumber(centerManager.phoneNumber),
+            role = UserRoleType.CENTER_MANAGER,
+            reason = reason,
+        )
+
+        centerManagerService.delete(centerManagerId)
     }
 
 }

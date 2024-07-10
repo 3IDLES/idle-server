@@ -63,4 +63,9 @@ class CenterManagerService(
         return centerManagerJpaRepository.existsById(centerManagerId)
     }
 
+    @Transactional
+    fun delete(centerManagerId: UUID) {
+        centerManagerJpaRepository.deleteById(centerManagerId)
+    }
+
 }

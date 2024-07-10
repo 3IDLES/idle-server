@@ -6,6 +6,7 @@ import com.swm.idle.api.auth.center.dto.LoginResponse
 import com.swm.idle.api.auth.center.dto.RefreshLoginTokenResponse
 import com.swm.idle.api.auth.center.dto.RefreshTokenRequest
 import com.swm.idle.api.auth.center.dto.ValidateBusinessRegistrationNumberResponse
+import com.swm.idle.api.auth.center.dto.WithdrawRequest
 import com.swm.idle.api.auth.center.facade.CenterAuthFacadeService
 import com.swm.idle.api.auth.center.spec.CenterAuthApi
 import com.swm.idle.domain.center.vo.BusinessRegistrationNumber
@@ -54,8 +55,11 @@ class CenterAuthController(
         return centerAuthFacadeService.refreshLoginToken(request.refreshToken)
     }
 
-    override fun withDraw() {
-        TODO("Not yet implemented")
+    override fun withdraw(request: WithdrawRequest) {
+        return centerAuthFacadeService.withDraw(
+            reason = request.reason,
+            password = Password(request.password)
+        )
     }
 
 }
