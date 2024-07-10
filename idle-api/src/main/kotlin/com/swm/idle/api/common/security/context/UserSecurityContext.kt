@@ -1,7 +1,7 @@
 package com.swm.idle.api.common.security.context
 
 import com.swm.idle.domain.user.vo.UserAuthentication
-import com.swm.idle.support.security.jwt.context.SecurityContext
+import com.swm.idle.support.security.context.SecurityContext
 
 class UserSecurityContext(
     private var userAuthentication: UserAuthentication,

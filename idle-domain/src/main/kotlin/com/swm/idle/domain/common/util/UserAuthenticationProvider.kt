@@ -1,8 +1,8 @@
 package com.swm.idle.domain.common.util
 
 import com.swm.idle.domain.user.vo.UserAuthentication
-import com.swm.idle.support.security.jwt.context.SecurityContextHolder
-import com.swm.idle.support.security.jwt.exception.SecurityException
+import com.swm.idle.support.security.context.SecurityContextHolder
+import com.swm.idle.support.security.exception.SecurityException
 
 fun getUserAuthentication(): UserAuthentication {
     val userAuthentication: UserAuthentication? =

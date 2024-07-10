@@ -3,7 +3,7 @@ package com.swm.idle.api.common.security.filter
 import com.swm.idle.api.common.security.context.UserSecurityContext
 import com.swm.idle.domain.user.util.JwtTokenService
 import com.swm.idle.domain.user.vo.UserAuthentication
-import com.swm.idle.support.security.jwt.context.SecurityContextHolder
+import com.swm.idle.support.security.context.SecurityContextHolder
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse

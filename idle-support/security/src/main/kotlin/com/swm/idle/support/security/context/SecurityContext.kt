@@ -1,6 +1,6 @@
-package com.swm.idle.support.security.jwt.context
+package com.swm.idle.support.security.context
 
-import com.swm.idle.support.security.jwt.common.Authentication
+import com.swm.idle.support.security.common.Authentication
 
 interface SecurityContext<T : Authentication> {
 

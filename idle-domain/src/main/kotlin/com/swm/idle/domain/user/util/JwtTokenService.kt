@@ -7,8 +7,8 @@ import com.swm.idle.domain.user.common.enum.UserTokenType
 import com.swm.idle.domain.user.entity.UserRefreshTokenRedisHash
 import com.swm.idle.domain.user.repository.UserRefreshTokenRepository
 import com.swm.idle.domain.user.vo.UserTokenClaims
-import com.swm.idle.support.security.jwt.util.JwtTokenProvider
-import com.swm.idle.support.security.jwt.vo.JwtClaims
+import com.swm.idle.support.security.util.JwtTokenProvider
+import com.swm.idle.support.security.vo.JwtClaims
 import org.springframework.stereotype.Service
 import java.time.Instant
 import java.util.*

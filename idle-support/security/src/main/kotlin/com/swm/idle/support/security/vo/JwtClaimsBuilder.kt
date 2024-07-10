@@ -1,4 +1,4 @@
-package com.swm.idle.support.security.jwt.vo
+package com.swm.idle.support.security.vo
 
 import java.time.Instant
 import java.util.*

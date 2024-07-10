@@ -2,8 +2,8 @@ package com.swm.idle.api.common.security.interceptor
 
 import com.swm.idle.api.common.security.annotation.Secured
 import com.swm.idle.domain.user.vo.UserAuthentication
-import com.swm.idle.support.security.jwt.context.SecurityContextHolder
-import com.swm.idle.support.security.jwt.exception.SecurityException
+import com.swm.idle.support.security.context.SecurityContextHolder
+import com.swm.idle.support.security.exception.SecurityException
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.stereotype.Component
