@@ -6,6 +6,7 @@ import com.swm.idle.api.auth.center.dto.LoginResponse
 import com.swm.idle.api.auth.center.dto.RefreshLoginTokenResponse
 import com.swm.idle.api.auth.center.dto.RefreshTokenRequest
 import com.swm.idle.api.auth.center.dto.ValidateBusinessRegistrationNumberResponse
+import com.swm.idle.api.auth.center.dto.WithdrawRequest
 import com.swm.idle.api.common.exception.ErrorResponse
 import com.swm.idle.api.common.security.annotation.Secured
 import io.swagger.v3.oas.annotations.Operation
@@ -59,10 +60,13 @@ interface CenterAuthApi {
         @RequestBody request: RefreshTokenRequest,
     ): RefreshLoginTokenResponse
 
+    @Secured
     @Operation(summary = "센터 회원 탈퇴 API")
     @PostMapping("/withdraw")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun withDraw()
+    fun withdraw(
+        @RequestBody request: WithdrawRequest,
+    )
 
     @Operation(summary = "아이디 중복 체크 API")
     @GetMapping("/validation/{identifier}")

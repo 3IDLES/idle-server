@@ -5,7 +5,7 @@ import com.swm.idle.domain.user.repository.UserRefreshTokenRepository
 import com.swm.idle.domain.user.util.JwtTokenService
 import com.swm.idle.domain.user.vo.JwtTokens
 import com.swm.idle.domain.user.vo.UserTokenClaims
-import com.swm.idle.support.security.jwt.exception.JwtException
+import com.swm.idle.support.security.exception.JwtException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -43,6 +43,7 @@ class RefreshTokenService(
         }
     }
 
+    @Transactional
     fun delete(userId: UUID) {
         userRefreshTokenRepository.deleteById(userId)
     }
