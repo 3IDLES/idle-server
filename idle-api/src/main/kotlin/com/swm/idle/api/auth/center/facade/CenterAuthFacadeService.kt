@@ -3,11 +3,12 @@ package com.swm.idle.api.auth.center.facade
 import com.swm.idle.api.auth.center.dto.LoginResponse
 import com.swm.idle.api.auth.center.dto.RefreshLoginTokenResponse
 import com.swm.idle.api.auth.center.dto.ValidateBusinessRegistrationNumberResponse
-import com.swm.idle.domain.center.exception.CenterException
 import com.swm.idle.domain.center.service.CenterManagerService
 import com.swm.idle.domain.center.vo.BusinessRegistrationNumber
 import com.swm.idle.domain.center.vo.Identifier
 import com.swm.idle.domain.center.vo.Password
+import com.swm.idle.domain.common.exception.PersistenceException
+import com.swm.idle.domain.common.util.getUserAuthentication
 import com.swm.idle.domain.sms.vo.PhoneNumber
 import com.swm.idle.domain.user.service.RefreshTokenService
 import com.swm.idle.domain.user.util.JwtTokenService
@@ -23,6 +24,7 @@ class CenterAuthFacadeService(
     private val jwtTokenService: JwtTokenService,
     private val refreshTokenService: RefreshTokenService,
 ) {
+
     fun join(
         identifier: Identifier,
         password: Password,
@@ -78,6 +80,18 @@ class CenterAuthFacadeService(
 
     fun validateIdentifier(identifier: Identifier) {
         centerManagerService.validateDuplicateIdentifier(identifier)
+    }
+
+    fun logout() {
+        val centerManagerId = getUserAuthentication().userId
+
+        if (centerManagerService.existsById(centerManagerId).not()) {
+            throw PersistenceException.ResourceNotFound("센터 관리자(id: $centerManagerId)를 찾을 수 없습니다.")
+        }
+
+        refreshTokenService.delete(
+            userId = centerManagerId,
+        )
     }
 
 }

@@ -36,12 +36,10 @@ class CenterAuthController(
     }
 
     override fun login(request: LoginRequest): LoginResponse {
-        val response = centerAuthFacadeService.login(
+        return centerAuthFacadeService.login(
             identifier = Identifier(request.identifier),
             password = Password(request.password),
         )
-
-        return response
     }
 
     override fun validateIdentifier(identifier: String) {
@@ -49,13 +47,11 @@ class CenterAuthController(
     }
 
     override fun logout() {
-        TODO("Not yet implemented")
+        centerAuthFacadeService.logout()
     }
 
     override fun refreshLoginToken(request: RefreshTokenRequest): RefreshLoginTokenResponse {
-        val response = centerAuthFacadeService.refreshLoginToken(request.refreshToken)
-
-        return response
+        return centerAuthFacadeService.refreshLoginToken(request.refreshToken)
     }
 
     override fun withDraw() {
