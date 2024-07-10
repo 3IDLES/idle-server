@@ -44,6 +44,10 @@ class CenterAuthController(
         return response
     }
 
+    override fun validateIdentifier(identifier: String) {
+        centerAuthFacadeService.validateIdentifier(Identifier(identifier))
+    }
+
     override fun logout() {
         TODO("Not yet implemented")
     }
@@ -55,10 +59,6 @@ class CenterAuthController(
     }
 
     override fun withDraw() {
-        TODO("Not yet implemented")
-    }
-
-    override fun validateIdentifier(identifier: String) {
         TODO("Not yet implemented")
     }
 

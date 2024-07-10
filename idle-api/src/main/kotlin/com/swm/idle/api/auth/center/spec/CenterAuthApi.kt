@@ -69,7 +69,7 @@ interface CenterAuthApi {
         value = [
             ApiResponse(
                 responseCode = "204",
-                description = "중복되지 않는 아이디",
+                description = "사용 가능한 아이디",
             ),
             ApiResponse(
                 responseCode = "400",

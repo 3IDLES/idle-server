@@ -76,4 +76,8 @@ class CenterAuthFacadeService(
             }
     }
 
+    fun validateIdentifier(identifier: Identifier) {
+        centerManagerService.validateDuplicateIdentifier(identifier)
+    }
+
 }
