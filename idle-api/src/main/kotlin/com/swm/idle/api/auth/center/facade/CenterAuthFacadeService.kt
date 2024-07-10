@@ -105,9 +105,7 @@ class CenterAuthFacadeService(
         val centerManagerId = getUserAuthentication().userId
         val centerManager = centerManagerService.getById(centerManagerId)
 
-        runCatching {
-            PasswordEncryptor.matchPassword(password.value, centerManager.password)
-        }.onFailure {
+        if (PasswordEncryptor.matchPassword(password.value, centerManager.password).not()) {
             throw SecurityException.InvalidPassword()
         }
 

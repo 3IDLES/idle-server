@@ -3,6 +3,8 @@ package com.swm.idle.domain.user.entity
 import com.swm.idle.domain.user.common.enum.UserRoleType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import java.time.LocalDateTime
@@ -27,6 +29,7 @@ class DeletedUserInfo(
     var phoneNumber: String = phoneNumber
         private set
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     var role: UserRoleType = role
         private set
