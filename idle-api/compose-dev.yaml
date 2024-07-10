@@ -6,6 +6,7 @@ services:
       - mysql-volume:/var/lib/mysql
     environment:
       - VERSION=${VERSION:-latest}
+      - SPRING_PROFILES_ACTIVE=dev
     pull_policy: always
     env_file:
       - .env
