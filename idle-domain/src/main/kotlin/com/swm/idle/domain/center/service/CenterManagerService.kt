@@ -68,4 +68,8 @@ class CenterManagerService(
         centerManagerJpaRepository.deleteById(centerManagerId)
     }
 
+    fun findByPhoneNumber(phoneNumber: PhoneNumber): CenterManager? {
+        return centerManagerJpaRepository.findByPhoneNumber(phoneNumber.value)
+    }
+
 }

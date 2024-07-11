@@ -3,6 +3,7 @@ package com.swm.idle.api.auth.center.facade
 import com.swm.idle.api.auth.center.dto.LoginResponse
 import com.swm.idle.api.auth.center.dto.RefreshLoginTokenResponse
 import com.swm.idle.api.auth.center.dto.ValidateBusinessRegistrationNumberResponse
+import com.swm.idle.domain.center.exception.CenterException
 import com.swm.idle.domain.center.service.CenterManagerService
 import com.swm.idle.domain.center.vo.BusinessRegistrationNumber
 import com.swm.idle.domain.center.vo.Identifier
@@ -36,6 +37,10 @@ class CenterAuthFacadeService(
         managerName: String,
         centerBusinessRegistrationNumber: BusinessRegistrationNumber,
     ) {
+        centerManagerService.findByPhoneNumber(phoneNumber)?.let {
+            throw CenterException.AlreadyExistUser()
+        }
+
         centerManagerService.save(
             identifier = identifier,
             password = password,
