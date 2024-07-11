@@ -34,4 +34,8 @@ class SmsVerificationService(
             .orElse(null)
     }
 
+    fun deleteByPhoneNumber(phoneNumber: PhoneNumber) {
+        smsVerificationNumberRedisRepository.deleteById(phoneNumber.value)
+    }
+
 }
