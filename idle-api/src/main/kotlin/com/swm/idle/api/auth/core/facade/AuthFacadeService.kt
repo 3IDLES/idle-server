@@ -19,6 +19,11 @@ class AuthFacadeService(
 
     @Transactional
     fun sendVerificationMessage(phoneNumber: PhoneNumber) {
+
+        smsVerificationService.findByPhoneNumber(phoneNumber)?.let {
+            smsVerificationService.deleteByPhoneNumber(phoneNumber)
+        }
+
         CoroutineScope(Dispatchers.IO).launch {
             smsService.sendVerificationMessage(
                 phoneNumber = phoneNumber
