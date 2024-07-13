@@ -1,10 +1,9 @@
 package com.swm.idle.infrastructure.sms.common.vo
 
-import com.swm.idle.domain.sms.vo.PhoneNumber
-import com.swm.idle.domain.sms.vo.SmsVerificationNumber
+import com.swm.idle.domain.user.common.vo.PhoneNumber
 
 data class SmsVerificationInfo(
-    val smsVerificationNumber: SmsVerificationNumber,
+    val userPhoneVerificationNumber: String,
     val phoneNumber: PhoneNumber,
     val expireSeconds: Long,
 )

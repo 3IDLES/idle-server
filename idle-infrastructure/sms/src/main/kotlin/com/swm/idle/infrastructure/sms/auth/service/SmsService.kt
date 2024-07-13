@@ -1,8 +1,7 @@
 package com.swm.idle.infrastructure.sms.auth.service
 
-import com.swm.idle.domain.sms.exception.SmsException
-import com.swm.idle.domain.sms.vo.PhoneNumber
-import com.swm.idle.domain.sms.vo.SmsVerificationNumber
+import com.swm.idle.domain.user.center.exception.SmsException
+import com.swm.idle.domain.user.common.vo.PhoneNumber
 import com.swm.idle.infrastructure.sms.common.properties.SmsVerificationProperties
 import com.swm.idle.infrastructure.sms.common.vo.SmsVerificationInfo
 import com.swm.idle.infrastructure.sms.util.SmsClient
@@ -21,7 +20,7 @@ class SmsService(
         runCatching {
             smsClient.sendMessage(
                 to = phoneNumber.value.replace("-", ""),
-                content = CENTER_VERIFICATION_MESSAGE_FORMAT.format(smsVerificationNumber.value),
+                content = CENTER_VERIFICATION_MESSAGE_FORMAT.format(smsVerificationNumber),
             )
         }.onFailure {
             throw SmsException.ClientException()
@@ -29,17 +28,15 @@ class SmsService(
 
         return SmsVerificationInfo(
             phoneNumber = phoneNumber,
-            smsVerificationNumber = smsVerificationNumber,
+            userPhoneVerificationNumber = smsVerificationNumber,
             expireSeconds = smsVerificationProperties.expireSeconds,
         )
     }
 
-    fun generateVerificationNumber(): SmsVerificationNumber {
+    fun generateVerificationNumber(): String {
         val random = SecureRandom()
 
-        return SmsVerificationNumber(
-            (MINIMUM_VERIFICATION_NUMBER + random.nextInt(VERIFICATION_NUMBER_SCALE)).toString()
-        )
+        return (MINIMUM_VERIFICATION_NUMBER + random.nextInt(VERIFICATION_NUMBER_SCALE)).toString()
     }
 
     companion object {
