@@ -1,7 +1,7 @@
 package com.swm.idle.infrastructure.sms.auth.service
 
-import com.swm.idle.domain.user.center.exception.SmsException
 import com.swm.idle.domain.user.common.vo.PhoneNumber
+import com.swm.idle.infrastructure.sms.common.exception.SmsException
 import com.swm.idle.infrastructure.sms.common.properties.SmsVerificationProperties
 import com.swm.idle.infrastructure.sms.common.vo.SmsVerificationInfo
 import com.swm.idle.infrastructure.sms.util.SmsClient

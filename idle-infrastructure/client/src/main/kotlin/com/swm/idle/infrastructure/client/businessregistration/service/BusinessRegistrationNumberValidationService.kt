@@ -1,26 +1,26 @@
-package com.swm.idle.infrastructure.client.center.service
+package com.swm.idle.infrastructure.client.businessregistration.service
 
 import com.swm.idle.domain.user.center.vo.BusinessRegistrationNumber
-import com.swm.idle.infrastructure.client.center.dto.CompanyValidationClientResponse
-import com.swm.idle.infrastructure.client.center.util.CompanyValidationClient
-import com.swm.idle.infrastructure.client.common.exception.ClientException
+import com.swm.idle.infrastructure.client.businessregistration.dto.BusinessRegistrationNumberValidationResponse
+import com.swm.idle.infrastructure.client.businessregistration.exception.BusinessRegistrationException
+import com.swm.idle.infrastructure.client.businessregistration.util.BusinessRegistrationNumberValidationClient
 import com.swm.idle.infrastructure.client.common.properties.ClientProperties
 import org.springframework.stereotype.Service
 import java.net.URI
 
 @Service
-class CenterAuthClientService(
+class BusinessRegistrationNumberValidationService(
     val clientProperties: ClientProperties,
-    val companyValidationClient: CompanyValidationClient,
+    val businessRegistrationNumberValidationClient: BusinessRegistrationNumberValidationClient,
 ) {
 
-    fun sendCompanyValidationRequest(businessRegistrationNumber: BusinessRegistrationNumber): CompanyValidationClientResponse {
+    fun sendCompanyValidationRequest(businessRegistrationNumber: BusinessRegistrationNumber): BusinessRegistrationNumberValidationResponse {
         val uri = generateRequestUri(businessRegistrationNumber)
 
         val result = runCatching {
-            companyValidationClient.findCompany(URI(uri))
+            businessRegistrationNumberValidationClient.findByBusinessRegistrationNumber(URI(uri))
         }.getOrElse {
-            throw ClientException.ExternalApiException()
+            throw BusinessRegistrationException.CompanyNotFound()
         }
 
         return result
