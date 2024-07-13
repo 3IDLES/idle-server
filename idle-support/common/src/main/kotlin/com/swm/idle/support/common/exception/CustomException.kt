@@ -16,4 +16,5 @@ abstract class CustomException(
         const val DEFAULT_CODE_PREFIX = "UNKNOWN"
         const val DEFAULT_ERROR_MESSAGE = "알 수 없는 오류가 발생하였습니다."
     }
+
 }

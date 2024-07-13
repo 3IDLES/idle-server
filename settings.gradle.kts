@@ -23,3 +23,6 @@ project(":idle-support:security").projectDir = file("idle-support/security")
 
 include(":idle-infrastructure:client")
 project(":idle-infrastructure:client").projectDir = file("idle-infrastructure/client")
+
+include(":idle-infrastructure:aws")
+project(":idle-infrastructure:aws").projectDir = file("idle-infrastructure/aws")
