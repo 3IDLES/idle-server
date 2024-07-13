@@ -6,9 +6,8 @@ spring:
         secret-key: ${AWS_SECRET_ACCESS_KEY}
       region:
         static: ${AWS_REGION:ap-northeast-2}
-
 aws-bucket:
-  profile-image:
+  user-profile-image:
     bucket-name: ${AWS_S3_BUCKET_NAME:idle-bucket}
-    key-prefix: ${AWS_S3_PROFILE_IMAGE_URL_PREFIX:/users/profile-image/}
-    presigned-url-expire-minutes: 5
+    key-prefix: ${AWS_S3_PROFILE_IMAGE_URL_PREFIX:users/profile-image/}
+    pre-signed-url-expire-minutes: 5

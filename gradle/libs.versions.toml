@@ -1,6 +1,7 @@
 [versions]
 java = "17"
 
+spring = "6.1.5"
 spring-boot = "3.2.4"
 spring-boot-dependency-management = "1.1.4"
 kotlin = "1.9.21"
@@ -41,6 +42,7 @@ spring-boot-starter-data-redis = { group = "org.springframework.boot", name = "s
 
 mysql-connector-java = { group = "mysql", name = "mysql-connector-java", version.ref = "mysql" }
 
+spring-tx = { group = "org.springframework", name = "spring-tx", version.ref = "spring" }
 spring-boot-core = { group = "org.springframework.boot", name = "spring-boot", version.ref = "spring-boot" }
 spring-boot-configuration-processor = { group = "org.springframework.boot", name = "spring-boot-configuration-processor", version.ref = "spring-boot" }
 uuid-creator = { group = "com.github.f4b6a3", name = "uuid-creator", version.ref = "uuid-creator" }

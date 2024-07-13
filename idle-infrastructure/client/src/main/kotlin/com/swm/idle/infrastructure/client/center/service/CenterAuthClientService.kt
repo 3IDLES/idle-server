@@ -1,6 +1,6 @@
 package com.swm.idle.infrastructure.client.center.service
 
-import com.swm.idle.domain.center.vo.BusinessRegistrationNumber
+import com.swm.idle.domain.user.center.vo.BusinessRegistrationNumber
 import com.swm.idle.infrastructure.client.center.dto.CompanyValidationClientResponse
 import com.swm.idle.infrastructure.client.center.util.CompanyValidationClient
 import com.swm.idle.infrastructure.client.common.exception.ClientException

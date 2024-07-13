@@ -1,0 +1,60 @@
+server:
+  port: 8080
+  shutdown: graceful
+
+spring:
+  profiles:
+    active: local
+    include:
+      - application
+      - domain
+      - aws
+      - sms
+      - client
+
+swagger:
+  server:
+    url: ${SERVER_URL:http://localhost:8080}
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  docker:
+    compose:
+      file: ./idle-presentation/compose-local.yaml
+
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  docker:
+    compose:
+      enabled: false
+
+springdoc:
+  swagger-ui:
+    enabled: true
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  docker:
+    compose:
+      enabled: false
+
+springdoc:
+  swagger-ui:
+    enabled: true
