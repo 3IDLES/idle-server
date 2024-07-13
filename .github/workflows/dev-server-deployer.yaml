@@ -35,7 +35,7 @@ jobs:
           host: ${{ secrets.DEV_INSTANCE_HOST }}
           username: ${{ secrets.DEV_INSTANCE_USERNAME }}
           key: ${{ secrets.DEV_INSTANCE_KEY }}
-          source: "./idle-api/compose-dev.yaml"
+          source: "./idle-presentation/compose-dev.yaml"
           target: "~/app/docker"
           timeout: 120s
           overwrite: true
