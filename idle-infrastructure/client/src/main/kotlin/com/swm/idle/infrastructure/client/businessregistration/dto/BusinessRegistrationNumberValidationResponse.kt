@@ -1,6 +1,6 @@
-package com.swm.idle.infrastructure.client.center.dto
+package com.swm.idle.infrastructure.client.businessregistration.dto
 
-data class CompanyValidationClientResponse(
+data class BusinessRegistrationNumberValidationResponse(
     val items: List<Result>,
 ) {
 

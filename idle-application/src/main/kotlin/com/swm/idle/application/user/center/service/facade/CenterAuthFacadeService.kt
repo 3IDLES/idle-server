@@ -12,9 +12,8 @@ import com.swm.idle.domain.user.center.vo.Identifier
 import com.swm.idle.domain.user.center.vo.Password
 import com.swm.idle.domain.user.common.enum.UserRoleType
 import com.swm.idle.domain.user.common.vo.PhoneNumber
-import com.swm.idle.infrastructure.client.center.service.CenterAuthClientService
-import com.swm.idle.infrastructure.client.common.exception.ClientException
-
+import com.swm.idle.infrastructure.client.businessregistration.exception.BusinessRegistrationException
+import com.swm.idle.infrastructure.client.businessregistration.service.BusinessRegistrationNumberValidationService
 import com.swm.idle.support.common.encrypt.PasswordEncryptor
 import com.swm.idle.support.mapper.auth.center.LoginResponse
 import com.swm.idle.support.mapper.auth.center.RefreshLoginTokenResponse
@@ -25,7 +24,7 @@ import org.springframework.stereotype.Service
 @Service
 class CenterAuthFacadeService(
     private val centerManagerService: CenterManagerService,
-    private val centerAuthClientService: CenterAuthClientService,
+    private val businessRegistrationNumberValidationService: BusinessRegistrationNumberValidationService,
     private val deletedUserInfoService: DeletedUserInfoService,
     private val jwtTokenService: JwtTokenService,
     private val refreshTokenService: RefreshTokenService,
@@ -53,10 +52,12 @@ class CenterAuthFacadeService(
 
     fun validateCompany(businessRegistrationNumber: BusinessRegistrationNumber): ValidateBusinessRegistrationNumberResponse {
         val result =
-            centerAuthClientService.sendCompanyValidationRequest(businessRegistrationNumber)
+            businessRegistrationNumberValidationService.sendCompanyValidationRequest(
+                businessRegistrationNumber
+            )
 
         val item = result.items.firstOrNull()
-            ?: throw ClientException.CompanyNotFoundException()
+            ?: throw BusinessRegistrationException.CompanyNotFound()
 
         return ValidateBusinessRegistrationNumberResponse(
             businessRegistrationNumber = item.bno,
