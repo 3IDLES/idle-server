@@ -1,4 +1,4 @@
-package com.swm.idle.support.mapper.auth.common
+package com.swm.idle.support.transfer.auth.common
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema

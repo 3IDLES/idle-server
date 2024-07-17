@@ -1,6 +1,6 @@
 package com.swm.idle.domain.user.common.entity.jpa
 
-import com.swm.idle.domain.user.common.enum.UserRoleType
+import com.swm.idle.domain.user.common.enum.UserType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -15,7 +15,7 @@ import java.util.*
 class DeletedUserInfo(
     id: UUID,
     phoneNumber: String,
-    role: UserRoleType,
+    role: UserType,
     reason: String,
     deletedAt: LocalDateTime,
 ) {
@@ -31,7 +31,7 @@ class DeletedUserInfo(
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    var role: UserRoleType = role
+    var role: UserType = role
         private set
 
     @Column(nullable = false)

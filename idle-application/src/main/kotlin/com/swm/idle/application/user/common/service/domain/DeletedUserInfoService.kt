@@ -1,7 +1,7 @@
 package com.swm.idle.application.user.common.service.domain
 
 import com.swm.idle.domain.user.common.entity.jpa.DeletedUserInfo
-import com.swm.idle.domain.user.common.enum.UserRoleType
+import com.swm.idle.domain.user.common.enum.UserType
 import com.swm.idle.domain.user.common.repository.jpa.DeletedUserInfoRepository
 import com.swm.idle.domain.user.common.vo.PhoneNumber
 import org.springframework.stereotype.Service
@@ -18,7 +18,7 @@ class DeletedUserInfoService(
     fun save(
         id: UUID,
         phoneNumber: PhoneNumber,
-        role: UserRoleType,
+        role: UserType,
         reason: String,
     ) {
         deletedUserInfoRepository.save(

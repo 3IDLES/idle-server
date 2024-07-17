@@ -6,13 +6,13 @@ import com.swm.idle.domain.user.center.vo.Identifier
 import com.swm.idle.domain.user.center.vo.Password
 import com.swm.idle.domain.user.common.vo.PhoneNumber
 import com.swm.idle.presentation.auth.center.api.CenterAuthApi
-import com.swm.idle.support.mapper.auth.center.JoinRequest
-import com.swm.idle.support.mapper.auth.center.LoginRequest
-import com.swm.idle.support.mapper.auth.center.LoginResponse
-import com.swm.idle.support.mapper.auth.center.RefreshLoginTokenResponse
-import com.swm.idle.support.mapper.auth.center.RefreshTokenRequest
-import com.swm.idle.support.mapper.auth.center.ValidateBusinessRegistrationNumberResponse
-import com.swm.idle.support.mapper.auth.center.WithdrawRequest
+import com.swm.idle.support.transfer.auth.center.JoinRequest
+import com.swm.idle.support.transfer.auth.center.LoginRequest
+import com.swm.idle.support.transfer.auth.center.LoginResponse
+import com.swm.idle.support.transfer.auth.center.RefreshLoginTokenResponse
+import com.swm.idle.support.transfer.auth.center.RefreshTokenRequest
+import com.swm.idle.support.transfer.auth.center.ValidateBusinessRegistrationNumberResponse
+import com.swm.idle.support.transfer.auth.center.WithdrawRequest
 import org.springframework.web.bind.annotation.RestController
 
 @RestController

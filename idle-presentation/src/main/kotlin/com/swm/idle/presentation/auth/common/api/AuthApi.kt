@@ -1,8 +1,8 @@
 package com.swm.idle.presentation.auth.common.api
 
 import com.swm.idle.presentation.common.exception.ErrorResponse
-import com.swm.idle.support.mapper.auth.common.ConfirmSmsVerificationRequest
-import com.swm.idle.support.mapper.auth.common.SendSmsVerificationRequest
+import com.swm.idle.support.transfer.auth.common.ConfirmSmsVerificationRequest
+import com.swm.idle.support.transfer.auth.common.SendSmsVerificationRequest
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
