@@ -4,6 +4,7 @@ import com.swm.idle.application.user.common.service.facade.UserFacadeService
 import com.swm.idle.domain.user.common.enum.ImageFileExtension
 import com.swm.idle.domain.user.common.enum.UserType
 import com.swm.idle.presentation.user.api.UserApi
+import com.swm.idle.support.transfer.user.UserProfileImageUploadCallbackRequest
 import com.swm.idle.support.transfer.user.UserProfileImageUploadUrlResponse
 import org.springframework.web.bind.annotation.RestController
 
@@ -19,6 +20,17 @@ class UserController(
         return userFacadeService.getProfileImageUploadUrl(
             userType = userType,
             imageFileExtension = imageFileExtension,
+        )
+    }
+
+    override fun profileImageUploadCallback(
+        userType: UserType,
+        request: UserProfileImageUploadCallbackRequest,
+    ) {
+        return userFacadeService.createImageUploadCallback(
+            userType = userType,
+            imageId = request.imageId,
+            imageFileExtension = request.imageFileExtension,
         )
     }
 

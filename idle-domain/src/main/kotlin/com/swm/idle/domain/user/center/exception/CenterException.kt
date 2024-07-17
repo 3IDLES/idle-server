@@ -13,7 +13,11 @@ sealed class CenterException(
     class AlreadyExistUser(message: String = "이미 가입된 회원입니다.") :
         CenterException(codeNumber = 2, message = message)
 
+    class NotFoundException(message: String = "존재하지 않는 센터입니다.") :
+        CenterException(codeNumber = 3, message = message)
+
     companion object {
+
         const val CODE_PREFIX = "CENTER"
     }
 

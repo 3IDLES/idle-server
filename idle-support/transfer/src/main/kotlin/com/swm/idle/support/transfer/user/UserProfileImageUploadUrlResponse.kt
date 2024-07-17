@@ -13,7 +13,7 @@ data class UserProfileImageUploadUrlResponse(
     @Schema(description = "이미지 ID", example = "8bdf126a-2d71-4a1a-9d90-6b5e5db4e0c8")
     val imageId: UUID,
     @Schema(description = "이미지 파일 확장자", example = "jpg")
-    val extension: ImageFileExtension,
+    val imageFileExtension: ImageFileExtension,
     @Schema(description = "이미지 업로드 Url")
     val uploadUrl: URL,
 )
