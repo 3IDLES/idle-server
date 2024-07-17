@@ -5,6 +5,7 @@ import com.swm.idle.domain.user.common.enum.UserType
 import com.swm.idle.infrastructure.aws.s3.properties.S3BucketProperties
 import org.springframework.stereotype.Service
 import software.amazon.awssdk.services.s3.S3Client
+import software.amazon.awssdk.services.s3.model.GetUrlRequest
 import software.amazon.awssdk.services.s3.model.PutObjectRequest
 import software.amazon.awssdk.services.s3.presigner.S3Presigner
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest
@@ -55,6 +56,24 @@ class S3ImageService(
 
     fun getDuration(expireMinutes: Long): Duration {
         return Duration.ofMinutes(expireMinutes)
+    }
+
+    fun findByIdAndExtension(
+        userType: UserType,
+        imageId: UUID,
+        imageFileExtension: ImageFileExtension,
+    ): URL {
+        val getObjectRequest = GetUrlRequest
+            .builder()
+            .bucket(s3BucketProperties.userProfileImage.bucketName)
+            .key(getKey(userType, imageId, imageFileExtension))
+            .build()
+
+        return s3Client
+            .utilities()
+            .getUrl(getObjectRequest)
+            .toString()
+            .let { URL(it) }
     }
 
 }
