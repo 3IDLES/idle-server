@@ -7,6 +7,7 @@ bootJar.enabled = false
 jar.enabled = true
 
 dependencies {
+    implementation(project(":idle-domain"))
     implementation(libs.spring.boot.core)
-    implementation(libs.spring.cloud.aws.s3)
+    implementation(libs.spring.cloud.starter.aws.s3)
 }

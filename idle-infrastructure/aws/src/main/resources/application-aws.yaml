@@ -1,9 +1,9 @@
 spring:
   cloud:
     aws:
-      iam:
-        access-key: ${AWS_ACCESS_KEY_ID}
-        secret-key: ${AWS_SECRET_ACCESS_KEY}
+      credentials:
+        access-key: ${AWS_S3_ACCESS_KEY}
+        secret-key: ${AWS_S3_SECRET_KEY}
       region:
         static: ${AWS_REGION:ap-northeast-2}
 aws-bucket:

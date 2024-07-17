@@ -57,7 +57,7 @@ kotest-extensions-testcontainers = { group = "io.kotest.extensions", name = "kot
 testcontainers-junit-jupiter = { group = "org.testcontainers", name = "junit-jupiter", version.ref = "testcontainers" }
 
 spring-cloud-starter-openfeign = { group = "org.springframework.cloud", name = "spring-cloud-starter-openfeign", version.ref = "spring-cloud-openfeign" }
-spring-cloud-aws-s3 = { group = "io.awspring.cloud", name = "spring-cloud-aws-s3", version.ref = "spring-cloud-aws-s3" }
+spring-cloud-starter-aws-s3 = { group = "io.awspring.cloud", name = "spring-cloud-aws-starter-s3", version.ref = "spring-cloud-aws-s3" }
 
 springdoc-openapi-starter-webmvc-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc-openapi" }
 net-nurigo-sdk = { group = "net.nurigo", name = "sdk", version.ref = "cool-sms"}
