@@ -7,5 +7,6 @@ bootJar.enabled = false
 jar.enabled = true
 
 dependencies {
+    implementation(project(":idle-domain"))
     implementation(libs.springdoc.openapi.starter.webmvc.ui)
 }

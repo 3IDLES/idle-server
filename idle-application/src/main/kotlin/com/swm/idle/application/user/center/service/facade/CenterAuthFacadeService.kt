@@ -10,15 +10,15 @@ import com.swm.idle.domain.user.center.exception.CenterException
 import com.swm.idle.domain.user.center.vo.BusinessRegistrationNumber
 import com.swm.idle.domain.user.center.vo.Identifier
 import com.swm.idle.domain.user.center.vo.Password
-import com.swm.idle.domain.user.common.enum.UserRoleType
+import com.swm.idle.domain.user.common.enum.UserType
 import com.swm.idle.domain.user.common.vo.PhoneNumber
 import com.swm.idle.infrastructure.client.businessregistration.exception.BusinessRegistrationException
 import com.swm.idle.infrastructure.client.businessregistration.service.BusinessRegistrationNumberValidationService
 import com.swm.idle.support.common.encrypt.PasswordEncryptor
-import com.swm.idle.support.mapper.auth.center.LoginResponse
-import com.swm.idle.support.mapper.auth.center.RefreshLoginTokenResponse
-import com.swm.idle.support.mapper.auth.center.ValidateBusinessRegistrationNumberResponse
 import com.swm.idle.support.security.exception.SecurityException
+import com.swm.idle.support.transfer.auth.center.LoginResponse
+import com.swm.idle.support.transfer.auth.center.RefreshLoginTokenResponse
+import com.swm.idle.support.transfer.auth.center.ValidateBusinessRegistrationNumberResponse
 import org.springframework.stereotype.Service
 
 @Service
@@ -119,7 +119,7 @@ class CenterAuthFacadeService(
         deletedUserInfoService.save(
             id = centerManagerId,
             phoneNumber = PhoneNumber(centerManager.phoneNumber),
-            role = UserRoleType.CENTER_MANAGER,
+            role = UserType.CENTER,
             reason = reason,
         )
 
