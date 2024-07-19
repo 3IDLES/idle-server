@@ -10,7 +10,7 @@ import com.swm.idle.domain.user.common.enum.UserType
 import com.swm.idle.domain.user.common.exception.UserException
 import com.swm.idle.infrastructure.aws.s3.service.S3ImageService
 import com.swm.idle.support.common.uuid.UuidCreator
-import com.swm.idle.support.transfer.user.UserProfileImageUploadUrlResponse
+import com.swm.idle.support.transfer.user.common.UserProfileImageUploadUrlResponse
 import org.springframework.stereotype.Service
 import java.util.*
 

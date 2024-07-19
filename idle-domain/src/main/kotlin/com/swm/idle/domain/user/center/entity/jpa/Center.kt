@@ -4,6 +4,7 @@ import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
+import java.math.BigDecimal
 import java.util.*
 
 @Entity
@@ -11,15 +12,14 @@ import java.util.*
 class Center(
     id: UUID,
     centerName: String,
-    ownerName: String,
-    businessRegistrationNumber: String,
     officeNumber: String,
+    businessRegistrationNumber: String,
     roadNameAddress: String,
     lotNumberAddress: String,
     detailedAddress: String,
-    profileImageUrl: String,
-    longitude: String,
-    latitude: String,
+    longitude: BigDecimal,
+    latitude: BigDecimal,
+    profileImageUrl: String?,
     introduce: String?,
 ) {
 
@@ -30,10 +30,6 @@ class Center(
 
     @Column(nullable = false, columnDefinition = "varchar(255)")
     var centerName: String = centerName
-        private set
-
-    @Column(nullable = false, columnDefinition = "varchar(255)")
-    var ownerName: String = ownerName
         private set
 
     @Column(nullable = false, columnDefinition = "varchar(255)")
@@ -56,12 +52,12 @@ class Center(
     var detailedAddress: String = detailedAddress
         private set
 
-    @Column(nullable = false, columnDefinition = "varchar(255)")
-    var longitude: String = longitude
+    @Column(nullable = false, columnDefinition = "decimal(14, 10)")
+    var longitude: BigDecimal = longitude
         private set
 
-    @Column(nullable = false, columnDefinition = "varchar(255)")
-    var latitude: String = latitude
+    @Column(nullable = false, columnDefinition = "decimal(14, 10)")
+    var latitude: BigDecimal = latitude
         private set
 
     @Column(columnDefinition = "varchar(255)")
