@@ -1,10 +1,10 @@
-package com.swm.idle.presentation.user.api
+package com.swm.idle.presentation.user.common.api
 
 import com.swm.idle.domain.user.common.enum.ImageFileExtension
 import com.swm.idle.domain.user.common.enum.UserType
 import com.swm.idle.presentation.common.security.annotation.Secured
-import com.swm.idle.support.transfer.user.UserProfileImageUploadCallbackRequest
-import com.swm.idle.support.transfer.user.UserProfileImageUploadUrlResponse
+import com.swm.idle.support.transfer.user.common.UserProfileImageUploadCallbackRequest
+import com.swm.idle.support.transfer.user.common.UserProfileImageUploadUrlResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.tags.Tag

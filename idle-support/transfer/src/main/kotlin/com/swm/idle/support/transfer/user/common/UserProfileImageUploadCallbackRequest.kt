@@ -1,4 +1,4 @@
-package com.swm.idle.support.transfer.user
+package com.swm.idle.support.transfer.user.common
 
 import com.swm.idle.domain.user.common.enum.ImageFileExtension
 import io.swagger.v3.oas.annotations.media.Schema
