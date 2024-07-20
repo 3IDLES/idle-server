@@ -1,12 +1,15 @@
 package com.swm.idle.application.user.center.service.domain
 
+import com.swm.idle.domain.common.exception.PersistenceException
 import com.swm.idle.domain.user.center.entity.jpa.Center
 import com.swm.idle.domain.user.center.repository.CenterJpaRepository
 import com.swm.idle.domain.user.center.vo.BusinessRegistrationNumber
 import com.swm.idle.support.common.uuid.UuidCreator
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.math.BigDecimal
+import java.util.*
 
 @Service
 class CenterService(
@@ -55,6 +58,11 @@ class CenterService(
             officeNumber = officeNumber,
             introduce = introduce,
         )
+    }
+
+    fun getById(centerId: UUID): Center {
+        return centerJpaRepository.findByIdOrNull(centerId)
+            ?: throw PersistenceException.ResourceNotFound("Center(id=$centerId)를 찾을 수 없습니다")
     }
 
 }
