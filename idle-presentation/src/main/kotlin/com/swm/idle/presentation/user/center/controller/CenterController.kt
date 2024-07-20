@@ -4,7 +4,6 @@ import com.swm.idle.application.user.center.service.facade.CenterFacadeService
 import com.swm.idle.presentation.user.center.api.CenterApi
 import com.swm.idle.support.transfer.user.center.CreateCenterProfileRequest
 import com.swm.idle.support.transfer.user.center.GetCenterProfileResponse
-import com.swm.idle.support.transfer.user.center.GetMyCenterProfileResponse
 import com.swm.idle.support.transfer.user.center.UpdateCenterProfileRequest
 import org.springframework.web.bind.annotation.RestController
 import java.util.*
@@ -34,7 +33,7 @@ class CenterController(
         )
     }
 
-    override fun getMyCenterProfile(): GetMyCenterProfileResponse {
+    override fun getMyCenterProfile(): GetCenterProfileResponse {
         return centerFacadeService.getMyProfile()
     }
 

@@ -3,7 +3,6 @@ package com.swm.idle.presentation.user.center.api
 import com.swm.idle.presentation.common.security.annotation.Secured
 import com.swm.idle.support.transfer.user.center.CreateCenterProfileRequest
 import com.swm.idle.support.transfer.user.center.GetCenterProfileResponse
-import com.swm.idle.support.transfer.user.center.GetMyCenterProfileResponse
 import com.swm.idle.support.transfer.user.center.UpdateCenterProfileRequest
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -41,7 +40,7 @@ interface CenterApi {
     @Operation(summary = "내 센터 프로필 조회 API")
     @GetMapping("/my/profile")
     @ResponseStatus(HttpStatus.OK)
-    fun getMyCenterProfile(): GetMyCenterProfileResponse
+    fun getMyCenterProfile(): GetCenterProfileResponse
 
     @Operation(summary = "센터 프로필 조회 API")
     @GetMapping("/profile/{center-id}")
