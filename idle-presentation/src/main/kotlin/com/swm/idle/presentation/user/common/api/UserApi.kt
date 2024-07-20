@@ -6,6 +6,7 @@ import com.swm.idle.support.transfer.user.common.UserProfileImageUploadCallbackR
 import com.swm.idle.support.transfer.user.common.UserProfileImageUploadUrlResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
@@ -25,6 +26,7 @@ interface UserApi {
     @ResponseStatus(HttpStatus.OK)
     fun getProfileImageUploadUrl(
         @PathVariable("user-type")
+        @Schema(description = "user type", example = "carer | center")
         userType: String,
         @Parameter(required = true)
         imageFileExtension: ImageFileExtension,
@@ -36,6 +38,7 @@ interface UserApi {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun profileImageUploadCallback(
         @PathVariable("user-type")
+        @Schema(description = "user type", example = "carer | center")
         userType: String,
         @RequestBody
         request: UserProfileImageUploadCallbackRequest,
