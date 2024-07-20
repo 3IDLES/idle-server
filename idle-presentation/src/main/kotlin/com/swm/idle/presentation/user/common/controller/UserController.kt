@@ -14,21 +14,21 @@ class UserController(
 ) : UserApi {
 
     override fun getProfileImageUploadUrl(
-        userType: UserType,
+        userType: String,
         imageFileExtension: ImageFileExtension,
     ): UserProfileImageUploadUrlResponse {
         return userFacadeService.getProfileImageUploadUrl(
-            userType = userType,
+            userType = UserType.valueOf(userType),
             imageFileExtension = imageFileExtension,
         )
     }
 
     override fun profileImageUploadCallback(
-        userType: UserType,
+        userType: String,
         request: UserProfileImageUploadCallbackRequest,
     ) {
         return userFacadeService.createImageUploadCallback(
-            userType = userType,
+            userType = UserType.valueOf(userType),
             imageId = request.imageId,
             imageFileExtension = request.imageFileExtension,
         )

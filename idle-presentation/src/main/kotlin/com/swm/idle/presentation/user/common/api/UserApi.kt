@@ -1,7 +1,6 @@
 package com.swm.idle.presentation.user.common.api
 
 import com.swm.idle.domain.user.common.enum.ImageFileExtension
-import com.swm.idle.domain.user.common.enum.UserType
 import com.swm.idle.presentation.common.security.annotation.Secured
 import com.swm.idle.support.transfer.user.common.UserProfileImageUploadCallbackRequest
 import com.swm.idle.support.transfer.user.common.UserProfileImageUploadUrlResponse
@@ -26,7 +25,7 @@ interface UserApi {
     @ResponseStatus(HttpStatus.OK)
     fun getProfileImageUploadUrl(
         @PathVariable("user-type")
-        userType: UserType,
+        userType: String,
         @Parameter(required = true)
         imageFileExtension: ImageFileExtension,
     ): UserProfileImageUploadUrlResponse
@@ -37,7 +36,7 @@ interface UserApi {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun profileImageUploadCallback(
         @PathVariable("user-type")
-        userType: UserType,
+        userType: String,
         @RequestBody
         request: UserProfileImageUploadCallbackRequest,
     )
