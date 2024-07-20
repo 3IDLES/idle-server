@@ -6,7 +6,6 @@ import com.swm.idle.application.user.center.service.domain.CenterService
 import com.swm.idle.domain.user.center.exception.CenterException
 import com.swm.idle.domain.user.center.vo.BusinessRegistrationNumber
 import com.swm.idle.support.transfer.user.center.GetCenterProfileResponse
-import com.swm.idle.support.transfer.user.center.GetMyCenterProfileResponse
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -65,7 +64,7 @@ class CenterFacadeService(
             } ?: throw CenterException.NotFoundException()
     }
 
-    fun getMyProfile(): GetMyCenterProfileResponse {
+    fun getMyProfile(): GetCenterProfileResponse {
         val centerManager = getUserAuthentication().userId.let {
             centerManagerService.getById(it)
         }
@@ -74,7 +73,7 @@ class CenterFacadeService(
             centerService.findByBusinessRegistrationNumber(BusinessRegistrationNumber(centerManager.centerBusinessRegistrationNumber))
                 ?: throw CenterException.NotFoundException()
 
-        return GetMyCenterProfileResponse(
+        return GetCenterProfileResponse(
             centerName = center.centerName,
             officeNumber = center.officeNumber,
             roadNameAddress = center.roadNameAddress,
@@ -102,6 +101,5 @@ class CenterFacadeService(
             profileImageUrl = center.profileImageUrl,
         )
     }
-
 
 }
