@@ -40,7 +40,7 @@ class JwtTokenExpiredHandleFilter(
             message = "토큰이 만료되었습니다.",
         )
 
-        response.status = HttpStatus.BAD_REQUEST.value()
+        response.status = HttpStatus.UNAUTHORIZED.value()
         response.contentType =
             "${MediaType.APPLICATION_JSON_VALUE};charset=${Charsets.UTF_8.name()}"
         response.writer.write(objectMapper.writeValueAsString(errorResponse))
