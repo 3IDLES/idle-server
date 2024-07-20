@@ -5,6 +5,7 @@ import com.swm.idle.domain.user.center.repository.CenterJpaRepository
 import com.swm.idle.domain.user.center.vo.BusinessRegistrationNumber
 import com.swm.idle.support.common.uuid.UuidCreator
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.math.BigDecimal
 
 @Service
@@ -16,6 +17,7 @@ class CenterService(
         return centerJpaRepository.findByBusinessRegistrationNumber(businessRegistrationNumber.value)
     }
 
+    @Transactional
     fun create(
         officeNumber: String,
         centerName: String,
@@ -41,6 +43,17 @@ class CenterService(
                 introduce = introduce,
                 profileImageUrl = null,
             )
+        )
+    }
+
+    fun update(
+        center: Center,
+        officeNumber: String,
+        introduce: String?,
+    ) {
+        center.update(
+            officeNumber = officeNumber,
+            introduce = introduce,
         )
     }
 

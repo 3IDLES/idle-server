@@ -13,7 +13,7 @@ sealed class UserException(
     class VerificationNumberNotFound(message: String = "인증번호가 만료되었거나 존재하지 않습니다.") :
         UserException(codeNumber = 2, message = message)
 
-    class ImageUploadNotCompleted(message: String = "S3 저장소에 이미지가 업로드 되지 않았거나, 업로드에 실패하였습니다.") :
+    class ImageUploadNotCompleted(message: String = "이미지가 S3 저장소에 아직 업로드되지 않았습니다.") :
         UserException(codeNumber = 3, message = message)
 
     companion object {

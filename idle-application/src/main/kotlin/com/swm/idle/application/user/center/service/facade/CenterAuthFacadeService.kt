@@ -38,7 +38,7 @@ class CenterAuthFacadeService(
         centerBusinessRegistrationNumber: BusinessRegistrationNumber,
     ) {
         centerManagerService.findByPhoneNumber(phoneNumber)?.let {
-            throw CenterException.AlreadyExistUser()
+            throw CenterException.AlreadyExistCenterManager()
         }
 
         centerManagerService.save(
