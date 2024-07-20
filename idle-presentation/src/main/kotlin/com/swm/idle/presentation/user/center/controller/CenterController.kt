@@ -3,6 +3,7 @@ package com.swm.idle.presentation.user.center.controller
 import com.swm.idle.application.user.center.service.facade.CenterFacadeService
 import com.swm.idle.presentation.user.center.api.CenterApi
 import com.swm.idle.support.transfer.user.center.CreateCenterProfileRequest
+import com.swm.idle.support.transfer.user.center.UpdateCenterProfileRequest
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -19,6 +20,13 @@ class CenterController(
             detailedAddress = request.detailedAddress,
             longitude = request.longitude,
             latitude = request.latitude,
+            introduce = request.introduce,
+        )
+    }
+
+    override fun updateCenterProfile(request: UpdateCenterProfileRequest) {
+        centerFacadeService.update(
+            officeNumber = request.officeNumber,
             introduce = request.introduce,
         )
     }

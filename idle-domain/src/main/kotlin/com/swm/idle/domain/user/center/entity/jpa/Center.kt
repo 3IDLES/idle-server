@@ -73,4 +73,9 @@ class Center(
         this.profileImageUrl = profileImageUrl
     }
 
+    fun update(officeNumber: String, introduce: String?) {
+        this.officeNumber = officeNumber
+        this.introduce = introduce
+    }
+
 }

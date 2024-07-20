@@ -10,11 +10,14 @@ sealed class CenterException(
     class DuplicateIdentifier(message: String = "이미 존재하는 ID입니다.") :
         CenterException(codeNumber = 1, message = message)
 
-    class AlreadyExistUser(message: String = "이미 가입된 회원입니다.") :
+    class AlreadyExistCenterManager(message: String = "이미 가입된 센터 관리자입니다.") :
         CenterException(codeNumber = 2, message = message)
 
-    class NotFoundException(message: String = "존재하지 않는 센터입니다.") :
+    class AlreadyExistCenter(message: String = "등록된 센터 정보가 이미 존재합니다.") :
         CenterException(codeNumber = 3, message = message)
+
+    class NotFoundException(message: String = "존재하지 않는 센터입니다.") :
+        CenterException(codeNumber = 4, message = message)
 
     companion object {
 
