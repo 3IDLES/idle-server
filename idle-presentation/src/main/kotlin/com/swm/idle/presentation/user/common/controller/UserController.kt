@@ -18,7 +18,7 @@ class UserController(
         imageFileExtension: ImageFileExtension,
     ): UserProfileImageUploadUrlResponse {
         return userFacadeService.getProfileImageUploadUrl(
-            userType = UserType.valueOf(userType),
+            userType = UserType.from(userType),
             imageFileExtension = imageFileExtension,
         )
     }
@@ -28,7 +28,7 @@ class UserController(
         request: UserProfileImageUploadCallbackRequest,
     ) {
         return userFacadeService.createImageUploadCallback(
-            userType = UserType.valueOf(userType),
+            userType = UserType.from(userType),
             imageId = request.imageId,
             imageFileExtension = request.imageFileExtension,
         )
