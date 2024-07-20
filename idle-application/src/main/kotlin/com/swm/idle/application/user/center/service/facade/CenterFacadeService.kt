@@ -5,9 +5,11 @@ import com.swm.idle.application.user.center.service.domain.CenterManagerService
 import com.swm.idle.application.user.center.service.domain.CenterService
 import com.swm.idle.domain.user.center.exception.CenterException
 import com.swm.idle.domain.user.center.vo.BusinessRegistrationNumber
+import com.swm.idle.support.transfer.user.center.GetCenterProfileResponse
 import com.swm.idle.support.transfer.user.center.GetMyCenterProfileResponse
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 
 @Service
 class CenterFacadeService(
@@ -84,5 +86,22 @@ class CenterFacadeService(
             profileImageUrl = center.profileImageUrl,
         )
     }
+
+    fun getCenterProfile(centerId: UUID): GetCenterProfileResponse {
+        val center = centerService.getById(centerId)
+
+        return GetCenterProfileResponse(
+            centerName = center.centerName,
+            officeNumber = center.officeNumber,
+            roadNameAddress = center.roadNameAddress,
+            lotNumberAddress = center.lotNumberAddress,
+            detailedAddress = center.detailedAddress,
+            longitude = center.longitude.toString(),
+            latitude = center.latitude.toString(),
+            introduce = center.introduce,
+            profileImageUrl = center.profileImageUrl,
+        )
+    }
+
 
 }
