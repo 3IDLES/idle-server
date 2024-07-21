@@ -2,7 +2,7 @@ package com.swm.idle.application.user.center.service.domain
 
 import com.swm.idle.domain.common.exception.PersistenceException
 import com.swm.idle.domain.user.center.entity.jpa.Center
-import com.swm.idle.domain.user.center.repository.CenterJpaRepository
+import com.swm.idle.domain.user.center.repository.jpa.CenterJpaRepository
 import com.swm.idle.domain.user.center.vo.BusinessRegistrationNumber
 import com.swm.idle.support.common.uuid.UuidCreator
 import org.springframework.data.repository.findByIdOrNull

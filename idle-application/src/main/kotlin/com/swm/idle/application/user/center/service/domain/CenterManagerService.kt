@@ -4,7 +4,7 @@ import com.swm.idle.domain.common.exception.PersistenceException
 import com.swm.idle.domain.user.center.entity.jpa.CenterManager
 import com.swm.idle.domain.user.center.enums.CenterAccountStatus
 import com.swm.idle.domain.user.center.exception.CenterException
-import com.swm.idle.domain.user.center.repository.CenterManagerJpaRepository
+import com.swm.idle.domain.user.center.repository.jpa.CenterManagerJpaRepository
 import com.swm.idle.domain.user.center.vo.BusinessRegistrationNumber
 import com.swm.idle.domain.user.center.vo.Identifier
 import com.swm.idle.domain.user.center.vo.Password
