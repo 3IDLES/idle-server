@@ -1,4 +1,4 @@
-package com.swm.idle.domain.user.center.repository
+package com.swm.idle.domain.user.center.repository.jpa
 
 import com.swm.idle.domain.user.center.entity.jpa.Center
 import org.springframework.data.jpa.repository.JpaRepository

@@ -12,6 +12,7 @@ import com.swm.idle.infrastructure.aws.s3.service.S3ImageService
 import com.swm.idle.support.common.uuid.UuidCreator
 import com.swm.idle.support.transfer.user.common.UserProfileImageUploadUrlResponse
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @Service
@@ -40,6 +41,7 @@ class UserFacadeService(
         )
     }
 
+    @Transactional
     fun createImageUploadCallback(
         userType: UserType,
         imageId: UUID,
@@ -66,7 +68,7 @@ class UserFacadeService(
         // TODO("요양 보호사 프로필 업로드 로직 구현")
     }
 
-    private fun updateCenterImageURL(
+    fun updateCenterImageURL(
         userType: UserType,
         imageId: UUID,
         imageFileExtension: ImageFileExtension,

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 
-@Tag(name = "User", description = "User API")
+@Tag(name = "User", description = "Users - 공통 API")
 @RequestMapping("/api/v1/users", produces = ["application/json"])
 interface UserApi {
 
