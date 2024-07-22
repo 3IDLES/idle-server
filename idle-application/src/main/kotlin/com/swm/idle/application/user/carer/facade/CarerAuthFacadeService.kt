@@ -2,12 +2,14 @@ package com.swm.idle.application.user.carer.facade
 
 import com.swm.idle.application.common.security.getUserAuthentication
 import com.swm.idle.application.user.carer.domain.CarerService
+import com.swm.idle.application.user.common.service.domain.DeletedUserInfoService
 import com.swm.idle.application.user.common.service.domain.RefreshTokenService
 import com.swm.idle.application.user.common.service.domain.UserPhoneVerificationService
 import com.swm.idle.application.user.common.service.util.JwtTokenService
 import com.swm.idle.application.user.vo.UserPhoneVerificationNumber
 import com.swm.idle.domain.user.carer.exception.CarerException
 import com.swm.idle.domain.user.common.enum.GenderType
+import com.swm.idle.domain.user.common.enum.UserType
 import com.swm.idle.domain.user.common.exception.UserException
 import com.swm.idle.domain.user.common.vo.BirthYear
 import com.swm.idle.domain.user.common.vo.PhoneNumber
@@ -21,6 +23,7 @@ class CarerAuthFacadeService(
     private val userPhoneVerificationService: UserPhoneVerificationService,
     private val jwtTokenService: JwtTokenService,
     private val refreshTokenService: RefreshTokenService,
+    private val deletedUserInfoService: DeletedUserInfoService,
 ) {
 
     fun join(
@@ -74,6 +77,19 @@ class CarerAuthFacadeService(
         }
 
         refreshTokenService.delete(carer.id)
+    }
+
+    fun withdraw(reason: String) {
+        val carer = getUserAuthentication().userId.let {
+            carerService.getById(it)
+        }
+
+        deletedUserInfoService.save(
+            id = carer.id,
+            phoneNumber = PhoneNumber(carer.phoneNumber),
+            role = UserType.CARER,
+            reason = reason,
+        )
     }
 
 }
