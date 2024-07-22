@@ -35,4 +35,8 @@ class CarerAuthController(
         )
     }
 
+    override fun logout() {
+        carerAuthFacadeService.logout()
+    }
+
 }
