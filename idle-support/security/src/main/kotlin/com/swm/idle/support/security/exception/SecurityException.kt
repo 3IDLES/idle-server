@@ -16,7 +16,11 @@ sealed class SecurityException(
     class InvalidPassword(message: String = "올바르지 않은 비밀번호입니다.") :
         SecurityException(codeNumber = 3, message = message)
 
+    class UnregisteredUser(message: String = "가입되지 않은 사용자입니다.") :
+        SecurityException(codeNumber = 4, message = message)
+
     companion object {
+
         const val CODE_PREFIX = "SECURITY"
     }
 

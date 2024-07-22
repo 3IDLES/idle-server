@@ -16,9 +16,9 @@ import com.swm.idle.infrastructure.client.businessregistration.exception.Busines
 import com.swm.idle.infrastructure.client.businessregistration.service.BusinessRegistrationNumberValidationService
 import com.swm.idle.support.common.encrypt.PasswordEncryptor
 import com.swm.idle.support.security.exception.SecurityException
-import com.swm.idle.support.transfer.auth.center.LoginResponse
 import com.swm.idle.support.transfer.auth.center.RefreshLoginTokenResponse
 import com.swm.idle.support.transfer.auth.center.ValidateBusinessRegistrationNumberResponse
+import com.swm.idle.support.transfer.auth.common.LoginResponse
 import org.springframework.stereotype.Service
 
 @Service
@@ -80,6 +80,7 @@ class CenterAuthFacadeService(
     }
 
     fun refreshLoginToken(refreshToken: String): RefreshLoginTokenResponse {
+        // 이거 센터인지 요양 보호사인지 열어가지구 확인할 수 있도록 해야 함! 이 로직 추가 필요.
         return refreshTokenService.create(refreshToken)
             .let {
                 RefreshLoginTokenResponse(

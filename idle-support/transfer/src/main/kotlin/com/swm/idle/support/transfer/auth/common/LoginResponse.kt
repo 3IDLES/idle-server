@@ -1,4 +1,4 @@
-package com.swm.idle.support.transfer.auth.center
+package com.swm.idle.support.transfer.auth.common
 
 import io.swagger.v3.oas.annotations.media.Schema
 

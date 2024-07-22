@@ -14,5 +14,5 @@ dependencies {
     implementation(libs.springdoc.openapi.starter.webmvc.ui)
 
     developmentOnly(libs.spring.boot.devtools)
-    developmentOnly(libs.spring.boot.docker.compose)
+//    developmentOnly(libs.spring.boot.docker.compose)
 }

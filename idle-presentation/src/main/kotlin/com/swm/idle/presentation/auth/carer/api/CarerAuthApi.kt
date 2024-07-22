@@ -1,6 +1,8 @@
 package com.swm.idle.presentation.auth.carer.api
 
 import com.swm.idle.support.transfer.auth.carer.CarerJoinRequest
+import com.swm.idle.support.transfer.auth.carer.CarerLoginRequest
+import com.swm.idle.support.transfer.auth.common.LoginResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
@@ -19,5 +21,13 @@ interface CarerAuthApi {
     fun join(
         @RequestBody request: CarerJoinRequest,
     )
+
+    @Operation(summary = "요양 보호사 로그인 API")
+    @PostMapping("/login")
+    @ResponseStatus(HttpStatus.OK)
+    fun login(
+        @RequestBody request: CarerLoginRequest,
+    ): LoginResponse
+
 
 }

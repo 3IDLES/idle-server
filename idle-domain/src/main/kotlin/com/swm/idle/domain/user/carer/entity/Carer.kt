@@ -2,12 +2,12 @@ package com.swm.idle.domain.user.carer.entity
 
 import com.swm.idle.domain.user.carer.enums.CarerAccountStatus
 import com.swm.idle.domain.user.carer.enums.JobSearchStatus
+import com.swm.idle.domain.user.common.entity.jpa.User
 import com.swm.idle.domain.user.common.enum.GenderType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
-import jakarta.persistence.Id
 import jakarta.persistence.Table
 import java.math.BigDecimal
 import java.util.*
@@ -30,20 +30,20 @@ class Carer(
     profileImageUrl: String? = null,
     jobSearchStatus: JobSearchStatus = JobSearchStatus.YES,
     carerAccountStatus: CarerAccountStatus = CarerAccountStatus.ACTIVE,
-) {
+) : User(id, phoneNumber, carerName) {
 
-    @Id
-    @Column(nullable = false)
-    var id: UUID = id
-        private set
+//    @Id
+//    @Column(nullable = false)
+//    var id: UUID = id
+//        private set
 
-    @Column(nullable = false, columnDefinition = "varchar(255)")
-    var phoneNumber: String = phoneNumber
-        private set
-
-    @Column(nullable = false, columnDefinition = "varchar(255)")
-    var carerName: String = carerName
-        private set
+//    @Column(nullable = false, columnDefinition = "varchar(255)")
+//    var phoneNumber: String = phoneNumber
+//        private set
+//
+//    @Column(nullable = false, columnDefinition = "varchar(255)")
+//    var carerName: String = carerName
+//        private set
 
     @Column(nullable = false)
     var birthYear: Int = birthYear

@@ -1,6 +1,7 @@
 package com.swm.idle.application.common.properties
 
 import org.springframework.boot.context.properties.ConfigurationProperties
+
 @ConfigurationProperties(value = "auth.jwt")
 data class JwtTokenProperties(
     val issuer: String,
@@ -9,8 +10,13 @@ data class JwtTokenProperties(
 ) {
 
     data class TokenProperties(
-        val expireSeconds: Long,
+        val carer: ExpirationPolicy,
+        val center: ExpirationPolicy,
         val secret: String,
     )
 
+    data class ExpirationPolicy(
+        val expireSeconds: Long,
+    )
 }
+

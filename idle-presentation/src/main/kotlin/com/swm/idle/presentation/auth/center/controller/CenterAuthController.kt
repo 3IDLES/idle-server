@@ -6,13 +6,13 @@ import com.swm.idle.domain.user.center.vo.Identifier
 import com.swm.idle.domain.user.center.vo.Password
 import com.swm.idle.domain.user.common.vo.PhoneNumber
 import com.swm.idle.presentation.auth.center.api.CenterAuthApi
+import com.swm.idle.support.transfer.auth.center.CenterLoginRequest
 import com.swm.idle.support.transfer.auth.center.JoinRequest
-import com.swm.idle.support.transfer.auth.center.LoginRequest
-import com.swm.idle.support.transfer.auth.center.LoginResponse
 import com.swm.idle.support.transfer.auth.center.RefreshLoginTokenResponse
 import com.swm.idle.support.transfer.auth.center.RefreshTokenRequest
 import com.swm.idle.support.transfer.auth.center.ValidateBusinessRegistrationNumberResponse
 import com.swm.idle.support.transfer.auth.center.WithdrawRequest
+import com.swm.idle.support.transfer.auth.common.LoginResponse
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -36,7 +36,7 @@ class CenterAuthController(
         )
     }
 
-    override fun login(request: LoginRequest): LoginResponse {
+    override fun login(request: CenterLoginRequest): LoginResponse {
         return centerAuthFacadeService.login(
             identifier = Identifier(request.identifier),
             password = Password(request.password),
