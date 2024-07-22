@@ -1,5 +1,6 @@
 package com.swm.idle.presentation.auth.carer.api
 
+import com.swm.idle.presentation.common.security.annotation.Secured
 import com.swm.idle.support.transfer.auth.carer.CarerJoinRequest
 import com.swm.idle.support.transfer.auth.carer.CarerLoginRequest
 import com.swm.idle.support.transfer.auth.common.LoginResponse
@@ -29,5 +30,9 @@ interface CarerAuthApi {
         @RequestBody request: CarerLoginRequest,
     ): LoginResponse
 
+    @Secured
+    @Operation(summary = "요양 보호사 로그아웃 API")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun logout()
 
 }

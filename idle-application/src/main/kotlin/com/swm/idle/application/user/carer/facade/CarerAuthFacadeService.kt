@@ -1,6 +1,8 @@
 package com.swm.idle.application.user.carer.facade
 
+import com.swm.idle.application.common.security.getUserAuthentication
 import com.swm.idle.application.user.carer.domain.CarerService
+import com.swm.idle.application.user.common.service.domain.RefreshTokenService
 import com.swm.idle.application.user.common.service.domain.UserPhoneVerificationService
 import com.swm.idle.application.user.common.service.util.JwtTokenService
 import com.swm.idle.application.user.vo.UserPhoneVerificationNumber
@@ -18,6 +20,7 @@ class CarerAuthFacadeService(
     private val carerService: CarerService,
     private val userPhoneVerificationService: UserPhoneVerificationService,
     private val jwtTokenService: JwtTokenService,
+    private val refreshTokenService: RefreshTokenService,
 ) {
 
     fun join(
@@ -63,6 +66,14 @@ class CarerAuthFacadeService(
             accessToken = jwtTokenService.generateAccessToken(carer),
             refreshToken = jwtTokenService.generateRefreshToken(carer),
         )
+    }
+
+    fun logout() {
+        val carer = getUserAuthentication().userId.let {
+            carerService.getById(it)
+        }
+
+        refreshTokenService.delete(carer.id)
     }
 
 }
