@@ -7,6 +7,7 @@ import com.swm.idle.domain.user.common.vo.PhoneNumber
 import com.swm.idle.presentation.auth.carer.api.CarerAuthApi
 import com.swm.idle.support.transfer.auth.carer.CarerJoinRequest
 import com.swm.idle.support.transfer.auth.carer.CarerLoginRequest
+import com.swm.idle.support.transfer.auth.carer.CarerWithdrawRequest
 import com.swm.idle.support.transfer.auth.common.LoginResponse
 import org.springframework.web.bind.annotation.RestController
 
@@ -37,6 +38,10 @@ class CarerAuthController(
 
     override fun logout() {
         carerAuthFacadeService.logout()
+    }
+
+    override fun withdraw(request: CarerWithdrawRequest) {
+        carerAuthFacadeService.withdraw(request.reason)
     }
 
 }

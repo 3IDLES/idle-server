@@ -3,6 +3,7 @@ package com.swm.idle.presentation.auth.carer.api
 import com.swm.idle.presentation.common.security.annotation.Secured
 import com.swm.idle.support.transfer.auth.carer.CarerJoinRequest
 import com.swm.idle.support.transfer.auth.carer.CarerLoginRequest
+import com.swm.idle.support.transfer.auth.carer.CarerWithdrawRequest
 import com.swm.idle.support.transfer.auth.common.LoginResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -32,7 +33,16 @@ interface CarerAuthApi {
 
     @Secured
     @Operation(summary = "요양 보호사 로그아웃 API")
+    @PostMapping("/logout")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun logout()
+
+    @Secured
+    @Operation(summary = "요양 보호사 회원 탈퇴 API")
+    @PostMapping("/withdraw")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun withdraw(
+        @RequestBody request: CarerWithdrawRequest,
+    )
 
 }

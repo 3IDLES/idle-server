@@ -106,7 +106,7 @@ class CenterAuthFacadeService(
         )
     }
 
-    fun withDraw(
+    fun withdraw(
         reason: String,
         password: Password,
     ) {

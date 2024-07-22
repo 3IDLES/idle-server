@@ -56,7 +56,7 @@ class CenterAuthController(
     }
 
     override fun withdraw(request: WithdrawRequest) {
-        return centerAuthFacadeService.withDraw(
+        return centerAuthFacadeService.withdraw(
             reason = request.reason,
             password = Password(request.password)
         )
