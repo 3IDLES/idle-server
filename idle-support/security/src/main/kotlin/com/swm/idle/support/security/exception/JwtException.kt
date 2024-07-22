@@ -19,7 +19,11 @@ sealed class JwtException(
     class TokenNotFound(message: String = "토큰을 찾을 수 없습니다.") :
         JwtException(codeNumber = 4, message = message)
 
+    class NotSupportUserTokenType(message: String = "지원하지 않는 유저 토큰 타입입니다.") :
+        JwtException(codeNumber = 5, message = message)
+
     companion object {
+
         const val CODE_PREFIX = "JWT"
     }
 

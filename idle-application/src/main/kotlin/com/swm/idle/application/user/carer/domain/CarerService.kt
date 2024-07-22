@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional
 import java.math.BigDecimal
 
 @Service
-class CarerAuthService(
+class CarerService(
     private val carerJpaRepository: CarerJpaRepository,
 ) {
 

@@ -2,13 +2,13 @@ package com.swm.idle.presentation.auth.center.api
 
 import com.swm.idle.presentation.common.exception.ErrorResponse
 import com.swm.idle.presentation.common.security.annotation.Secured
+import com.swm.idle.support.transfer.auth.center.CenterLoginRequest
 import com.swm.idle.support.transfer.auth.center.JoinRequest
-import com.swm.idle.support.transfer.auth.center.LoginRequest
-import com.swm.idle.support.transfer.auth.center.LoginResponse
 import com.swm.idle.support.transfer.auth.center.RefreshLoginTokenResponse
 import com.swm.idle.support.transfer.auth.center.RefreshTokenRequest
 import com.swm.idle.support.transfer.auth.center.ValidateBusinessRegistrationNumberResponse
 import com.swm.idle.support.transfer.auth.center.WithdrawRequest
+import com.swm.idle.support.transfer.auth.common.LoginResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -44,7 +44,7 @@ interface CenterAuthApi {
     @Operation(summary = "센터 로그인 API")
     @PostMapping("/login")
     fun login(
-        @RequestBody request: LoginRequest,
+        @RequestBody request: CenterLoginRequest,
     ): LoginResponse
 
     @Secured

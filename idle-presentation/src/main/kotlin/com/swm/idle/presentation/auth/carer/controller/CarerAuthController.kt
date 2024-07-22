@@ -1,10 +1,13 @@
 package com.swm.idle.presentation.auth.carer.controller
 
 import com.swm.idle.application.user.carer.facade.CarerAuthFacadeService
+import com.swm.idle.application.user.vo.UserPhoneVerificationNumber
 import com.swm.idle.domain.user.common.vo.BirthYear
 import com.swm.idle.domain.user.common.vo.PhoneNumber
 import com.swm.idle.presentation.auth.carer.api.CarerAuthApi
 import com.swm.idle.support.transfer.auth.carer.CarerJoinRequest
+import com.swm.idle.support.transfer.auth.carer.CarerLoginRequest
+import com.swm.idle.support.transfer.auth.common.LoginResponse
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -22,6 +25,13 @@ class CarerAuthController(
             lotNumberAddress = request.lotNumberAddress,
             longitude = request.longitude,
             latitude = request.latitude,
+        )
+    }
+
+    override fun login(request: CarerLoginRequest): LoginResponse {
+        return carerAuthFacadeService.login(
+            phoneNumber = PhoneNumber(request.phoneNumber),
+            verificationNumber = UserPhoneVerificationNumber(request.verificationNumber),
         )
     }
 

@@ -8,10 +8,10 @@ sealed class UserTokenClaims {
     data class AccessToken(
         val userId: UUID,
         val phoneNumber: PhoneNumber,
-    ): UserTokenClaims()
+    ) : UserTokenClaims()
 
     data class RefreshToken(
         val userId: UUID,
-    ): UserTokenClaims()
+    ) : UserTokenClaims()
 
 }

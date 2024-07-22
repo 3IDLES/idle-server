@@ -9,6 +9,7 @@ import java.util.*
 class UserRefreshTokenRedisHash(
     id: UUID,
     refreshToken: String,
+    userType: String,
     expireSeconds: Long,
 ) {
 
@@ -17,6 +18,9 @@ class UserRefreshTokenRedisHash(
         private set
 
     var refreshToken: String = refreshToken
+        private set
+
+    var userType: String = userType
         private set
 
     @TimeToLive
