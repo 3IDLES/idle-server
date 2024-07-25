@@ -35,12 +35,12 @@ class CarerAuthFacadeService(
         lotNumberAddress: String,
         longitude: String,
         latitude: String,
-    ) {
+    ): LoginResponse {
         carerService.findByPhoneNumber(phoneNumber)?.let {
             throw CarerException.AlreadyExistCarer()
         }
 
-        carerService.create(
+        val savedCarer = carerService.create(
             carerName = carerName,
             birthYear = birthYear,
             gender = genderType,
@@ -49,6 +49,11 @@ class CarerAuthFacadeService(
             lotNumberAddress = lotNumberAddress,
             longitude = longitude,
             latitude = latitude,
+        )
+
+        return LoginResponse(
+            accessToken = jwtTokenService.generateAccessToken(savedCarer),
+            refreshToken = jwtTokenService.generateRefreshToken(savedCarer),
         )
     }
 

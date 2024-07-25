@@ -28,8 +28,8 @@ class CarerService(
         lotNumberAddress: String,
         longitude: String,
         latitude: String,
-    ) {
-        carerJpaRepository.save(
+    ): Carer {
+        return carerJpaRepository.save(
             Carer(
                 id = UuidCreator.create(),
                 birthYear = birthYear.value,
