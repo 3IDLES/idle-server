@@ -22,7 +22,7 @@ interface CarerAuthApi {
     @ResponseStatus(HttpStatus.CREATED)
     fun join(
         @RequestBody request: CarerJoinRequest,
-    )
+    ): LoginResponse
 
     @Operation(summary = "요양 보호사 로그인 API")
     @PostMapping("/login")

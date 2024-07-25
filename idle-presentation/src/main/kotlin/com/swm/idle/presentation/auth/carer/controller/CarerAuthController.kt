@@ -16,8 +16,8 @@ class CarerAuthController(
     private val carerAuthFacadeService: CarerAuthFacadeService,
 ) : CarerAuthApi {
 
-    override fun join(request: CarerJoinRequest) {
-        carerAuthFacadeService.join(
+    override fun join(request: CarerJoinRequest): LoginResponse {
+        return carerAuthFacadeService.join(
             carerName = request.carerName,
             birthYear = BirthYear(request.birthYear),
             genderType = request.genderType,
