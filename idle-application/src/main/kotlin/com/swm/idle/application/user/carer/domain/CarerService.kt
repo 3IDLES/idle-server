@@ -1,7 +1,7 @@
 package com.swm.idle.application.user.carer.domain
 
 import com.swm.idle.domain.common.exception.PersistenceException
-import com.swm.idle.domain.user.carer.entity.Carer
+import com.swm.idle.domain.user.carer.entity.jpa.Carer
 import com.swm.idle.domain.user.carer.repository.jpa.CarerJpaRepository
 import com.swm.idle.domain.user.common.enum.GenderType
 import com.swm.idle.domain.user.common.vo.BirthYear
@@ -51,6 +51,27 @@ class CarerService(
     fun getById(carerId: UUID): Carer {
         return carerJpaRepository.findByIdOrNull(carerId)
             ?: throw PersistenceException.ResourceNotFound("Carer(id=$carerId)를 찾을 수 없습니다")
+    }
+
+    fun update(
+        carer: Carer,
+        experienceYear: Int?,
+        roadNameAddress: String,
+        lotNumberAddress: String,
+        longitude: String,
+        latitude: String,
+        introduce: String?,
+        speciality: String?,
+    ) {
+        carer.update(
+            experienceYear = experienceYear,
+            roadNameAddress = roadNameAddress,
+            lotNumberAddress = lotNumberAddress,
+            longitude = BigDecimal(longitude),
+            latitude = BigDecimal(latitude),
+            introduce = introduce,
+            speciality = speciality,
+        )
     }
 
 }

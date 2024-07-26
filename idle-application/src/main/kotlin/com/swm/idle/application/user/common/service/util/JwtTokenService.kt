@@ -2,7 +2,7 @@ package com.swm.idle.application.user.common.service.util
 
 import com.swm.idle.application.common.properties.JwtTokenProperties
 import com.swm.idle.application.user.vo.UserTokenClaims
-import com.swm.idle.domain.user.carer.entity.Carer
+import com.swm.idle.domain.user.carer.entity.jpa.Carer
 import com.swm.idle.domain.user.center.entity.jpa.CenterManager
 import com.swm.idle.domain.user.common.entity.jpa.User
 import com.swm.idle.domain.user.common.entity.redis.UserRefreshTokenRedisHash
