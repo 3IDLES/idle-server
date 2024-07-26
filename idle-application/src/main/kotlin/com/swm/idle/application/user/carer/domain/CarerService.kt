@@ -77,4 +77,9 @@ class CarerService(
         )
     }
 
+    @Transactional
+    fun delete(id: UUID) {
+        carerJpaRepository.deleteById(id)
+    }
+
 }
