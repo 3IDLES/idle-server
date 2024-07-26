@@ -1,4 +1,4 @@
-package com.swm.idle.domain.user.carer.entity
+package com.swm.idle.domain.user.carer.entity.jpa
 
 import com.swm.idle.domain.user.carer.enums.CarerAccountStatus
 import com.swm.idle.domain.user.carer.enums.JobSearchStatus
@@ -32,21 +32,9 @@ class Carer(
     carerAccountStatus: CarerAccountStatus = CarerAccountStatus.ACTIVE,
 ) : User(id, phoneNumber, carerName) {
 
-//    @Id
-//    @Column(nullable = false)
-//    var id: UUID = id
-//        private set
-
-//    @Column(nullable = false, columnDefinition = "varchar(255)")
-//    var phoneNumber: String = phoneNumber
-//        private set
-//
-//    @Column(nullable = false, columnDefinition = "varchar(255)")
-//    var carerName: String = carerName
-//        private set
-
     @Column(nullable = false)
     var birthYear: Int = birthYear
+        private set
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, columnDefinition = "varchar(255)")
@@ -94,4 +82,23 @@ class Carer(
     @Column(nullable = false, columnDefinition = "varchar(20)")
     var carerAccountStatus: CarerAccountStatus = carerAccountStatus
         private set
+
+    fun update(
+        experienceYear: Int?,
+        roadNameAddress: String,
+        lotNumberAddress: String,
+        longitude: BigDecimal,
+        latitude: BigDecimal,
+        introduce: String?,
+        speciality: String?,
+    ) {
+        this.experienceYear = experienceYear
+        this.roadNameAddress = roadNameAddress
+        this.lotNumberAddress = lotNumberAddress
+        this.longitude = longitude
+        this.latitude = latitude
+        this.introduce = introduce
+        this.speciality = speciality
+    }
+
 }

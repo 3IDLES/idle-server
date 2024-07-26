@@ -1,6 +1,6 @@
 package com.swm.idle.domain.user.carer.repository.jpa
 
-import com.swm.idle.domain.user.carer.entity.Carer
+import com.swm.idle.domain.user.carer.entity.jpa.Carer
 import org.springframework.data.jpa.repository.JpaRepository
 import java.util.*
 

@@ -8,5 +8,5 @@ import io.swagger.v3.oas.annotations.media.Schema
 )
 data class CarerWithdrawRequest(
     @Schema(description = "회원 탈퇴 사유")
-    val reason: String,
+    val reason: String = "",
 )
