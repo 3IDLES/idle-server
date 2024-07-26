@@ -89,6 +89,8 @@ class CarerAuthFacadeService(
             carerService.getById(it)
         }
 
+        carerService.delete(carer.id);
+
         deletedUserInfoService.save(
             id = carer.id,
             phoneNumber = PhoneNumber(carer.phoneNumber),
