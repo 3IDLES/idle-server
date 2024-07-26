@@ -2,6 +2,7 @@ package com.swm.idle.application.user.carer.facade
 
 import com.swm.idle.application.common.security.getUserAuthentication
 import com.swm.idle.application.user.carer.domain.CarerService
+import com.swm.idle.domain.user.carer.enums.JobSearchStatus
 import com.swm.idle.support.transfer.user.carer.GetCarerProfileResponse
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -52,6 +53,7 @@ class CarerFacadeService(
         latitude: String,
         introduce: String?,
         speciality: String?,
+        jobSearchStatus: JobSearchStatus,
     ) {
         getUserAuthentication().userId.let {
             carerService.getById(it)
@@ -65,6 +67,7 @@ class CarerFacadeService(
                 latitude = latitude,
                 introduce = introduce,
                 speciality = speciality,
+                jobSearchStatus = it.jobSearchStatus,
             )
         }
     }

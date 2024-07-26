@@ -2,6 +2,7 @@ package com.swm.idle.application.user.carer.domain
 
 import com.swm.idle.domain.common.exception.PersistenceException
 import com.swm.idle.domain.user.carer.entity.jpa.Carer
+import com.swm.idle.domain.user.carer.enums.JobSearchStatus
 import com.swm.idle.domain.user.carer.repository.jpa.CarerJpaRepository
 import com.swm.idle.domain.user.common.enum.GenderType
 import com.swm.idle.domain.user.common.vo.BirthYear
@@ -62,6 +63,7 @@ class CarerService(
         latitude: String,
         introduce: String?,
         speciality: String?,
+        jobSearchStatus: JobSearchStatus,
     ) {
         carer.update(
             experienceYear = experienceYear,
@@ -71,6 +73,7 @@ class CarerService(
             latitude = BigDecimal(latitude),
             introduce = introduce,
             speciality = speciality,
+            jobSearchStatus = jobSearchStatus,
         )
     }
 

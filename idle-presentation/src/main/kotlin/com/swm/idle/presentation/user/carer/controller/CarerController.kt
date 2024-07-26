@@ -29,6 +29,7 @@ class CarerController(
             latitude = request.latitude,
             introduce = request.introduce,
             speciality = request.speciality,
+            jobSearchStatus = request.jobSearchStatus,
         )
     }
 

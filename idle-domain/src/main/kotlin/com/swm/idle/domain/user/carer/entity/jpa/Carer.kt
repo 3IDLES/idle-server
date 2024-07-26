@@ -91,6 +91,7 @@ class Carer(
         latitude: BigDecimal,
         introduce: String?,
         speciality: String?,
+        jobSearchStatus: JobSearchStatus,
     ) {
         this.experienceYear = experienceYear
         this.roadNameAddress = roadNameAddress
@@ -99,6 +100,7 @@ class Carer(
         this.latitude = latitude
         this.introduce = introduce
         this.speciality = speciality
+        this.jobSearchStatus = jobSearchStatus
     }
 
 }
