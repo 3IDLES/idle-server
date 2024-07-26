@@ -1,5 +1,6 @@
 package com.swm.idle.support.transfer.user.carer
 
+import com.swm.idle.domain.user.carer.enums.JobSearchStatus
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(
@@ -21,4 +22,6 @@ data class UpdateMyCarerProfileRequest(
     val introduce: String?,
     @Schema(description = "특기")
     val speciality: String?,
+    @Schema(description = "현재 구인 상태")
+    val jobSearchStatus: JobSearchStatus,
 )
