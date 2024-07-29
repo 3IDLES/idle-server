@@ -93,13 +93,22 @@ class Carer(
         speciality: String?,
         jobSearchStatus: JobSearchStatus,
     ) {
-        this.experienceYear = experienceYear
+        if (experienceYear != null) {
+            this.experienceYear = experienceYear
+        }
         this.roadNameAddress = roadNameAddress
         this.lotNumberAddress = lotNumberAddress
         this.longitude = longitude
         this.latitude = latitude
-        this.introduce = introduce
-        this.speciality = speciality
+
+        if (introduce != null) {
+            this.introduce = introduce
+        }
+
+        if (speciality != null) {
+            this.speciality = speciality
+        }
+
         this.jobSearchStatus = jobSearchStatus
     }
 
