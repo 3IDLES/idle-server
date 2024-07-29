@@ -4,11 +4,13 @@ import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
+import org.hibernate.annotations.DynamicUpdate
 import java.math.BigDecimal
 import java.util.*
 
 @Entity
 @Table(name = "center")
+@DynamicUpdate
 class Center(
     id: UUID,
     centerName: String,
@@ -75,10 +77,7 @@ class Center(
 
     fun update(officeNumber: String, introduce: String?) {
         this.officeNumber = officeNumber
-
-        if (introduce != null) {
-            this.introduce = introduce
-        }
+        this.introduce = introduce
     }
 
 }
