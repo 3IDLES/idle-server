@@ -75,7 +75,10 @@ class Center(
 
     fun update(officeNumber: String, introduce: String?) {
         this.officeNumber = officeNumber
-        this.introduce = introduce
+
+        if (introduce != null) {
+            this.introduce = introduce
+        }
     }
 
 }
