@@ -9,11 +9,13 @@ import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
 import jakarta.persistence.Table
+import org.hibernate.annotations.DynamicUpdate
 import java.math.BigDecimal
 import java.util.*
 
 @Entity
 @Table(name = "carer")
+@DynamicUpdate
 class Carer(
     id: UUID,
     phoneNumber: String,
@@ -93,22 +95,13 @@ class Carer(
         speciality: String?,
         jobSearchStatus: JobSearchStatus,
     ) {
-        if (experienceYear != null) {
-            this.experienceYear = experienceYear
-        }
+        this.experienceYear = experienceYear
         this.roadNameAddress = roadNameAddress
         this.lotNumberAddress = lotNumberAddress
         this.longitude = longitude
         this.latitude = latitude
-
-        if (introduce != null) {
-            this.introduce = introduce
-        }
-
-        if (speciality != null) {
-            this.speciality = speciality
-        }
-
+        this.introduce = introduce
+        this.speciality = speciality
         this.jobSearchStatus = jobSearchStatus
     }
 
