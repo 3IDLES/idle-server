@@ -53,7 +53,7 @@ interface CenterAuthApi {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun logout()
 
-    @Operation(summary = "Refresh Login Token API")
+    @Operation(summary = "센터 Refresh Login Token API")
     @PostMapping("/refresh")
     @ResponseStatus(HttpStatus.OK)
     fun refreshLoginToken(

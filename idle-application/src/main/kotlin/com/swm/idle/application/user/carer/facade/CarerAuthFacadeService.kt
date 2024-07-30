@@ -14,6 +14,7 @@ import com.swm.idle.domain.user.common.exception.UserException
 import com.swm.idle.domain.user.common.vo.BirthYear
 import com.swm.idle.domain.user.common.vo.PhoneNumber
 import com.swm.idle.support.security.exception.SecurityException
+import com.swm.idle.support.transfer.auth.center.RefreshLoginTokenResponse
 import com.swm.idle.support.transfer.auth.common.LoginResponse
 import org.springframework.stereotype.Service
 
@@ -97,6 +98,16 @@ class CarerAuthFacadeService(
             role = UserType.CARER,
             reason = reason,
         )
+    }
+
+    fun refreshLoginToken(refreshToken: String): RefreshLoginTokenResponse {
+        return refreshTokenService.create(refreshToken)
+            .let {
+                RefreshLoginTokenResponse(
+                    accessToken = it.accessToken,
+                    refreshToken = it.refreshToken,
+                )
+            }
     }
 
 }

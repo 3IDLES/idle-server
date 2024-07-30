@@ -97,6 +97,7 @@ class JwtTokenService(
 
         return UserTokenClaims.RefreshToken(
             userId = UUID.fromString(jwtClaims.customClaims["userId"] as String),
+            userType = UserType.from(jwtClaims.customClaims["userType"] as String),
         )
     }
 

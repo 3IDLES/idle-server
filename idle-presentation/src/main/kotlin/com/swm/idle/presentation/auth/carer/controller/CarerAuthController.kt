@@ -8,6 +8,8 @@ import com.swm.idle.presentation.auth.carer.api.CarerAuthApi
 import com.swm.idle.support.transfer.auth.carer.CarerJoinRequest
 import com.swm.idle.support.transfer.auth.carer.CarerLoginRequest
 import com.swm.idle.support.transfer.auth.carer.CarerWithdrawRequest
+import com.swm.idle.support.transfer.auth.center.RefreshLoginTokenResponse
+import com.swm.idle.support.transfer.auth.center.RefreshTokenRequest
 import com.swm.idle.support.transfer.auth.common.LoginResponse
 import org.springframework.web.bind.annotation.RestController
 
@@ -42,6 +44,10 @@ class CarerAuthController(
 
     override fun withdraw(request: CarerWithdrawRequest) {
         carerAuthFacadeService.withdraw(request.reason)
+    }
+
+    override fun refreshLoginToken(request: RefreshTokenRequest): RefreshLoginTokenResponse {
+        return carerAuthFacadeService.refreshLoginToken(request.refreshToken)
     }
 
 }

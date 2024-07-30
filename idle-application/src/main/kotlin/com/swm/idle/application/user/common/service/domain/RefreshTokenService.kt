@@ -1,8 +1,10 @@
 package com.swm.idle.application.user.common.service.domain
 
+import com.swm.idle.application.user.carer.domain.CarerService
 import com.swm.idle.application.user.center.service.domain.CenterManagerService
 import com.swm.idle.application.user.common.service.util.JwtTokenService
 import com.swm.idle.application.user.vo.UserTokenClaims
+import com.swm.idle.domain.user.common.enum.UserType
 import com.swm.idle.domain.user.common.repository.redis.UserRefreshTokenRepository
 import com.swm.idle.domain.user.common.vo.JwtTokens
 import com.swm.idle.support.security.exception.JwtException
@@ -15,6 +17,7 @@ class RefreshTokenService(
     private val jwtTokenService: JwtTokenService,
     private val userRefreshTokenRepository: UserRefreshTokenRepository,
     private val centerManagerService: CenterManagerService,
+    private val carerService: CarerService,
 ) {
 
     @Transactional
@@ -29,11 +32,14 @@ class RefreshTokenService(
 
         validateRefreshToken(token)
 
-        val centerManager = centerManagerService.getById(token.userId)
+        val user = when (token.userType) {
+            UserType.CARER -> carerService.getById(token.userId)
+            UserType.CENTER -> centerManagerService.getById(token.userId)
+        }
 
         return JwtTokens(
-            accessToken = jwtTokenService.generateAccessToken(centerManager),
-            refreshToken = jwtTokenService.generateRefreshToken(centerManager)
+            accessToken = jwtTokenService.generateAccessToken(user),
+            refreshToken = jwtTokenService.generateRefreshToken(user)
         )
     }
 
