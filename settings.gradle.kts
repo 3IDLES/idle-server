@@ -9,6 +9,9 @@ project(":idle-application").projectDir = file("idle-application")
 include(":idle-domain")
 project(":idle-domain").projectDir = file("idle-domain")
 
+include(":idle-batch")
+project(":idle-batch").projectDir = file("idle-batch")
+
 // infrastructure modules
 include(":idle-infrastructure:aws")
 project(":idle-infrastructure:aws").projectDir = file("idle-infrastructure/aws")

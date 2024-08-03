@@ -28,6 +28,7 @@ kotlin-coroutines = "1.8.0"
 
 auth0-java-jwt = "4.4.0"
 auth0-jwks-rsa = "0.22.1"
+selenium = "4.23.0"
 
 [libraries]
 kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
@@ -38,6 +39,7 @@ spring-boot-docker-compose = { group = "org.springframework.boot", name = "sprin
 
 spring-boot-starter-web = { group = "org.springframework.boot", name = "spring-boot-starter-web", version.ref = "spring-boot" }
 spring-boot-starter-data-jpa = { group = "org.springframework.boot", name = "spring-boot-starter-data-jpa", version.ref = "spring-boot" }
+spring-boot-starter-batch = { group = "org.springframework.boot", name = "spring-boot-starter-batch", version.ref = "spring-boot" }
 spring-boot-starter-data-redis = { group = "org.springframework.boot", name = "spring-boot-starter-data-redis", version.ref = "spring-boot" }
 
 mysql-connector-java = { group = "mysql", name = "mysql-connector-java", version.ref = "mysql" }
@@ -65,6 +67,9 @@ jbcrypt = { group = "org.mindrot", name = "jbcrypt", version.ref = "jbcrypt" }
 
 java-jwt = { group = "com.auth0", name = "java-jwt", version.ref = "auth0-java-jwt" }
 jwks-rsa = { group = "com.auth0", name = "jwks-rsa", version.ref = "auth0-jwks-rsa" }
+
+selenium-java = { group = "org.seleniumhq.selenium", name = "selenium-java", version.ref = "selenium"}
+selenium-chrome-driver = { group = "org.seleniumhq.selenium", name = "selenium-chrome-driver", version.ref = "selenium"}
 
 [plugins]
 
