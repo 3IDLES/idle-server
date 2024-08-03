@@ -81,7 +81,9 @@ val allProjects = project.allprojects
     .filter { it.name != "idle-support" }
     .filter { it.name != "idle-domain" }
     .filter { it.name != "idle-infrastructure" }
-    .filter { it.name != "idle-api" }
+    .filter { it.name != "idle-application" }
+    .filter { it.name != "idle-presentation" }
+    .filter { it.name != "idle-batch" }
     .toList()
 
 project(":idle-support:jacoco") {

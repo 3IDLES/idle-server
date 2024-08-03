@@ -1,6 +1,7 @@
 package com.swm.idle.presentation
 
 import com.swm.idle.application.common.config.ApplicationConfig
+import com.swm.idle.batch.common.config.BatchConfig
 import com.swm.idle.domain.common.config.DomainConfig
 import com.swm.idle.domain.common.config.RedisConfig
 import com.swm.idle.infrastructure.aws.common.AwsConfig
@@ -19,6 +20,7 @@ import org.springframework.context.annotation.Import
         ClientConfig::class,
         SmsConfig::class,
         AwsConfig::class,
+        BatchConfig::class,
     ]
 )
 class IdleServerApplication
