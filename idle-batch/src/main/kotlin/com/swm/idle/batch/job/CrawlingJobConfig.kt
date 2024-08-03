@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.transaction.PlatformTransactionManager
 
 @Configuration
-class CrawlingJob(
+class CrawlingJobConfig(
     private val jobRepository: JobRepository,
     private val transactionManager: PlatformTransactionManager,
     private val crawlingJobPostingTasklet: CrawlingJobPostingTasklet,
