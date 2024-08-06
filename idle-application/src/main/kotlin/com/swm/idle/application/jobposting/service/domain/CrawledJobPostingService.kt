@@ -1,18 +1,18 @@
 package com.swm.idle.application.jobposting.service.domain
 
 import com.swm.idle.domain.jobposting.entity.jpa.CrawledJobPosting
-import com.swm.idle.domain.jobposting.repository.jpa.CrawledJobPostingRepository
+import com.swm.idle.domain.jobposting.repository.jpa.CrawledJobPostingJpaRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class CrawledJobPostingService(
-    private val crawledJobPostingRepository: CrawledJobPostingRepository,
+    private val crawledJobPostingJpaRepository: CrawledJobPostingJpaRepository,
 ) {
 
     @Transactional
     fun saveAll(crawledJobPostings: List<CrawledJobPosting>) {
-        crawledJobPostingRepository.saveAll(crawledJobPostings)
+        crawledJobPostingJpaRepository.saveAll(crawledJobPostings)
     }
 
 }

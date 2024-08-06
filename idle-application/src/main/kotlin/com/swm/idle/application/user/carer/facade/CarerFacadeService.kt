@@ -3,10 +3,10 @@ package com.swm.idle.application.user.carer.facade
 import com.swm.idle.application.common.security.getUserAuthentication
 import com.swm.idle.application.user.carer.domain.CarerService
 import com.swm.idle.domain.user.carer.enums.JobSearchStatus
+import com.swm.idle.domain.user.common.vo.BirthYear
 import com.swm.idle.support.transfer.user.carer.GetCarerProfileResponse
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.LocalDateTime
 import java.util.*
 
 @Service
@@ -24,7 +24,7 @@ class CarerFacadeService(
         carerService.getById(carerId).let {
             return GetCarerProfileResponse(
                 carerName = it.name,
-                age = calculateAge(it.birthYear),
+                age = BirthYear.calculateAge(it.birthYear),
                 gender = it.gender,
                 experienceYear = it.experienceYear,
                 phoneNumber = it.phoneNumber,
@@ -38,10 +38,6 @@ class CarerFacadeService(
                 jobSearchStatus = it.jobSearchStatus,
             )
         }
-    }
-
-    private fun calculateAge(birthYear: Int): Int {
-        return LocalDateTime.now().year - birthYear + 1
     }
 
     @Transactional
