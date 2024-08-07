@@ -42,17 +42,17 @@ data class CreateJobPostingRequest(
     val mentalStatus: MentalStatus,
     @Schema(description = "질병")
     val disease: String,
-    @Schema(description = "식사 보조 여부")
+    @Schema(description = "식사 보조 여부", name = "isMealAssistance")
     val isMealAssistance: Boolean,
-    @Schema(description = "배변 보조 여부")
+    @Schema(description = "배변 보조 여부", name = "isBowelAssistance")
     val isBowelAssistance: Boolean,
-    @Schema(description = "산책 보조 여부")
+    @Schema(description = "산책 보조 여부", name = "isWalkingAssistance")
     val isWalkingAssistance: Boolean,
     @Schema(description = "일상 보조")
     val lifeAssistance: List<LifeAssistanceType>?,
     @Schema(description = "특이사항")
     val speciality: String,
-    @Schema(description = "경력자 우대 여부")
+    @Schema(description = "경력자 우대 여부", name = "isExperiencePreferred")
     val isExperiencePreferred: Boolean,
     @Schema(description = "접수 방법", example = "[CALLING, MESSAGE]")
     val applyMethod: List<ApplyMethodType>,
