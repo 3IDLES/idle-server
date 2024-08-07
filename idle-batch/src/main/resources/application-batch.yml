@@ -4,3 +4,5 @@ spring:
       initialize-schema: always
     job:
       enabled: false
+    datasource:
+      driver-class-name: com.mysql.cj.jdbc.Driver
