@@ -36,7 +36,7 @@ data class CreateJobPostingRequest(
     @Schema(description = "출생년도")
     val birthYear: Int,
     @Schema(description = "몸무게")
-    val weight: Int,
+    val weight: Int?,
     @Schema(description = "요양 등급")
     val careLevel: Int,
     @Schema(description = "인지 상태")
@@ -58,7 +58,7 @@ data class CreateJobPostingRequest(
     @Schema(description = "일상 보조")
     val lifeAssistance: List<LifeAssistanceType>?,
     @Schema(description = "특이사항")
-    val speciality: String,
+    val speciality: String?,
     @get:JsonProperty("isExperiencePreferred")
     @param:JsonProperty("isExperiencePreferred")
     @Schema(description = "경력자 우대 여부", name = "isExperiencePreferred")
