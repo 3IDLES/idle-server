@@ -3,8 +3,8 @@ package com.swm.idle.infrastructure.client.businessregistration.service
 import com.swm.idle.domain.user.center.vo.BusinessRegistrationNumber
 import com.swm.idle.infrastructure.client.businessregistration.dto.BusinessRegistrationNumberValidationResponse
 import com.swm.idle.infrastructure.client.businessregistration.exception.BusinessRegistrationException
+import com.swm.idle.infrastructure.client.businessregistration.properties.ClientProperties
 import com.swm.idle.infrastructure.client.businessregistration.util.BusinessRegistrationNumberValidationClient
-import com.swm.idle.infrastructure.client.common.properties.ClientProperties
 import org.springframework.stereotype.Service
 import java.net.URI
 
@@ -35,6 +35,7 @@ class BusinessRegistrationNumberValidationService(
     }
 
     companion object {
+
         const val QUERY_PARAMETER_PREFIX = "?"
         const val QUERY_PARAMETER_SUFFIX = "&"
         const val RESPONSE_TYPE = "json"
