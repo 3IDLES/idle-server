@@ -24,7 +24,7 @@ class JobPosting(
     payType: PayType,
     payAmount: Int,
     roadNameAddress: String,
-    lotNameAddress: String,
+    lotNumberAddress: String,
     longitude: BigDecimal?,
     latitude: BigDecimal?,
     clientName: String,
@@ -74,7 +74,7 @@ class JobPosting(
         private set
 
     @Column(nullable = false, columnDefinition = "varchar(255)")
-    var lotNameAddress: String = lotNameAddress
+    var lotNumberAddress: String = lotNumberAddress
         private set
 
     @Column(columnDefinition = "decimal(14, 10)")

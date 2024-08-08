@@ -28,7 +28,7 @@ class JobPostingService(
                 payType = jobPostingInfo.payType,
                 payAmount = jobPostingInfo.payAmount,
                 roadNameAddress = jobPostingInfo.roadNameAddress,
-                lotNameAddress = jobPostingInfo.lotNameAddress,
+                lotNumberAddress = jobPostingInfo.lotNumberAddress,
                 longitude = BigDecimal(jobPostingInfo.longitude),
                 latitude = BigDecimal(jobPostingInfo.latitude),
                 clientName = jobPostingInfo.clientName,
