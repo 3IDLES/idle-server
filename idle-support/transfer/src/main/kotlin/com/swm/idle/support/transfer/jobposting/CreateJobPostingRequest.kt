@@ -42,7 +42,7 @@ data class CreateJobPostingRequest(
     @Schema(description = "인지 상태")
     val mentalStatus: MentalStatus,
     @Schema(description = "질병")
-    val disease: String,
+    val disease: String?,
     @get:JsonProperty("isMealAssistance")
     @param:JsonProperty("isMealAssistance")
     @Schema(description = "식사 보조 여부", name = "isMealAssistance")
