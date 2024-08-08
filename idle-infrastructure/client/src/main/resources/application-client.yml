@@ -2,3 +2,9 @@ business-registration-number:
   api-key: ${BUSINESS_REGISTRATION_NUMBER_API_KEY}
   path: ${BUSINESS_REGISTRATION_NUMBER_API_PATH}
   search-type: ${BUSINESS_REGISTRATION_NUMBER_SEARCH_TYPE}
+
+geocode:
+  naver:
+    client-id: ${NAVER_MAP_API_CLIENT_ID}
+    client-secret: ${NAVER_MAP_API_CLIENT_SECRET}
+    base-url: ${NAVER_MAP_API_REQUEST_URL}
