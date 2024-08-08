@@ -22,7 +22,7 @@ data class JobPostingInfo(
     val weight: Int,
     val careLevel: Int,
     val mentalStatus: MentalStatus,
-    val disease: String,
+    val disease: String?,
     val isMealAssistance: Boolean,
     val isBowelAssistance: Boolean,
     val isWalkingAssistance: Boolean,
