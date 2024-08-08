@@ -28,7 +28,7 @@ data class CreateJobPostingRequest(
     @Schema(description = "도로명 주소")
     val roadNameAddress: String,
     @Schema(description = "지번 주소")
-    val lotNameAddress: String,
+    val lotNumberAddress: String,
     @Schema(description = "고객 성함")
     val clientName: String,
     @Schema(description = "고객 성별")
