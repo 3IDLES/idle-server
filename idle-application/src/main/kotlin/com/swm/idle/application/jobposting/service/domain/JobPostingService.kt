@@ -5,6 +5,7 @@ import com.swm.idle.domain.jobposting.entity.jpa.JobPosting
 import com.swm.idle.domain.jobposting.repository.jpa.JobPostingJpaRepository
 import com.swm.idle.support.common.uuid.UuidCreator
 import org.springframework.stereotype.Service
+import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -14,7 +15,6 @@ class JobPostingService(
     private val jobPostingJpaRepository: JobPostingJpaRepository,
 ) {
 
-    // TODO : 지도 geo coding API 통해 좌표값 반환하여 저장 필요.
     fun create(
         centerId: UUID,
         jobPostingInfo: JobPostingInfo,
@@ -29,8 +29,8 @@ class JobPostingService(
                 payAmount = jobPostingInfo.payAmount,
                 roadNameAddress = jobPostingInfo.roadNameAddress,
                 lotNameAddress = jobPostingInfo.lotNameAddress,
-                longitude = null,
-                latitude = null,
+                longitude = BigDecimal(jobPostingInfo.longitude),
+                latitude = BigDecimal(jobPostingInfo.latitude),
                 clientName = jobPostingInfo.clientName,
                 gender = jobPostingInfo.gender,
                 birthYear = jobPostingInfo.birthYear.value,

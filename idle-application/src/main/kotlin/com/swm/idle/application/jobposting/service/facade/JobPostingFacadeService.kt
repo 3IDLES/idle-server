@@ -6,6 +6,7 @@ import com.swm.idle.application.jobposting.service.domain.JobPostingLifeAssistan
 import com.swm.idle.application.jobposting.service.domain.JobPostingService
 import com.swm.idle.application.jobposting.service.domain.JobPostingWeekdayService
 import com.swm.idle.application.jobposting.service.vo.JobPostingInfo
+import com.swm.idle.infrastructure.client.geocode.service.GeoCodeService
 import com.swm.idle.support.transfer.jobposting.CreateJobPostingRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -16,15 +17,22 @@ class JobPostingFacadeService(
     private val jobPostingLifeAssistanceService: JobPostingLifeAssistanceService,
     private val jobPostingWeekdayService: JobPostingWeekdayService,
     private val jobPostingApplyMethodService: JobPostingApplyMethodService,
+    private val geoCodeService: GeoCodeService,
 ) {
 
     @Transactional
     fun create(request: CreateJobPostingRequest) {
         val centerId = getUserAuthentication().userId
 
+        val geoCodeSearchResult = geoCodeService.search(request.roadNameAddress)
+
         jobPostingService.create(
             centerId = centerId,
-            jobPostingInfo = JobPostingInfo.of(request)
+            jobPostingInfo = JobPostingInfo.of(
+                request = request,
+                latitude = geoCodeSearchResult.addresses[0].y,
+                longitude = geoCodeSearchResult.addresses[0].x
+            )
         ).let { jobPosting ->
             request.lifeAssistance?.let {
                 jobPostingLifeAssistanceService.create(

@@ -14,6 +14,8 @@ data class JobPostingInfo(
     val payAmount: Int,
     val roadNameAddress: String,
     val lotNameAddress: String,
+    val latitude: String,
+    val longitude: String,
     val clientName: String,
     val gender: GenderType,
     val birthYear: BirthYear,
@@ -32,7 +34,11 @@ data class JobPostingInfo(
 
     companion object {
 
-        fun of(request: CreateJobPostingRequest): JobPostingInfo {
+        fun of(
+            request: CreateJobPostingRequest,
+            latitude: String,
+            longitude: String,
+        ): JobPostingInfo {
             return JobPostingInfo(
                 startTime = request.startTime,
                 endTime = request.endTime,
@@ -40,6 +46,8 @@ data class JobPostingInfo(
                 payAmount = request.payAmount,
                 roadNameAddress = request.roadNameAddress,
                 lotNameAddress = request.lotNameAddress,
+                latitude = latitude,
+                longitude = longitude,
                 clientName = request.clientName,
                 gender = request.gender,
                 birthYear = BirthYear(request.birthYear),

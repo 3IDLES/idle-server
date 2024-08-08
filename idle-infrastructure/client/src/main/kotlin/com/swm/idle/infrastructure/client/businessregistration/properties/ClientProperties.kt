@@ -1,4 +1,4 @@
-package com.swm.idle.infrastructure.client.common.properties
+package com.swm.idle.infrastructure.client.businessregistration.properties
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 
