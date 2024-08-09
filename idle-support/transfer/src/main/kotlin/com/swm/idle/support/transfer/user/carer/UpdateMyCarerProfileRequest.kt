@@ -11,17 +11,13 @@ data class UpdateMyCarerProfileRequest(
     @Schema(description = "연차")
     val experienceYear: Int?,
     @Schema(description = "도로명 주소")
-    val roadNameAddress: String,
+    val roadNameAddress: String?,
     @Schema(description = "지번 주소")
-    val lotNumberAddress: String,
-    @Schema(description = "경도")
-    val longitude: String,
-    @Schema(description = "위도")
-    val latitude: String,
+    val lotNumberAddress: String?,
     @Schema(description = "소개글")
     val introduce: String?,
     @Schema(description = "특기")
     val speciality: String?,
     @Schema(description = "현재 구인 상태")
-    val jobSearchStatus: JobSearchStatus,
+    val jobSearchStatus: JobSearchStatus?,
 )

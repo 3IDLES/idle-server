@@ -77,6 +77,21 @@ class CarerService(
         )
     }
 
+    fun updateWithoutAddress(
+        carer: Carer,
+        experienceYear: Int?,
+        introduce: String?,
+        speciality: String?,
+        jobSearchStatus: JobSearchStatus,
+    ) {
+        carer.updateWithoutAddress(
+            experienceYear = experienceYear,
+            introduce = introduce,
+            speciality = speciality,
+            jobSearchStatus = jobSearchStatus,
+        )
+    }
+
     @Transactional
     fun delete(id: UUID) {
         carerJpaRepository.deleteById(id)

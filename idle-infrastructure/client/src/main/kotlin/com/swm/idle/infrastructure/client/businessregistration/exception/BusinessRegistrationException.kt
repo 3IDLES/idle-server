@@ -11,7 +11,8 @@ sealed class BusinessRegistrationException(
         BusinessRegistrationException(codeNumber = 1, message = message)
 
     companion object {
-        const val CODE_PREFIX = "CLIENT"
+
+        const val CODE_PREFIX = "BUSINESS-REGISTRATION"
     }
 
 }

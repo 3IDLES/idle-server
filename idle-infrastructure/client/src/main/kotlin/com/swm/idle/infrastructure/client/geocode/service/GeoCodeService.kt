@@ -1,6 +1,7 @@
 package com.swm.idle.infrastructure.client.geocode.service
 
 import com.swm.idle.infrastructure.client.geocode.dto.GeoCodeSearchResultResponse
+import com.swm.idle.infrastructure.client.geocode.exception.GeoCodeException
 import com.swm.idle.infrastructure.client.geocode.properties.GeoCodeProperties
 import com.swm.idle.infrastructure.client.geocode.util.GeoCodeClient
 import org.springframework.stereotype.Service
@@ -17,11 +18,16 @@ class GeoCodeService(
 
     fun search(address: String): GeoCodeSearchResultResponse {
         val uri = generateSearchUri(address)
-        return geoCodeClient.send(
-            uri,
-            geoCodeProperties.clientId,
-            geoCodeProperties.clientSecret,
-        )
+        try {
+            return geoCodeClient.send(
+                uri,
+                geoCodeProperties.clientId,
+                geoCodeProperties.clientSecret,
+            )
+        } catch (e: Exception) {
+            throw GeoCodeException.ResultNotFound()
+        }
+
     }
 
     private fun generateSearchUri(address: String): URI {

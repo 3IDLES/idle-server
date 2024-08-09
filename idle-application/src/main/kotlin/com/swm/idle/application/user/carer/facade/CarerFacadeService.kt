@@ -4,6 +4,7 @@ import com.swm.idle.application.common.security.getUserAuthentication
 import com.swm.idle.application.user.carer.domain.CarerService
 import com.swm.idle.domain.user.carer.enums.JobSearchStatus
 import com.swm.idle.domain.user.common.vo.BirthYear
+import com.swm.idle.infrastructure.client.geocode.service.GeoCodeService
 import com.swm.idle.support.transfer.user.carer.GetCarerProfileResponse
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -12,6 +13,7 @@ import java.util.*
 @Service
 class CarerFacadeService(
     private val carerService: CarerService,
+    private val geoCodeService: GeoCodeService,
 ) {
 
     fun getMyCarerProfile(): GetCarerProfileResponse {
@@ -43,29 +45,40 @@ class CarerFacadeService(
     @Transactional
     fun updateCarerProfile(
         experienceYear: Int?,
-        roadNameAddress: String,
-        lotNumberAddress: String,
-        longitude: String,
-        latitude: String,
+        roadNameAddress: String?,
+        lotNumberAddress: String?,
         introduce: String?,
         speciality: String?,
-        jobSearchStatus: JobSearchStatus,
+        jobSearchStatus: JobSearchStatus?,
     ) {
-        getUserAuthentication().userId.let {
+        val carer = getUserAuthentication().userId.let {
             carerService.getById(it)
-        }.also {
+        }
+
+        val shouldUpdateAddress = roadNameAddress != null && lotNumberAddress != null
+
+        if (shouldUpdateAddress) {
+            val geoCodeSearchResult = geoCodeService.search(roadNameAddress!!)
+
             carerService.update(
-                carer = it,
+                carer = carer,
                 experienceYear = experienceYear,
                 roadNameAddress = roadNameAddress,
-                lotNumberAddress = lotNumberAddress,
-                longitude = longitude,
-                latitude = latitude,
+                lotNumberAddress = lotNumberAddress!!,
+                longitude = geoCodeSearchResult.addresses[0].x,
+                latitude = geoCodeSearchResult.addresses[0].y,
                 introduce = introduce,
                 speciality = speciality,
-                jobSearchStatus = it.jobSearchStatus,
+                jobSearchStatus = carer.jobSearchStatus,
+            )
+        } else {
+            carerService.updateWithoutAddress(
+                carer = carer,
+                experienceYear = experienceYear,
+                introduce = introduce,
+                speciality = speciality,
+                jobSearchStatus = carer.jobSearchStatus,
             )
         }
     }
-
 }

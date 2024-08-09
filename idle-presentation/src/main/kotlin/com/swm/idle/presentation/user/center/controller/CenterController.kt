@@ -20,8 +20,6 @@ class CenterController(
             roadNameAddress = request.roadNameAddress,
             lotNumberAddress = request.roadNameAddress,
             detailedAddress = request.detailedAddress,
-            longitude = request.longitude,
-            latitude = request.latitude,
             introduce = request.introduce,
         )
     }

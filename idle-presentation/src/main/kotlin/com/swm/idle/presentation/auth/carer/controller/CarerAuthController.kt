@@ -26,8 +26,6 @@ class CarerAuthController(
             phoneNumber = PhoneNumber(request.phoneNumber),
             roadNameAddress = request.roadNameAddress,
             lotNumberAddress = request.lotNumberAddress,
-            longitude = request.longitude,
-            latitude = request.latitude,
         )
     }
 

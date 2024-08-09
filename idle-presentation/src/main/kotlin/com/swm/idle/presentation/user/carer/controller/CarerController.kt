@@ -25,8 +25,6 @@ class CarerController(
             experienceYear = request.experienceYear,
             roadNameAddress = request.roadNameAddress,
             lotNumberAddress = request.lotNumberAddress,
-            longitude = request.longitude,
-            latitude = request.latitude,
             introduce = request.introduce,
             speciality = request.speciality,
             jobSearchStatus = request.jobSearchStatus,
