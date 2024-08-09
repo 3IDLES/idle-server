@@ -37,7 +37,7 @@ class JobPosting(
     isMealAssistance: Boolean,
     isBowelAssistance: Boolean,
     isWalkingAssistance: Boolean,
-    speciality: String?,
+    extraRequirement: String?,
     isExperiencePreferred: Boolean,
     applyDeadline: LocalDate,
     applyDeadlineType: ApplyDeadlineType,
@@ -128,7 +128,7 @@ class JobPosting(
         private set
 
     @Column(columnDefinition = "TEXT")
-    var speciality: String? = speciality
+    var extraRequirement: String? = extraRequirement
         private set
 
     @Column(nullable = false)
@@ -143,5 +143,93 @@ class JobPosting(
     @Column(nullable = false)
     var applyDeadlineType: ApplyDeadlineType = applyDeadlineType
         private set
+
+    fun update(
+        startTime: String?,
+        endTime: String?,
+        payType: PayType?,
+        payAmount: Int?,
+        roadNameAddress: String,
+        lotNumberAddress: String,
+        longitude: BigDecimal,
+        latitude: BigDecimal,
+        clientName: String?,
+        gender: GenderType?,
+        birthYear: Int?,
+        weight: Int?,
+        careLevel: Int?,
+        mentalStatus: MentalStatus?,
+        disease: String?,
+        isMealAssistance: Boolean?,
+        isBowelAssistance: Boolean?,
+        isWalkingAssistance: Boolean?,
+        extraRequirement: String?,
+        isExperiencePreferred: Boolean?,
+        applyDeadline: LocalDate?,
+        applyDeadlineType: ApplyDeadlineType?,
+    ) {
+        this.startTime = startTime ?: this.startTime
+        this.endTime = endTime ?: this.endTime
+        this.payType = payType ?: this.payType
+        this.payAmount = payAmount ?: this.payAmount
+        this.roadNameAddress = roadNameAddress
+        this.lotNumberAddress = lotNumberAddress
+        this.longitude = longitude
+        this.latitude = latitude
+        this.clientName = clientName ?: this.clientName
+        this.gender = gender ?: this.gender
+        this.birthYear = birthYear ?: this.birthYear
+        this.weight = weight
+        this.careLevel = careLevel ?: this.careLevel
+        this.mentalStatus = mentalStatus ?: this.mentalStatus
+        this.disease = disease
+        this.isMealAssistance = isMealAssistance ?: this.isMealAssistance
+        this.isBowelAssistance = isBowelAssistance ?: this.isBowelAssistance
+        this.isWalkingAssistance = isWalkingAssistance ?: this.isWalkingAssistance
+        this.extraRequirement = extraRequirement
+        this.isExperiencePreferred = isExperiencePreferred ?: this.isExperiencePreferred
+        this.applyDeadline = applyDeadline ?: this.applyDeadline
+        this.applyDeadlineType = applyDeadlineType ?: this.applyDeadlineType
+    }
+
+    fun updateWithoutAddress(
+        startTime: String?,
+        endTime: String?,
+        payType: PayType?,
+        payAmount: Int?,
+        clientName: String?,
+        gender: GenderType?,
+        birthYear: Int?,
+        weight: Int?,
+        careLevel: Int?,
+        mentalStatus: MentalStatus?,
+        disease: String?,
+        isMealAssistance: Boolean?,
+        isBowelAssistance: Boolean?,
+        isWalkingAssistance: Boolean?,
+        extraRequirement: String?,
+        isExperiencePreferred: Boolean?,
+        applyDeadline: LocalDate?,
+        applyDeadlineType: ApplyDeadlineType?,
+    ) {
+        this.startTime = startTime ?: this.startTime
+        this.endTime = endTime ?: this.endTime
+        this.payType = payType ?: this.payType
+        this.payAmount = payAmount ?: this.payAmount
+        this.clientName = clientName ?: this.clientName
+        this.gender = gender ?: this.gender
+        this.birthYear = birthYear ?: this.birthYear
+        this.weight = weight
+        this.careLevel = careLevel ?: this.careLevel
+        this.mentalStatus = mentalStatus ?: this.mentalStatus
+        this.disease = disease
+        this.isMealAssistance = isMealAssistance ?: this.isMealAssistance
+        this.isBowelAssistance = isBowelAssistance ?: this.isBowelAssistance
+        this.isWalkingAssistance = isWalkingAssistance ?: this.isWalkingAssistance
+        this.extraRequirement = extraRequirement
+        this.isExperiencePreferred = isExperiencePreferred ?: this.isExperiencePreferred
+        this.applyDeadline = applyDeadline ?: this.applyDeadline
+        this.applyDeadlineType = applyDeadlineType ?: this.applyDeadlineType
+    }
 
 }
