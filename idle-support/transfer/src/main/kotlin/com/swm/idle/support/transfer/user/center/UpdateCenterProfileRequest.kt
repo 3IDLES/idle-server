@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 )
 data class UpdateCenterProfileRequest(
     @Schema(description = "담당자 연락처")
-    val officeNumber: String,
+    val officeNumber: String?,
 
     @Schema(description = "소개")
     val introduce: String? = null,
