@@ -51,7 +51,7 @@ class CenterService(
 
     fun update(
         center: Center,
-        officeNumber: String,
+        officeNumber: String?,
         introduce: String?,
     ) {
         center.update(

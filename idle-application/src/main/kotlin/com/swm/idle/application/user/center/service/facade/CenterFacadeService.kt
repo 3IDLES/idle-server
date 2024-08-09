@@ -52,7 +52,7 @@ class CenterFacadeService(
     }
 
     @Transactional
-    fun update(officeNumber: String, introduce: String?) {
+    fun update(officeNumber: String?, introduce: String?) {
         val centerManager = getUserAuthentication().userId.let {
             centerManagerService.getById(it)
         }

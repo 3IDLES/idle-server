@@ -63,7 +63,7 @@ class CarerService(
         latitude: String,
         introduce: String?,
         speciality: String?,
-        jobSearchStatus: JobSearchStatus,
+        jobSearchStatus: JobSearchStatus?,
     ) {
         carer.update(
             experienceYear = experienceYear,
@@ -82,7 +82,7 @@ class CarerService(
         experienceYear: Int?,
         introduce: String?,
         speciality: String?,
-        jobSearchStatus: JobSearchStatus,
+        jobSearchStatus: JobSearchStatus?,
     ) {
         carer.updateWithoutAddress(
             experienceYear = experienceYear,
