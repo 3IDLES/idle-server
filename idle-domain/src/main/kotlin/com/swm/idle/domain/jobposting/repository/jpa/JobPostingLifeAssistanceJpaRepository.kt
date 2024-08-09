@@ -7,4 +7,7 @@ import java.util.*
 
 @Repository
 interface JobPostingLifeAssistanceJpaRepository : JpaRepository<JobPostingLifeAssistance, UUID> {
+
+    fun findByJobPostingId(id: UUID): List<JobPostingLifeAssistance>?
+
 }
