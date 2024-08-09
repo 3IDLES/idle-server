@@ -57,8 +57,8 @@ data class CreateJobPostingRequest(
     val isWalkingAssistance: Boolean,
     @Schema(description = "일상 보조")
     val lifeAssistance: List<LifeAssistanceType>?,
-    @Schema(description = "특이사항")
-    val speciality: String?,
+    @Schema(description = "추가 요청사항")
+    val extraRequirement: String?,
     @get:JsonProperty("isExperiencePreferred")
     @param:JsonProperty("isExperiencePreferred")
     @Schema(description = "경력자 우대 여부", name = "isExperiencePreferred")
