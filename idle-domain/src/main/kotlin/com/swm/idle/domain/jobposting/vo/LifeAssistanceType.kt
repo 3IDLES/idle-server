@@ -6,4 +6,5 @@ enum class LifeAssistanceType {
     WALKING,
     HEALTH,
     TALKING,
+    NONE,
 }
