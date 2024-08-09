@@ -5,6 +5,7 @@ import com.swm.idle.application.user.center.service.domain.CenterManagerService
 import com.swm.idle.application.user.center.service.domain.CenterService
 import com.swm.idle.domain.user.center.exception.CenterException
 import com.swm.idle.domain.user.center.vo.BusinessRegistrationNumber
+import com.swm.idle.infrastructure.client.geocode.service.GeoCodeService
 import com.swm.idle.support.transfer.user.center.GetCenterProfileResponse
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -14,6 +15,7 @@ import java.util.*
 class CenterFacadeService(
     private val centerService: CenterService,
     private val centerManagerService: CenterManagerService,
+    private val geoCodeService: GeoCodeService,
 ) {
 
     fun create(
@@ -22,8 +24,6 @@ class CenterFacadeService(
         roadNameAddress: String,
         lotNumberAddress: String,
         detailedAddress: String,
-        longitude: String,
-        latitude: String,
         introduce: String?,
     ) {
         val centerManager = getUserAuthentication().userId.let {
@@ -34,6 +34,9 @@ class CenterFacadeService(
             ?.let {
                 throw CenterException.AlreadyExistCenter()
             } ?: also {
+
+            val result = geoCodeService.search(roadNameAddress)
+
             centerService.create(
                 officeNumber = officeNumber,
                 centerName = centerName,
@@ -41,8 +44,8 @@ class CenterFacadeService(
                 roadNameAddress = roadNameAddress,
                 lotNumberAddress = lotNumberAddress,
                 detailedAddress = detailedAddress,
-                longitude = longitude,
-                latitude = latitude,
+                latitude = result.addresses[0].y,
+                longitude = result.addresses[0].x,
                 introduce = introduce,
             )
         }

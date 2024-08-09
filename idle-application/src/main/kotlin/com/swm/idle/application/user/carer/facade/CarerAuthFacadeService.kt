@@ -13,6 +13,7 @@ import com.swm.idle.domain.user.common.enum.UserType
 import com.swm.idle.domain.user.common.exception.UserException
 import com.swm.idle.domain.user.common.vo.BirthYear
 import com.swm.idle.domain.user.common.vo.PhoneNumber
+import com.swm.idle.infrastructure.client.geocode.service.GeoCodeService
 import com.swm.idle.support.security.exception.SecurityException
 import com.swm.idle.support.transfer.auth.center.RefreshLoginTokenResponse
 import com.swm.idle.support.transfer.auth.common.LoginResponse
@@ -25,6 +26,7 @@ class CarerAuthFacadeService(
     private val jwtTokenService: JwtTokenService,
     private val refreshTokenService: RefreshTokenService,
     private val deletedUserInfoService: DeletedUserInfoService,
+    private val geoCodeService: GeoCodeService,
 ) {
 
     fun join(
@@ -34,12 +36,12 @@ class CarerAuthFacadeService(
         phoneNumber: PhoneNumber,
         roadNameAddress: String,
         lotNumberAddress: String,
-        longitude: String,
-        latitude: String,
     ): LoginResponse {
         carerService.findByPhoneNumber(phoneNumber)?.let {
             throw CarerException.AlreadyExistCarer()
         }
+
+        val geoCodeSearchResult = geoCodeService.search(roadNameAddress)
 
         val savedCarer = carerService.create(
             carerName = carerName,
@@ -48,8 +50,8 @@ class CarerAuthFacadeService(
             phoneNumber = phoneNumber,
             roadNameAddress = roadNameAddress,
             lotNumberAddress = lotNumberAddress,
-            longitude = longitude,
-            latitude = latitude,
+            longitude = geoCodeSearchResult.addresses[0].x,
+            latitude = geoCodeSearchResult.addresses[0].y,
         )
 
         return LoginResponse(
@@ -90,7 +92,7 @@ class CarerAuthFacadeService(
             carerService.getById(it)
         }
 
-        carerService.delete(carer.id);
+        carerService.delete(carer.id)
 
         deletedUserInfoService.save(
             id = carer.id,

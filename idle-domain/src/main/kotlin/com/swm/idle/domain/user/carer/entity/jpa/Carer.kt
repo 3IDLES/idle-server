@@ -105,4 +105,16 @@ class Carer(
         this.jobSearchStatus = jobSearchStatus
     }
 
+    fun updateWithoutAddress(
+        experienceYear: Int?,
+        introduce: String?,
+        speciality: String?,
+        jobSearchStatus: JobSearchStatus,
+    ) {
+        this.experienceYear = experienceYear
+        this.introduce = introduce
+        this.speciality = speciality
+        this.jobSearchStatus = jobSearchStatus
+    }
+
 }

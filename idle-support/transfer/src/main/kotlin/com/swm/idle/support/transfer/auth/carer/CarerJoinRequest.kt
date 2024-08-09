@@ -20,8 +20,4 @@ data class CarerJoinRequest(
     val roadNameAddress: String,
     @Schema(description = "지번 주소")
     val lotNumberAddress: String,
-    @Schema(description = "경도")
-    val longitude: String,
-    @Schema(description = "위도")
-    val latitude: String,
 )

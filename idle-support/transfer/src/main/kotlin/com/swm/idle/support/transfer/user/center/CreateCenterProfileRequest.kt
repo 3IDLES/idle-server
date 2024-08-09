@@ -22,12 +22,6 @@ data class CreateCenterProfileRequest(
     @Schema(description = "상세 주소")
     val detailedAddress: String,
 
-    @Schema(description = "경도", example = "127.027621")
-    val longitude: String,
-
-    @Schema(description = "위도", example = "37.497942")
-    val latitude: String,
-
     @Schema(description = "소개")
     val introduce: String? = null,
 )
