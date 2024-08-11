@@ -4,7 +4,6 @@ import com.swm.idle.domain.jobposting.entity.jpa.JobPosting
 import com.swm.idle.domain.jobposting.entity.jpa.JobPostingWeekday
 import com.swm.idle.domain.jobposting.repository.jpa.JobPostingWeekdayJpaRepository
 import com.swm.idle.domain.jobposting.vo.Weekdays
-import com.swm.idle.support.common.uuid.UuidCreator
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -19,7 +18,6 @@ class JobPostingWeekdayService(
     ) {
         weekdays.map { weekday ->
             JobPostingWeekday(
-                id = UuidCreator.create(),
                 jobPostingId = jobPostingId,
                 weekday = weekday
             )
@@ -31,14 +29,13 @@ class JobPostingWeekdayService(
         weekdays: List<Weekdays>,
     ) {
         val existingWeekdays =
-            jobPostingWeekdayJpaRepository.findByJobPostingId(jobPosting.id)
+            jobPostingWeekdayJpaRepository.findAllByJobPostingId(jobPosting.id)
 
         val existingWeekdaySet = existingWeekdays?.map { it.weekday }?.toSet() ?: emptySet()
         val newWeekdaysSet = weekdays.toSet()
 
         val toAddWeekdays = newWeekdaysSet.subtract(existingWeekdaySet).map { weekday ->
             JobPostingWeekday(
-                id = UuidCreator.create(),
                 jobPostingId = jobPosting.id,
                 weekday = weekday
             )
@@ -53,7 +50,16 @@ class JobPostingWeekdayService(
         if (toAddWeekdays.isEmpty().not()) {
             jobPostingWeekdayJpaRepository.saveAll(toAddWeekdays.toList())
         }
+    }
 
+    fun findByJobPostingId(jobPostingId: UUID): List<JobPostingWeekday>? {
+        return jobPostingWeekdayJpaRepository.findAllByJobPostingId(jobPostingId)
+    }
+
+    fun deleteAll(jobPostingWeekdays: List<JobPostingWeekday>) {
+        for (jobPostingWeekday in jobPostingWeekdays) {
+            jobPostingWeekday.delete()
+        }
     }
 
 }

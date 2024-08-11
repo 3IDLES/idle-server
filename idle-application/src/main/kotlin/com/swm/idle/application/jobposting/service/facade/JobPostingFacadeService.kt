@@ -10,6 +10,8 @@ import com.swm.idle.domain.user.common.vo.BirthYear
 import com.swm.idle.infrastructure.client.geocode.service.GeoCodeService
 import com.swm.idle.support.transfer.jobposting.CreateJobPostingRequest
 import com.swm.idle.support.transfer.jobposting.UpdateJobPostingRequest
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -24,7 +26,7 @@ class JobPostingFacadeService(
 ) {
 
     @Transactional
-    fun create(request: CreateJobPostingRequest) {
+    suspend fun create(request: CreateJobPostingRequest) {
         val centerId = getUserAuthentication().userId
 
         val geoCodeSearchResult = geoCodeService.search(request.roadNameAddress)
@@ -37,24 +39,32 @@ class JobPostingFacadeService(
                 longitude = geoCodeSearchResult.addresses[0].x
             )
         ).let { jobPosting ->
-            request.lifeAssistance?.let {
-                jobPostingLifeAssistanceService.create(
-                    jobPostingId = jobPosting.id,
-                    lifeAssistance = request.lifeAssistance!!,
-                )
-            }
+            coroutineScope {
+                request.lifeAssistance?.let {
+                    jobPostingLifeAssistanceService.create(
+                        jobPostingId = jobPosting.id,
+                        lifeAssistance = request.lifeAssistance!!,
+                    )
+                }
 
-            jobPostingWeekdayService.create(
-                jobPostingId = jobPosting.id,
-                weekdays = request.weekdays,
-            )
-            jobPostingApplyMethodService.create(
-                jobPostingId = jobPosting.id,
-                applyMethods = request.applyMethod,
-            )
+                launch {
+                    jobPostingWeekdayService.create(
+                        jobPostingId = jobPosting.id,
+                        weekdays = request.weekdays,
+                    )
+                }
+
+                launch {
+                    jobPostingApplyMethodService.create(
+                        jobPostingId = jobPosting.id,
+                        applyMethods = request.applyMethod,
+                    )
+                }
+            }
         }
     }
 
+    @Transactional
     fun update(
         jobPostingId: UUID,
         request: UpdateJobPostingRequest,
@@ -136,8 +146,25 @@ class JobPostingFacadeService(
                 applyMethods = request.applyMethod!!,
             )
         }
-
     }
+
+    @Transactional
+    fun delete(jobPostingId: UUID) {
+        val jobPosting = jobPostingService.getById(jobPostingId)
+
+        jobPostingService.delete(jobPosting)
+
+        jobPostingLifeAssistanceService.findByJobPostingId(jobPostingId)?.let {
+            jobPostingLifeAssistanceService.deleteAll(it)
+        }
+
+        jobPostingWeekdayService.findByJobPostingId(jobPostingId)?.let {
+            jobPostingWeekdayService.deleteAll(it)
+        }
+
+        jobPostingApplyMethodService.findByJobPostingId(jobPostingId)?.let {
+            jobPostingApplyMethodService.deleteAll(it)
+        }
+    }
+
 }
-
-

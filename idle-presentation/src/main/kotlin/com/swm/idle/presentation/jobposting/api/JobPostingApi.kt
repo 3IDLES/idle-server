@@ -6,6 +6,7 @@ import com.swm.idle.support.transfer.jobposting.UpdateJobPostingRequest
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -22,7 +23,7 @@ interface JobPostingApi {
     @Operation(summary = "구인 공고 등록 API")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun createJobPosting(
+    suspend fun createJobPosting(
         @RequestBody request: CreateJobPostingRequest,
     )
 
@@ -31,8 +32,16 @@ interface JobPostingApi {
     @PatchMapping("/{job-posting-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun updateJobPosting(
-        @PathVariable("job-posting-id") jobPostingId: UUID,
+        @PathVariable(value = "job-posting-id") jobPostingId: UUID,
         @RequestBody request: UpdateJobPostingRequest,
+    )
+
+    @Secured
+    @Operation(summary = "구인 공고 삭제 API")
+    @DeleteMapping("/{job-posting-id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun deleteJobPosting(
+        @PathVariable(value = "job-posting-id") jobPostingId: UUID,
     )
 
 }

@@ -34,6 +34,7 @@ subprojects {
 
         implementation(rootProject.libs.kotlin.reflect)
         implementation(rootProject.libs.kotlin.coroutines.core)
+        implementation(rootProject.libs.kotlin.coroutines.reactor)
         implementation(rootProject.libs.uuid.creator)
         implementation(rootProject.libs.jbcrypt)
 

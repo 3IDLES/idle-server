@@ -12,7 +12,7 @@ class JobPostingController(
     private val jobPostingFacadeService: JobPostingFacadeService,
 ) : JobPostingApi {
 
-    override fun createJobPosting(request: CreateJobPostingRequest) {
+    override suspend fun createJobPosting(request: CreateJobPostingRequest) {
         jobPostingFacadeService.create(request = request)
     }
 
@@ -24,6 +24,10 @@ class JobPostingController(
             jobPostingId = jobPostingId,
             request = request
         )
+    }
+
+    override fun deleteJobPosting(jobPostingId: UUID) {
+        jobPostingFacadeService.delete(jobPostingId)
     }
 
 }
