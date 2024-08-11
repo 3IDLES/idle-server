@@ -1,5 +1,6 @@
 package com.swm.idle.domain.jobposting.entity.jpa
 
+import com.swm.idle.domain.common.entity.BaseEntity
 import com.swm.idle.domain.jobposting.vo.ApplyDeadlineType
 import com.swm.idle.domain.jobposting.vo.MentalStatus
 import com.swm.idle.domain.jobposting.vo.PayType
@@ -8,7 +9,6 @@ import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
-import jakarta.persistence.Id
 import jakarta.persistence.Table
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -17,7 +17,6 @@ import java.util.*
 @Entity
 @Table(name = "job_posting")
 class JobPosting(
-    id: UUID,
     centerId: UUID,
     startTime: String,
     endTime: String,
@@ -41,12 +40,7 @@ class JobPosting(
     isExperiencePreferred: Boolean,
     applyDeadline: LocalDate,
     applyDeadlineType: ApplyDeadlineType,
-) {
-
-    @Id
-    @Column(nullable = false)
-    var id: UUID = id
-        private set
+) : BaseEntity() {
 
     @Column(nullable = false)
     var centerId: UUID = centerId

@@ -4,7 +4,6 @@ import com.swm.idle.domain.jobposting.entity.jpa.JobPosting
 import com.swm.idle.domain.jobposting.entity.jpa.JobPostingLifeAssistance
 import com.swm.idle.domain.jobposting.repository.jpa.JobPostingLifeAssistanceJpaRepository
 import com.swm.idle.domain.jobposting.vo.LifeAssistanceType
-import com.swm.idle.support.common.uuid.UuidCreator
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -19,7 +18,6 @@ class JobPostingLifeAssistanceService(
     ) {
         lifeAssistance.map { lifeAssistanceType ->
             JobPostingLifeAssistance(
-                id = UuidCreator.create(),
                 jobPostingId = jobPostingId,
                 lifeAssistance = lifeAssistanceType,
             )
@@ -33,18 +31,17 @@ class JobPostingLifeAssistanceService(
         lifeAssistance: List<LifeAssistanceType>,
     ) {
         val existingLifeAssistances =
-            jobPostingLifeAssistanceJpaRepository.findByJobPostingId(jobPosting.id)
+            jobPostingLifeAssistanceJpaRepository.findAllByJobPostingId(jobPosting.id)
 
         val existingLifeAssistanceSet =
             existingLifeAssistances?.map { it.lifeAssistance }?.toSet() ?: emptySet()
         val newLifeAssistanceSet = lifeAssistance.toSet()
 
         val toAddLifeAssistances =
-            newLifeAssistanceSet.subtract(existingLifeAssistanceSet).map { lifeAssistance ->
+            newLifeAssistanceSet.subtract(existingLifeAssistanceSet).map { lifeAssistanceType ->
                 JobPostingLifeAssistance(
-                    id = UuidCreator.create(),
                     jobPostingId = jobPosting.id,
-                    lifeAssistance = lifeAssistance
+                    lifeAssistance = lifeAssistanceType
                 )
             }
 
@@ -57,6 +54,16 @@ class JobPostingLifeAssistanceService(
 
         if (toAddLifeAssistances.isEmpty().not()) {
             jobPostingLifeAssistanceJpaRepository.saveAll(toAddLifeAssistances.toList())
+        }
+    }
+
+    fun findByJobPostingId(jobPostingId: UUID): List<JobPostingLifeAssistance>? {
+        return jobPostingLifeAssistanceJpaRepository.findAllByJobPostingId(jobPostingId)
+    }
+
+    fun deleteAll(jobPostingLifeAssistances: List<JobPostingLifeAssistance>) {
+        for (jobPostingLifeAssistance in jobPostingLifeAssistances) {
+            jobPostingLifeAssistance.delete()
         }
     }
 

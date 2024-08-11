@@ -9,7 +9,6 @@ import com.swm.idle.domain.jobposting.vo.MentalStatus
 import com.swm.idle.domain.jobposting.vo.PayType
 import com.swm.idle.domain.user.common.enum.GenderType
 import com.swm.idle.domain.user.common.vo.BirthYear
-import com.swm.idle.support.common.uuid.UuidCreator
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -29,7 +28,6 @@ class JobPostingService(
     ): JobPosting {
         return jobPostingJpaRepository.save(
             JobPosting(
-                id = UuidCreator.create(),
                 centerId = centerId,
                 startTime = jobPostingInfo.startTime,
                 endTime = jobPostingInfo.endTime,
@@ -56,7 +54,9 @@ class JobPostingService(
                     DateTimeFormatter.ofPattern("yyyy-MM-dd")
                 ),
                 applyDeadlineType = jobPostingInfo.applyDeadlineType,
-            )
+            ).also {
+                it.active()
+            }
         )
     }
 
@@ -64,7 +64,6 @@ class JobPostingService(
         return jobPostingJpaRepository.findByIdOrNull(jobPostingId)
             ?: throw PersistenceException.ResourceNotFound("구인 공고(id=$jobPostingId)를 찾을 수 없습니다")
     }
-
 
     @Transactional
     fun updateWithoutAddress(
@@ -170,6 +169,10 @@ class JobPostingService(
             },
             applyDeadlineType = applyDeadlineType,
         )
+    }
+
+    fun delete(jobPosting: JobPosting) {
+        jobPosting.delete()
     }
 
 }

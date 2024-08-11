@@ -4,7 +4,6 @@ import com.swm.idle.domain.jobposting.entity.jpa.JobPosting
 import com.swm.idle.domain.jobposting.entity.jpa.JobPostingApplyMethod
 import com.swm.idle.domain.jobposting.repository.jpa.JobPostingApplyMethodJpaRepository
 import com.swm.idle.domain.jobposting.vo.ApplyMethodType
-import com.swm.idle.support.common.uuid.UuidCreator
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -19,7 +18,6 @@ class JobPostingApplyMethodService(
     ) {
         applyMethods.map { applyMethod ->
             JobPostingApplyMethod(
-                id = UuidCreator.create(),
                 jobPostingId = jobPostingId,
                 applyMethod = applyMethod
             )
@@ -31,7 +29,7 @@ class JobPostingApplyMethodService(
         applyMethods: List<ApplyMethodType>,
     ) {
         val existingApplyMethods =
-            jobPostingApplyMethodJpaRepository.findByJobPostingId(jobPosting.id)
+            jobPostingApplyMethodJpaRepository.findAllByJobPostingId(jobPosting.id)
 
         val existingApplyMethodSet =
             existingApplyMethods?.map { it.applyMethod }?.toSet() ?: emptySet()
@@ -40,7 +38,6 @@ class JobPostingApplyMethodService(
         val toAddApplyMethods =
             newApplyMethodSet.subtract(existingApplyMethodSet).map { applyMethod ->
                 JobPostingApplyMethod(
-                    id = UuidCreator.create(),
                     jobPostingId = jobPosting.id,
                     applyMethod = applyMethod
                 )
@@ -55,6 +52,16 @@ class JobPostingApplyMethodService(
 
         if (toAddApplyMethods.isEmpty().not()) {
             jobPostingApplyMethodJpaRepository.saveAll(toAddApplyMethods.toList())
+        }
+    }
+
+    fun findByJobPostingId(jobPostingId: UUID): List<JobPostingApplyMethod>? {
+        return jobPostingApplyMethodJpaRepository.findAllByJobPostingId(jobPostingId)
+    }
+
+    fun deleteAll(jobPostingApplyMethods: List<JobPostingApplyMethod>) {
+        for (jobPostingMethod in jobPostingApplyMethods) {
+            jobPostingMethod.delete()
         }
     }
 
