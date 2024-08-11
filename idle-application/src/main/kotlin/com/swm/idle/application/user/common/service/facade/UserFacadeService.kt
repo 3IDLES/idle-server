@@ -1,6 +1,7 @@
 package com.swm.idle.application.user.common.service.facade
 
 import com.swm.idle.application.common.security.getUserAuthentication
+import com.swm.idle.application.user.carer.domain.CarerService
 import com.swm.idle.application.user.center.service.domain.CenterManagerService
 import com.swm.idle.application.user.center.service.domain.CenterService
 import com.swm.idle.domain.user.center.exception.CenterException
@@ -20,6 +21,7 @@ class UserFacadeService(
     private val s3ImageService: S3ImageService,
     private val centerManagerService: CenterManagerService,
     private val centerService: CenterService,
+    private val carerService: CarerService,
 ) {
 
     fun getProfileImageUploadUrl(
@@ -63,9 +65,30 @@ class UserFacadeService(
                 imageId = imageId,
                 imageFileExtension = imageFileExtension,
             )
+        } else {
+            updateCarerImageURL(
+                userType = userType,
+                imageId = imageId,
+                imageFileExtension = imageFileExtension,
+            )
         }
+    }
 
-        // TODO("요양 보호사 프로필 업로드 로직 구현")
+    fun updateCarerImageURL(
+        userType: UserType,
+        imageId: UUID,
+        imageFileExtension: ImageFileExtension,
+    ) {
+        getUserAuthentication().userId
+            .let { carerService.getById(it) }
+            .also {
+                val profileImageUrl = s3ImageService.findByIdAndExtension(
+                    userType = userType,
+                    imageId = imageId,
+                    imageFileExtension = imageFileExtension,
+                )
+                it.updateProfileImageUrl(profileImageUrl.toString())
+            }
     }
 
     fun updateCenterImageURL(

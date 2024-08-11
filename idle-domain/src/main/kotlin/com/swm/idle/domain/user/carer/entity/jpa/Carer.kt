@@ -117,4 +117,8 @@ class Carer(
         this.jobSearchStatus = jobSearchStatus ?: this.jobSearchStatus
     }
 
+    fun updateProfileImageUrl(profileImageUrl: String) {
+        this.profileImageUrl = profileImageUrl
+    }
+
 }
