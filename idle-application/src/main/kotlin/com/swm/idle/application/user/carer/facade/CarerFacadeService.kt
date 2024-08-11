@@ -69,7 +69,7 @@ class CarerFacadeService(
                 latitude = geoCodeSearchResult.addresses[0].y,
                 introduce = introduce,
                 speciality = speciality,
-                jobSearchStatus = carer.jobSearchStatus,
+                jobSearchStatus = jobSearchStatus,
             )
         } else {
             carerService.updateWithoutAddress(
@@ -77,7 +77,7 @@ class CarerFacadeService(
                 experienceYear = experienceYear,
                 introduce = introduce,
                 speciality = speciality,
-                jobSearchStatus = carer.jobSearchStatus,
+                jobSearchStatus = jobSearchStatus,
             )
         }
     }
