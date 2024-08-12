@@ -66,7 +66,7 @@ data class CreateJobPostingRequest(
     @Schema(description = "접수 방법", example = "[CALLING, MESSAGE]")
     val applyMethod: List<ApplyMethodType>,
     @Schema(description = "접수 마감 일자")
-    val applyDeadline: String,
+    val applyDeadline: String? = null,
     @Schema(description = "접수 마감일 상태")
     val applyDeadlineType: ApplyDeadlineType,
 )

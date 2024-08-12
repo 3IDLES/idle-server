@@ -39,7 +39,7 @@ class JobPosting(
     isWalkingAssistance: Boolean,
     extraRequirement: String?,
     isExperiencePreferred: Boolean,
-    applyDeadline: LocalDate,
+    applyDeadline: LocalDate?,
     applyDeadlineType: ApplyDeadlineType,
 ) : BaseEntity() {
 
@@ -130,8 +130,8 @@ class JobPosting(
     var isExperiencePreferred: Boolean = isExperiencePreferred
         private set
 
-    @Column(nullable = false)
-    var applyDeadline: LocalDate = applyDeadline
+    @Column(nullable = true)
+    var applyDeadline: LocalDate? = applyDeadline
         private set
 
     @Enumerated(EnumType.STRING)
