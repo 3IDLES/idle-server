@@ -8,6 +8,7 @@ import com.swm.idle.application.jobposting.service.domain.JobPostingWeekdayServi
 import com.swm.idle.application.jobposting.service.vo.JobPostingInfo
 import com.swm.idle.domain.user.common.vo.BirthYear
 import com.swm.idle.infrastructure.client.geocode.service.GeoCodeService
+import com.swm.idle.support.transfer.jobposting.CenterJobPostingResponse
 import com.swm.idle.support.transfer.jobposting.CreateJobPostingRequest
 import com.swm.idle.support.transfer.jobposting.UpdateJobPostingRequest
 import kotlinx.coroutines.coroutineScope
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @Service
+@Transactional(readOnly = true)
 class JobPostingFacadeService(
     private val jobPostingService: JobPostingService,
     private val jobPostingLifeAssistanceService: JobPostingLifeAssistanceService,
@@ -171,6 +173,42 @@ class JobPostingFacadeService(
     fun updateToComplete(jobPostingId: UUID) {
         jobPostingService.getById(jobPostingId).let {
             jobPostingService.updateToComplete(it)
+        }
+    }
+
+    fun getById(jobPostingId: UUID): CenterJobPostingResponse {
+        val weekdays = jobPostingWeekdayService.findByJobPostingId(jobPostingId)?.map { it.weekday }
+        val lifeAssistances = jobPostingLifeAssistanceService.findByJobPostingId(jobPostingId)
+            ?.map { it.lifeAssistance }
+        val applyMethods =
+            jobPostingApplyMethodService.findByJobPostingId(jobPostingId)?.map { it.applyMethod }
+
+        jobPostingService.getById(jobPostingId).let {
+            return CenterJobPostingResponse(
+                id = it.id,
+                weekdays = weekdays!!,
+                startTime = it.startTime,
+                endTime = it.endTime,
+                payType = it.payType,
+                payAmount = it.payAmount,
+                roadNameAddress = it.roadNameAddress,
+                clientName = it.clientName,
+                gender = it.gender,
+                age = BirthYear.calculateAge(it.birthYear),
+                weight = it.weight,
+                careLevel = it.careLevel,
+                mentalStatus = it.mentalStatus,
+                disease = it.disease,
+                isMealAssistance = it.isMealAssistance,
+                isBowelAssistance = it.isBowelAssistance,
+                isWalkingAssistance = it.isWalkingAssistance,
+                lifeAssistance = lifeAssistances,
+                extraRequirement = it.extraRequirement,
+                isExperiencePreferred = it.isExperiencePreferred,
+                applyMethod = applyMethods!!,
+                applyDeadlineType = it.applyDeadlineType,
+                applyDeadline = it.applyDeadline,
+            )
         }
     }
 
