@@ -1,16 +1,17 @@
 package com.swm.idle.presentation.jobposting.controller
 
 import com.swm.idle.application.jobposting.service.facade.JobPostingFacadeService
-import com.swm.idle.presentation.jobposting.api.JobPostingApi
+import com.swm.idle.presentation.jobposting.api.CenterJobPostingApi
+import com.swm.idle.support.transfer.jobposting.CenterJobPostingResponse
 import com.swm.idle.support.transfer.jobposting.CreateJobPostingRequest
 import com.swm.idle.support.transfer.jobposting.UpdateJobPostingRequest
 import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
 @RestController
-class JobPostingController(
+class CenterJobPostingController(
     private val jobPostingFacadeService: JobPostingFacadeService,
-) : JobPostingApi {
+) : CenterJobPostingApi {
 
     override suspend fun createJobPosting(request: CreateJobPostingRequest) {
         jobPostingFacadeService.create(request = request)
@@ -32,6 +33,10 @@ class JobPostingController(
 
     override fun completeJobPosting(jobPostingId: UUID) {
         jobPostingFacadeService.updateToComplete(jobPostingId)
+    }
+
+    override fun getJobPosting(jobPostingId: UUID): CenterJobPostingResponse {
+        return jobPostingFacadeService.getById(jobPostingId)
     }
 
 }
