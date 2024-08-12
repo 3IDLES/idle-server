@@ -44,4 +44,12 @@ interface JobPostingApi {
         @PathVariable(value = "job-posting-id") jobPostingId: UUID,
     )
 
+    @Secured
+    @Operation(summary = "구인 공고 채용 종료 API")
+    @PatchMapping("/{job-posting-id}/end")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun completeJobPosting(
+        @PathVariable(value = "job-posting-id") jobPostingId: UUID,
+    )
+
 }

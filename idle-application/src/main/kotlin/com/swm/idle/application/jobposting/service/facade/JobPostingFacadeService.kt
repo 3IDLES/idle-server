@@ -167,4 +167,11 @@ class JobPostingFacadeService(
         }
     }
 
+    @Transactional
+    fun updateToComplete(jobPostingId: UUID) {
+        jobPostingService.getById(jobPostingId).let {
+            jobPostingService.updateToComplete(it)
+        }
+    }
+
 }

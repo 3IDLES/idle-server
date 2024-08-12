@@ -175,4 +175,8 @@ class JobPostingService(
         jobPosting.delete()
     }
 
+    fun updateToComplete(jobPosting: JobPosting) {
+        jobPosting.updateToComplete()
+    }
+
 }

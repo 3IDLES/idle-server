@@ -30,4 +30,8 @@ class JobPostingController(
         jobPostingFacadeService.delete(jobPostingId)
     }
 
+    override fun completeJobPosting(jobPostingId: UUID) {
+        jobPostingFacadeService.updateToComplete(jobPostingId)
+    }
+
 }

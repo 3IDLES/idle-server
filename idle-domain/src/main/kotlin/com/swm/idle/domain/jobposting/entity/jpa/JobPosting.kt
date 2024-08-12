@@ -2,6 +2,7 @@ package com.swm.idle.domain.jobposting.entity.jpa
 
 import com.swm.idle.domain.common.entity.BaseEntity
 import com.swm.idle.domain.jobposting.vo.ApplyDeadlineType
+import com.swm.idle.domain.jobposting.vo.JobPostingStatus
 import com.swm.idle.domain.jobposting.vo.MentalStatus
 import com.swm.idle.domain.jobposting.vo.PayType
 import com.swm.idle.domain.user.common.enum.GenderType
@@ -138,6 +139,11 @@ class JobPosting(
     var applyDeadlineType: ApplyDeadlineType = applyDeadlineType
         private set
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    var jobPostingStatus: JobPostingStatus = JobPostingStatus.IN_PROGRESS
+        private set
+
     fun update(
         startTime: String?,
         endTime: String?,
@@ -224,6 +230,10 @@ class JobPosting(
         this.isExperiencePreferred = isExperiencePreferred ?: this.isExperiencePreferred
         this.applyDeadline = applyDeadline ?: this.applyDeadline
         this.applyDeadlineType = applyDeadlineType ?: this.applyDeadlineType
+    }
+
+    fun updateToComplete() {
+        this.jobPostingStatus = JobPostingStatus.COMPLETED
     }
 
 }
