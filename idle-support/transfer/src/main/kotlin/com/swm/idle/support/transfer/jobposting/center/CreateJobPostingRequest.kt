@@ -1,4 +1,4 @@
-package com.swm.idle.support.transfer.jobposting
+package com.swm.idle.support.transfer.jobposting.center
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.swm.idle.domain.jobposting.vo.ApplyDeadlineType

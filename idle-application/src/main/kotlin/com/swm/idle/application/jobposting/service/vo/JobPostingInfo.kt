@@ -5,7 +5,7 @@ import com.swm.idle.domain.jobposting.vo.MentalStatus
 import com.swm.idle.domain.jobposting.vo.PayType
 import com.swm.idle.domain.user.common.enum.GenderType
 import com.swm.idle.domain.user.common.vo.BirthYear
-import com.swm.idle.support.transfer.jobposting.CreateJobPostingRequest
+import com.swm.idle.support.transfer.jobposting.center.CreateJobPostingRequest
 
 data class JobPostingInfo(
     val startTime: String,
