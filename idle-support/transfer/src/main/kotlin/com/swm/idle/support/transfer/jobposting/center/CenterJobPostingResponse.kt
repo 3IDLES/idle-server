@@ -1,4 +1,4 @@
-package com.swm.idle.support.transfer.jobposting
+package com.swm.idle.support.transfer.jobposting.center
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.swm.idle.domain.jobposting.vo.ApplyDeadlineType
@@ -37,6 +37,9 @@ data class CenterJobPostingResponse(
 
     @Schema(description = "도로명 주소")
     val roadNameAddress: String,
+
+    @Schema(description = "지번 주소")
+    val lotNumberAddress: String,
 
     @Schema(description = "고객 이름")
     val clientName: String,

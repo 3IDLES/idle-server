@@ -1,9 +1,9 @@
 package com.swm.idle.presentation.jobposting.api
 
 import com.swm.idle.presentation.common.security.annotation.Secured
-import com.swm.idle.support.transfer.jobposting.CenterJobPostingResponse
-import com.swm.idle.support.transfer.jobposting.CreateJobPostingRequest
-import com.swm.idle.support.transfer.jobposting.UpdateJobPostingRequest
+import com.swm.idle.support.transfer.jobposting.center.CenterJobPostingResponse
+import com.swm.idle.support.transfer.jobposting.center.CreateJobPostingRequest
+import com.swm.idle.support.transfer.jobposting.center.UpdateJobPostingRequest
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus

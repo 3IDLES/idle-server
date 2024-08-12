@@ -6,11 +6,15 @@ import com.swm.idle.application.jobposting.service.domain.JobPostingLifeAssistan
 import com.swm.idle.application.jobposting.service.domain.JobPostingService
 import com.swm.idle.application.jobposting.service.domain.JobPostingWeekdayService
 import com.swm.idle.application.jobposting.service.vo.JobPostingInfo
+import com.swm.idle.application.user.center.service.domain.CenterManagerService
+import com.swm.idle.application.user.center.service.domain.CenterService
+import com.swm.idle.domain.user.center.exception.CenterException
+import com.swm.idle.domain.user.center.vo.BusinessRegistrationNumber
 import com.swm.idle.domain.user.common.vo.BirthYear
 import com.swm.idle.infrastructure.client.geocode.service.GeoCodeService
-import com.swm.idle.support.transfer.jobposting.CenterJobPostingResponse
-import com.swm.idle.support.transfer.jobposting.CreateJobPostingRequest
-import com.swm.idle.support.transfer.jobposting.UpdateJobPostingRequest
+import com.swm.idle.support.transfer.jobposting.center.CenterJobPostingResponse
+import com.swm.idle.support.transfer.jobposting.center.CreateJobPostingRequest
+import com.swm.idle.support.transfer.jobposting.center.UpdateJobPostingRequest
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import org.springframework.stereotype.Service
@@ -19,17 +23,24 @@ import java.util.*
 
 @Service
 @Transactional(readOnly = true)
-class JobPostingFacadeService(
+class CenterJobPostingFacadeService(
     private val jobPostingService: JobPostingService,
     private val jobPostingLifeAssistanceService: JobPostingLifeAssistanceService,
     private val jobPostingWeekdayService: JobPostingWeekdayService,
     private val jobPostingApplyMethodService: JobPostingApplyMethodService,
     private val geoCodeService: GeoCodeService,
+    private val centerManagerService: CenterManagerService,
+    private val centerService: CenterService,
 ) {
 
     @Transactional
     suspend fun create(request: CreateJobPostingRequest) {
-        val centerId = getUserAuthentication().userId
+        val centerId =
+            centerManagerService.getById(getUserAuthentication().userId).let {
+                centerService.findByBusinessRegistrationNumber(
+                    BusinessRegistrationNumber(it.centerBusinessRegistrationNumber)
+                )?.id
+            } ?: throw CenterException.NotFoundException()
 
         val geoCodeSearchResult = geoCodeService.search(request.roadNameAddress)
 
@@ -192,6 +203,7 @@ class JobPostingFacadeService(
                 payType = it.payType,
                 payAmount = it.payAmount,
                 roadNameAddress = it.roadNameAddress,
+                lotNumberAddress = it.lotNumberAddress,
                 clientName = it.clientName,
                 gender = it.gender,
                 age = BirthYear.calculateAge(it.birthYear),
