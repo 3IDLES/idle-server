@@ -28,7 +28,7 @@ data class JobPostingInfo(
     val isWalkingAssistance: Boolean,
     val extraRequirement: String?,
     val isExperiencePreferred: Boolean,
-    val applyDeadline: String,
+    val applyDeadline: String?,
     val applyDeadlineType: ApplyDeadlineType,
 ) {
 

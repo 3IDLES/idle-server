@@ -49,10 +49,12 @@ class JobPostingService(
                 isWalkingAssistance = jobPostingInfo.isWalkingAssistance,
                 extraRequirement = jobPostingInfo.extraRequirement,
                 isExperiencePreferred = jobPostingInfo.isExperiencePreferred,
-                applyDeadline = LocalDate.parse(
-                    jobPostingInfo.applyDeadline,
-                    DateTimeFormatter.ofPattern("yyyy-MM-dd")
-                ),
+                applyDeadline = jobPostingInfo.applyDeadline?.let {
+                    LocalDate.parse(
+                        it,
+                        DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                    )
+                },
                 applyDeadlineType = jobPostingInfo.applyDeadlineType,
             ).also {
                 it.active()
