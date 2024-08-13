@@ -40,6 +40,7 @@ subprojects {
         implementation(rootProject.libs.jbcrypt)
         implementation("com.querydsl:querydsl-jpa:5.1.0:jakarta")
         implementation("com.querydsl:querydsl-apt:5.1.0:jakarta")
+        implementation(rootProject.libs.locationtech)
 
         kapt("com.querydsl:querydsl-apt:5.1.0:jakarta")
         kapt(rootProject.libs.spring.boot.configuration.processor)
@@ -52,7 +53,6 @@ subprojects {
         testImplementation(rootProject.libs.spring.boot.starter.test)
         testImplementation(rootProject.libs.kotest.extensions.testcontainers)
         testImplementation(rootProject.libs.testcontainers.junit.jupiter)
-
     }
 
     java {

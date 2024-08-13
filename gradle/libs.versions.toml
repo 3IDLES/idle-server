@@ -36,6 +36,8 @@ querydsl = "5.1.0"
 jakarta-persistence-api = "3.1.0"
 jakarta-annotation-api = "3.0.0"
 
+jts-core = "1.19.0"
+
 [libraries]
 kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
 kotlin-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
@@ -86,6 +88,8 @@ querydsl-apt = { group = "com.querydsl", name = "querydsl-apt", version.ref = "q
 
 jakarta-annotation-api = { group = "jakarta.annotation", name = "jakarta.annotation-api", version.ref = "jakarta-annotation-api"}
 jakarta-persistence-api = { group = "jakarta.persistence", name = "jakarta.persistence-api", version.ref = "jakarta-persistence-api"}
+
+locationtech = { group = "org.locationtech.jts", name = "jts-core", version.ref = "jts-core"}
 
 [plugins]
 

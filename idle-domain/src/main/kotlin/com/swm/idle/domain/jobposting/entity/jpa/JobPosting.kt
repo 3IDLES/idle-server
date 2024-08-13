@@ -12,7 +12,6 @@ import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
 import jakarta.persistence.Table
 import org.locationtech.jts.geom.Point
-import java.math.BigDecimal
 import java.time.LocalDate
 import java.util.*
 
@@ -26,8 +25,6 @@ class JobPosting(
     payAmount: Int,
     roadNameAddress: String,
     lotNumberAddress: String,
-    longitude: BigDecimal?,
-    latitude: BigDecimal?,
     clientName: String,
     gender: GenderType,
     birthYear: Int,
@@ -72,14 +69,6 @@ class JobPosting(
 
     @Column(nullable = false, columnDefinition = "varchar(255)")
     var lotNumberAddress: String = lotNumberAddress
-        private set
-
-    @Column(columnDefinition = "decimal(14, 10)")
-    var longitude: BigDecimal? = longitude
-        private set
-
-    @Column(columnDefinition = "decimal(14, 10)")
-    var latitude: BigDecimal? = latitude
         private set
 
     @Column(nullable = false, columnDefinition = "varchar(255)")
@@ -157,8 +146,6 @@ class JobPosting(
         payAmount: Int?,
         roadNameAddress: String,
         lotNumberAddress: String,
-        longitude: BigDecimal,
-        latitude: BigDecimal,
         clientName: String?,
         gender: GenderType?,
         birthYear: Int?,
@@ -173,6 +160,7 @@ class JobPosting(
         isExperiencePreferred: Boolean?,
         applyDeadline: LocalDate?,
         applyDeadlineType: ApplyDeadlineType?,
+        location: Point,
     ) {
         this.startTime = startTime ?: this.startTime
         this.endTime = endTime ?: this.endTime
@@ -180,8 +168,6 @@ class JobPosting(
         this.payAmount = payAmount ?: this.payAmount
         this.roadNameAddress = roadNameAddress
         this.lotNumberAddress = lotNumberAddress
-        this.longitude = longitude
-        this.latitude = latitude
         this.clientName = clientName ?: this.clientName
         this.gender = gender ?: this.gender
         this.birthYear = birthYear ?: this.birthYear
@@ -196,6 +182,7 @@ class JobPosting(
         this.isExperiencePreferred = isExperiencePreferred ?: this.isExperiencePreferred
         this.applyDeadline = applyDeadline ?: this.applyDeadline
         this.applyDeadlineType = applyDeadlineType ?: this.applyDeadlineType
+        this.location = location
     }
 
     fun updateWithoutAddress(
