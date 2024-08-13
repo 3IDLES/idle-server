@@ -1,5 +1,6 @@
 package com.swm.idle.application.jobposting.service.domain
 
+import com.swm.idle.application.common.converter.PointConverter
 import com.swm.idle.application.jobposting.service.vo.JobPostingInfo
 import com.swm.idle.domain.common.exception.PersistenceException
 import com.swm.idle.domain.jobposting.entity.jpa.JobPosting
@@ -12,10 +13,15 @@ import com.swm.idle.domain.user.common.vo.BirthYear
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.math.BigDecimal
+import java.lang.Double
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.Boolean
+import kotlin.Int
+import kotlin.String
+import kotlin.also
+import kotlin.let
 
 @Service
 class JobPostingService(
@@ -35,8 +41,6 @@ class JobPostingService(
                 payAmount = jobPostingInfo.payAmount,
                 roadNameAddress = jobPostingInfo.roadNameAddress,
                 lotNumberAddress = jobPostingInfo.lotNumberAddress,
-                longitude = BigDecimal(jobPostingInfo.longitude),
-                latitude = BigDecimal(jobPostingInfo.latitude),
                 clientName = jobPostingInfo.clientName,
                 gender = jobPostingInfo.gender,
                 birthYear = jobPostingInfo.birthYear.value,
@@ -56,6 +60,10 @@ class JobPostingService(
                     )
                 },
                 applyDeadlineType = jobPostingInfo.applyDeadlineType,
+                location = PointConverter.convertToPoint(
+                    Double.parseDouble(jobPostingInfo.longitude),
+                    Double.parseDouble(jobPostingInfo.latitude)
+                )
             ).also {
                 it.active()
             }
@@ -149,8 +157,6 @@ class JobPostingService(
             payAmount = payAmount,
             roadNameAddress = roadNameAddress,
             lotNumberAddress = lotNumberAddress,
-            longitude = BigDecimal(longitude),
-            latitude = BigDecimal(latitude),
             clientName = clientName,
             gender = gender,
             birthYear = birthYear?.let { birthYear.value },
@@ -170,6 +176,10 @@ class JobPostingService(
                 )
             },
             applyDeadlineType = applyDeadlineType,
+            location = PointConverter.convertToPoint(
+                Double.parseDouble(longitude),
+                Double.parseDouble(latitude)
+            )
         )
     }
 
