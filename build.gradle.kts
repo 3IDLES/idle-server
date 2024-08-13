@@ -8,6 +8,7 @@ plugins {
     id(libs.plugins.kotlin.jvm.get().pluginId) version libs.plugins.kotlin.jvm.get().version.toString()
     id(libs.plugins.kotlin.jpa.get().pluginId) version libs.plugins.kotlin.jpa.get().version.toString()
     id(libs.plugins.kotlin.spring.get().pluginId) version libs.plugins.kotlin.spring.get().version.toString()
+    id(libs.plugins.kotlin.kapt.get().pluginId) version libs.plugins.kotlin.kapt.get().version.toString()
 }
 
 allprojects {
@@ -37,8 +38,11 @@ subprojects {
         implementation(rootProject.libs.kotlin.coroutines.reactor)
         implementation(rootProject.libs.uuid.creator)
         implementation(rootProject.libs.jbcrypt)
+        implementation("com.querydsl:querydsl-jpa:5.1.0:jakarta")
+        implementation("com.querydsl:querydsl-apt:5.1.0:jakarta")
 
-        annotationProcessor(rootProject.libs.spring.boot.configuration.processor)
+        kapt("com.querydsl:querydsl-apt:5.1.0:jakarta")
+        kapt(rootProject.libs.spring.boot.configuration.processor)
 
         testImplementation(rootProject.libs.mockk)
         testImplementation(rootProject.libs.spring.mockk)
@@ -48,6 +52,7 @@ subprojects {
         testImplementation(rootProject.libs.spring.boot.starter.test)
         testImplementation(rootProject.libs.kotest.extensions.testcontainers)
         testImplementation(rootProject.libs.testcontainers.junit.jupiter)
+
     }
 
     java {
@@ -62,9 +67,6 @@ subprojects {
         }
     }
 
-    tasks.withType<Test> {
-        useJUnitPlatform()
-    }
 }
 
 sonar {

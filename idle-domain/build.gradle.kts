@@ -12,6 +12,8 @@ dependencies {
 
     implementation(libs.spring.boot.starter.data.jpa)
     implementation(libs.spring.boot.starter.data.redis)
+    implementation(libs.querydsl.spatial)
+    implementation(libs.hibernate.spatial)
 
     runtimeOnly(libs.mysql.connector.java)
 }

@@ -30,6 +30,12 @@ auth0-java-jwt = "4.4.0"
 auth0-jwks-rsa = "0.22.1"
 selenium = "4.23.0"
 
+hibernate-spatial = "6.4.4.Final"
+querydsl = "5.1.0"
+
+jakarta-persistence-api = "3.1.0"
+jakarta-annotation-api = "3.0.0"
+
 [libraries]
 kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
 kotlin-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
@@ -71,6 +77,15 @@ jwks-rsa = { group = "com.auth0", name = "jwks-rsa", version.ref = "auth0-jwks-r
 
 selenium-java = { group = "org.seleniumhq.selenium", name = "selenium-java", version.ref = "selenium"}
 selenium-chrome-driver = { group = "org.seleniumhq.selenium", name = "selenium-chrome-driver", version.ref = "selenium"}
+
+hibernate-spatial = { group = "org.hibernate.orm", name = "hibernate-spatial", version.ref = "hibernate-spatial" }
+querydsl-spatial = { group = "com.querydsl", name = "querydsl-spatial", version.ref = "querydsl" }
+
+querydsl-jpa = { group = "com.querydsl", name = "querydsl-jpa", version.ref = "querydsl"}
+querydsl-apt = { group = "com.querydsl", name = "querydsl-apt", version.ref = "querydsl"}
+
+jakarta-annotation-api = { group = "jakarta.annotation", name = "jakarta.annotation-api", version.ref = "jakarta-annotation-api"}
+jakarta-persistence-api = { group = "jakarta.persistence", name = "jakarta.persistence-api", version.ref = "jakarta-persistence-api"}
 
 [plugins]
 

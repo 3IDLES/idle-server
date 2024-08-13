@@ -11,6 +11,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
 import jakarta.persistence.Table
+import org.locationtech.jts.geom.Point
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.util.*
@@ -41,6 +42,7 @@ class JobPosting(
     isExperiencePreferred: Boolean,
     applyDeadline: LocalDate?,
     applyDeadlineType: ApplyDeadlineType,
+    location: Point,
 ) : BaseEntity() {
 
     @Column(nullable = false)
@@ -142,6 +144,10 @@ class JobPosting(
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     var jobPostingStatus: JobPostingStatus = JobPostingStatus.IN_PROGRESS
+        private set
+
+    @Column(nullable = false, columnDefinition = "POINT SRID 4326")
+    var location: Point = location
         private set
 
     fun update(
