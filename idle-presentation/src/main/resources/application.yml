@@ -46,6 +46,9 @@ springdoc:
   swagger-ui:
     enabled: true
 
+logging:
+  level:
+    root: WARN
 ---
 spring:
   config:
