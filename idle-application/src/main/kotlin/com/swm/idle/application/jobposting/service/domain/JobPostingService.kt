@@ -13,15 +13,9 @@ import com.swm.idle.domain.user.common.vo.BirthYear
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.lang.Double
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
-import kotlin.Boolean
-import kotlin.Int
-import kotlin.String
-import kotlin.also
-import kotlin.let
 
 @Service
 class JobPostingService(
@@ -61,13 +55,14 @@ class JobPostingService(
                 },
                 applyDeadlineType = jobPostingInfo.applyDeadlineType,
                 location = PointConverter.convertToPoint(
-                    Double.parseDouble(jobPostingInfo.longitude),
-                    Double.parseDouble(jobPostingInfo.latitude)
+                    jobPostingInfo.longitude.toDouble(),
+                    jobPostingInfo.latitude.toDouble()
                 )
-            ).also {
-                it.active()
-            }
-        )
+            )
+        ).also {
+            it.active()
+        }
+
     }
 
     fun getById(jobPostingId: UUID): JobPosting {
@@ -177,8 +172,8 @@ class JobPostingService(
             },
             applyDeadlineType = applyDeadlineType,
             location = PointConverter.convertToPoint(
-                Double.parseDouble(longitude),
-                Double.parseDouble(latitude)
+                longitude.toDouble(),
+                latitude.toDouble()
             )
         )
     }
