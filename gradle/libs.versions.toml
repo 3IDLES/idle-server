@@ -25,6 +25,7 @@ jbcrypt = "0.4"
 mysql = "8.0.33"
 
 kotlin-coroutines = "1.8.0"
+kotlin-logging = "5.1.0"
 
 auth0-java-jwt = "4.4.0"
 auth0-jwks-rsa = "0.22.1"
@@ -42,6 +43,7 @@ jts-core = "1.19.0"
 kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
 kotlin-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
 kotlin-coroutines-reactor = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-reactor", version.ref = "kotlin-coroutines" }
+kotlin-logging = { group = "io.github.oshai", name = "kotlin-logging-jvm", version.ref = "kotlin-logging" }
 
 spring-boot-devtools = { group = "org.springframework.boot", name = "spring-boot-devtools", version.ref = "spring-boot" }
 spring-boot-docker-compose = { group = "org.springframework.boot", name = "spring-boot-docker-compose", version.ref = "spring-boot" }
@@ -90,7 +92,6 @@ jakarta-annotation-api = { group = "jakarta.annotation", name = "jakarta.annotat
 jakarta-persistence-api = { group = "jakarta.persistence", name = "jakarta.persistence-api", version.ref = "jakarta-persistence-api"}
 
 locationtech = { group = "org.locationtech.jts", name = "jts-core", version.ref = "jts-core"}
-
 [plugins]
 
 sonarqube = { id = "org.sonarqube", version.ref = "sonar-cloud" }

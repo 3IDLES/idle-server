@@ -32,7 +32,7 @@ subprojects {
     apply(plugin = rootProject.libs.plugins.spring.dependency.management.get().pluginId)
 
     dependencies {
-
+        implementation(rootProject.libs.kotlin.logging)
         implementation(rootProject.libs.kotlin.reflect)
         implementation(rootProject.libs.kotlin.coroutines.core)
         implementation(rootProject.libs.kotlin.coroutines.reactor)
