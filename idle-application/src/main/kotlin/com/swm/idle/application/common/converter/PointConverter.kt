@@ -5,20 +5,17 @@ import org.locationtech.jts.geom.GeometryFactory
 import org.locationtech.jts.geom.Point
 import org.locationtech.jts.geom.PrecisionModel
 
-class PointConverter {
+object PointConverter {
 
-    companion object {
+    private const val SPATIAL_REFERENCE_IDENTIFIER_NUMBER: Int = 4326
 
-        val SPATIAL_REFERENCE_IDENTIFIER_NUMBER: Int = 4326
+    private val geometryFactory: GeometryFactory = GeometryFactory(
+        PrecisionModel(),
+        SPATIAL_REFERENCE_IDENTIFIER_NUMBER
+    )
 
-        val geometryFactory: GeometryFactory = GeometryFactory(
-            PrecisionModel(),
-            SPATIAL_REFERENCE_IDENTIFIER_NUMBER
-        )
-
-        fun convertToPoint(latitude: Double, longitude: Double): Point {
-            return geometryFactory.createPoint(Coordinate(longitude, latitude))
-        }
+    fun convertToPoint(latitude: Double, longitude: Double): Point {
+        return geometryFactory.createPoint(Coordinate(longitude, latitude))
     }
 
 }
