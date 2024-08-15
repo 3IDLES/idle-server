@@ -2,6 +2,8 @@ package com.swm.idle.presentation.jobposting.api
 
 import com.swm.idle.presentation.common.security.annotation.Secured
 import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingResponse
+import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingScrollRequest
+import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingsScrollResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
@@ -20,5 +22,13 @@ interface CarerJobPostingApi {
     @GetMapping("/{job-posting-id}/carer")
     @ResponseStatus(HttpStatus.OK)
     fun getJobPosting(@PathVariable(value = "job-posting-id") jobPostingId: UUID): CarerJobPostingResponse
+
+    @Secured
+    @Operation(summary = "요양 보호사 구인 공고 전체 조회 API(3km 내 검색, 최근 등록 순 정렬)")
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    fun getJobPostingList(
+        request: CarerJobPostingScrollRequest,
+    ): CarerJobPostingsScrollResponse
 
 }

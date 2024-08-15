@@ -1,5 +1,6 @@
 package com.swm.idle.domain.common.config
 
+import com.querydsl.jpa.JPQLTemplates
 import com.querydsl.jpa.impl.JPAQueryFactory
 import jakarta.persistence.EntityManager
 import jakarta.persistence.PersistenceContext
@@ -13,6 +14,7 @@ class QueryDslConfig {
     private lateinit var entityManager: EntityManager
 
     @Bean
-    fun jpaQueryFactory() =
-        JPAQueryFactory(entityManager)
+    fun jpaQueryFactory(): JPAQueryFactory {
+        return JPAQueryFactory(JPQLTemplates.DEFAULT, entityManager)
+    }
 }

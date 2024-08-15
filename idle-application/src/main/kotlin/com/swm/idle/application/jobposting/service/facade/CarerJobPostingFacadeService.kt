@@ -5,8 +5,12 @@ import com.swm.idle.application.jobposting.service.domain.JobPostingLifeAssistan
 import com.swm.idle.application.jobposting.service.domain.JobPostingService
 import com.swm.idle.application.jobposting.service.domain.JobPostingWeekdayService
 import com.swm.idle.application.user.center.service.domain.CenterService
+import com.swm.idle.domain.common.dto.JobPostingWithWeekdaysDto
 import com.swm.idle.domain.user.common.vo.BirthYear
 import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingResponse
+import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingScrollRequest
+import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingsScrollResponse
+import org.locationtech.jts.geom.Point
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -59,6 +63,41 @@ class CarerJobPostingFacadeService(
                 centerRoadNameAddress = center.roadNameAddress,
             )
         }
+    }
+
+    fun getJobPostingsInRange(
+        request: CarerJobPostingScrollRequest,
+        location: Point,
+    ): CarerJobPostingsScrollResponse {
+        val (items, next) = scrollByCarerLocationInRange(
+            location = location,
+            next = request.next,
+            limit = request.limit
+        )
+
+        return CarerJobPostingsScrollResponse.from(
+            items = items,
+            next = next,
+            total = items.size,
+        )
+    }
+
+    private fun scrollByCarerLocationInRange(
+        location: Point,
+        next: UUID?,
+        limit: Long,
+    ): Pair<List<JobPostingWithWeekdaysDto>, UUID?> {
+        val jobPostingInfos = jobPostingService.findAllByCarerLocationInRange(
+            location = location,
+            next = next,
+            limit = limit + 1,
+        )
+
+        val newNext =
+            if (jobPostingInfos.size > limit) jobPostingInfos.last().jobPosting.id else null
+        val items =
+            if (newNext == null) jobPostingInfos else jobPostingInfos.subList(0, limit.toInt())
+        return items to newNext
     }
 
 }
