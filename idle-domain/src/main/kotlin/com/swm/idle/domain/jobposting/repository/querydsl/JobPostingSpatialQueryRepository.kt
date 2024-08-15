@@ -18,35 +18,6 @@ class JobPostingSpatialQueryRepository(
     private val jpaQueryFactory: JPAQueryFactory,
 ) {
 
-    //    fun findAllWithWeekdaysInRange(
-//        location: Point,
-//        next: UUID?,
-//        limit: Long,
-//    ): List<JobPostingWithWeekdaysDto> {
-//        return jpaQueryFactory
-//            .select(jobPosting, jobPostingWeekday)
-//            .from(jobPosting)
-//            .leftJoin(jobPostingWeekday).fetchJoin()
-//            .on(jobPosting.id.eq(jobPostingWeekday.jobPostingId))
-//            .where(
-//                isExistInRange(location)
-//                    .and(next?.let { jobPosting.id.loe(it) })
-//            )
-//            .limit(limit)
-//            .transform(
-//                groupBy(jobPosting.id)
-//                    .list(
-//                        Projections.constructor(
-//                            JobPostingWithWeekdaysDto::class.java,
-//                            jobPosting,
-//                            list(
-//                                jobPostingWeekday
-//                            )
-//                        )
-//                    )
-//            )
-//
-//    }
     fun findAllWithWeekdaysInRange(
         location: Point,
         next: UUID?,
@@ -83,7 +54,6 @@ class JobPostingSpatialQueryRepository(
                     )
             )
     }
-
 
     private fun isExistInRange(
         location: Point,
