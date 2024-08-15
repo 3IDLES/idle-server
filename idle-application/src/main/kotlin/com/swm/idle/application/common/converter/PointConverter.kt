@@ -14,7 +14,10 @@ object PointConverter {
         SPATIAL_REFERENCE_IDENTIFIER_NUMBER
     )
 
-    fun convertToPoint(latitude: Double, longitude: Double): Point {
+    fun convertToPoint(
+        latitude: Double,
+        longitude: Double,
+    ): Point {
         return geometryFactory.createPoint(Coordinate(longitude, latitude))
     }
 

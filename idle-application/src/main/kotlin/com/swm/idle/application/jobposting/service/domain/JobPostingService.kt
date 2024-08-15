@@ -2,14 +2,17 @@ package com.swm.idle.application.jobposting.service.domain
 
 import com.swm.idle.application.common.converter.PointConverter
 import com.swm.idle.application.jobposting.service.vo.JobPostingInfo
+import com.swm.idle.domain.common.dto.JobPostingWithWeekdaysDto
 import com.swm.idle.domain.common.exception.PersistenceException
 import com.swm.idle.domain.jobposting.entity.jpa.JobPosting
 import com.swm.idle.domain.jobposting.repository.jpa.JobPostingJpaRepository
+import com.swm.idle.domain.jobposting.repository.querydsl.JobPostingSpatialQueryRepository
 import com.swm.idle.domain.jobposting.vo.ApplyDeadlineType
 import com.swm.idle.domain.jobposting.vo.MentalStatus
 import com.swm.idle.domain.jobposting.vo.PayType
 import com.swm.idle.domain.user.common.enum.GenderType
 import com.swm.idle.domain.user.common.vo.BirthYear
+import org.locationtech.jts.geom.Point
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -20,6 +23,7 @@ import java.util.*
 @Service
 class JobPostingService(
     private val jobPostingJpaRepository: JobPostingJpaRepository,
+    private val jobPostingSpatialQueryRepository: JobPostingSpatialQueryRepository,
 ) {
 
     fun create(
@@ -55,8 +59,8 @@ class JobPostingService(
                 },
                 applyDeadlineType = jobPostingInfo.applyDeadlineType,
                 location = PointConverter.convertToPoint(
+                    jobPostingInfo.latitude.toDouble(),
                     jobPostingInfo.longitude.toDouble(),
-                    jobPostingInfo.latitude.toDouble()
                 )
             )
         ).also {
@@ -184,6 +188,20 @@ class JobPostingService(
 
     fun updateToComplete(jobPosting: JobPosting) {
         jobPosting.updateToComplete()
+    }
+
+    @Transactional(readOnly = true)
+    fun findAllByCarerLocationInRange(
+        location: Point,
+        next: UUID?,
+        limit: Long,
+    ): List<JobPostingWithWeekdaysDto> {
+        return jobPostingSpatialQueryRepository.findAllWithWeekdaysInRange(
+            location = location,
+            next = next,
+            limit = limit,
+        )
+
     }
 
 }

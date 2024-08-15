@@ -93,7 +93,6 @@ jakarta-persistence-api = { group = "jakarta.persistence", name = "jakarta.persi
 
 locationtech = { group = "org.locationtech.jts", name = "jts-core", version.ref = "jts-core"}
 [plugins]
-
 sonarqube = { id = "org.sonarqube", version.ref = "sonar-cloud" }
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
 spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-boot-dependency-management" }
