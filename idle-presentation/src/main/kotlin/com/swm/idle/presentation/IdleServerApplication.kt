@@ -13,7 +13,6 @@ import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Import
 import java.util.*
 
-
 @SpringBootApplication
 @Import(
     value = [
@@ -28,15 +27,16 @@ import java.util.*
 )
 class IdleServerApplication {
 
-    fun main(args: Array<String>) {
-        runApplication<IdleServerApplication>(*args)
-    }
-
     @PostConstruct
     fun started() {
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"))
     }
 
+    companion object {
+
+        @JvmStatic
+        fun main(args: Array<String>) {
+            runApplication<IdleServerApplication>(*args)
+        }
+    }
 }
-
-
