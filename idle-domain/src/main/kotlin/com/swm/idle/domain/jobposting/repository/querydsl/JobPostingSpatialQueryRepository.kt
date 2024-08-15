@@ -52,7 +52,6 @@ class JobPostingSpatialQueryRepository(
         next: UUID?,
         limit: Long,
     ): List<JobPostingWithWeekdaysDto> {
-        // Step 1: 제한된 개수의 JobPosting ID를 가져옴
         val jobPostingIds = jpaQueryFactory
             .select(jobPosting.id)
             .from(jobPosting)
@@ -67,7 +66,6 @@ class JobPostingSpatialQueryRepository(
             return emptyList()
         }
 
-        // Step 2: 가져온 JobPosting ID에 해당하는 JobPosting과 그에 연결된 Weekdays를 가져옴
         return jpaQueryFactory
             .select(jobPosting, jobPostingWeekday)
             .from(jobPosting)
