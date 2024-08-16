@@ -6,7 +6,9 @@ import java.time.LocalDateTime
 value class BirthYear(val value: Int) {
 
     init {
-        require(value in MINIMUM_BIRTH_YEAR..MAXIMUM_BIRTH_YEAR)
+        require(value in MINIMUM_BIRTH_YEAR..MAXIMUM_BIRTH_YEAR) {
+            "출생연도는 $MINIMUM_BIRTH_YEAR ~ $MAXIMUM_BIRTH_YEAR 년 사이의 연도만 입력할 수 있습니다."
+        }
     }
 
     companion object {

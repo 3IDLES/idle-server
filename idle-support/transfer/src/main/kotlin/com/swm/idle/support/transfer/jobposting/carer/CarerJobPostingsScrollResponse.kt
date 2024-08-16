@@ -70,6 +70,9 @@ data class CarerJobPostingsScrollResponse(
 
         @Schema(description = "지원 마감일", example = "2024-07-30")
         val applyDeadline: LocalDate?,
+
+        @Schema(description = "직선 거리", example = "760(단위 : 미터)")
+        val distance: Int,
     ) {
 
         companion object {
@@ -92,6 +95,7 @@ data class CarerJobPostingsScrollResponse(
                     isExperiencePreferred = jobPostingWithWeekdaysDto.jobPosting.isExperiencePreferred,
                     applyDeadline = jobPostingWithWeekdaysDto.jobPosting.applyDeadline,
                     applyDeadlineType = jobPostingWithWeekdaysDto.jobPosting.applyDeadlineType,
+                    distance = jobPostingWithWeekdaysDto.distance,
                 )
             }
 

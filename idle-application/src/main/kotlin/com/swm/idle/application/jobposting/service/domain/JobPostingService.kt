@@ -201,7 +201,16 @@ class JobPostingService(
             next = next,
             limit = limit,
         )
+    }
 
+    fun calculateDistance(
+        jobPosting: JobPosting,
+        carerLocation: Point,
+    ): Int {
+        return jobPostingJpaRepository.calculateDistance(
+            jobPosting.location,
+            carerLocation
+        ).toInt()
     }
 
 }

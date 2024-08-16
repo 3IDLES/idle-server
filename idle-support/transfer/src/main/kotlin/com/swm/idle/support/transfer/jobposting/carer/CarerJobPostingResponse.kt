@@ -108,4 +108,7 @@ data class CarerJobPostingResponse(
 
     @Schema(description = "센터 도로명 주소")
     val centerRoadNameAddress: String,
+
+    @Schema(description = "직선 거리", example = "760(단위 : 미터)")
+    val distance: Int,
 )
