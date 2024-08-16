@@ -1,4 +1,4 @@
-package com.swm.idle.domain.common.enum
+package com.swm.idle.domain.common.enums
 
 enum class EntityStatus {
     ACTIVE,

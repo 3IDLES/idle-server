@@ -7,8 +7,10 @@ import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.core.types.dsl.Expressions
 import com.querydsl.jpa.impl.JPAQueryFactory
 import com.swm.idle.domain.common.dto.JobPostingWithWeekdaysDto
+import com.swm.idle.domain.common.enums.EntityStatus
 import com.swm.idle.domain.jobposting.entity.jpa.QJobPosting.jobPosting
 import com.swm.idle.domain.jobposting.entity.jpa.QJobPostingWeekday.jobPostingWeekday
+import com.swm.idle.domain.jobposting.vo.JobPostingStatus
 import org.locationtech.jts.geom.Point
 import org.springframework.stereotype.Repository
 import java.util.*
@@ -29,6 +31,8 @@ class JobPostingSpatialQueryRepository(
             .where(
                 isExistInRange(location)
                     .and(next?.let { jobPosting.id.goe(it) })
+                    .and(jobPosting.jobPostingStatus.eq(JobPostingStatus.IN_PROGRESS))
+                    .and(jobPosting.entityStatus.eq(EntityStatus.ACTIVE))
             )
             .limit(limit)
             .fetch()
