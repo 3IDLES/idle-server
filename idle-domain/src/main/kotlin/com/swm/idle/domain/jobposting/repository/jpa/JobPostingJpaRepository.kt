@@ -25,4 +25,18 @@ interface JobPostingJpaRepository : JpaRepository<JobPosting, UUID> {
         @Param("clientLocation") clientLocation: Point,
     ): Double
 
+    @Query(
+        """
+            SELECT *
+            FROM job_posting as jp
+            WHERE jp.job_posting_status = 'IN_PROGRESS'
+            AND jp.entity_status = 'ACTIVE'
+            AND jp.center_id = :centerId
+        """,
+        nativeQuery = true
+    )
+    fun findAllInProgress(
+        @Param("centerId") centerId: UUID,
+    ): List<JobPosting>
+
 }

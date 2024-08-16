@@ -2,6 +2,7 @@ package com.swm.idle.presentation.jobposting.controller
 
 import com.swm.idle.application.jobposting.service.facade.CenterJobPostingFacadeService
 import com.swm.idle.presentation.jobposting.api.CenterJobPostingApi
+import com.swm.idle.support.transfer.jobposting.center.CenterJobPostingInProgressResponse
 import com.swm.idle.support.transfer.jobposting.center.CenterJobPostingResponse
 import com.swm.idle.support.transfer.jobposting.center.CreateJobPostingRequest
 import com.swm.idle.support.transfer.jobposting.center.UpdateJobPostingRequest
@@ -37,6 +38,12 @@ class CenterJobPostingController(
 
     override fun getJobPosting(jobPostingId: UUID): CenterJobPostingResponse {
         return centerJobPostingFacadeService.getById(jobPostingId)
+    }
+
+    override fun getJobPostingInProgress(): CenterJobPostingInProgressResponse {
+        return CenterJobPostingInProgressResponse.from(
+            centerJobPostingFacadeService.findAllById()
+        )
     }
 
 }
