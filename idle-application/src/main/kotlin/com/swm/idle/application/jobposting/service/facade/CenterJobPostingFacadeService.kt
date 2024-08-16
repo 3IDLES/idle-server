@@ -8,6 +8,7 @@ import com.swm.idle.application.jobposting.service.domain.JobPostingWeekdayServi
 import com.swm.idle.application.jobposting.service.vo.JobPostingInfo
 import com.swm.idle.application.user.center.service.domain.CenterManagerService
 import com.swm.idle.application.user.center.service.domain.CenterService
+import com.swm.idle.domain.jobposting.entity.jpa.JobPosting
 import com.swm.idle.domain.user.center.exception.CenterException
 import com.swm.idle.domain.user.center.vo.BusinessRegistrationNumber
 import com.swm.idle.domain.user.common.vo.BirthYear
@@ -222,6 +223,18 @@ class CenterJobPostingFacadeService(
                 applyDeadline = it.applyDeadline,
             )
         }
+    }
+
+    fun findAllById(): List<JobPosting> {
+        val center = getUserAuthentication().userId.let { centerManagerId ->
+            centerManagerService.getById(centerManagerId).let {
+                centerService.findByBusinessRegistrationNumber(
+                    BusinessRegistrationNumber(it.centerBusinessRegistrationNumber)
+                ) ?: throw CenterException.NotFoundException()
+            }
+        }
+
+        return jobPostingService.findAllInProgress(center.id)
     }
 
 }
