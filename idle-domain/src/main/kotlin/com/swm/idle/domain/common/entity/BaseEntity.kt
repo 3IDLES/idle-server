@@ -1,6 +1,6 @@
 package com.swm.idle.domain.common.entity
 
-import com.swm.idle.domain.common.enum.EntityStatus
+import com.swm.idle.domain.common.enums.EntityStatus
 import com.swm.idle.support.common.uuid.UuidCreator
 import jakarta.persistence.Column
 import jakarta.persistence.EnumType
@@ -20,7 +20,7 @@ abstract class BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "varchar(255)")
-    private var entityStatus: EntityStatus = EntityStatus.ACTIVE
+    var entityStatus: EntityStatus = EntityStatus.ACTIVE
 
     @CreationTimestamp
     @Column(columnDefinition = "timestamp", updatable = false)

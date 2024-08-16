@@ -41,6 +41,7 @@ subprojects {
         implementation("com.querydsl:querydsl-jpa:5.1.0:jakarta")
         implementation("com.querydsl:querydsl-apt:5.1.0:jakarta")
         implementation(rootProject.libs.locationtech)
+        implementation(rootProject.libs.jakarta.persistence.api)
 
         kapt("com.querydsl:querydsl-apt:5.1.0:jakarta")
         kapt(rootProject.libs.spring.boot.configuration.processor)
