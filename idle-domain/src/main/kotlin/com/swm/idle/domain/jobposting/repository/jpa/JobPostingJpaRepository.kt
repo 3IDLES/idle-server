@@ -39,4 +39,18 @@ interface JobPostingJpaRepository : JpaRepository<JobPosting, UUID> {
         @Param("centerId") centerId: UUID,
     ): List<JobPosting>
 
+    @Query(
+        """
+            SELECT *
+            FROM job_posting as jp
+            WHERE jp.job_posting_status = 'COMPLETED'
+            AND jp.entity_status = 'ACTIVE'
+            AND jp.center_id = :centerId
+        """,
+        nativeQuery = true
+    )
+    fun findAllCompleted(
+        @Param("centerId") centerId: UUID,
+    ): List<JobPosting>
+
 }

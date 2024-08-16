@@ -207,6 +207,10 @@ class JobPostingService(
         return jobPostingJpaRepository.findAllInProgress(centerId)
     }
 
+    fun findAllCompleted(centerId: UUID): List<JobPosting> {
+        return jobPostingJpaRepository.findAllCompleted(centerId)
+    }
+
     fun calculateDistance(
         jobPosting: JobPosting,
         carerLocation: Point,

@@ -1,7 +1,7 @@
 package com.swm.idle.presentation.jobposting.api
 
 import com.swm.idle.presentation.common.security.annotation.Secured
-import com.swm.idle.support.transfer.jobposting.center.CenterJobPostingInProgressResponse
+import com.swm.idle.support.transfer.jobposting.center.CenterJobPostingListResponse
 import com.swm.idle.support.transfer.jobposting.center.CenterJobPostingResponse
 import com.swm.idle.support.transfer.jobposting.center.CreateJobPostingRequest
 import com.swm.idle.support.transfer.jobposting.center.UpdateJobPostingRequest
@@ -62,9 +62,15 @@ interface CenterJobPostingApi {
     fun getJobPosting(@PathVariable(value = "job-posting-id") jobPostingId: UUID): CenterJobPostingResponse
 
     @Secured
-    @Operation(summary = "센터 진행중인 공고 전체 조회 API")
+    @Operation(summary = "센터별 진행 중인 공고 전체 조회 API")
     @GetMapping("/status/in-progress")
     @ResponseStatus(HttpStatus.OK)
-    fun getJobPostingInProgress(): CenterJobPostingInProgressResponse
+    fun getJobPostingInProgress(): CenterJobPostingListResponse
+
+    @Secured
+    @Operation(summary = "센터별 마감된(이전) 공고 전체 조회 API")
+    @GetMapping("/status/completed")
+    @ResponseStatus(HttpStatus.OK)
+    fun getJobPostingCompleted(): CenterJobPostingListResponse
 
 }
