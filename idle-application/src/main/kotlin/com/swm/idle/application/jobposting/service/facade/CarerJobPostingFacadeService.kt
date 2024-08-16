@@ -1,9 +1,12 @@
 package com.swm.idle.application.jobposting.service.facade
 
+import com.swm.idle.application.common.converter.PointConverter
+import com.swm.idle.application.common.security.getUserAuthentication
 import com.swm.idle.application.jobposting.service.domain.JobPostingApplyMethodService
 import com.swm.idle.application.jobposting.service.domain.JobPostingLifeAssistanceService
 import com.swm.idle.application.jobposting.service.domain.JobPostingService
 import com.swm.idle.application.jobposting.service.domain.JobPostingWeekdayService
+import com.swm.idle.application.user.carer.domain.CarerService
 import com.swm.idle.application.user.center.service.domain.CenterService
 import com.swm.idle.domain.common.dto.JobPostingWithWeekdaysDto
 import com.swm.idle.domain.user.common.vo.BirthYear
@@ -21,48 +24,63 @@ class CarerJobPostingFacadeService(
     private val jobPostingApplyMethodService: JobPostingApplyMethodService,
     private val jobPostingService: JobPostingService,
     private val centerService: CenterService,
+    private val carerService: CarerService,
 ) {
 
     fun getJobPosting(jobPostingId: UUID): CarerJobPostingResponse {
+        val carer = getUserAuthentication().userId.let {
+            carerService.getById(it)
+        }
+
+        val jobPosting = jobPostingService.getById(jobPostingId)
+
+        val distance = jobPostingService.calculateDistance(
+            jobPosting,
+            PointConverter.convertToPoint(
+                latitude = carer.latitude.toDouble(),
+                longitude = carer.longitude.toDouble(),
+            )
+        )
+
         val weekdays = jobPostingWeekdayService.findByJobPostingId(jobPostingId)?.map { it.weekday }
         val lifeAssistances = jobPostingLifeAssistanceService.findByJobPostingId(jobPostingId)
             ?.map { it.lifeAssistance }
         val applyMethods =
             jobPostingApplyMethodService.findByJobPostingId(jobPostingId)?.map { it.applyMethod }
 
-        jobPostingService.getById(jobPostingId).let {
-            val center = centerService.getById(it.centerId)
-            return CarerJobPostingResponse(
-                id = it.id,
-                weekdays = weekdays!!,
-                startTime = it.startTime,
-                endTime = it.endTime,
-                payType = it.payType,
-                payAmount = it.payAmount,
-                roadNameAddress = it.roadNameAddress,
-                lotNumberAddress = it.lotNumberAddress,
-                longitude = it.location.x.toString(),
-                latitude = it.location.y.toString(),
-                gender = it.gender,
-                age = BirthYear.calculateAge(it.birthYear),
-                weight = it.weight,
-                careLevel = it.careLevel,
-                mentalStatus = it.mentalStatus,
-                disease = it.disease,
-                isMealAssistance = it.isMealAssistance,
-                isBowelAssistance = it.isBowelAssistance,
-                isWalkingAssistance = it.isWalkingAssistance,
-                lifeAssistance = lifeAssistances,
-                extraRequirement = it.extraRequirement,
-                isExperiencePreferred = it.isExperiencePreferred,
-                applyMethod = applyMethods!!,
-                applyDeadlineType = it.applyDeadlineType,
-                applyDeadline = it.applyDeadline,
-                centerId = center.id,
-                centerName = center.centerName,
-                centerRoadNameAddress = center.roadNameAddress,
-            )
-        }
+
+        val center = centerService.getById(jobPosting.centerId)
+        return CarerJobPostingResponse(
+            id = jobPosting.id,
+            weekdays = weekdays!!,
+            startTime = jobPosting.startTime,
+            endTime = jobPosting.endTime,
+            payType = jobPosting.payType,
+            payAmount = jobPosting.payAmount,
+            roadNameAddress = jobPosting.roadNameAddress,
+            lotNumberAddress = jobPosting.lotNumberAddress,
+            longitude = jobPosting.location.x.toString(),
+            latitude = jobPosting.location.y.toString(),
+            gender = jobPosting.gender,
+            age = BirthYear.calculateAge(jobPosting.birthYear),
+            weight = jobPosting.weight,
+            careLevel = jobPosting.careLevel,
+            mentalStatus = jobPosting.mentalStatus,
+            disease = jobPosting.disease,
+            isMealAssistance = jobPosting.isMealAssistance,
+            isBowelAssistance = jobPosting.isBowelAssistance,
+            isWalkingAssistance = jobPosting.isWalkingAssistance,
+            lifeAssistance = lifeAssistances,
+            extraRequirement = jobPosting.extraRequirement,
+            isExperiencePreferred = jobPosting.isExperiencePreferred,
+            applyMethod = applyMethods!!,
+            applyDeadlineType = jobPosting.applyDeadlineType,
+            applyDeadline = jobPosting.applyDeadline,
+            centerId = center.id,
+            centerName = center.centerName,
+            centerRoadNameAddress = center.roadNameAddress,
+            distance = distance,
+        )
     }
 
     fun getJobPostingsInRange(
@@ -87,17 +105,36 @@ class CarerJobPostingFacadeService(
         next: UUID?,
         limit: Long,
     ): Pair<List<JobPostingWithWeekdaysDto>, UUID?> {
-        val jobPostingInfos = jobPostingService.findAllByCarerLocationInRange(
+        val jobPostingWithWeekdays = jobPostingService.findAllByCarerLocationInRange(
             location = location,
             next = next,
             limit = limit + 1,
         )
 
+        val carerLocation = getUserAuthentication().userId.let {
+            carerService.getById(it)
+        }.let {
+            PointConverter.convertToPoint(
+                latitude = it.latitude.toDouble(),
+                longitude = it.longitude.toDouble(),
+            )
+        }
+
+        for (jobPostingWithWeekday in jobPostingWithWeekdays) {
+            jobPostingWithWeekday.distance = jobPostingService.calculateDistance(
+                jobPostingWithWeekday.jobPosting,
+                carerLocation
+            )
+        }
+
         val newNext =
-            if (jobPostingInfos.size > limit) jobPostingInfos.last().jobPosting.id else null
+            if (jobPostingWithWeekdays.size > limit) jobPostingWithWeekdays.last().jobPosting.id else null
         val items =
-            if (newNext == null) jobPostingInfos else jobPostingInfos.subList(0, limit.toInt())
+            if (newNext == null) jobPostingWithWeekdays else jobPostingWithWeekdays.subList(
+                0,
+                limit.toInt()
+            )
         return items to newNext
     }
-
 }
+

@@ -49,7 +49,7 @@ class JobPostingSpatialQueryRepository(
                         Projections.constructor(
                             JobPostingWithWeekdaysDto::class.java,
                             jobPosting,
-                            list(jobPostingWeekday)
+                            list(jobPostingWeekday),
                         )
                     )
             )
