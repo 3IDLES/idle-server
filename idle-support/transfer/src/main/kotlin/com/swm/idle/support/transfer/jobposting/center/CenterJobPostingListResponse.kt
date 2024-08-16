@@ -9,14 +9,14 @@ import java.time.LocalDate
 import java.util.*
 
 @Schema(
-    name = "CenterJobPostingInProgressResponse",
+    name = "CenterJobPostingListResponse",
     description = "센터 공고 상세 조회 API",
 )
-data class CenterJobPostingInProgressResponse(
-    val jobPostings: List<CenterJobPostingInProgressDto>,
+data class CenterJobPostingListResponse(
+    val jobPostings: List<CenterJobPostingDto>,
 ) {
 
-    data class CenterJobPostingInProgressDto(
+    data class CenterJobPostingDto(
         @Schema(description = "공고 ID")
         val id: UUID,
 
@@ -52,8 +52,8 @@ data class CenterJobPostingInProgressResponse(
 
             fun from(
                 jobPosting: JobPosting,
-            ): CenterJobPostingInProgressDto {
-                return CenterJobPostingInProgressDto(
+            ): CenterJobPostingDto {
+                return CenterJobPostingDto(
                     id = jobPosting.id,
                     roadNameAddress = jobPosting.roadNameAddress,
                     lotNumberAddress = jobPosting.lotNumberAddress,
@@ -72,9 +72,9 @@ data class CenterJobPostingInProgressResponse(
 
     companion object {
 
-        fun from(jobPostings: List<JobPosting>): CenterJobPostingInProgressResponse {
-            return CenterJobPostingInProgressResponse(
-                jobPostings.map(CenterJobPostingInProgressDto::from)
+        fun from(jobPostings: List<JobPosting>): CenterJobPostingListResponse {
+            return CenterJobPostingListResponse(
+                jobPostings.map(CenterJobPostingDto::from)
             )
         }
     }

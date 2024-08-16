@@ -225,7 +225,7 @@ class CenterJobPostingFacadeService(
         }
     }
 
-    fun findAllById(): List<JobPosting> {
+    fun findAllInProgressById(): List<JobPosting> {
         val center = getUserAuthentication().userId.let { centerManagerId ->
             centerManagerService.getById(centerManagerId).let {
                 centerService.findByBusinessRegistrationNumber(
@@ -235,6 +235,18 @@ class CenterJobPostingFacadeService(
         }
 
         return jobPostingService.findAllInProgress(center.id)
+    }
+
+    fun findAllCompletedById(): List<JobPosting> {
+        val center = getUserAuthentication().userId.let { centerManagerId ->
+            centerManagerService.getById(centerManagerId).let {
+                centerService.findByBusinessRegistrationNumber(
+                    BusinessRegistrationNumber(it.centerBusinessRegistrationNumber)
+                ) ?: throw CenterException.NotFoundException()
+            }
+        }
+
+        return jobPostingService.findAllCompleted(center.id)
     }
 
 }
