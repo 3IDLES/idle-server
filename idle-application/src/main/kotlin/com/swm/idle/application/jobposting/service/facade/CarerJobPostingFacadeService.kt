@@ -9,7 +9,6 @@ import com.swm.idle.application.jobposting.service.domain.JobPostingWeekdayServi
 import com.swm.idle.application.user.carer.domain.CarerService
 import com.swm.idle.application.user.center.service.domain.CenterService
 import com.swm.idle.domain.common.dto.JobPostingWithWeekdaysDto
-import com.swm.idle.domain.user.common.vo.BirthYear
 import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingResponse
 import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingScrollRequest
 import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingsScrollResponse
@@ -50,35 +49,12 @@ class CarerJobPostingFacadeService(
 
 
         val center = centerService.getById(jobPosting.centerId)
-        return CarerJobPostingResponse(
-            id = jobPosting.id,
-            weekdays = weekdays!!,
-            startTime = jobPosting.startTime,
-            endTime = jobPosting.endTime,
-            payType = jobPosting.payType,
-            payAmount = jobPosting.payAmount,
-            roadNameAddress = jobPosting.roadNameAddress,
-            lotNumberAddress = jobPosting.lotNumberAddress,
-            longitude = jobPosting.location.x.toString(),
-            latitude = jobPosting.location.y.toString(),
-            gender = jobPosting.gender,
-            age = BirthYear.calculateAge(jobPosting.birthYear),
-            weight = jobPosting.weight,
-            careLevel = jobPosting.careLevel,
-            mentalStatus = jobPosting.mentalStatus,
-            disease = jobPosting.disease,
-            isMealAssistance = jobPosting.isMealAssistance,
-            isBowelAssistance = jobPosting.isBowelAssistance,
-            isWalkingAssistance = jobPosting.isWalkingAssistance,
-            lifeAssistance = lifeAssistances,
-            extraRequirement = jobPosting.extraRequirement,
-            isExperiencePreferred = jobPosting.isExperiencePreferred,
-            applyMethod = applyMethods!!,
-            applyDeadlineType = jobPosting.applyDeadlineType,
-            applyDeadline = jobPosting.applyDeadline,
-            centerId = center.id,
-            centerName = center.centerName,
-            centerRoadNameAddress = center.roadNameAddress,
+        return CarerJobPostingResponse.of(
+            jobPosting = jobPosting,
+            weekdays = weekdays,
+            lifeAssistances = lifeAssistances,
+            applyMethods = applyMethods,
+            center = center,
             distance = distance,
         )
     }
