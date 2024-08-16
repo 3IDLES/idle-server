@@ -1,13 +1,16 @@
 package com.swm.idle.support.transfer.jobposting.carer
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.swm.idle.domain.jobposting.entity.jpa.JobPosting
 import com.swm.idle.domain.jobposting.vo.ApplyDeadlineType
 import com.swm.idle.domain.jobposting.vo.ApplyMethodType
 import com.swm.idle.domain.jobposting.vo.LifeAssistanceType
 import com.swm.idle.domain.jobposting.vo.MentalStatus
 import com.swm.idle.domain.jobposting.vo.PayType
 import com.swm.idle.domain.jobposting.vo.Weekdays
+import com.swm.idle.domain.user.center.entity.jpa.Center
 import com.swm.idle.domain.user.common.enum.GenderType
+import com.swm.idle.domain.user.common.vo.BirthYear
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDate
 import java.util.*
@@ -111,4 +114,51 @@ data class CarerJobPostingResponse(
 
     @Schema(description = "직선 거리", example = "760(단위 : 미터)")
     val distance: Int,
-)
+) {
+
+    companion object {
+
+        fun of(
+            jobPosting: JobPosting,
+            weekdays: List<Weekdays>?,
+            lifeAssistances: List<LifeAssistanceType>?,
+            applyMethods: List<ApplyMethodType>?,
+            center: Center,
+            distance: Int,
+        ): CarerJobPostingResponse {
+            return CarerJobPostingResponse(
+                id = jobPosting.id,
+                weekdays = weekdays!!,
+                startTime = jobPosting.startTime,
+                endTime = jobPosting.endTime,
+                payType = jobPosting.payType,
+                payAmount = jobPosting.payAmount,
+                roadNameAddress = jobPosting.roadNameAddress,
+                lotNumberAddress = jobPosting.lotNumberAddress,
+                longitude = jobPosting.location.x.toString(),
+                latitude = jobPosting.location.y.toString(),
+                gender = jobPosting.gender,
+                age = BirthYear.calculateAge(jobPosting.birthYear),
+                weight = jobPosting.weight,
+                careLevel = jobPosting.careLevel,
+                mentalStatus = jobPosting.mentalStatus,
+                disease = jobPosting.disease,
+                isMealAssistance = jobPosting.isMealAssistance,
+                isBowelAssistance = jobPosting.isBowelAssistance,
+                isWalkingAssistance = jobPosting.isWalkingAssistance,
+                lifeAssistance = lifeAssistances,
+                extraRequirement = jobPosting.extraRequirement,
+                isExperiencePreferred = jobPosting.isExperiencePreferred,
+                applyMethod = applyMethods!!,
+                applyDeadlineType = jobPosting.applyDeadlineType,
+                applyDeadline = jobPosting.applyDeadline,
+                centerId = center.id,
+                centerName = center.centerName,
+                centerRoadNameAddress = center.roadNameAddress,
+                distance = distance,
+            )
+        }
+
+    }
+
+}
