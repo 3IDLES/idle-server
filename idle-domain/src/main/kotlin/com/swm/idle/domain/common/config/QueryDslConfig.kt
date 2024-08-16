@@ -17,4 +17,5 @@ class QueryDslConfig {
     fun jpaQueryFactory(): JPAQueryFactory {
         return JPAQueryFactory(JPQLTemplates.DEFAULT, entityManager)
     }
+
 }
