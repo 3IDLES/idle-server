@@ -19,7 +19,7 @@ class SystemExceptionHandler {
     private val logger = KotlinLogging.logger { }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(SystemException::class)
+    @ExceptionHandler(Throwable::class)
     fun handleSystemException(
         exception: Throwable,
         request: HttpServletRequest,
