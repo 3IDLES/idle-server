@@ -7,7 +7,7 @@ import com.swm.idle.application.user.carer.domain.CarerService
 import com.swm.idle.presentation.jobposting.api.CarerJobPostingApi
 import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingResponse
 import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingScrollRequest
-import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingsScrollResponse
+import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingScrollResponse
 import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
@@ -21,7 +21,7 @@ class CarerJobPostingController(
         return carerJobPostingFacadeService.getJobPosting(jobPostingId)
     }
 
-    override fun getJobPostingList(request: CarerJobPostingScrollRequest): CarerJobPostingsScrollResponse {
+    override fun getJobPostingList(request: CarerJobPostingScrollRequest): CarerJobPostingScrollResponse {
         val carer = carerService.getById(getUserAuthentication().userId)
 
         val location = PointConverter.convertToPoint(
