@@ -16,11 +16,11 @@ import java.util.*
     name = "JobPostingsResponse",
     description = "요양 보호사 공고 반경범위 검색 결과 응답",
 )
-data class CarerJobPostingsScrollResponse(
+data class CarerJobPostingScrollResponse(
     override val items: List<JobPostingDto>,
     override val next: UUID?,
     override val total: Int,
-) : ScrollResponse<CarerJobPostingsScrollResponse.JobPostingDto, UUID?>(
+) : ScrollResponse<CarerJobPostingScrollResponse.JobPostingDto, UUID?>(
     items = items,
     next = next,
     total = total,
@@ -108,8 +108,8 @@ data class CarerJobPostingsScrollResponse(
             items: List<JobPostingWithWeekdaysDto>,
             next: UUID?,
             total: Int,
-        ): CarerJobPostingsScrollResponse {
-            return CarerJobPostingsScrollResponse(
+        ): CarerJobPostingScrollResponse {
+            return CarerJobPostingScrollResponse(
                 items = items.map(JobPostingDto::from),
                 next = next,
                 total = total,

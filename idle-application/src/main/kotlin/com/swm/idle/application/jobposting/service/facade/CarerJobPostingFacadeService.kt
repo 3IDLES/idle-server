@@ -11,7 +11,7 @@ import com.swm.idle.application.user.center.service.domain.CenterService
 import com.swm.idle.domain.common.dto.JobPostingWithWeekdaysDto
 import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingResponse
 import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingScrollRequest
-import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingsScrollResponse
+import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingScrollResponse
 import org.locationtech.jts.geom.Point
 import org.springframework.stereotype.Service
 import java.util.*
@@ -62,14 +62,14 @@ class CarerJobPostingFacadeService(
     fun getJobPostingsInRange(
         request: CarerJobPostingScrollRequest,
         location: Point,
-    ): CarerJobPostingsScrollResponse {
+    ): CarerJobPostingScrollResponse {
         val (items, next) = scrollByCarerLocationInRange(
             location = location,
             next = request.next,
             limit = request.limit
         )
 
-        return CarerJobPostingsScrollResponse.from(
+        return CarerJobPostingScrollResponse.from(
             items = items,
             next = next,
             total = items.size,

@@ -3,7 +3,7 @@ package com.swm.idle.presentation.jobposting.api
 import com.swm.idle.presentation.common.security.annotation.Secured
 import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingResponse
 import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingScrollRequest
-import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingsScrollResponse
+import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingScrollResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
@@ -29,6 +29,6 @@ interface CarerJobPostingApi {
     @ResponseStatus(HttpStatus.OK)
     fun getJobPostingList(
         request: CarerJobPostingScrollRequest,
-    ): CarerJobPostingsScrollResponse
+    ): CarerJobPostingScrollResponse
 
 }
