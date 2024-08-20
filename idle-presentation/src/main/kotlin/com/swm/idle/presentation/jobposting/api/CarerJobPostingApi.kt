@@ -34,7 +34,7 @@ interface CarerJobPostingApi {
 
     @Secured
     @Operation(summary = "요양 보호사별 지원한 공고 전체 조회 API")
-    @GetMapping("/carer/applied")
+    @GetMapping("/carer/my/applied")
     @ResponseStatus(HttpStatus.OK)
     fun getAppliedJobPostings(
         request: CarerJobPostingScrollRequest,

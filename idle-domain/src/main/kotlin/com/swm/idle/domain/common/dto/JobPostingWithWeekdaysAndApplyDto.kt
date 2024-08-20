@@ -8,13 +8,13 @@ data class JobPostingWithWeekdaysAndApplyDto(
     val jobPosting: JobPosting,
     val jobPostingWeekdays: List<JobPostingWeekday>,
     var distance: Int = 0,
-    val applyTime: LocalDateTime?,
+    val applyTime: LocalDateTime,
 ) {
 
     constructor(
         jobPosting: JobPosting,
         jobPostingWeekdays: List<JobPostingWeekday>,
-        applyTime: LocalDateTime?,
+        applyTime: LocalDateTime,
     ) : this(jobPosting, jobPostingWeekdays, 0, applyTime)
 
 }
