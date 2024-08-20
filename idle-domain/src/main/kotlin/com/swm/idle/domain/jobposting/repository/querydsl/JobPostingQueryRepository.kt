@@ -22,7 +22,7 @@ class JobPostingQueryRepository(
         carerId: UUID,
     ): List<JobPostingWithWeekdaysAndApplyDto> {
         val jobPostingIds = jpaQueryFactory
-            .selectDistinct(jobPosting.id)
+            .select(jobPosting.id)
             .from(jobPosting)
             .leftJoin(applys).on(jobPosting.id.eq(applys.jobPostingId))
             .where(
