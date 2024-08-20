@@ -1,6 +1,7 @@
 package com.swm.idle.presentation.jobposting.api
 
 import com.swm.idle.presentation.common.security.annotation.Secured
+import com.swm.idle.support.transfer.jobposting.carer.CarerAppliedJobPostingScrollResponse
 import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingResponse
 import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingScrollRequest
 import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingScrollResponse
@@ -27,8 +28,16 @@ interface CarerJobPostingApi {
     @Operation(summary = "요양 보호사 구인 공고 전체 조회 API(3km 내 검색, 최근 등록 순 정렬)")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    fun getJobPostingList(
+    fun getJobPostings(
         request: CarerJobPostingScrollRequest,
     ): CarerJobPostingScrollResponse
+
+    @Secured
+    @Operation(summary = "요양 보호사별 지원한 공고 전체 조회 API")
+    @GetMapping("/carer/applied")
+    @ResponseStatus(HttpStatus.OK)
+    fun getAppliedJobPostings(
+        request: CarerJobPostingScrollRequest,
+    ): CarerAppliedJobPostingScrollResponse
 
 }

@@ -8,7 +8,9 @@ import com.swm.idle.application.jobposting.service.domain.JobPostingService
 import com.swm.idle.application.jobposting.service.domain.JobPostingWeekdayService
 import com.swm.idle.application.user.carer.domain.CarerService
 import com.swm.idle.application.user.center.service.domain.CenterService
+import com.swm.idle.domain.common.dto.JobPostingWithWeekdaysAndApplyDto
 import com.swm.idle.domain.common.dto.JobPostingWithWeekdaysDto
+import com.swm.idle.support.transfer.jobposting.carer.CarerAppliedJobPostingScrollResponse
 import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingResponse
 import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingScrollRequest
 import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingScrollResponse
@@ -112,5 +114,61 @@ class CarerJobPostingFacadeService(
             )
         return items to newNext
     }
+
+    fun getAppliedJobPostings(
+        request: CarerJobPostingScrollRequest,
+        carerId: UUID,
+    ): CarerAppliedJobPostingScrollResponse {
+        val (items, next) = scrollByCarerApplyHistory(
+            next = request.next,
+            limit = request.limit,
+            carerId = carerId,
+        )
+
+        return CarerAppliedJobPostingScrollResponse.from(
+            items = items,
+            next = next,
+            total = items.size,
+        )
+    }
+
+    private fun scrollByCarerApplyHistory(
+        carerId: UUID,
+        next: UUID?,
+        limit: Long,
+    ): Pair<List<JobPostingWithWeekdaysAndApplyDto>, UUID?> {
+
+        val jobPostingWithWeekdaysAndApplyDtos = jobPostingService.findAllByCarerApplyHistory(
+            next = next,
+            limit = limit + 1,
+            carerId = carerId,
+        )
+
+        val carerLocation = getUserAuthentication().userId.let {
+            carerService.getById(it)
+        }.let {
+            PointConverter.convertToPoint(
+                latitude = it.latitude.toDouble(),
+                longitude = it.longitude.toDouble(),
+            )
+        }
+
+        for (jobPostingWithWeekdaysAndApplyDto in jobPostingWithWeekdaysAndApplyDtos) {
+            jobPostingService.calculateDistance(
+                jobPostingWithWeekdaysAndApplyDto.jobPosting,
+                carerLocation
+            ).also { jobPostingWithWeekdaysAndApplyDto.distance = it }
+        }
+
+        val newNext =
+            if (jobPostingWithWeekdaysAndApplyDtos.size > limit) jobPostingWithWeekdaysAndApplyDtos.last().jobPosting.id else null
+        val items =
+            if (newNext == null) jobPostingWithWeekdaysAndApplyDtos else jobPostingWithWeekdaysAndApplyDtos.subList(
+                0,
+                limit.toInt()
+            )
+        return items to newNext
+    }
+
 }
 

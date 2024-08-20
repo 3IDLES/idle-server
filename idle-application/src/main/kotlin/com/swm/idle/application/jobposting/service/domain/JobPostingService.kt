@@ -2,10 +2,12 @@ package com.swm.idle.application.jobposting.service.domain
 
 import com.swm.idle.application.common.converter.PointConverter
 import com.swm.idle.application.jobposting.service.vo.JobPostingInfo
+import com.swm.idle.domain.common.dto.JobPostingWithWeekdaysAndApplyDto
 import com.swm.idle.domain.common.dto.JobPostingWithWeekdaysDto
 import com.swm.idle.domain.common.exception.PersistenceException
 import com.swm.idle.domain.jobposting.entity.jpa.JobPosting
 import com.swm.idle.domain.jobposting.repository.jpa.JobPostingJpaRepository
+import com.swm.idle.domain.jobposting.repository.querydsl.JobPostingQueryRepository
 import com.swm.idle.domain.jobposting.repository.querydsl.JobPostingSpatialQueryRepository
 import com.swm.idle.domain.jobposting.vo.ApplyDeadlineType
 import com.swm.idle.domain.jobposting.vo.MentalStatus
@@ -24,6 +26,7 @@ import java.util.*
 class JobPostingService(
     private val jobPostingJpaRepository: JobPostingJpaRepository,
     private val jobPostingSpatialQueryRepository: JobPostingSpatialQueryRepository,
+    private val jobPostingQueryRepository: JobPostingQueryRepository,
 ) {
 
     fun create(
@@ -190,7 +193,6 @@ class JobPostingService(
         jobPosting.updateToComplete()
     }
 
-    @Transactional(readOnly = true)
     fun findAllByCarerLocationInRange(
         location: Point,
         next: UUID?,
@@ -210,6 +212,19 @@ class JobPostingService(
     fun findAllCompleted(centerId: UUID): List<JobPosting> {
         return jobPostingJpaRepository.findAllCompleted(centerId)
     }
+
+    fun findAllByCarerApplyHistory(
+        next: UUID?,
+        limit: Long,
+        carerId: UUID,
+    ): List<JobPostingWithWeekdaysAndApplyDto> {
+        return jobPostingQueryRepository.findAllByCarerApplyHistory(
+            next = next,
+            limit = limit,
+            carerId = carerId,
+        )
+    }
+
 
     fun calculateDistance(
         jobPosting: JobPosting,

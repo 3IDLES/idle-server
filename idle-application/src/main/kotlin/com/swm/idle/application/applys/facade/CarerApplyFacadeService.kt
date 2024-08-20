@@ -1,8 +1,8 @@
-package com.swm.idle.application.applyment.facade
+package com.swm.idle.application.applys.facade
 
-import com.swm.idle.application.applyment.domain.CarerApplyService
+import com.swm.idle.application.applys.domain.CarerApplyService
 import com.swm.idle.application.common.security.getUserAuthentication
-import com.swm.idle.domain.apply.exception.ApplyException
+import com.swm.idle.domain.applys.exception.ApplyException
 import com.swm.idle.domain.jobposting.vo.ApplyMethodType
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -35,7 +35,6 @@ class CarerApplyFacadeService(
             carerId = carerId,
             applyMethodType = applyMethodType,
         )
-
     }
 
 }

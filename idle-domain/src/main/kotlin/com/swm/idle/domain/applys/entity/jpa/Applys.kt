@@ -1,4 +1,4 @@
-package com.swm.idle.domain.apply.entity.jpa
+package com.swm.idle.domain.applys.entity.jpa
 
 import com.swm.idle.domain.common.entity.BaseEntity
 import com.swm.idle.domain.jobposting.vo.ApplyMethodType
@@ -10,8 +10,8 @@ import jakarta.persistence.Table
 import java.util.*
 
 @Entity
-@Table(name = "apply")
-class Apply(
+@Table(name = "applys")
+class Applys(
     jobPostingId: UUID,
     carerId: UUID,
     applyMethodType: ApplyMethodType,
