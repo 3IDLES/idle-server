@@ -24,7 +24,6 @@ class CarerApplyFacadeService(
         if (carerApplyService.existsByJobPostingIdAndCarerIdAndApplyMethodType(
                 jobPostingId = jobPostingId,
                 carerId = carerId,
-                applyMethodType = applyMethodType,
             )
         ) {
             throw ApplyException.AlreadyApplied()

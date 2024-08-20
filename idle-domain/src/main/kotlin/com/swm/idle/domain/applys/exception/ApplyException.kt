@@ -7,7 +7,7 @@ sealed class ApplyException(
     message: String,
 ) : CustomException(CODE_PREFIX, codeNumber, message) {
 
-    class AlreadyApplied(message: String = "이미 같은 방법으로 지원한 이력이 존재합니다.") :
+    class AlreadyApplied(message: String = "이미 지원한 이력이 있는 공고입니다.") :
         ApplyException(codeNumber = 1, message = message)
 
     companion object {

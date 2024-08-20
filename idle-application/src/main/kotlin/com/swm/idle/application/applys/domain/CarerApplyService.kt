@@ -14,12 +14,10 @@ class CarerApplyService(
     fun existsByJobPostingIdAndCarerIdAndApplyMethodType(
         jobPostingId: UUID,
         carerId: UUID,
-        applyMethodType: ApplyMethodType,
     ): Boolean {
-        return carerApplyJpaRepository.existsByJobPostingIdAndCarerIdAndApplyMethodType(
+        return carerApplyJpaRepository.existsByJobPostingIdAndCarerId(
             jobPostingId = jobPostingId,
             carerId = carerId,
-            applyMethodType = applyMethodType,
         )
     }
 
