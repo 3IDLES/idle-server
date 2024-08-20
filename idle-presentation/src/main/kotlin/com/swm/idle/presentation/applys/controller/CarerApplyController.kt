@@ -1,8 +1,8 @@
-package com.swm.idle.presentation.applyment.controller
+package com.swm.idle.presentation.applys.controller
 
-import com.swm.idle.application.applyment.facade.CarerApplyFacadeService
-import com.swm.idle.presentation.applyment.api.CarerApplyApi
-import com.swm.idle.support.transfer.applyment.CreateApplyRequest
+import com.swm.idle.application.applys.facade.CarerApplyFacadeService
+import com.swm.idle.presentation.applys.api.CarerApplyApi
+import com.swm.idle.support.transfer.applys.CreateApplyRequest
 import org.springframework.web.bind.annotation.RestController
 
 @RestController

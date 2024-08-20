@@ -1,4 +1,4 @@
-package com.swm.idle.support.transfer.applyment
+package com.swm.idle.support.transfer.applys
 
 import com.swm.idle.domain.jobposting.vo.ApplyMethodType
 import io.swagger.v3.oas.annotations.media.Schema

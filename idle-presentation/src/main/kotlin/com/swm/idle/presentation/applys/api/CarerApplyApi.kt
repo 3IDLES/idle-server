@@ -1,7 +1,7 @@
-package com.swm.idle.presentation.applyment.api
+package com.swm.idle.presentation.applys.api
 
 import com.swm.idle.presentation.common.security.annotation.Secured
-import com.swm.idle.support.transfer.applyment.CreateApplyRequest
+import com.swm.idle.support.transfer.applys.CreateApplyRequest
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
