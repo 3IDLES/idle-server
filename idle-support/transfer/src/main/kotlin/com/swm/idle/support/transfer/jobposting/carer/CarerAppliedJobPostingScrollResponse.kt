@@ -76,7 +76,7 @@ data class CarerAppliedJobPostingScrollResponse(
         val distance: Int,
 
         @Schema(description = "지원 시각")
-        val applyTime: LocalDateTime?,
+        val applyTime: LocalDateTime,
     ) {
 
         companion object {
