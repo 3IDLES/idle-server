@@ -5,6 +5,7 @@ import com.swm.idle.presentation.jobposting.api.CenterJobPostingApi
 import com.swm.idle.support.transfer.jobposting.center.CenterJobPostingListResponse
 import com.swm.idle.support.transfer.jobposting.center.CenterJobPostingResponse
 import com.swm.idle.support.transfer.jobposting.center.CreateJobPostingRequest
+import com.swm.idle.support.transfer.jobposting.center.JobPostingApplicantCountResponse
 import com.swm.idle.support.transfer.jobposting.center.JobPostingApplicantsResponse
 import com.swm.idle.support.transfer.jobposting.center.UpdateJobPostingRequest
 import org.springframework.web.bind.annotation.RestController
@@ -55,6 +56,10 @@ class CenterJobPostingController(
 
     override fun getJobPostingApplicants(jobPostingId: UUID): JobPostingApplicantsResponse {
         return centerJobPostingFacadeService.getJobPostingApplicants(jobPostingId)
+    }
+
+    override fun getJobPostingApplicantCount(jobPostingId: UUID): JobPostingApplicantCountResponse {
+        return centerJobPostingFacadeService.getApplicantCount(jobPostingId)
     }
 
 }

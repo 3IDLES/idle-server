@@ -15,4 +15,6 @@ interface CarerApplyJpaRepository : JpaRepository<Applys, UUID> {
 
     fun findAllByJobPostingId(jobPostingId: UUID): List<Applys>
 
+    fun countByJobPostingId(jobPostingId: UUID): Int
+
 }
