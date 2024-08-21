@@ -1,5 +1,6 @@
 package com.swm.idle.application.jobposting.service.facade
 
+import com.swm.idle.application.applys.domain.ApplicantService
 import com.swm.idle.application.applys.domain.CarerApplyService
 import com.swm.idle.application.common.security.getUserAuthentication
 import com.swm.idle.application.jobposting.service.domain.JobPostingApplyMethodService
@@ -18,6 +19,7 @@ import com.swm.idle.domain.user.common.vo.BirthYear
 import com.swm.idle.infrastructure.client.geocode.service.GeoCodeService
 import com.swm.idle.support.transfer.jobposting.center.CenterJobPostingResponse
 import com.swm.idle.support.transfer.jobposting.center.CreateJobPostingRequest
+import com.swm.idle.support.transfer.jobposting.center.JobPostingApplicantCountResponse
 import com.swm.idle.support.transfer.jobposting.center.JobPostingApplicantsResponse
 import com.swm.idle.support.transfer.jobposting.center.UpdateJobPostingRequest
 import kotlinx.coroutines.coroutineScope
@@ -38,6 +40,7 @@ class CenterJobPostingFacadeService(
     private val centerService: CenterService,
     private val carerService: CarerService,
     private val carerApplyService: CarerApplyService,
+    private val applicantService: ApplicantService,
 ) {
 
     @Transactional
@@ -247,6 +250,10 @@ class CenterJobPostingFacadeService(
             jobPosting = jobPosting,
             applicants = applicants,
         )
+    }
+
+    fun getApplicantCount(jobPostingId: UUID): JobPostingApplicantCountResponse {
+        return JobPostingApplicantCountResponse(applicantService.countByJobPostingId(jobPostingId))
     }
 
 }
