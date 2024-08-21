@@ -1,20 +1,24 @@
 package com.swm.idle.application.jobposting.service.facade
 
+import com.swm.idle.application.applys.domain.CarerApplyService
 import com.swm.idle.application.common.security.getUserAuthentication
 import com.swm.idle.application.jobposting.service.domain.JobPostingApplyMethodService
 import com.swm.idle.application.jobposting.service.domain.JobPostingLifeAssistanceService
 import com.swm.idle.application.jobposting.service.domain.JobPostingService
 import com.swm.idle.application.jobposting.service.domain.JobPostingWeekdayService
 import com.swm.idle.application.jobposting.service.vo.JobPostingInfo
+import com.swm.idle.application.user.carer.domain.CarerService
 import com.swm.idle.application.user.center.service.domain.CenterManagerService
 import com.swm.idle.application.user.center.service.domain.CenterService
 import com.swm.idle.domain.jobposting.entity.jpa.JobPosting
+import com.swm.idle.domain.user.carer.entity.jpa.Carer
 import com.swm.idle.domain.user.center.exception.CenterException
 import com.swm.idle.domain.user.center.vo.BusinessRegistrationNumber
 import com.swm.idle.domain.user.common.vo.BirthYear
 import com.swm.idle.infrastructure.client.geocode.service.GeoCodeService
 import com.swm.idle.support.transfer.jobposting.center.CenterJobPostingResponse
 import com.swm.idle.support.transfer.jobposting.center.CreateJobPostingRequest
+import com.swm.idle.support.transfer.jobposting.center.JobPostingApplicantsResponse
 import com.swm.idle.support.transfer.jobposting.center.UpdateJobPostingRequest
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -32,6 +36,8 @@ class CenterJobPostingFacadeService(
     private val geoCodeService: GeoCodeService,
     private val centerManagerService: CenterManagerService,
     private val centerService: CenterService,
+    private val carerService: CarerService,
+    private val carerApplyService: CarerApplyService,
 ) {
 
     @Transactional
@@ -188,7 +194,7 @@ class CenterJobPostingFacadeService(
         }
     }
 
-    fun getById(jobPostingId: UUID): CenterJobPostingResponse {
+    fun getJobPostingDetail(jobPostingId: UUID): CenterJobPostingResponse {
         val weekdays = jobPostingWeekdayService.findByJobPostingId(jobPostingId)?.map { it.weekday }
         val lifeAssistances = jobPostingLifeAssistanceService.findByJobPostingId(jobPostingId)
             ?.map { it.lifeAssistance }
@@ -196,31 +202,11 @@ class CenterJobPostingFacadeService(
             jobPostingApplyMethodService.findByJobPostingId(jobPostingId)?.map { it.applyMethod }
 
         jobPostingService.getById(jobPostingId).let {
-            return CenterJobPostingResponse(
-                id = it.id,
-                weekdays = weekdays!!,
-                startTime = it.startTime,
-                endTime = it.endTime,
-                payType = it.payType,
-                payAmount = it.payAmount,
-                roadNameAddress = it.roadNameAddress,
-                lotNumberAddress = it.lotNumberAddress,
-                clientName = it.clientName,
-                gender = it.gender,
-                age = BirthYear.calculateAge(it.birthYear),
-                weight = it.weight,
-                careLevel = it.careLevel,
-                mentalStatus = it.mentalStatus,
-                disease = it.disease,
-                isMealAssistance = it.isMealAssistance,
-                isBowelAssistance = it.isBowelAssistance,
-                isWalkingAssistance = it.isWalkingAssistance,
-                lifeAssistance = lifeAssistances,
-                extraRequirement = it.extraRequirement,
-                isExperiencePreferred = it.isExperiencePreferred,
-                applyMethod = applyMethods!!,
-                applyDeadlineType = it.applyDeadlineType,
-                applyDeadline = it.applyDeadline,
+            return CenterJobPostingResponse.of(
+                jobPosting = it,
+                weekdays = weekdays,
+                lifeAssistances = lifeAssistances,
+                applyMethods = applyMethods,
             )
         }
     }
@@ -247,6 +233,21 @@ class CenterJobPostingFacadeService(
         }
 
         return jobPostingService.findAllCompleted(center.id)
+    }
+
+    fun getJobPostingApplicants(jobPostingId: UUID): JobPostingApplicantsResponse {
+        val applys = carerApplyService.findAllByJobPostingId(jobPostingId)
+        val applicants: List<Carer> = applys.map { apply ->
+            carerService.getById(apply.carerId)
+        }
+
+
+        val jobPosting = jobPostingService.getById(jobPostingId)
+
+        return JobPostingApplicantsResponse.of(
+            jobPosting = jobPosting,
+            applicants = applicants,
+        )
     }
 
 }

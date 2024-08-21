@@ -11,16 +11,6 @@ class CarerApplyService(
     private val carerApplyJpaRepository: CarerApplyJpaRepository,
 ) {
 
-    fun existsByJobPostingIdAndCarerIdAndApplyMethodType(
-        jobPostingId: UUID,
-        carerId: UUID,
-    ): Boolean {
-        return carerApplyJpaRepository.existsByJobPostingIdAndCarerId(
-            jobPostingId = jobPostingId,
-            carerId = carerId,
-        )
-    }
-
     fun create(
         jobPostingId: UUID,
         carerId: UUID,
@@ -33,6 +23,20 @@ class CarerApplyService(
                 applyMethodType = applyMethodType,
             )
         )
+    }
+
+    fun existsByJobPostingIdAndCarerIdAndApplyMethodType(
+        jobPostingId: UUID,
+        carerId: UUID,
+    ): Boolean {
+        return carerApplyJpaRepository.existsByJobPostingIdAndCarerId(
+            jobPostingId = jobPostingId,
+            carerId = carerId,
+        )
+    }
+
+    fun findAllByJobPostingId(jobPostingId: UUID): List<Applys> {
+        return carerApplyJpaRepository.findAllByJobPostingId(jobPostingId)
     }
 
 }

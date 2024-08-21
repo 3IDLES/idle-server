@@ -1,6 +1,7 @@
 package com.swm.idle.support.transfer.jobposting.center
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.swm.idle.domain.jobposting.entity.jpa.JobPosting
 import com.swm.idle.domain.jobposting.vo.ApplyDeadlineType
 import com.swm.idle.domain.jobposting.vo.ApplyMethodType
 import com.swm.idle.domain.jobposting.vo.LifeAssistanceType
@@ -8,6 +9,7 @@ import com.swm.idle.domain.jobposting.vo.MentalStatus
 import com.swm.idle.domain.jobposting.vo.PayType
 import com.swm.idle.domain.jobposting.vo.Weekdays
 import com.swm.idle.domain.user.common.enum.GenderType
+import com.swm.idle.domain.user.common.vo.BirthYear
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDate
 import java.util.*
@@ -91,9 +93,48 @@ data class CenterJobPostingResponse(
     @Schema(description = "지원 방법", example = "[\"CALLING\", \"MESSAGE\"]")
     val applyMethod: List<ApplyMethodType>,
 
-    @Schema(description = "지원 마감 유형", example = "LIMITED")
+    @Schema(description = "지원 마감 유형", example = "LIMjobPostingED")
     val applyDeadlineType: ApplyDeadlineType,
 
     @Schema(description = "지원 마감일", example = "2024-07-30")
     val applyDeadline: LocalDate?,
-)
+) {
+
+    companion object {
+
+        fun of(
+            jobPosting: JobPosting,
+            weekdays: List<Weekdays>?,
+            lifeAssistances: List<LifeAssistanceType>?,
+            applyMethods: List<ApplyMethodType>?,
+        ): CenterJobPostingResponse {
+            return CenterJobPostingResponse(
+                id = jobPosting.id,
+                weekdays = weekdays!!,
+                startTime = jobPosting.startTime,
+                endTime = jobPosting.endTime,
+                payType = jobPosting.payType,
+                payAmount = jobPosting.payAmount,
+                roadNameAddress = jobPosting.roadNameAddress,
+                lotNumberAddress = jobPosting.lotNumberAddress,
+                clientName = jobPosting.clientName,
+                gender = jobPosting.gender,
+                age = BirthYear.calculateAge(jobPosting.birthYear),
+                weight = jobPosting.weight,
+                careLevel = jobPosting.careLevel,
+                mentalStatus = jobPosting.mentalStatus,
+                disease = jobPosting.disease,
+                isMealAssistance = jobPosting.isMealAssistance,
+                isBowelAssistance = jobPosting.isBowelAssistance,
+                isWalkingAssistance = jobPosting.isWalkingAssistance,
+                lifeAssistance = lifeAssistances,
+                extraRequirement = jobPosting.extraRequirement,
+                isExperiencePreferred = jobPosting.isExperiencePreferred,
+                applyMethod = applyMethods!!,
+                applyDeadlineType = jobPosting.applyDeadlineType,
+                applyDeadline = jobPosting.applyDeadline,
+            )
+        }
+    }
+
+}

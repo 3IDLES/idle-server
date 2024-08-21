@@ -4,6 +4,7 @@ import com.swm.idle.presentation.common.security.annotation.Secured
 import com.swm.idle.support.transfer.jobposting.center.CenterJobPostingListResponse
 import com.swm.idle.support.transfer.jobposting.center.CenterJobPostingResponse
 import com.swm.idle.support.transfer.jobposting.center.CreateJobPostingRequest
+import com.swm.idle.support.transfer.jobposting.center.JobPostingApplicantsResponse
 import com.swm.idle.support.transfer.jobposting.center.UpdateJobPostingRequest
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -59,7 +60,7 @@ interface CenterJobPostingApi {
     @Operation(summary = "센터 구인 공고 상세 조회 API")
     @GetMapping("/{job-posting-id}/center")
     @ResponseStatus(HttpStatus.OK)
-    fun getJobPosting(@PathVariable(value = "job-posting-id") jobPostingId: UUID): CenterJobPostingResponse
+    fun getJobPostingDetail(@PathVariable(value = "job-posting-id") jobPostingId: UUID): CenterJobPostingResponse
 
     @Secured
     @Operation(summary = "센터별 진행 중인 공고 전체 조회 API")
@@ -72,5 +73,11 @@ interface CenterJobPostingApi {
     @GetMapping("/status/completed")
     @ResponseStatus(HttpStatus.OK)
     fun getJobPostingCompleted(): CenterJobPostingListResponse
+
+    @Secured
+    @Operation(summary = "공고 지원자 전체 조회 API")
+    @GetMapping("/{job-posting-id}/applicants")
+    @ResponseStatus(HttpStatus.OK)
+    fun getJobPostingApplicants(@PathVariable(value = "job-posting-id") jobPostingId: UUID): JobPostingApplicantsResponse
 
 }

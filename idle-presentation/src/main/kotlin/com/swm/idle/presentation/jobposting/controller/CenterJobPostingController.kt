@@ -5,6 +5,7 @@ import com.swm.idle.presentation.jobposting.api.CenterJobPostingApi
 import com.swm.idle.support.transfer.jobposting.center.CenterJobPostingListResponse
 import com.swm.idle.support.transfer.jobposting.center.CenterJobPostingResponse
 import com.swm.idle.support.transfer.jobposting.center.CreateJobPostingRequest
+import com.swm.idle.support.transfer.jobposting.center.JobPostingApplicantsResponse
 import com.swm.idle.support.transfer.jobposting.center.UpdateJobPostingRequest
 import org.springframework.web.bind.annotation.RestController
 import java.util.*
@@ -36,8 +37,8 @@ class CenterJobPostingController(
         centerJobPostingFacadeService.updateToComplete(jobPostingId)
     }
 
-    override fun getJobPosting(jobPostingId: UUID): CenterJobPostingResponse {
-        return centerJobPostingFacadeService.getById(jobPostingId)
+    override fun getJobPostingDetail(jobPostingId: UUID): CenterJobPostingResponse {
+        return centerJobPostingFacadeService.getJobPostingDetail(jobPostingId)
     }
 
     override fun getJobPostingInProgress(): CenterJobPostingListResponse {
@@ -50,6 +51,10 @@ class CenterJobPostingController(
         return CenterJobPostingListResponse.from(
             centerJobPostingFacadeService.findAllCompletedById()
         )
+    }
+
+    override fun getJobPostingApplicants(jobPostingId: UUID): JobPostingApplicantsResponse {
+        return centerJobPostingFacadeService.getJobPostingApplicants(jobPostingId)
     }
 
 }
