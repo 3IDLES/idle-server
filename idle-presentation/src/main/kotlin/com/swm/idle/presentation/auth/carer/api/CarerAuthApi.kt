@@ -4,8 +4,6 @@ import com.swm.idle.presentation.common.security.annotation.Secured
 import com.swm.idle.support.transfer.auth.carer.CarerJoinRequest
 import com.swm.idle.support.transfer.auth.carer.CarerLoginRequest
 import com.swm.idle.support.transfer.auth.carer.CarerWithdrawRequest
-import com.swm.idle.support.transfer.auth.center.RefreshLoginTokenResponse
-import com.swm.idle.support.transfer.auth.center.RefreshTokenRequest
 import com.swm.idle.support.transfer.auth.common.LoginResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -46,12 +44,5 @@ interface CarerAuthApi {
     fun withdraw(
         @RequestBody request: CarerWithdrawRequest,
     )
-
-    @Operation(summary = "요양 보호사 Refresh Login Token API")
-    @PostMapping("/refresh")
-    @ResponseStatus(HttpStatus.OK)
-    fun refreshLoginToken(
-        @RequestBody request: RefreshTokenRequest,
-    ): RefreshLoginTokenResponse
 
 }

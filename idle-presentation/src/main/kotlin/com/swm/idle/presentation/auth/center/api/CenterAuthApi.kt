@@ -4,8 +4,6 @@ import com.swm.idle.presentation.common.exception.ErrorResponse
 import com.swm.idle.presentation.common.security.annotation.Secured
 import com.swm.idle.support.transfer.auth.center.CenterLoginRequest
 import com.swm.idle.support.transfer.auth.center.JoinRequest
-import com.swm.idle.support.transfer.auth.center.RefreshLoginTokenResponse
-import com.swm.idle.support.transfer.auth.center.RefreshTokenRequest
 import com.swm.idle.support.transfer.auth.center.ValidateBusinessRegistrationNumberResponse
 import com.swm.idle.support.transfer.auth.center.WithdrawRequest
 import com.swm.idle.support.transfer.auth.common.LoginResponse
@@ -52,13 +50,6 @@ interface CenterAuthApi {
     @PostMapping("/logout")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun logout()
-
-    @Operation(summary = "센터 Refresh Login Token API")
-    @PostMapping("/refresh")
-    @ResponseStatus(HttpStatus.OK)
-    fun refreshLoginToken(
-        @RequestBody request: RefreshTokenRequest,
-    ): RefreshLoginTokenResponse
 
     @Secured
     @Operation(summary = "센터 회원 탈퇴 API")
