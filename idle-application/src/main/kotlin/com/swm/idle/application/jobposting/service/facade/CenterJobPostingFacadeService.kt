@@ -241,7 +241,6 @@ class CenterJobPostingFacadeService(
             carerService.getById(apply.carerId)
         }
 
-
         val jobPosting = jobPostingService.getById(jobPostingId)
 
         return JobPostingApplicantsResponse.of(
