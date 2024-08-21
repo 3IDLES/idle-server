@@ -8,8 +8,6 @@ import com.swm.idle.domain.user.common.vo.PhoneNumber
 import com.swm.idle.presentation.auth.center.api.CenterAuthApi
 import com.swm.idle.support.transfer.auth.center.CenterLoginRequest
 import com.swm.idle.support.transfer.auth.center.JoinRequest
-import com.swm.idle.support.transfer.auth.center.RefreshLoginTokenResponse
-import com.swm.idle.support.transfer.auth.center.RefreshTokenRequest
 import com.swm.idle.support.transfer.auth.center.ValidateBusinessRegistrationNumberResponse
 import com.swm.idle.support.transfer.auth.center.WithdrawRequest
 import com.swm.idle.support.transfer.auth.common.LoginResponse
@@ -49,10 +47,6 @@ class CenterAuthController(
 
     override fun logout() {
         centerAuthFacadeService.logout()
-    }
-
-    override fun refreshLoginToken(request: RefreshTokenRequest): RefreshLoginTokenResponse {
-        return centerAuthFacadeService.refreshLoginToken(request.refreshToken)
     }
 
     override fun withdraw(request: WithdrawRequest) {

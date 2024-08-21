@@ -3,6 +3,7 @@ package com.swm.idle.presentation.jobposting.controller
 import com.swm.idle.application.common.converter.PointConverter
 import com.swm.idle.application.common.security.getUserAuthentication
 import com.swm.idle.application.jobposting.service.facade.CarerJobPostingFacadeService
+import com.swm.idle.application.jobposting.service.facade.JobPostingFavoriteFacadeService
 import com.swm.idle.application.user.carer.domain.CarerService
 import com.swm.idle.presentation.jobposting.api.CarerJobPostingApi
 import com.swm.idle.support.transfer.jobposting.carer.CarerAppliedJobPostingScrollResponse
@@ -16,6 +17,7 @@ import java.util.*
 class CarerJobPostingController(
     private val carerJobPostingFacadeService: CarerJobPostingFacadeService,
     private val carerService: CarerService,
+    private val jobPostingFavoriteFacadeService: JobPostingFavoriteFacadeService,
 ) : CarerJobPostingApi {
 
     override fun getJobPosting(jobPostingId: UUID): CarerJobPostingResponse {
@@ -44,6 +46,20 @@ class CarerJobPostingController(
         return carerJobPostingFacadeService.getAppliedJobPostings(
             request = request,
             carerId = carer.id
+        )
+    }
+
+    override fun createJobPostingFavorite(jobPostingId: UUID) {
+        jobPostingFavoriteFacadeService.createJobPostingFavorite(
+            carerId = getUserAuthentication().userId,
+            jobPostingId = jobPostingId,
+        )
+    }
+
+    override fun deleteJobPostingFavorite(jobPostingId: UUID) {
+        jobPostingFavoriteFacadeService.deleteJobPostingFavorite(
+            carerId = getUserAuthentication().userId,
+            jobPostingId = jobPostingId,
         )
     }
 
