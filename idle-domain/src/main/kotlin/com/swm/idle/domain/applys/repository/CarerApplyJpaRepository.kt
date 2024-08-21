@@ -13,4 +13,6 @@ interface CarerApplyJpaRepository : JpaRepository<Applys, UUID> {
         carerId: UUID,
     ): Boolean
 
+    fun findAllByJobPostingId(jobPostingId: UUID): List<Applys>
+
 }
