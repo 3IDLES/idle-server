@@ -12,8 +12,8 @@ import com.swm.idle.domain.common.dto.JobPostingWithWeekdaysAndApplyDto
 import com.swm.idle.domain.common.dto.JobPostingWithWeekdaysDto
 import com.swm.idle.support.transfer.jobposting.carer.CarerAppliedJobPostingScrollResponse
 import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingResponse
-import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingScrollRequest
 import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingScrollResponse
+import com.swm.idle.support.transfer.jobposting.carer.CursorScrollRequest
 import org.locationtech.jts.geom.Point
 import org.springframework.stereotype.Service
 import java.util.*
@@ -62,7 +62,7 @@ class CarerJobPostingFacadeService(
     }
 
     fun getJobPostingsInRange(
-        request: CarerJobPostingScrollRequest,
+        request: CursorScrollRequest,
         location: Point,
     ): CarerJobPostingScrollResponse {
         val (items, next) = scrollByCarerLocationInRange(
@@ -116,7 +116,7 @@ class CarerJobPostingFacadeService(
     }
 
     fun getAppliedJobPostings(
-        request: CarerJobPostingScrollRequest,
+        request: CursorScrollRequest,
         carerId: UUID,
     ): CarerAppliedJobPostingScrollResponse {
         val (items, next) = scrollByCarerApplyHistory(
