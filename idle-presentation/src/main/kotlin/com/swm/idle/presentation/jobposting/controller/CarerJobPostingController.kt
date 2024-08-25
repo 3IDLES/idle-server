@@ -8,8 +8,9 @@ import com.swm.idle.application.user.carer.domain.CarerService
 import com.swm.idle.presentation.jobposting.api.CarerJobPostingApi
 import com.swm.idle.support.transfer.jobposting.carer.CarerAppliedJobPostingScrollResponse
 import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingResponse
-import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingScrollRequest
 import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingScrollResponse
+import com.swm.idle.support.transfer.jobposting.carer.CursorScrollRequest
+import com.swm.idle.support.transfer.jobposting.carer.GetMyFavoriteJobPostingScrollResponse
 import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
@@ -24,7 +25,7 @@ class CarerJobPostingController(
         return carerJobPostingFacadeService.getJobPosting(jobPostingId)
     }
 
-    override fun getJobPostings(request: CarerJobPostingScrollRequest): CarerJobPostingScrollResponse {
+    override fun getJobPostings(request: CursorScrollRequest): CarerJobPostingScrollResponse {
         val carer = carerService.getById(getUserAuthentication().userId)
 
         val location = PointConverter.convertToPoint(
@@ -39,7 +40,7 @@ class CarerJobPostingController(
     }
 
     override fun getAppliedJobPostings(
-        request: CarerJobPostingScrollRequest,
+        request: CursorScrollRequest,
     ): CarerAppliedJobPostingScrollResponse {
         val carer = carerService.getById(getUserAuthentication().userId)
 
@@ -60,6 +61,17 @@ class CarerJobPostingController(
         jobPostingFavoriteFacadeService.deleteJobPostingFavorite(
             carerId = getUserAuthentication().userId,
             jobPostingId = jobPostingId,
+        )
+    }
+
+    override fun getMyFavoriteJobPostings(
+        request: CursorScrollRequest,
+    ): GetMyFavoriteJobPostingScrollResponse {
+        val carer = carerService.getById(getUserAuthentication().userId)
+
+        return jobPostingFavoriteFacadeService.getMyFavoriteJobPostings(
+            request = request,
+            carerId = carer.id,
         )
     }
 

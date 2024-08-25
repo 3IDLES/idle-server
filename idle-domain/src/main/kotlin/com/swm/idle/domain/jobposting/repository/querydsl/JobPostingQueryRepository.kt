@@ -5,8 +5,11 @@ import com.querydsl.core.group.GroupBy.list
 import com.querydsl.core.types.Projections
 import com.querydsl.jpa.impl.JPAQueryFactory
 import com.swm.idle.domain.applys.entity.jpa.QApplys.applys
+import com.swm.idle.domain.common.dto.FavoriteJobPostingWithWeekdaysDto
 import com.swm.idle.domain.common.dto.JobPostingWithWeekdaysAndApplyDto
+import com.swm.idle.domain.common.enums.EntityStatus
 import com.swm.idle.domain.jobposting.entity.jpa.QJobPosting.jobPosting
+import com.swm.idle.domain.jobposting.entity.jpa.QJobPostingFavorite.jobPostingFavorite
 import com.swm.idle.domain.jobposting.entity.jpa.QJobPostingWeekday.jobPostingWeekday
 import org.springframework.stereotype.Repository
 import java.util.*
@@ -52,6 +55,48 @@ class JobPostingQueryRepository(
                             jobPosting,
                             list(jobPostingWeekday),
                             applys.createdAt,
+                        )
+                    )
+            )
+    }
+
+    fun findAllInFavorites(
+        next: UUID?,
+        limit: Long,
+        carerId: UUID,
+    ): List<FavoriteJobPostingWithWeekdaysDto> {
+        val jobPostingIds = jpaQueryFactory
+            .select(jobPosting.id)
+            .from(jobPosting)
+            .leftJoin(jobPostingFavorite).on(jobPosting.id.eq(jobPostingFavorite.jobPostingId))
+            .where(
+                jobPostingFavorite.carerId.eq(carerId)
+                    .and(jobPostingFavorite.entityStatus.eq(EntityStatus.ACTIVE))
+                    .and(next?.let { jobPosting.id.goe(it) })
+            )
+            .limit(limit)
+            .fetch()
+
+        if (jobPostingIds.isEmpty()) {
+            return emptyList()
+        }
+
+        return jpaQueryFactory
+            .select(jobPosting, jobPostingWeekday, applys)
+            .from(jobPosting)
+            .leftJoin(jobPostingWeekday).fetchJoin()
+            .on(jobPosting.id.eq(jobPostingWeekday.jobPostingId))
+            .leftJoin(applys).fetchJoin()
+            .on(jobPosting.id.eq(applys.jobPostingId))
+            .where(jobPosting.id.`in`(jobPostingIds))
+            .transform(
+                groupBy(jobPosting.id)
+                    .list(
+                        Projections.constructor(
+                            FavoriteJobPostingWithWeekdaysDto::class.java,
+                            jobPosting,
+                            list(jobPostingWeekday),
+                            applys.createdAt ?: null,
                         )
                     )
             )

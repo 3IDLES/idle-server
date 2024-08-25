@@ -6,7 +6,7 @@ import org.springdoc.core.annotations.ParameterObject
 import java.util.*
 
 @ParameterObject
-data class CarerJobPostingScrollRequest(
+data class CursorScrollRequest(
     @Parameter(required = false, example = "다음 요청 시에 최초로 조회되는 ID. 최초 요청시에는 null")
     override val next: UUID? = null,
     @Parameter(required = false, example = "조회 item 수 : default 10")
