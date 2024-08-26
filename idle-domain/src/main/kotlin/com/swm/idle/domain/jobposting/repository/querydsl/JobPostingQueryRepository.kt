@@ -5,8 +5,7 @@ import com.querydsl.core.group.GroupBy.list
 import com.querydsl.core.types.Projections
 import com.querydsl.jpa.impl.JPAQueryFactory
 import com.swm.idle.domain.applys.entity.jpa.QApplys.applys
-import com.swm.idle.domain.common.dto.FavoriteJobPostingWithWeekdaysDto
-import com.swm.idle.domain.common.dto.JobPostingWithWeekdaysAndApplyDto
+import com.swm.idle.domain.common.dto.JobPostingPreviewDto
 import com.swm.idle.domain.common.enums.EntityStatus
 import com.swm.idle.domain.jobposting.entity.jpa.QJobPosting.jobPosting
 import com.swm.idle.domain.jobposting.entity.jpa.QJobPostingFavorite.jobPostingFavorite
@@ -24,7 +23,7 @@ class JobPostingQueryRepository(
         next: UUID?,
         limit: Long,
         carerId: UUID,
-    ): List<JobPostingWithWeekdaysAndApplyDto> {
+    ): List<JobPostingPreviewDto> {
         val jobPostingIds = jpaQueryFactory
             .select(jobPosting.id)
             .from(jobPosting)
@@ -54,7 +53,7 @@ class JobPostingQueryRepository(
                 groupBy(jobPosting.id)
                     .list(
                         Projections.constructor(
-                            JobPostingWithWeekdaysAndApplyDto::class.java,
+                            JobPostingPreviewDto::class.java,
                             jobPosting,
                             list(jobPostingWeekday),
                             applys.createdAt,
@@ -69,7 +68,7 @@ class JobPostingQueryRepository(
         next: UUID?,
         limit: Long,
         carerId: UUID,
-    ): List<FavoriteJobPostingWithWeekdaysDto> {
+    ): List<JobPostingPreviewDto> {
         val jobPostingIds = jpaQueryFactory
             .select(jobPosting.id)
             .from(jobPosting)
@@ -98,7 +97,7 @@ class JobPostingQueryRepository(
                 groupBy(jobPosting.id)
                     .list(
                         Projections.constructor(
-                            FavoriteJobPostingWithWeekdaysDto::class.java,
+                            JobPostingPreviewDto::class.java,
                             jobPosting,
                             list(jobPostingWeekday),
                             applys.createdAt ?: null,

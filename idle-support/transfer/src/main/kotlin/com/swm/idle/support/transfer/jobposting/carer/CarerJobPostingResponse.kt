@@ -13,6 +13,7 @@ import com.swm.idle.domain.user.common.enum.GenderType
 import com.swm.idle.domain.user.common.vo.BirthYear
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.*
 
 @Schema(
@@ -114,6 +115,14 @@ data class CarerJobPostingResponse(
 
     @Schema(description = "직선 거리", example = "760(단위 : 미터)")
     val distance: Int,
+
+    @Schema(description = "지원 시각")
+    val applyTime: LocalDateTime?,
+
+    @get:JsonProperty("isFavorite")
+    @param:JsonProperty("isFavorite")
+    @Schema(description = "즐겨찾기 설정 여부")
+    val isFavorite: Boolean,
 ) {
 
     companion object {
@@ -125,6 +134,8 @@ data class CarerJobPostingResponse(
             applyMethods: List<ApplyMethodType>?,
             center: Center,
             distance: Int,
+            applyTime: LocalDateTime?,
+            isFavorite: Boolean,
         ): CarerJobPostingResponse {
             return CarerJobPostingResponse(
                 id = jobPosting.id,
@@ -156,6 +167,8 @@ data class CarerJobPostingResponse(
                 centerName = center.centerName,
                 centerRoadNameAddress = center.roadNameAddress,
                 distance = distance,
+                applyTime = applyTime,
+                isFavorite = isFavorite,
             )
         }
 

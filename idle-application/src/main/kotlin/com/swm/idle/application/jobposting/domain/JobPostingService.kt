@@ -2,8 +2,7 @@ package com.swm.idle.application.jobposting.domain
 
 import com.swm.idle.application.common.converter.PointConverter
 import com.swm.idle.application.jobposting.vo.JobPostingInfo
-import com.swm.idle.domain.common.dto.JobPostingWithWeekdaysAndApplyDto
-import com.swm.idle.domain.common.dto.JobPostingWithWeekdaysDto
+import com.swm.idle.domain.common.dto.JobPostingPreviewDto
 import com.swm.idle.domain.common.exception.PersistenceException
 import com.swm.idle.domain.jobposting.entity.jpa.JobPosting
 import com.swm.idle.domain.jobposting.repository.jpa.JobPostingJpaRepository
@@ -197,7 +196,7 @@ class JobPostingService(
         location: Point,
         next: UUID?,
         limit: Long,
-    ): List<JobPostingWithWeekdaysDto> {
+    ): List<JobPostingPreviewDto> {
         return jobPostingSpatialQueryRepository.findAllWithWeekdaysInRange(
             location = location,
             next = next,
@@ -217,14 +216,13 @@ class JobPostingService(
         next: UUID?,
         limit: Long,
         carerId: UUID,
-    ): List<JobPostingWithWeekdaysAndApplyDto> {
+    ): List<JobPostingPreviewDto> {
         return jobPostingQueryRepository.findAllByCarerApplyHistory(
             next = next,
             limit = limit,
             carerId = carerId,
         )
     }
-
 
     fun calculateDistance(
         jobPosting: JobPosting,

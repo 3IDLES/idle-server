@@ -5,7 +5,7 @@ import com.swm.idle.application.common.security.getUserAuthentication
 import com.swm.idle.application.jobposting.domain.JobPostingFavoriteService
 import com.swm.idle.application.jobposting.domain.JobPostingService
 import com.swm.idle.application.user.carer.domain.CarerService
-import com.swm.idle.domain.common.dto.FavoriteJobPostingWithWeekdaysDto
+import com.swm.idle.domain.common.dto.JobPostingPreviewDto
 import com.swm.idle.support.transfer.jobposting.carer.CursorScrollRequest
 import com.swm.idle.support.transfer.jobposting.carer.GetMyFavoriteJobPostingScrollResponse
 import org.springframework.stereotype.Service
@@ -59,7 +59,7 @@ data class JobPostingFavoriteFacadeService(
         carerId: UUID,
         next: UUID?,
         limit: Long,
-    ): Pair<List<FavoriteJobPostingWithWeekdaysDto>, UUID?> {
+    ): Pair<List<JobPostingPreviewDto>, UUID?> {
 
         val FavoriteJobPostingWithWeekdaysDtos =
             jobPostingFavoriteService.findMyFavoriteJobPostingsByCarerId(

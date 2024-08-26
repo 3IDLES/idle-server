@@ -22,7 +22,7 @@ class CarerJobPostingController(
 ) : CarerJobPostingApi {
 
     override fun getJobPosting(jobPostingId: UUID): CarerJobPostingResponse {
-        return carerJobPostingFacadeService.getJobPosting(jobPostingId)
+        return carerJobPostingFacadeService.getJobPostingDetail(jobPostingId)
     }
 
     override fun getJobPostings(request: CursorScrollRequest): CarerJobPostingScrollResponse {

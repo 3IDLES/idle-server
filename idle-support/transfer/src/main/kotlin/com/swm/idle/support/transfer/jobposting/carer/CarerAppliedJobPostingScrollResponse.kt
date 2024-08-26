@@ -1,7 +1,7 @@
 package com.swm.idle.support.transfer.jobposting.carer
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.swm.idle.domain.common.dto.JobPostingWithWeekdaysAndApplyDto
+import com.swm.idle.domain.common.dto.JobPostingPreviewDto
 import com.swm.idle.domain.jobposting.vo.ApplyDeadlineType
 import com.swm.idle.domain.jobposting.vo.PayType
 import com.swm.idle.domain.jobposting.vo.Weekdays
@@ -87,26 +87,26 @@ data class CarerAppliedJobPostingScrollResponse(
         companion object {
 
             fun from(
-                jobPostingWithWeekdaysAndApplyDto: JobPostingWithWeekdaysAndApplyDto,
+                jobPostingPreviewDto: JobPostingPreviewDto,
             ): JobPostingApplyDto {
                 return JobPostingApplyDto(
-                    id = jobPostingWithWeekdaysAndApplyDto.jobPosting.id,
-                    weekdays = jobPostingWithWeekdaysAndApplyDto.jobPostingWeekdays.map { it.weekday },
-                    startTime = jobPostingWithWeekdaysAndApplyDto.jobPosting.startTime,
-                    endTime = jobPostingWithWeekdaysAndApplyDto.jobPosting.endTime,
-                    payType = jobPostingWithWeekdaysAndApplyDto.jobPosting.payType,
-                    payAmount = jobPostingWithWeekdaysAndApplyDto.jobPosting.payAmount,
-                    roadNameAddress = jobPostingWithWeekdaysAndApplyDto.jobPosting.roadNameAddress,
-                    lotNumberAddress = jobPostingWithWeekdaysAndApplyDto.jobPosting.lotNumberAddress,
-                    gender = jobPostingWithWeekdaysAndApplyDto.jobPosting.gender,
-                    age = BirthYear.calculateAge(jobPostingWithWeekdaysAndApplyDto.jobPosting.birthYear),
-                    careLevel = jobPostingWithWeekdaysAndApplyDto.jobPosting.careLevel,
-                    isExperiencePreferred = jobPostingWithWeekdaysAndApplyDto.jobPosting.isExperiencePreferred,
-                    applyDeadline = jobPostingWithWeekdaysAndApplyDto.jobPosting.applyDeadline,
-                    applyDeadlineType = jobPostingWithWeekdaysAndApplyDto.jobPosting.applyDeadlineType,
-                    distance = jobPostingWithWeekdaysAndApplyDto.distance,
-                    applyTime = jobPostingWithWeekdaysAndApplyDto.applyTime,
-                    isFavorite = jobPostingWithWeekdaysAndApplyDto.isFavorite
+                    id = jobPostingPreviewDto.jobPosting.id,
+                    weekdays = jobPostingPreviewDto.jobPostingWeekdays.map { it.weekday },
+                    startTime = jobPostingPreviewDto.jobPosting.startTime,
+                    endTime = jobPostingPreviewDto.jobPosting.endTime,
+                    payType = jobPostingPreviewDto.jobPosting.payType,
+                    payAmount = jobPostingPreviewDto.jobPosting.payAmount,
+                    roadNameAddress = jobPostingPreviewDto.jobPosting.roadNameAddress,
+                    lotNumberAddress = jobPostingPreviewDto.jobPosting.lotNumberAddress,
+                    gender = jobPostingPreviewDto.jobPosting.gender,
+                    age = BirthYear.calculateAge(jobPostingPreviewDto.jobPosting.birthYear),
+                    careLevel = jobPostingPreviewDto.jobPosting.careLevel,
+                    isExperiencePreferred = jobPostingPreviewDto.jobPosting.isExperiencePreferred,
+                    applyDeadline = jobPostingPreviewDto.jobPosting.applyDeadline,
+                    applyDeadlineType = jobPostingPreviewDto.jobPosting.applyDeadlineType,
+                    distance = jobPostingPreviewDto.distance,
+                    applyTime = jobPostingPreviewDto.applyTime!!,
+                    isFavorite = jobPostingPreviewDto.isFavorite
                 )
             }
 
@@ -116,7 +116,7 @@ data class CarerAppliedJobPostingScrollResponse(
     companion object {
 
         fun from(
-            items: List<JobPostingWithWeekdaysAndApplyDto>,
+            items: List<JobPostingPreviewDto>,
             next: UUID?,
             total: Int,
         ): CarerAppliedJobPostingScrollResponse {

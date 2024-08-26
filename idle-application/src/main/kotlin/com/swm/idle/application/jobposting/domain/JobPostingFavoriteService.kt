@@ -1,6 +1,6 @@
 package com.swm.idle.application.jobposting.domain
 
-import com.swm.idle.domain.common.dto.FavoriteJobPostingWithWeekdaysDto
+import com.swm.idle.domain.common.dto.JobPostingPreviewDto
 import com.swm.idle.domain.common.exception.PersistenceException
 import com.swm.idle.domain.jobposting.entity.jpa.JobPostingFavorite
 import com.swm.idle.domain.jobposting.repository.jpa.JobPostingFavoriteJpaRepository
@@ -51,11 +51,18 @@ class JobPostingFavoriteService(
         carerId: UUID,
         next: UUID?,
         limit: Long,
-    ): List<FavoriteJobPostingWithWeekdaysDto> {
+    ): List<JobPostingPreviewDto> {
         return jobPostingQueryRepository.findAllInFavorites(
             carerId = carerId,
             next = next,
             limit = limit
+        )
+    }
+
+    fun findByJobPostingIdAndCarerId(jobPostingId: UUID, carerId: UUID): JobPostingFavorite? {
+        return jobPostingFavoriteJpaRepository.findByJobPostingIdAndCarerId(
+            jobPostingId = jobPostingId,
+            carerId = carerId,
         )
     }
 

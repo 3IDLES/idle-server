@@ -1,7 +1,7 @@
 package com.swm.idle.support.transfer.jobposting.carer
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.swm.idle.domain.common.dto.JobPostingWithWeekdaysDto
+import com.swm.idle.domain.common.dto.JobPostingPreviewDto
 import com.swm.idle.domain.jobposting.vo.ApplyDeadlineType
 import com.swm.idle.domain.jobposting.vo.PayType
 import com.swm.idle.domain.jobposting.vo.Weekdays
@@ -10,6 +10,7 @@ import com.swm.idle.domain.user.common.vo.BirthYear
 import com.swm.idle.support.transfer.common.ScrollResponse
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.*
 
 @Schema(
@@ -73,29 +74,39 @@ data class CarerJobPostingScrollResponse(
 
         @Schema(description = "직선 거리", example = "760(단위 : 미터)")
         val distance: Int,
+
+        @Schema(description = "지원 시각")
+        val applyTime: LocalDateTime?,
+
+        @get:JsonProperty("isFavorite")
+        @param:JsonProperty("isFavorite")
+        @Schema(description = "즐겨찾기 설정 여부")
+        val isFavorite: Boolean,
     ) {
 
         companion object {
 
             fun from(
-                jobPostingWithWeekdaysDto: JobPostingWithWeekdaysDto,
+                jobPostingPreviewDto: JobPostingPreviewDto,
             ): JobPostingDto {
                 return JobPostingDto(
-                    id = jobPostingWithWeekdaysDto.jobPosting.id,
-                    weekdays = jobPostingWithWeekdaysDto.jobPostingWeekdays.map { it.weekday },
-                    startTime = jobPostingWithWeekdaysDto.jobPosting.startTime,
-                    endTime = jobPostingWithWeekdaysDto.jobPosting.endTime,
-                    payType = jobPostingWithWeekdaysDto.jobPosting.payType,
-                    payAmount = jobPostingWithWeekdaysDto.jobPosting.payAmount,
-                    roadNameAddress = jobPostingWithWeekdaysDto.jobPosting.roadNameAddress,
-                    lotNumberAddress = jobPostingWithWeekdaysDto.jobPosting.lotNumberAddress,
-                    gender = jobPostingWithWeekdaysDto.jobPosting.gender,
-                    age = BirthYear.calculateAge(jobPostingWithWeekdaysDto.jobPosting.birthYear),
-                    careLevel = jobPostingWithWeekdaysDto.jobPosting.careLevel,
-                    isExperiencePreferred = jobPostingWithWeekdaysDto.jobPosting.isExperiencePreferred,
-                    applyDeadline = jobPostingWithWeekdaysDto.jobPosting.applyDeadline,
-                    applyDeadlineType = jobPostingWithWeekdaysDto.jobPosting.applyDeadlineType,
-                    distance = jobPostingWithWeekdaysDto.distance,
+                    id = jobPostingPreviewDto.jobPosting.id,
+                    weekdays = jobPostingPreviewDto.jobPostingWeekdays.map { it.weekday },
+                    startTime = jobPostingPreviewDto.jobPosting.startTime,
+                    endTime = jobPostingPreviewDto.jobPosting.endTime,
+                    payType = jobPostingPreviewDto.jobPosting.payType,
+                    payAmount = jobPostingPreviewDto.jobPosting.payAmount,
+                    roadNameAddress = jobPostingPreviewDto.jobPosting.roadNameAddress,
+                    lotNumberAddress = jobPostingPreviewDto.jobPosting.lotNumberAddress,
+                    gender = jobPostingPreviewDto.jobPosting.gender,
+                    age = BirthYear.calculateAge(jobPostingPreviewDto.jobPosting.birthYear),
+                    careLevel = jobPostingPreviewDto.jobPosting.careLevel,
+                    isExperiencePreferred = jobPostingPreviewDto.jobPosting.isExperiencePreferred,
+                    applyDeadline = jobPostingPreviewDto.jobPosting.applyDeadline,
+                    applyDeadlineType = jobPostingPreviewDto.jobPosting.applyDeadlineType,
+                    distance = jobPostingPreviewDto.distance,
+                    applyTime = jobPostingPreviewDto.applyTime,
+                    isFavorite = jobPostingPreviewDto.isFavorite
                 )
             }
 
@@ -105,7 +116,7 @@ data class CarerJobPostingScrollResponse(
     companion object {
 
         fun from(
-            items: List<JobPostingWithWeekdaysDto>,
+            items: List<JobPostingPreviewDto>,
             next: UUID?,
             total: Int,
         ): CarerJobPostingScrollResponse {
