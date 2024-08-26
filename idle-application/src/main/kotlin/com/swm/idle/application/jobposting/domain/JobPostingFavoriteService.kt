@@ -1,4 +1,4 @@
-package com.swm.idle.application.jobposting.service.domain
+package com.swm.idle.application.jobposting.domain
 
 import com.swm.idle.domain.common.dto.FavoriteJobPostingWithWeekdaysDto
 import com.swm.idle.domain.common.exception.PersistenceException

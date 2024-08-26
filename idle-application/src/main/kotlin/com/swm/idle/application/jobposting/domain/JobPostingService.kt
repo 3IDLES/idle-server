@@ -1,7 +1,7 @@
-package com.swm.idle.application.jobposting.service.domain
+package com.swm.idle.application.jobposting.domain
 
 import com.swm.idle.application.common.converter.PointConverter
-import com.swm.idle.application.jobposting.service.vo.JobPostingInfo
+import com.swm.idle.application.jobposting.vo.JobPostingInfo
 import com.swm.idle.domain.common.dto.JobPostingWithWeekdaysAndApplyDto
 import com.swm.idle.domain.common.dto.JobPostingWithWeekdaysDto
 import com.swm.idle.domain.common.exception.PersistenceException

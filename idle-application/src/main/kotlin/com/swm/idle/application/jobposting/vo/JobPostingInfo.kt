@@ -1,4 +1,4 @@
-package com.swm.idle.application.jobposting.service.vo
+package com.swm.idle.application.jobposting.vo
 
 import com.swm.idle.domain.jobposting.vo.ApplyDeadlineType
 import com.swm.idle.domain.jobposting.vo.MentalStatus

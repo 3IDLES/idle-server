@@ -1,6 +1,6 @@
 package com.swm.idle.batch.job
 
-import com.swm.idle.application.jobposting.service.domain.CrawledJobPostingService
+import com.swm.idle.application.jobposting.domain.CrawledJobPostingService
 import com.swm.idle.batch.common.dto.CrawledJobPostingDto
 import com.swm.idle.batch.util.WorknetCrawler
 import org.springframework.batch.core.StepContribution

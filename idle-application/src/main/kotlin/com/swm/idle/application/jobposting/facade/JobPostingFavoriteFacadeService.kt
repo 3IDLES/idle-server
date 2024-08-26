@@ -1,9 +1,9 @@
-package com.swm.idle.application.jobposting.service.facade
+package com.swm.idle.application.jobposting.facade
 
 import com.swm.idle.application.common.converter.PointConverter
 import com.swm.idle.application.common.security.getUserAuthentication
-import com.swm.idle.application.jobposting.service.domain.JobPostingFavoriteService
-import com.swm.idle.application.jobposting.service.domain.JobPostingService
+import com.swm.idle.application.jobposting.domain.JobPostingFavoriteService
+import com.swm.idle.application.jobposting.domain.JobPostingService
 import com.swm.idle.application.user.carer.domain.CarerService
 import com.swm.idle.domain.common.dto.FavoriteJobPostingWithWeekdaysDto
 import com.swm.idle.support.transfer.jobposting.carer.CursorScrollRequest
