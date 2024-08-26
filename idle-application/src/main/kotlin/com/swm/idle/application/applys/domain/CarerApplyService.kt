@@ -25,7 +25,7 @@ class CarerApplyService(
         )
     }
 
-    fun existsByJobPostingIdAndCarerIdAndApplyMethodType(
+    fun existsByJobPostingIdAndCarerId(
         jobPostingId: UUID,
         carerId: UUID,
     ): Boolean {
@@ -37,6 +37,16 @@ class CarerApplyService(
 
     fun findAllByJobPostingId(jobPostingId: UUID): List<Applys> {
         return carerApplyJpaRepository.findAllByJobPostingId(jobPostingId)
+    }
+
+    fun findByJobPostingIdAndCarerId(
+        jobPostingId: UUID,
+        carerId: UUID,
+    ): Applys? {
+        return carerApplyJpaRepository.findByJobPostingIdAndCarerId(
+            jobPostingId = jobPostingId,
+            carerId = carerId,
+        )
     }
 
 }

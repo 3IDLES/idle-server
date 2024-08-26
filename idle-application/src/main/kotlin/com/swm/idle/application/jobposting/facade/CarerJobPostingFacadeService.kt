@@ -1,15 +1,16 @@
 package com.swm.idle.application.jobposting.facade
 
+import com.swm.idle.application.applys.domain.CarerApplyService
 import com.swm.idle.application.common.converter.PointConverter
 import com.swm.idle.application.common.security.getUserAuthentication
 import com.swm.idle.application.jobposting.domain.JobPostingApplyMethodService
+import com.swm.idle.application.jobposting.domain.JobPostingFavoriteService
 import com.swm.idle.application.jobposting.domain.JobPostingLifeAssistanceService
 import com.swm.idle.application.jobposting.domain.JobPostingService
 import com.swm.idle.application.jobposting.domain.JobPostingWeekdayService
 import com.swm.idle.application.user.carer.domain.CarerService
 import com.swm.idle.application.user.center.service.domain.CenterService
-import com.swm.idle.domain.common.dto.JobPostingWithWeekdaysAndApplyDto
-import com.swm.idle.domain.common.dto.JobPostingWithWeekdaysDto
+import com.swm.idle.domain.common.dto.JobPostingPreviewDto
 import com.swm.idle.support.transfer.jobposting.carer.CarerAppliedJobPostingScrollResponse
 import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingResponse
 import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingScrollResponse
@@ -26,9 +27,11 @@ class CarerJobPostingFacadeService(
     private val jobPostingService: JobPostingService,
     private val centerService: CenterService,
     private val carerService: CarerService,
+    private val carerApplyService: CarerApplyService,
+    private val jobPostingFavoriteService: JobPostingFavoriteService,
 ) {
 
-    fun getJobPosting(jobPostingId: UUID): CarerJobPostingResponse {
+    fun getJobPostingDetail(jobPostingId: UUID): CarerJobPostingResponse {
         val carer = getUserAuthentication().userId.let {
             carerService.getById(it)
         }
@@ -49,8 +52,18 @@ class CarerJobPostingFacadeService(
         val applyMethods =
             jobPostingApplyMethodService.findByJobPostingId(jobPostingId)?.map { it.applyMethod }
 
+        val applyInfo = carerApplyService.findByJobPostingIdAndCarerId(
+            jobPostingId = jobPostingId,
+            carerId = carer.id,
+        )
+
+        val jobPostingFavorite = jobPostingFavoriteService.findByJobPostingIdAndCarerId(
+            jobPostingId = jobPostingId,
+            carerId = carer.id,
+        )
 
         val center = centerService.getById(jobPosting.centerId)
+
         return CarerJobPostingResponse.of(
             jobPosting = jobPosting,
             weekdays = weekdays,
@@ -58,6 +71,8 @@ class CarerJobPostingFacadeService(
             applyMethods = applyMethods,
             center = center,
             distance = distance,
+            applyTime = applyInfo?.createdAt,
+            isFavorite = jobPostingFavorite != null,
         )
     }
 
@@ -82,8 +97,8 @@ class CarerJobPostingFacadeService(
         location: Point,
         next: UUID?,
         limit: Long,
-    ): Pair<List<JobPostingWithWeekdaysDto>, UUID?> {
-        val jobPostingWithWeekdays = jobPostingService.findAllByCarerLocationInRange(
+    ): Pair<List<JobPostingPreviewDto>, UUID?> {
+        val jobPostingPreviewDtos = jobPostingService.findAllByCarerLocationInRange(
             location = location,
             next = next,
             limit = limit + 1,
@@ -98,17 +113,17 @@ class CarerJobPostingFacadeService(
             )
         }
 
-        for (jobPostingWithWeekday in jobPostingWithWeekdays) {
-            jobPostingWithWeekday.distance = jobPostingService.calculateDistance(
-                jobPostingWithWeekday.jobPosting,
+        for (jobPostingPreviewDto in jobPostingPreviewDtos) {
+            jobPostingPreviewDto.distance = jobPostingService.calculateDistance(
+                jobPostingPreviewDto.jobPosting,
                 carerLocation
             )
         }
 
         val newNext =
-            if (jobPostingWithWeekdays.size > limit) jobPostingWithWeekdays.last().jobPosting.id else null
+            if (jobPostingPreviewDtos.size > limit) jobPostingPreviewDtos.last().jobPosting.id else null
         val items =
-            if (newNext == null) jobPostingWithWeekdays else jobPostingWithWeekdays.subList(
+            if (newNext == null) jobPostingPreviewDtos else jobPostingPreviewDtos.subList(
                 0,
                 limit.toInt()
             )
@@ -136,9 +151,9 @@ class CarerJobPostingFacadeService(
         carerId: UUID,
         next: UUID?,
         limit: Long,
-    ): Pair<List<JobPostingWithWeekdaysAndApplyDto>, UUID?> {
+    ): Pair<List<JobPostingPreviewDto>, UUID?> {
 
-        val jobPostingWithWeekdaysAndApplyDtos = jobPostingService.findAllByCarerApplyHistory(
+        val JobPostingPreviewDtos = jobPostingService.findAllByCarerApplyHistory(
             next = next,
             limit = limit + 1,
             carerId = carerId,
@@ -153,17 +168,17 @@ class CarerJobPostingFacadeService(
             )
         }
 
-        for (jobPostingWithWeekdaysAndApplyDto in jobPostingWithWeekdaysAndApplyDtos) {
+        for (jobPostingPreviewDto in JobPostingPreviewDtos) {
             jobPostingService.calculateDistance(
-                jobPostingWithWeekdaysAndApplyDto.jobPosting,
+                jobPostingPreviewDto.jobPosting,
                 carerLocation
-            ).also { jobPostingWithWeekdaysAndApplyDto.distance = it }
+            ).also { jobPostingPreviewDto.distance = it }
         }
 
         val newNext =
-            if (jobPostingWithWeekdaysAndApplyDtos.size > limit) jobPostingWithWeekdaysAndApplyDtos.last().jobPosting.id else null
+            if (JobPostingPreviewDtos.size > limit) JobPostingPreviewDtos.last().jobPosting.id else null
         val items =
-            if (newNext == null) jobPostingWithWeekdaysAndApplyDtos else jobPostingWithWeekdaysAndApplyDtos.subList(
+            if (newNext == null) JobPostingPreviewDtos else JobPostingPreviewDtos.subList(
                 0,
                 limit.toInt()
             )

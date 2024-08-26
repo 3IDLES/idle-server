@@ -6,9 +6,11 @@ import com.querydsl.core.types.Projections
 import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.core.types.dsl.Expressions
 import com.querydsl.jpa.impl.JPAQueryFactory
-import com.swm.idle.domain.common.dto.JobPostingWithWeekdaysDto
+import com.swm.idle.domain.applys.entity.jpa.QApplys.applys
+import com.swm.idle.domain.common.dto.JobPostingPreviewDto
 import com.swm.idle.domain.common.enums.EntityStatus
 import com.swm.idle.domain.jobposting.entity.jpa.QJobPosting.jobPosting
+import com.swm.idle.domain.jobposting.entity.jpa.QJobPostingFavorite.jobPostingFavorite
 import com.swm.idle.domain.jobposting.entity.jpa.QJobPostingWeekday.jobPostingWeekday
 import com.swm.idle.domain.jobposting.vo.JobPostingStatus
 import org.locationtech.jts.geom.Point
@@ -24,7 +26,7 @@ class JobPostingSpatialQueryRepository(
         location: Point,
         next: UUID?,
         limit: Long,
-    ): List<JobPostingWithWeekdaysDto> {
+    ): List<JobPostingPreviewDto> {
         val jobPostingIds = jpaQueryFactory
             .select(jobPosting.id)
             .from(jobPosting)
@@ -42,18 +44,25 @@ class JobPostingSpatialQueryRepository(
         }
 
         return jpaQueryFactory
-            .select(jobPosting, jobPostingWeekday)
+            .select(jobPosting, jobPostingWeekday, jobPostingFavorite, applys)
             .from(jobPosting)
             .leftJoin(jobPostingWeekday).fetchJoin()
             .on(jobPosting.id.eq(jobPostingWeekday.jobPostingId))
+            .leftJoin(applys).fetchJoin()
+            .on(jobPosting.id.eq(applys.jobPostingId))
+            .leftJoin(jobPostingFavorite).fetchJoin()
+            .on(jobPosting.id.eq(jobPostingFavorite.jobPostingId))
             .where(jobPosting.id.`in`(jobPostingIds))
             .transform(
                 groupBy(jobPosting.id)
                     .list(
                         Projections.constructor(
-                            JobPostingWithWeekdaysDto::class.java,
+                            JobPostingPreviewDto::class.java,
                             jobPosting,
                             list(jobPostingWeekday),
+                            applys.createdAt ?: null,
+                            jobPostingFavorite.id.isNotNull
+                                .and(jobPostingFavorite.entityStatus.eq(EntityStatus.ACTIVE))
                         )
                     )
             )

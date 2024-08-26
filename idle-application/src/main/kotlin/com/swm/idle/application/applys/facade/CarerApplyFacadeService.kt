@@ -21,7 +21,7 @@ class CarerApplyFacadeService(
     ) {
         val carerId = getUserAuthentication().userId
 
-        if (carerApplyService.existsByJobPostingIdAndCarerIdAndApplyMethodType(
+        if (carerApplyService.existsByJobPostingIdAndCarerId(
                 jobPostingId = jobPostingId,
                 carerId = carerId,
             )
