@@ -62,4 +62,5 @@ interface CarerJobPostingApi {
     fun getMyFavoriteJobPostings(
         request: CursorScrollRequest,
     ): GetMyFavoriteJobPostingScrollResponse
+
 }

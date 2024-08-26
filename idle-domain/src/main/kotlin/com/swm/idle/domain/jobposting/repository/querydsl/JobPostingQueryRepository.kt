@@ -14,6 +14,7 @@ import com.swm.idle.domain.jobposting.entity.jpa.QJobPostingWeekday.jobPostingWe
 import org.springframework.stereotype.Repository
 import java.util.*
 
+
 @Repository
 class JobPostingQueryRepository(
     private val jpaQueryFactory: JPAQueryFactory,
@@ -40,12 +41,14 @@ class JobPostingQueryRepository(
         }
 
         return jpaQueryFactory
-            .select(jobPosting, jobPostingWeekday, applys)
+            .select(jobPosting, jobPostingWeekday, applys, jobPostingFavorite)
             .from(jobPosting)
             .leftJoin(jobPostingWeekday).fetchJoin()
             .on(jobPosting.id.eq(jobPostingWeekday.jobPostingId))
             .leftJoin(applys).fetchJoin()
             .on(jobPosting.id.eq(applys.jobPostingId))
+            .leftJoin(jobPostingFavorite).fetchJoin()
+            .on(jobPosting.id.eq(jobPostingFavorite.jobPostingId))
             .where(jobPosting.id.`in`(jobPostingIds))
             .transform(
                 groupBy(jobPosting.id)
@@ -55,6 +58,8 @@ class JobPostingQueryRepository(
                             jobPosting,
                             list(jobPostingWeekday),
                             applys.createdAt,
+                            jobPostingFavorite.id.isNotNull
+                                .and(jobPostingFavorite.entityStatus.eq(EntityStatus.ACTIVE))
                         )
                     )
             )
