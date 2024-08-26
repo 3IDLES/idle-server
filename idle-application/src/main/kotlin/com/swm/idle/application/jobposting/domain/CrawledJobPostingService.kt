@@ -1,4 +1,4 @@
-package com.swm.idle.application.jobposting.service.domain
+package com.swm.idle.application.jobposting.domain
 
 import com.swm.idle.domain.jobposting.entity.jpa.CrawledJobPosting
 import com.swm.idle.domain.jobposting.repository.jpa.CrawledJobPostingJpaRepository

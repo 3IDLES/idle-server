@@ -2,8 +2,8 @@ package com.swm.idle.presentation.jobposting.controller
 
 import com.swm.idle.application.common.converter.PointConverter
 import com.swm.idle.application.common.security.getUserAuthentication
-import com.swm.idle.application.jobposting.service.facade.CarerJobPostingFacadeService
-import com.swm.idle.application.jobposting.service.facade.JobPostingFavoriteFacadeService
+import com.swm.idle.application.jobposting.facade.CarerJobPostingFacadeService
+import com.swm.idle.application.jobposting.facade.JobPostingFavoriteFacadeService
 import com.swm.idle.application.user.carer.domain.CarerService
 import com.swm.idle.presentation.jobposting.api.CarerJobPostingApi
 import com.swm.idle.support.transfer.jobposting.carer.CarerAppliedJobPostingScrollResponse

@@ -1,13 +1,13 @@
-package com.swm.idle.application.jobposting.service.facade
+package com.swm.idle.application.jobposting.facade
 
 import com.swm.idle.application.applys.domain.ApplicantService
 import com.swm.idle.application.applys.domain.CarerApplyService
 import com.swm.idle.application.common.security.getUserAuthentication
-import com.swm.idle.application.jobposting.service.domain.JobPostingApplyMethodService
-import com.swm.idle.application.jobposting.service.domain.JobPostingLifeAssistanceService
-import com.swm.idle.application.jobposting.service.domain.JobPostingService
-import com.swm.idle.application.jobposting.service.domain.JobPostingWeekdayService
-import com.swm.idle.application.jobposting.service.vo.JobPostingInfo
+import com.swm.idle.application.jobposting.domain.JobPostingApplyMethodService
+import com.swm.idle.application.jobposting.domain.JobPostingLifeAssistanceService
+import com.swm.idle.application.jobposting.domain.JobPostingService
+import com.swm.idle.application.jobposting.domain.JobPostingWeekdayService
+import com.swm.idle.application.jobposting.vo.JobPostingInfo
 import com.swm.idle.application.user.carer.domain.CarerService
 import com.swm.idle.application.user.center.service.domain.CenterManagerService
 import com.swm.idle.application.user.center.service.domain.CenterService

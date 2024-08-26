@@ -1,6 +1,6 @@
 package com.swm.idle.presentation.jobposting.controller
 
-import com.swm.idle.application.jobposting.service.facade.CenterJobPostingFacadeService
+import com.swm.idle.application.jobposting.facade.CenterJobPostingFacadeService
 import com.swm.idle.presentation.jobposting.api.CenterJobPostingApi
 import com.swm.idle.support.transfer.jobposting.center.CenterJobPostingListResponse
 import com.swm.idle.support.transfer.jobposting.center.CenterJobPostingResponse
