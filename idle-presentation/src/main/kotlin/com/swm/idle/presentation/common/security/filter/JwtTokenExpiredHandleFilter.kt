@@ -27,17 +27,28 @@ class JwtTokenExpiredHandleFilter(
         try {
             filterChain.doFilter(request, response)
         } catch (exception: JwtException.TokenExpired) {
-            handleJwtTokenExpiredException(response, exception)
+            handleJwtTokenException(
+                response = response,
+                exception = exception,
+                message = "토큰이 만료되었습니다.",
+            )
+        } catch (exception: JwtException.TokenDecodeException) {
+            handleJwtTokenException(
+                response = response,
+                exception = exception,
+                message = "유효하지 않은 토큰입니다.",
+            )
         }
     }
 
-    private fun handleJwtTokenExpiredException(
+    private fun handleJwtTokenException(
         response: HttpServletResponse,
-        exception: JwtException.TokenExpired,
+        exception: JwtException,
+        message: String,
     ) {
         val errorResponse = ErrorResponse(
             code = exception.code,
-            message = "토큰이 만료되었습니다.",
+            message = message,
         )
 
         response.status = HttpStatus.UNAUTHORIZED.value()
