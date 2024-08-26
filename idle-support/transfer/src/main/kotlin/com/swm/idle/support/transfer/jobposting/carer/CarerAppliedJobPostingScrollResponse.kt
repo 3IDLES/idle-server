@@ -77,6 +77,11 @@ data class CarerAppliedJobPostingScrollResponse(
 
         @Schema(description = "지원 시각")
         val applyTime: LocalDateTime,
+
+        @get:JsonProperty("isFavorite")
+        @param:JsonProperty("isFavorite")
+        @Schema(description = "즐겨찾기 설정 여부")
+        val isFavorite: Boolean,
     ) {
 
         companion object {
@@ -101,6 +106,7 @@ data class CarerAppliedJobPostingScrollResponse(
                     applyDeadlineType = jobPostingWithWeekdaysAndApplyDto.jobPosting.applyDeadlineType,
                     distance = jobPostingWithWeekdaysAndApplyDto.distance,
                     applyTime = jobPostingWithWeekdaysAndApplyDto.applyTime,
+                    isFavorite = jobPostingWithWeekdaysAndApplyDto.isFavorite
                 )
             }
 

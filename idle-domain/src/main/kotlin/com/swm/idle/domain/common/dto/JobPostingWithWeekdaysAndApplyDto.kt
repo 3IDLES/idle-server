@@ -9,12 +9,14 @@ data class JobPostingWithWeekdaysAndApplyDto(
     val jobPostingWeekdays: List<JobPostingWeekday>,
     var distance: Int = 0,
     val applyTime: LocalDateTime,
+    val isFavorite: Boolean = false,
 ) {
 
     constructor(
         jobPosting: JobPosting,
         jobPostingWeekdays: List<JobPostingWeekday>,
         applyTime: LocalDateTime,
-    ) : this(jobPosting, jobPostingWeekdays, 0, applyTime)
+        isFavorite: Boolean,
+    ) : this(jobPosting, jobPostingWeekdays, 0, applyTime, isFavorite)
 
 }
