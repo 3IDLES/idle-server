@@ -3,6 +3,7 @@ package com.swm.idle.application.jobposting.domain
 import com.swm.idle.domain.common.dto.JobPostingPreviewDto
 import com.swm.idle.domain.common.exception.PersistenceException
 import com.swm.idle.domain.jobposting.entity.jpa.JobPostingFavorite
+import com.swm.idle.domain.jobposting.enums.JobPostingType
 import com.swm.idle.domain.jobposting.repository.jpa.JobPostingFavoriteJpaRepository
 import com.swm.idle.domain.jobposting.repository.querydsl.JobPostingQueryRepository
 import org.springframework.stereotype.Service
@@ -20,6 +21,7 @@ class JobPostingFavoriteService(
     fun create(
         jobPostingId: UUID,
         carerId: UUID,
+        jobPostingType: JobPostingType,
     ) {
         val jobPostingFavorite = jobPostingFavoriteJpaRepository.findByJobPostingIdAndCarerId(
             jobPostingId = jobPostingId,
@@ -28,6 +30,7 @@ class JobPostingFavoriteService(
             JobPostingFavorite(
                 carerId = carerId,
                 jobPostingId = jobPostingId,
+                jobPostingType = jobPostingType,
             )
         )
 
