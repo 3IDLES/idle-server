@@ -6,6 +6,7 @@ import com.swm.idle.application.jobposting.domain.JobPostingFavoriteService
 import com.swm.idle.application.jobposting.domain.JobPostingService
 import com.swm.idle.application.user.carer.domain.CarerService
 import com.swm.idle.domain.common.dto.JobPostingPreviewDto
+import com.swm.idle.domain.jobposting.enums.JobPostingType
 import com.swm.idle.support.transfer.jobposting.carer.CursorScrollRequest
 import com.swm.idle.support.transfer.jobposting.carer.GetMyFavoriteJobPostingScrollResponse
 import org.springframework.stereotype.Service
@@ -21,10 +22,12 @@ data class JobPostingFavoriteFacadeService(
     fun createJobPostingFavorite(
         jobPostingId: UUID,
         carerId: UUID,
+        jobPostingType: JobPostingType,
     ) {
         jobPostingFavoriteService.create(
             jobPostingId = jobPostingId,
             carerId = carerId,
+            jobPostingType = jobPostingType,
         )
     }
 

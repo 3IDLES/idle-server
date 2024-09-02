@@ -9,6 +9,7 @@ import com.swm.idle.presentation.jobposting.api.CarerJobPostingApi
 import com.swm.idle.support.transfer.jobposting.carer.CarerAppliedJobPostingScrollResponse
 import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingResponse
 import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingScrollResponse
+import com.swm.idle.support.transfer.jobposting.carer.CreateJobPostingFavoriteRequest
 import com.swm.idle.support.transfer.jobposting.carer.CursorScrollRequest
 import com.swm.idle.support.transfer.jobposting.carer.GetMyFavoriteJobPostingScrollResponse
 import org.springframework.web.bind.annotation.RestController
@@ -50,10 +51,14 @@ class CarerJobPostingController(
         )
     }
 
-    override fun createJobPostingFavorite(jobPostingId: UUID) {
+    override fun createJobPostingFavorite(
+        jobPostingId: UUID,
+        request: CreateJobPostingFavoriteRequest,
+    ) {
         jobPostingFavoriteFacadeService.createJobPostingFavorite(
             carerId = getUserAuthentication().userId,
             jobPostingId = jobPostingId,
+            jobPostingType = request.jobPostingType,
         )
     }
 
