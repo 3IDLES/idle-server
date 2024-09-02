@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository
 import java.util.*
 
 @Repository
-interface CrawledJobPostingJpaRepository : JpaRepository<CrawledJobPosting, UUID> {
+interface CrawlingJobPostingJpaRepository : JpaRepository<CrawledJobPosting, UUID> {
+
+    override fun getById(id: UUID): CrawledJobPosting
 
 }

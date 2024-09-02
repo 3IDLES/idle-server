@@ -1,6 +1,6 @@
 package com.swm.idle.batch.job
 
-import com.swm.idle.application.jobposting.domain.CrawledJobPostingService
+import com.swm.idle.application.jobposting.domain.CrawlingJobPostingService
 import com.swm.idle.batch.common.dto.CrawledJobPostingDto
 import com.swm.idle.batch.util.WorknetCrawler
 import org.springframework.batch.core.StepContribution
@@ -11,12 +11,12 @@ import org.springframework.stereotype.Component
 
 @Component
 class CrawlingJobPostingTasklet(
-    private val crawledJobPostingService: CrawledJobPostingService,
+    private val crawlingJobPostingService: CrawlingJobPostingService,
 ) : Tasklet {
 
     override fun execute(contribution: StepContribution, chunkContext: ChunkContext): RepeatStatus {
         WorknetCrawler.run()?.let {
-            crawledJobPostingService.saveAll(
+            crawlingJobPostingService.saveAll(
                 it.stream()
                     .map(CrawledJobPostingDto::toDomain)
                     .toList()

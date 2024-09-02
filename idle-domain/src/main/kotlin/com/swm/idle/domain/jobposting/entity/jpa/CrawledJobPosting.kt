@@ -11,20 +11,20 @@ import java.util.*
 @Table(name = "crawled_job_posting")
 class CrawledJobPosting(
     id: UUID,
-    title: String,
-    content: String,
+    title: String?,
+    content: String?,
     clientAddress: String,
-    payInfo: String,
-    workTime: String,
-    workSchedule: String,
-    applyDeadline: String,
-    recruitmentProcess: String,
-    applyMethod: String,
-    requiredDocument: String,
-    centerName: String,
-    centerAddress: String,
-    directUrl: String,
-    createdAt: LocalDateTime,
+    payInfo: String?,
+    workTime: String?,
+    workSchedule: String?,
+    applyDeadline: String?,
+    recruitmentProcess: String?,
+    applyMethod: String?,
+    requiredDocument: String?,
+    centerName: String?,
+    centerAddress: String?,
+    directUrl: String?,
+    createdAt: LocalDateTime?,
 ) {
 
     @Id
@@ -33,11 +33,11 @@ class CrawledJobPosting(
         private set
 
     @Column(nullable = false, columnDefinition = "varchar(255)")
-    var title: String = title
+    var title: String? = title
         private set
 
     @Column(nullable = false, columnDefinition = "TEXT")
-    var content: String = content
+    var content: String? = content
         private set
 
     @Column(nullable = false, columnDefinition = "varchar(255)")
@@ -45,47 +45,47 @@ class CrawledJobPosting(
         private set
 
     @Column(nullable = false, columnDefinition = "varchar(255)")
-    var payInfo: String = payInfo
+    var payInfo: String? = payInfo
         private set
 
     @Column(columnDefinition = "varchar(255)")
-    var workTime: String = workTime
+    var workTime: String? = workTime
         private set
 
     @Column(columnDefinition = "varchar(255)")
-    var workSchedule: String = workSchedule
+    var workSchedule: String? = workSchedule
         private set
 
     @Column(columnDefinition = "varchar(255)")
-    var applyDeadline: String = applyDeadline
+    var applyDeadline: String? = applyDeadline
         private set
 
     @Column(columnDefinition = "varchar(255)")
-    var recruitmentProcess: String = recruitmentProcess
+    var recruitmentProcess: String? = recruitmentProcess
         private set
 
     @Column(columnDefinition = "varchar(255)")
-    var applyMethod: String = applyMethod
+    var applyMethod: String? = applyMethod
         private set
 
     @Column(columnDefinition = "varchar(255)")
-    var requiredDocument: String = requiredDocument
+    var requiredDocument: String? = requiredDocument
         private set
 
     @Column(columnDefinition = "varchar(255)")
-    var centerName: String = centerName
+    var centerName: String? = centerName
         private set
 
     @Column(columnDefinition = "varchar(255)")
-    var centerAddress: String = centerAddress
+    var centerAddress: String? = centerAddress
         private set
 
     @Column(columnDefinition = "varchar(255)")
-    var directUrl: String = directUrl
+    var directUrl: String? = directUrl
         private set
 
     @Column(columnDefinition = "varchar(255)")
-    var createdAt: LocalDateTime = createdAt
+    var createdAt: LocalDateTime? = createdAt
         private set
 
 }
