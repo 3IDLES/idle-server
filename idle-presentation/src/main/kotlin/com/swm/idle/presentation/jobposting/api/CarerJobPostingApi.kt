@@ -51,7 +51,7 @@ interface CarerJobPostingApi {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun createJobPostingFavorite(
         @PathVariable(value = "job-posting-id") jobPostingId: UUID,
-        @RequestBody createJobPostingFavoriteRequest: CreateJobPostingFavoriteRequest,
+        @RequestBody request: CreateJobPostingFavoriteRequest,
     )
 
     @Secured
