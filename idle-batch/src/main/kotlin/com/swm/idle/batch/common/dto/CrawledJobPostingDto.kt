@@ -3,6 +3,7 @@ package com.swm.idle.batch.common.dto
 import com.swm.idle.domain.jobposting.entity.jpa.CrawledJobPosting
 import com.swm.idle.support.common.uuid.UuidCreator
 import org.locationtech.jts.geom.Point
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -23,6 +24,15 @@ data class CrawledJobPostingDto(
     val directUrl: String,
 ) {
 
+    fun parseApplyDeadline(applyDeadline: String): LocalDate {
+        return if (applyDeadline.contains("채용시까지")) {
+            LocalDate.now().plusMonths(1)
+        } else {
+            val dateString = applyDeadline.substringBefore("마감시간").trim()
+            LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy.MM.dd"))
+        }
+    }
+
     fun toDomain(location: Point): CrawledJobPosting {
         return CrawledJobPosting(
             id = UuidCreator.create(),
@@ -36,7 +46,7 @@ data class CrawledJobPostingDto(
             payInfo = payInfo,
             workTime = workTime,
             workSchedule = workSchedule,
-            applyDeadline = applyDeadline,
+            applyDeadline = parseApplyDeadline(applyDeadline),
             recruitmentProcess = recruitmentProcess,
             applyMethod = applyMethod,
             requiredDocument = requiredDocument,

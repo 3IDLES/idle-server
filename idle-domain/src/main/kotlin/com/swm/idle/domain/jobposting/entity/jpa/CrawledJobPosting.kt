@@ -5,6 +5,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.locationtech.jts.geom.Point
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
 
@@ -18,7 +19,7 @@ class CrawledJobPosting(
     payInfo: String,
     workTime: String,
     workSchedule: String,
-    applyDeadline: String,
+    applyDeadline: LocalDate,
     recruitmentProcess: String,
     applyMethod: String,
     requiredDocument: String,
@@ -58,8 +59,7 @@ class CrawledJobPosting(
     var workSchedule: String = workSchedule
         private set
 
-    @Column(columnDefinition = "varchar(255)")
-    var applyDeadline: String = applyDeadline
+    var applyDeadline: LocalDate = applyDeadline
         private set
 
     @Column(columnDefinition = "varchar(255)")
