@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import java.util.*
 
 @Tag(name = "Crawling Job Posting", description = "크롤링 공고 API")
-@RequestMapping("/api/v1/crwaling-job-postings", produces = ["application/json;charset=utf-8"])
+@RequestMapping("/api/v1/crawling-job-postings", produces = ["application/json;charset=utf-8"])
 interface CrawlingJobPostingApi {
 
     @Secured

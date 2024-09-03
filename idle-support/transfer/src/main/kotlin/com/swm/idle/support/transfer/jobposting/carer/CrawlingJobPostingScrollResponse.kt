@@ -2,6 +2,7 @@ package com.swm.idle.support.transfer.jobposting.carer
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.swm.idle.domain.common.dto.CrawlingJobPostingPreviewDto
+import com.swm.idle.domain.jobposting.enums.JobPostingType
 import com.swm.idle.support.transfer.common.ScrollResponse
 import io.swagger.v3.oas.annotations.media.Schema
 import java.util.*
@@ -46,6 +47,9 @@ data class CrawlingJobPostingScrollResponse(
         @param:JsonProperty("isFavorite")
         @Schema(description = "즐겨찾기 설정 여부")
         val isFavorite: Boolean,
+
+        @Schema(description = "공고 타입")
+        val jobPostingType: JobPostingType = JobPostingType.WORKNET,
     ) {
 
         companion object {
@@ -59,7 +63,7 @@ data class CrawlingJobPostingScrollResponse(
                     workingTime = crawlingJobPostingPreviewDto.crawledJobPosting.workTime,
                     workingSchedule = crawlingJobPostingPreviewDto.crawledJobPosting.workSchedule,
                     payInfo = crawlingJobPostingPreviewDto.crawledJobPosting.payInfo,
-                    applyDeadline = crawlingJobPostingPreviewDto.crawledJobPosting.applyDeadline,
+                    applyDeadline = crawlingJobPostingPreviewDto.crawledJobPosting.applyDeadline.toString(),
                     distance = crawlingJobPostingPreviewDto.distance,
                     isFavorite = crawlingJobPostingPreviewDto.isFavorite,
                 )
