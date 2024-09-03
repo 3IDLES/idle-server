@@ -5,6 +5,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.locationtech.jts.geom.Point
+import java.time.LocalDateTime
 import java.util.*
 
 @Entity
@@ -24,7 +25,7 @@ class CrawledJobPosting(
     centerName: String,
     centerAddress: String,
     directUrl: String,
-    createdAt: String,
+    createdAt: LocalDateTime,
     location: Point,
 ) {
 
@@ -86,7 +87,7 @@ class CrawledJobPosting(
         private set
 
     @Column(columnDefinition = "varchar(255)")
-    var createdAt: String = createdAt
+    var createdAt: LocalDateTime = createdAt
         private set
 
     @Column(nullable = false, columnDefinition = "POINT SRID 4326")
