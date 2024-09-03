@@ -2,6 +2,7 @@ package com.swm.idle.batch.common.dto
 
 import com.swm.idle.domain.jobposting.entity.jpa.CrawledJobPosting
 import com.swm.idle.support.common.uuid.UuidCreator
+import org.locationtech.jts.geom.Point
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -20,6 +21,7 @@ data class CrawledJobPostingDto(
     val centerName: String,
     val centerAddress: String,
     val directUrl: String,
+    val location: Point,
 ) {
 
     fun toDomain(): CrawledJobPosting {
@@ -42,6 +44,7 @@ data class CrawledJobPostingDto(
             centerName = centerName,
             centerAddress = centerAddress,
             directUrl = directUrl,
+            location = location,
         )
     }
 

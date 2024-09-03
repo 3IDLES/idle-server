@@ -10,6 +10,7 @@ dependencies {
     implementation(project(":idle-support:common"))
     implementation(project(":idle-domain"))
     implementation(project(":idle-application"))
+    implementation(project(":idle-infrastructure:client"))
 
     implementation(rootProject.libs.spring.boot.starter.batch)
     implementation(rootProject.libs.selenium.java)
