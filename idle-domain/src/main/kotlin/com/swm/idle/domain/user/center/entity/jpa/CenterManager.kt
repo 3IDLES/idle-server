@@ -21,11 +21,6 @@ class CenterManager(
     centerBusinessRegistrationNumber: String,
 ) : User(id, phoneNumber, managerName) {
 
-//    @Id
-//    @Column(nullable = false)
-//    var id: UUID = id
-//        private set
-
     @Column(nullable = false, columnDefinition = "varchar(255)")
     var identifier: String = identifier
         private set
@@ -33,14 +28,6 @@ class CenterManager(
     @Column(nullable = false, columnDefinition = "varchar(255)")
     var password: String = password
         private set
-
-//    @Column(nullable = false, columnDefinition = "varchar(255)")
-//    var managerName: String = managerName
-//        private set
-
-//    @Column(nullable = false, columnDefinition = "varchar(255)")
-//    var phoneNumber: String = phoneNumber
-//        private set
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, columnDefinition = "varchar(255)")
