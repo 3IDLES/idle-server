@@ -86,7 +86,7 @@ data class CrawlingJobPostingResponse(
                 payInfo = crawlingJobPosting.payInfo,
                 workingTime = crawlingJobPosting.workTime,
                 workingSchedule = crawlingJobPosting.workSchedule,
-                applyDeadline = crawlingJobPosting.applyDeadline,
+                applyDeadline = crawlingJobPosting.applyDeadline.toString(),
                 recruitmentProcess = crawlingJobPosting.recruitmentProcess,
                 applyMethod = crawlingJobPosting.applyMethod,
                 requiredDocumentation = crawlingJobPosting.requiredDocument,

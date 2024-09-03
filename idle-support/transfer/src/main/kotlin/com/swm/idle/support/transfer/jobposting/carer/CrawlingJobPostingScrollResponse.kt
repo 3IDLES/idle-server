@@ -59,7 +59,7 @@ data class CrawlingJobPostingScrollResponse(
                     workingTime = crawlingJobPostingPreviewDto.crawledJobPosting.workTime,
                     workingSchedule = crawlingJobPostingPreviewDto.crawledJobPosting.workSchedule,
                     payInfo = crawlingJobPostingPreviewDto.crawledJobPosting.payInfo,
-                    applyDeadline = crawlingJobPostingPreviewDto.crawledJobPosting.applyDeadline,
+                    applyDeadline = crawlingJobPostingPreviewDto.crawledJobPosting.applyDeadline.toString(),
                     distance = crawlingJobPostingPreviewDto.distance,
                     isFavorite = crawlingJobPostingPreviewDto.isFavorite,
                 )

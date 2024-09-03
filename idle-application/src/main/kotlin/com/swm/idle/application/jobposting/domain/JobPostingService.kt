@@ -58,7 +58,7 @@ class JobPostingService(
                         it,
                         DateTimeFormatter.ofPattern("yyyy-MM-dd")
                     )
-                },
+                } ?: LocalDate.now().plusMonths(1),
                 applyDeadlineType = jobPostingInfo.applyDeadlineType,
                 location = PointConverter.convertToPoint(
                     jobPostingInfo.latitude.toDouble(),
