@@ -2,6 +2,7 @@ package com.swm.idle.support.transfer.jobposting.carer
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.swm.idle.domain.jobposting.entity.jpa.JobPosting
+import com.swm.idle.domain.jobposting.enums.JobPostingType
 import com.swm.idle.domain.jobposting.vo.ApplyDeadlineType
 import com.swm.idle.domain.jobposting.vo.ApplyMethodType
 import com.swm.idle.domain.jobposting.vo.LifeAssistanceType
@@ -123,6 +124,9 @@ data class CarerJobPostingResponse(
     @param:JsonProperty("isFavorite")
     @Schema(description = "즐겨찾기 설정 여부")
     val isFavorite: Boolean,
+
+    @Schema(description = "공고 타입")
+    val jobPostingType: JobPostingType = JobPostingType.CAREMEET,
 ) {
 
     companion object {

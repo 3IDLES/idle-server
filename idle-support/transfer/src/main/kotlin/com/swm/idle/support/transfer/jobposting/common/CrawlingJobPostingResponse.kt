@@ -59,13 +59,13 @@ data class CrawlingJobPostingResponse(
     @Schema(description = "외부 공고 url")
     val jobPostingUrl: String,
 
-    @Schema(description = "공고 타입(워크넷, 케어밋)")
-    val jobPostingType: JobPostingType,
-
     @get:JsonProperty("isFavorite")
     @param:JsonProperty("isFavorite")
     @Schema(description = "즐겨찾기 설정 여부")
     val isFavorite: Boolean,
+
+    @Schema(description = "공고 타입")
+    val jobPostingType: JobPostingType = JobPostingType.WORKNET,
 ) {
 
     companion object {
