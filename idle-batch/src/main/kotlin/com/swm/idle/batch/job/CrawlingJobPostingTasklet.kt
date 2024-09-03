@@ -44,8 +44,7 @@ class CrawlingJobPostingTasklet(
                     centerName = crawledJobPosting.centerName,
                     centerAddress = crawledJobPosting.centerAddress,
                     directUrl = crawledJobPosting.directUrl,
-                    location = clientLocation
-                ).toDomain()
+                ).toDomain(clientLocation)
             }.let {
                 crawlingJobPostingService.saveAll(it)
             }

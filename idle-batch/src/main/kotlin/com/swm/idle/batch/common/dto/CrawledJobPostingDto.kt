@@ -21,10 +21,9 @@ data class CrawledJobPostingDto(
     val centerName: String,
     val centerAddress: String,
     val directUrl: String,
-    val location: Point,
 ) {
 
-    fun toDomain(): CrawledJobPosting {
+    fun toDomain(location: Point): CrawledJobPosting {
         return CrawledJobPosting(
             id = UuidCreator.create(),
             title = title,
