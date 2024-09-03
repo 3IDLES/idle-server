@@ -17,7 +17,7 @@ interface CrawlingJobPostingApi {
 
     @Secured
     @Operation(summary = "크롤링 공고 상세 조회 API")
-    @PatchMapping("/{crawling-job-posting-id}")
+    @GetMapping("/{crawling-job-posting-id}")
     @ResponseStatus(HttpStatus.OK)
     fun getCrawlingJobPostingDetail(@PathVariable(value = "crawling-job-posting-id") crawlingJobPostingId: UUID): CrawlingJobPostingResponse
 

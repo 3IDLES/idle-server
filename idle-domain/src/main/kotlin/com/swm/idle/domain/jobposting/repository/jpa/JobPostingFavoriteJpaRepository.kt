@@ -15,4 +15,6 @@ interface JobPostingFavoriteJpaRepository : JpaRepository<JobPostingFavorite, UU
         carerId: UUID,
     ): JobPostingFavorite?
 
+    fun existsByJobPostingId(jobPostingId: UUID): Boolean
+
 }
