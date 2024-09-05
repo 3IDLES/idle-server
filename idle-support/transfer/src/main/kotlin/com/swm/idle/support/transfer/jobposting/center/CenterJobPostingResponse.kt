@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.swm.idle.domain.jobposting.entity.jpa.JobPosting
 import com.swm.idle.domain.jobposting.vo.ApplyDeadlineType
 import com.swm.idle.domain.jobposting.vo.ApplyMethodType
+import com.swm.idle.domain.jobposting.vo.JobPostingStatus
 import com.swm.idle.domain.jobposting.vo.LifeAssistanceType
 import com.swm.idle.domain.jobposting.vo.MentalStatus
 import com.swm.idle.domain.jobposting.vo.PayType
@@ -98,6 +99,9 @@ data class CenterJobPostingResponse(
 
     @Schema(description = "지원 마감일", example = "2024-07-30")
     val applyDeadline: LocalDate?,
+
+    @Schema(description = "공고 진행 상태")
+    val jobPostingStatus: JobPostingStatus,
 ) {
 
     companion object {
@@ -133,6 +137,7 @@ data class CenterJobPostingResponse(
                 applyMethod = applyMethods!!,
                 applyDeadlineType = jobPosting.applyDeadlineType,
                 applyDeadline = jobPosting.applyDeadline,
+                jobPostingStatus = jobPosting.jobPostingStatus,
             )
         }
     }
