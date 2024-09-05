@@ -127,6 +127,9 @@ data class CarerJobPostingResponse(
 
     @Schema(description = "공고 타입")
     val jobPostingType: JobPostingType = JobPostingType.CAREMEET,
+
+    @Schema(description = "센터 채용 담당자 연락처")
+    val centerOfficeNumber: String,
 ) {
 
     companion object {
@@ -173,6 +176,7 @@ data class CarerJobPostingResponse(
                 distance = distance,
                 applyTime = applyTime,
                 isFavorite = isFavorite,
+                centerOfficeNumber = center.officeNumber,
             )
         }
 
