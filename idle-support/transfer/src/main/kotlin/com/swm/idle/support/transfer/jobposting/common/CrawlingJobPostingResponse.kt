@@ -64,7 +64,7 @@ data class CrawlingJobPostingResponse(
     @Schema(description = "즐겨찾기 설정 여부")
     val isFavorite: Boolean,
 
-    @Schema(description = "공고 타입")
+    @Schema(description = "공고 타입", example = "WORKNET")
     val jobPostingType: JobPostingType = JobPostingType.WORKNET,
 ) {
 
