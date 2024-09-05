@@ -6,7 +6,9 @@ import com.swm.idle.application.jobposting.domain.CrawlingJobPostingService
 import com.swm.idle.application.jobposting.domain.JobPostingFavoriteService
 import com.swm.idle.application.user.carer.domain.CarerService
 import com.swm.idle.domain.common.dto.CrawlingJobPostingPreviewDto
+import com.swm.idle.domain.user.carer.entity.jpa.Carer
 import com.swm.idle.infrastructure.client.geocode.service.GeoCodeService
+import com.swm.idle.support.transfer.jobposting.carer.CrawlingJobPostingFavoriteResponse
 import com.swm.idle.support.transfer.jobposting.carer.CrawlingJobPostingScrollResponse
 import com.swm.idle.support.transfer.jobposting.carer.CursorScrollRequest
 import com.swm.idle.support.transfer.jobposting.common.CrawlingJobPostingResponse
@@ -54,6 +56,30 @@ class CrawlingJobPostingFacadeService(
             next = next,
             total = items.size,
         )
+    }
+
+    fun getFavoriteCrawlingJobPostings(
+        carer: Carer,
+        location: Point,
+    ): CrawlingJobPostingFavoriteResponse {
+        val crawlingJobPostings = crawlingJobPostingService.findMyFavoritesByCarerId(carer.id)
+
+        crawlingJobPostings?.map { crawledJobPosting ->
+            val distance = crawlingJobPostingService.calculateDistance(
+                crawledJobPosting,
+                PointConverter.convertToPoint(
+                    latitude = carer.latitude.toDouble(),
+                    longitude = carer.longitude.toDouble(),
+                )
+            )
+
+            CrawlingJobPostingFavoriteResponse.CrawlingJobPostingFavoriteDto.from(
+                crawledJobPosting = crawledJobPosting,
+                distance = distance,
+            )
+        }.let {
+            return CrawlingJobPostingFavoriteResponse.from(it!!)
+        }
     }
 
     private fun scrollByCarerLocationInRange(

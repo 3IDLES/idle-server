@@ -5,6 +5,7 @@ import com.swm.idle.application.common.security.getUserAuthentication
 import com.swm.idle.application.jobposting.facade.CrawlingJobPostingFacadeService
 import com.swm.idle.application.user.carer.domain.CarerService
 import com.swm.idle.presentation.jobposting.api.CrawlingJobPostingApi
+import com.swm.idle.support.transfer.jobposting.carer.CrawlingJobPostingFavoriteResponse
 import com.swm.idle.support.transfer.jobposting.carer.CrawlingJobPostingScrollResponse
 import com.swm.idle.support.transfer.jobposting.carer.CursorScrollRequest
 import com.swm.idle.support.transfer.jobposting.common.CrawlingJobPostingResponse
@@ -32,6 +33,20 @@ class CrawlingJobPostingController(
         return crawlingJobPostingFacadeService.getCrawlingJobPostingsInRange(
             request = request,
             location = location
+        )
+    }
+
+    override fun getFavoriteCrawlingJobPostings(): CrawlingJobPostingFavoriteResponse {
+        val carer = carerService.getById(getUserAuthentication().userId)
+
+        val location = PointConverter.convertToPoint(
+            latitude = carer.latitude.toDouble(),
+            longitude = carer.longitude.toDouble(),
+        )
+
+        return crawlingJobPostingFacadeService.getFavoriteCrawlingJobPostings(
+            carer = carer,
+            location = location,
         )
     }
 

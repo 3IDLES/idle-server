@@ -50,4 +50,8 @@ class CrawlingJobPostingService(
         ).toInt()
     }
 
+    fun findMyFavoritesByCarerId(carerId: UUID): List<CrawledJobPosting>? {
+        return crawlingJobPostingJpaRepository.findAllFavoritesByCarerId(carerId)
+    }
+
 }

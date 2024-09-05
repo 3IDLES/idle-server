@@ -27,4 +27,18 @@ interface CrawlingJobPostingJpaRepository : JpaRepository<CrawledJobPosting, UUI
         @Param("clientLocation") clientLocation: Point,
     ): Double
 
+    @Query(
+        """
+            SELECT cjp.*
+            FROM crawled_job_posting cjp
+            INNER JOIN job_posting_favorite jpf 
+            ON jpf.job_posting_id = cjp.id
+            WHERE cjp.entity_status = 'ACTIVE'
+            AND jpf.entity_status = 'ACTIVE'
+            ORDER BY cjp.id DESC;
+        """,
+        nativeQuery = true
+    )
+    fun findAllFavoritesByCarerId(carerId: UUID): List<CrawledJobPosting>?
+
 }

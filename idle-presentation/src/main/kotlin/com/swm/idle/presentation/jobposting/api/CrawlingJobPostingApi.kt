@@ -1,6 +1,7 @@
 package com.swm.idle.presentation.jobposting.api
 
 import com.swm.idle.presentation.common.security.annotation.Secured
+import com.swm.idle.support.transfer.jobposting.carer.CrawlingJobPostingFavoriteResponse
 import com.swm.idle.support.transfer.jobposting.carer.CrawlingJobPostingScrollResponse
 import com.swm.idle.support.transfer.jobposting.carer.CursorScrollRequest
 import com.swm.idle.support.transfer.jobposting.common.CrawlingJobPostingResponse
@@ -28,5 +29,11 @@ interface CrawlingJobPostingApi {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     fun getCrawlingJobPostings(request: CursorScrollRequest): CrawlingJobPostingScrollResponse
+
+    @Secured
+    @Operation(summary = "즐겨찾기한 크롤링 공고 전체 조회 API")
+    @GetMapping("/my/favorites")
+    @ResponseStatus(HttpStatus.OK)
+    fun getFavoriteCrawlingJobPostings(): CrawlingJobPostingFavoriteResponse
 
 }
