@@ -85,6 +85,7 @@ data class CrawlingJobPostingScrollResponse(
                 total = total,
             )
         }
+
     }
 
 }
