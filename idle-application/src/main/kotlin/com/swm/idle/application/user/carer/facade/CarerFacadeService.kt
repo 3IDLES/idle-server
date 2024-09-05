@@ -25,6 +25,7 @@ class CarerFacadeService(
     fun getCarerProfile(carerId: UUID): GetCarerProfileResponse {
         carerService.getById(carerId).let {
             return GetCarerProfileResponse(
+                carerId = it.id,
                 carerName = it.name,
                 age = BirthYear.calculateAge(it.birthYear),
                 gender = it.gender,
