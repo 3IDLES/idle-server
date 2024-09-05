@@ -3,12 +3,15 @@ package com.swm.idle.support.transfer.user.carer
 import com.swm.idle.domain.user.carer.enums.JobSearchStatus
 import com.swm.idle.domain.user.common.enum.GenderType
 import io.swagger.v3.oas.annotations.media.Schema
+import java.util.*
 
 @Schema(
     name = "GetCarerProfileResponse",
     description = "요양 보호사 프로필 상세 조회"
 )
 data class GetCarerProfileResponse(
+    @Schema(description = "요양 보호사 ID")
+    val carerId: UUID,
     @Schema(description = "요양 보호사 성명")
     val carerName: String,
     @Schema(description = "나이")
