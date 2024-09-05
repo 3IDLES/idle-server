@@ -1,6 +1,7 @@
 package com.swm.idle.presentation.user.center.controller
 
 import com.swm.idle.application.user.center.service.facade.CenterFacadeService
+import com.swm.idle.domain.user.common.vo.OfficeNumber
 import com.swm.idle.presentation.user.center.api.CenterApi
 import com.swm.idle.support.transfer.user.center.CreateCenterProfileRequest
 import com.swm.idle.support.transfer.user.center.GetCenterProfileResponse
@@ -15,7 +16,7 @@ class CenterController(
 
     override fun createCenterProfile(request: CreateCenterProfileRequest) {
         centerFacadeService.create(
-            officeNumber = request.officeNumber,
+            officeNumber = OfficeNumber(request.officeNumber),
             centerName = request.centerName,
             roadNameAddress = request.roadNameAddress,
             lotNumberAddress = request.roadNameAddress,
@@ -26,7 +27,7 @@ class CenterController(
 
     override fun updateCenterProfile(request: UpdateCenterProfileRequest) {
         centerFacadeService.update(
-            officeNumber = request.officeNumber,
+            officeNumber = request.officeNumber?.let { OfficeNumber(it) },
             introduce = request.introduce,
         )
     }

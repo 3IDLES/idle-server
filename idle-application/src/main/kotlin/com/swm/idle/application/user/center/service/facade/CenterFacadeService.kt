@@ -5,6 +5,7 @@ import com.swm.idle.application.user.center.service.domain.CenterManagerService
 import com.swm.idle.application.user.center.service.domain.CenterService
 import com.swm.idle.domain.user.center.exception.CenterException
 import com.swm.idle.domain.user.center.vo.BusinessRegistrationNumber
+import com.swm.idle.domain.user.common.vo.OfficeNumber
 import com.swm.idle.infrastructure.client.geocode.service.GeoCodeService
 import com.swm.idle.support.transfer.user.center.GetCenterProfileResponse
 import org.springframework.stereotype.Service
@@ -19,7 +20,7 @@ class CenterFacadeService(
 ) {
 
     fun create(
-        officeNumber: String,
+        officeNumber: OfficeNumber,
         centerName: String,
         roadNameAddress: String,
         lotNumberAddress: String,
@@ -52,7 +53,7 @@ class CenterFacadeService(
     }
 
     @Transactional
-    fun update(officeNumber: String?, introduce: String?) {
+    fun update(officeNumber: OfficeNumber?, introduce: String?) {
         val centerManager = getUserAuthentication().userId.let {
             centerManagerService.getById(it)
         }

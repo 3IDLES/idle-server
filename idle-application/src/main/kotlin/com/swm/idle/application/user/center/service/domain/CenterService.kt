@@ -4,6 +4,7 @@ import com.swm.idle.domain.common.exception.PersistenceException
 import com.swm.idle.domain.user.center.entity.jpa.Center
 import com.swm.idle.domain.user.center.repository.jpa.CenterJpaRepository
 import com.swm.idle.domain.user.center.vo.BusinessRegistrationNumber
+import com.swm.idle.domain.user.common.vo.OfficeNumber
 import com.swm.idle.support.common.uuid.UuidCreator
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -22,7 +23,7 @@ class CenterService(
 
     @Transactional
     fun create(
-        officeNumber: String,
+        officeNumber: OfficeNumber,
         centerName: String,
         businessRegistrationNumber: BusinessRegistrationNumber,
         roadNameAddress: String,
@@ -35,7 +36,7 @@ class CenterService(
         centerJpaRepository.save(
             Center(
                 id = UuidCreator.create(),
-                officeNumber = officeNumber,
+                officeNumber = officeNumber.value,
                 centerName = centerName,
                 businessRegistrationNumber = businessRegistrationNumber.value,
                 roadNameAddress = roadNameAddress,
@@ -51,11 +52,11 @@ class CenterService(
 
     fun update(
         center: Center,
-        officeNumber: String?,
+        officeNumber: OfficeNumber?,
         introduce: String?,
     ) {
         center.update(
-            officeNumber = officeNumber,
+            officeNumber = officeNumber?.value,
             introduce = introduce,
         )
     }
