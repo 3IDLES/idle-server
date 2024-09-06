@@ -11,6 +11,7 @@ import com.swm.idle.support.transfer.auth.center.JoinRequest
 import com.swm.idle.support.transfer.auth.center.ValidateBusinessRegistrationNumberResponse
 import com.swm.idle.support.transfer.auth.center.WithdrawRequest
 import com.swm.idle.support.transfer.auth.common.LoginResponse
+import com.swm.idle.support.transfer.user.center.JoinStatusInfoResponse
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -26,6 +27,10 @@ class CenterAuthController(
             managerName = request.managerName,
             centerBusinessRegistrationNumber = BusinessRegistrationNumber(request.centerBusinessRegistrationNumber),
         )
+    }
+
+    override fun getJoinStatusInfo(): JoinStatusInfoResponse {
+        return centerAuthFacadeService.getCenterManagerJoinStatusInfo()
     }
 
     override fun validateBusinessRegistrationNumber(businessRegistrationNumber: String): ValidateBusinessRegistrationNumberResponse {

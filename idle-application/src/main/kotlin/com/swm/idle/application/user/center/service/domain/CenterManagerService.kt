@@ -2,7 +2,7 @@ package com.swm.idle.application.user.center.service.domain
 
 import com.swm.idle.domain.common.exception.PersistenceException
 import com.swm.idle.domain.user.center.entity.jpa.CenterManager
-import com.swm.idle.domain.user.center.enums.CenterAccountStatus
+import com.swm.idle.domain.user.center.enums.CenterManagerAccountStatus
 import com.swm.idle.domain.user.center.exception.CenterException
 import com.swm.idle.domain.user.center.repository.jpa.CenterManagerJpaRepository
 import com.swm.idle.domain.user.center.vo.BusinessRegistrationNumber
@@ -36,7 +36,7 @@ class CenterManagerService(
             password = encryptedPassword,
             phoneNumber = phoneNumber.value,
             managerName = managerName,
-            status = CenterAccountStatus.PENDING,
+            status = CenterManagerAccountStatus.PENDING,
             centerBusinessRegistrationNumber = centerBusinessRegistrationNumber.value,
         ).also {
             centerManagerJpaRepository.save(it)

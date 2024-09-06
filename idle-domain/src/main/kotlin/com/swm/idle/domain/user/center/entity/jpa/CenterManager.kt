@@ -1,6 +1,6 @@
 package com.swm.idle.domain.user.center.entity.jpa
 
-import com.swm.idle.domain.user.center.enums.CenterAccountStatus
+import com.swm.idle.domain.user.center.enums.CenterManagerAccountStatus
 import com.swm.idle.domain.user.common.entity.jpa.User
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -17,7 +17,7 @@ class CenterManager(
     password: String,
     managerName: String,
     phoneNumber: String,
-    status: CenterAccountStatus,
+    status: CenterManagerAccountStatus,
     centerBusinessRegistrationNumber: String,
 ) : User(id, phoneNumber, managerName) {
 
@@ -31,7 +31,7 @@ class CenterManager(
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, columnDefinition = "varchar(255)")
-    var status: CenterAccountStatus = status
+    var status: CenterManagerAccountStatus = status
         private set
 
     @Column(nullable = false, columnDefinition = "varchar(255)")

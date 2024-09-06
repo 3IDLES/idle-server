@@ -1,7 +1,6 @@
 package com.swm.idle.domain.user.center.enums
 
-enum class CenterAccountStatus {
-    ACTIVE,
+enum class CenterManagerAccountStatus {
     PENDING,
-    INACTIVE,
+    APPROVED,
 }
