@@ -8,6 +8,9 @@ import io.swagger.v3.oas.annotations.media.Schema
     description = "공고 즐겨찾기 등록 요청"
 )
 data class CreateJobPostingFavoriteRequest(
-    @Schema(description = "공고 타입")
+    @Schema(
+        description = "공고 타입",
+        allowableValues = ["WORKNET", "CAREMEET"]
+    )
     val jobPostingType: JobPostingType,
 )

@@ -8,24 +8,17 @@ import com.swm.idle.domain.jobposting.vo.PayType
 import com.swm.idle.domain.jobposting.vo.Weekdays
 import com.swm.idle.domain.user.common.enum.GenderType
 import com.swm.idle.domain.user.common.vo.BirthYear
-import com.swm.idle.support.transfer.common.ScrollResponse
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
 
 @Schema(
-    name = "GetMyFavoriteJobPostingResponse",
+    name = "JobPostingFavoriteResponse",
     description = "즐겨찾기 공고 전체 조회 API"
 )
-data class GetMyFavoriteJobPostingScrollResponse(
-    override val items: List<MyFavoriteJobPostingDto>,
-    override val next: UUID?,
-    override val total: Int = 0,
-) : ScrollResponse<GetMyFavoriteJobPostingScrollResponse.MyFavoriteJobPostingDto, UUID?>(
-    items = items,
-    next = next,
-    total = total,
+data class JobPostingFavoriteResponse(
+    val favoriteJobPostings: List<MyFavoriteJobPostingDto>,
 ) {
 
     data class MyFavoriteJobPostingDto(
@@ -90,8 +83,9 @@ data class GetMyFavoriteJobPostingScrollResponse(
 
         companion object {
 
-            fun from(
+            fun of(
                 jobPostingPreviewDto: JobPostingPreviewDto,
+                distance: Int,
             ): MyFavoriteJobPostingDto {
                 return MyFavoriteJobPostingDto(
                     id = jobPostingPreviewDto.jobPosting.id,
@@ -108,7 +102,7 @@ data class GetMyFavoriteJobPostingScrollResponse(
                     isExperiencePreferred = jobPostingPreviewDto.jobPosting.isExperiencePreferred,
                     applyDeadline = jobPostingPreviewDto.jobPosting.applyDeadline,
                     applyDeadlineType = jobPostingPreviewDto.jobPosting.applyDeadlineType,
-                    distance = jobPostingPreviewDto.distance,
+                    distance = distance,
                     applyTime = jobPostingPreviewDto.applyTime,
                     isFavorite = true
                 )
@@ -120,15 +114,9 @@ data class GetMyFavoriteJobPostingScrollResponse(
     companion object {
 
         fun from(
-            items: List<JobPostingPreviewDto>,
-            next: UUID?,
-            total: Int,
-        ): GetMyFavoriteJobPostingScrollResponse {
-            return GetMyFavoriteJobPostingScrollResponse(
-                items = items.map(MyFavoriteJobPostingDto::from),
-                next = next,
-                total = total,
-            )
+            favoriteJobPostings: List<MyFavoriteJobPostingDto>,
+        ): JobPostingFavoriteResponse {
+            return JobPostingFavoriteResponse(favoriteJobPostings)
         }
 
     }

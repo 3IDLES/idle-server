@@ -39,6 +39,8 @@ jakarta-annotation-api = "3.0.0"
 
 jts-core = "1.19.0"
 
+jackson-module-kotlin = "2.17.0"
+
 [libraries]
 kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
 kotlin-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
@@ -92,6 +94,7 @@ jakarta-annotation-api = { group = "jakarta.annotation", name = "jakarta.annotat
 jakarta-persistence-api = { group = "jakarta.persistence", name = "jakarta.persistence-api", version.ref = "jakarta-persistence-api"}
 
 locationtech = { group = "org.locationtech.jts", name = "jts-core", version.ref = "jts-core"}
+jackson-module-kotlin = { group = "com.fasterxml.jackson.moudle", name = "jackson-module-kotlin", version.ref = "jackson-module-kotlin"}
 [plugins]
 sonarqube = { id = "org.sonarqube", version.ref = "sonar-cloud" }
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }

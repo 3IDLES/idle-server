@@ -6,7 +6,7 @@ import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingResponse
 import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingScrollResponse
 import com.swm.idle.support.transfer.jobposting.carer.CreateJobPostingFavoriteRequest
 import com.swm.idle.support.transfer.jobposting.carer.CursorScrollRequest
-import com.swm.idle.support.transfer.jobposting.carer.GetMyFavoriteJobPostingScrollResponse
+import com.swm.idle.support.transfer.jobposting.carer.JobPostingFavoriteResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
@@ -64,8 +64,6 @@ interface CarerJobPostingApi {
     @Operation(summary = "요양 보호사 즐겨찾기 공고 목록 전체 조회 API")
     @GetMapping("/my/favorites")
     @ResponseStatus(HttpStatus.OK)
-    fun getMyFavoriteJobPostings(
-        request: CursorScrollRequest,
-    ): GetMyFavoriteJobPostingScrollResponse
+    fun getMyFavoriteJobPostings(): JobPostingFavoriteResponse
 
 }

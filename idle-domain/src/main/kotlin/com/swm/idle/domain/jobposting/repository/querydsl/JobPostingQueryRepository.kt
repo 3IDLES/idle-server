@@ -13,7 +13,6 @@ import com.swm.idle.domain.jobposting.entity.jpa.QJobPostingWeekday.jobPostingWe
 import org.springframework.stereotype.Repository
 import java.util.*
 
-
 @Repository
 class JobPostingQueryRepository(
     private val jpaQueryFactory: JPAQueryFactory,
@@ -64,35 +63,16 @@ class JobPostingQueryRepository(
             )
     }
 
-    fun findAllInFavorites(
-        next: UUID?,
-        limit: Long,
-        carerId: UUID,
-    ): List<JobPostingPreviewDto> {
-        val jobPostingIds = jpaQueryFactory
-            .select(jobPosting.id)
-            .from(jobPosting)
-            .leftJoin(jobPostingFavorite).on(jobPosting.id.eq(jobPostingFavorite.jobPostingId))
-            .where(
-                jobPostingFavorite.carerId.eq(carerId)
-                    .and(jobPostingFavorite.entityStatus.eq(EntityStatus.ACTIVE))
-                    .and(next?.let { jobPosting.id.goe(it) })
-            )
-            .limit(limit)
-            .fetch()
-
-        if (jobPostingIds.isEmpty()) {
-            return emptyList()
-        }
-
+    fun findAllInFavorites(carerId: UUID): List<JobPostingPreviewDto>? {
         return jpaQueryFactory
             .select(jobPosting, jobPostingWeekday, applys)
             .from(jobPosting)
             .leftJoin(jobPostingWeekday).fetchJoin()
             .on(jobPosting.id.eq(jobPostingWeekday.jobPostingId))
-            .leftJoin(applys).fetchJoin()
+            .leftJoin(applys)
             .on(jobPosting.id.eq(applys.jobPostingId))
-            .where(jobPosting.id.`in`(jobPostingIds))
+            .innerJoin(jobPostingFavorite).fetchJoin()
+            .on(jobPosting.id.eq(jobPostingFavorite.jobPostingId))
             .transform(
                 groupBy(jobPosting.id)
                     .list(

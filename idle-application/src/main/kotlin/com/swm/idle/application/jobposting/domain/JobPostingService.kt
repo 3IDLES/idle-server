@@ -135,6 +135,7 @@ class JobPostingService(
         roadNameAddress: String,
         lotNumberAddress: String,
         latitude: String,
+
         longitude: String,
         clientName: String?,
         gender: GenderType?,
@@ -232,6 +233,10 @@ class JobPostingService(
             jobPosting.location,
             carerLocation
         ).toInt()
+    }
+
+    fun findAllFavorites(carerId: UUID): List<JobPostingPreviewDto>? {
+        return jobPostingQueryRepository.findAllInFavorites(carerId)
     }
 
 }

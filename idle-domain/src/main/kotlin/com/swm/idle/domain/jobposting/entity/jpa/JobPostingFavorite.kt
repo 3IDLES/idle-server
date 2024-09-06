@@ -4,6 +4,8 @@ import com.swm.idle.domain.common.entity.BaseEntity
 import com.swm.idle.domain.jobposting.enums.JobPostingType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.Table
 import java.util.*
 
@@ -23,6 +25,7 @@ class JobPostingFavorite(
     var jobPostingId: UUID = jobPostingId
         private set
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     var jobPostingType: JobPostingType = jobPostingType
         private set
