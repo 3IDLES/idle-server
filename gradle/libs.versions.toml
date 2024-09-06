@@ -94,7 +94,7 @@ jakarta-annotation-api = { group = "jakarta.annotation", name = "jakarta.annotat
 jakarta-persistence-api = { group = "jakarta.persistence", name = "jakarta.persistence-api", version.ref = "jakarta-persistence-api"}
 
 locationtech = { group = "org.locationtech.jts", name = "jts-core", version.ref = "jts-core"}
-jackson-module-kotlin = { group = "com.fasterxml.jackson.moudle", name = "jackson-module-kotlin", version.ref = "jackson-module-kotlin"}
+jackson-module-kotlin = { group = "com.fasterxml.jackson.module", name = "jackson-module-kotlin", version.ref = "jackson-module-kotlin"}
 [plugins]
 sonarqube = { id = "org.sonarqube", version.ref = "sonar-cloud" }
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }

@@ -19,6 +19,7 @@ import com.swm.idle.support.security.exception.SecurityException
 import com.swm.idle.support.transfer.auth.center.RefreshLoginTokenResponse
 import com.swm.idle.support.transfer.auth.center.ValidateBusinessRegistrationNumberResponse
 import com.swm.idle.support.transfer.auth.common.LoginResponse
+import com.swm.idle.support.transfer.user.center.JoinStatusInfoResponse
 import org.springframework.stereotype.Service
 
 @Service
@@ -48,6 +49,14 @@ class CenterAuthFacadeService(
             managerName = managerName,
             centerBusinessRegistrationNumber = centerBusinessRegistrationNumber,
         )
+    }
+
+    fun getCenterManagerJoinStatusInfo(): JoinStatusInfoResponse {
+        val centerManager = getUserAuthentication().userId.let {
+            centerManagerService.getById(it)
+        }
+
+        return JoinStatusInfoResponse.from(centerManager)
     }
 
     fun validateCompany(businessRegistrationNumber: BusinessRegistrationNumber): ValidateBusinessRegistrationNumberResponse {

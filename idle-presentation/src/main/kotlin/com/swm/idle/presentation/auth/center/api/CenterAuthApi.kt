@@ -7,6 +7,7 @@ import com.swm.idle.support.transfer.auth.center.JoinRequest
 import com.swm.idle.support.transfer.auth.center.ValidateBusinessRegistrationNumberResponse
 import com.swm.idle.support.transfer.auth.center.WithdrawRequest
 import com.swm.idle.support.transfer.auth.common.LoginResponse
+import com.swm.idle.support.transfer.user.center.JoinStatusInfoResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -31,6 +32,12 @@ interface CenterAuthApi {
     fun join(
         @RequestBody request: JoinRequest,
     )
+
+    @Secured
+    @Operation(summary = "센터 관리자 회원가입 상태 조회 API")
+    @GetMapping("/join/status")
+    @ResponseStatus(HttpStatus.OK)
+    fun getJoinStatusInfo(): JoinStatusInfoResponse
 
     @Operation(summary = "사업자 등록번호 인증 API")
     @GetMapping("/authentication/{business-registration-number}")
