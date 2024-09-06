@@ -4,7 +4,6 @@ import com.swm.idle.domain.common.exception.PersistenceException
 import com.swm.idle.domain.jobposting.entity.jpa.JobPostingFavorite
 import com.swm.idle.domain.jobposting.enums.JobPostingType
 import com.swm.idle.domain.jobposting.repository.jpa.JobPostingFavoriteJpaRepository
-import com.swm.idle.domain.jobposting.repository.querydsl.JobPostingQueryRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -13,7 +12,6 @@ import java.util.*
 @Transactional(readOnly = true)
 class JobPostingFavoriteService(
     private val jobPostingFavoriteJpaRepository: JobPostingFavoriteJpaRepository,
-    private val jobPostingQueryRepository: JobPostingQueryRepository,
 ) {
 
     @Transactional
