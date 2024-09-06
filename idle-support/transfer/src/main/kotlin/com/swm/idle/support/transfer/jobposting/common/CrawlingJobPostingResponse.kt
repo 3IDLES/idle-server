@@ -66,6 +66,9 @@ data class CrawlingJobPostingResponse(
 
     @Schema(description = "공고 타입", example = "WORKNET")
     val jobPostingType: JobPostingType = JobPostingType.WORKNET,
+
+    @Schema(description = "거리", example = "700(단위 M)")
+    val distance: Int,
 ) {
 
     companion object {
@@ -75,6 +78,7 @@ data class CrawlingJobPostingResponse(
             longitude: String,
             latitude: String,
             isFavorite: Boolean,
+            distance: Int,
         ): CrawlingJobPostingResponse {
             return CrawlingJobPostingResponse(
                 id = crawlingJobPosting.id,
@@ -95,6 +99,7 @@ data class CrawlingJobPostingResponse(
                 jobPostingUrl = crawlingJobPosting.directUrl,
                 jobPostingType = JobPostingType.WORKNET,
                 isFavorite = isFavorite,
+                distance = distance,
             )
         }
 
