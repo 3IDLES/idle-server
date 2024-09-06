@@ -25,9 +25,21 @@ class CrawlingJobPostingFacadeService(
 ) {
 
     fun getCrawlingJobPosting(crawlingJobPostingId: UUID): CrawlingJobPostingResponse {
+        val carer = getUserAuthentication().userId.let {
+            carerService.getById(it)
+        }
+
         val jobPosting = crawlingJobPostingService.getById(crawlingJobPostingId)
 
         val clientLocationInfo = geoCodeService.search(jobPosting.clientAddress)
+
+        val distance = crawlingJobPostingService.calculateDistance(
+            jobPosting,
+            PointConverter.convertToPoint(
+                latitude = carer.latitude.toDouble(),
+                longitude = carer.longitude.toDouble(),
+            )
+        )
 
         return crawlingJobPostingService.getById(crawlingJobPostingId).let {
             val isFavorite = jobPostingFavoriteService.existsByJobPostingId(crawlingJobPostingId)
@@ -37,6 +49,7 @@ class CrawlingJobPostingFacadeService(
                 longitude = clientLocationInfo.addresses[0].x,
                 latitude = clientLocationInfo.addresses[0].y,
                 isFavorite = isFavorite,
+                distance = distance,
             )
         }
     }
