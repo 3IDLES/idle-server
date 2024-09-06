@@ -11,10 +11,12 @@ import com.swm.idle.application.jobposting.domain.JobPostingWeekdayService
 import com.swm.idle.application.user.carer.domain.CarerService
 import com.swm.idle.application.user.center.service.domain.CenterService
 import com.swm.idle.domain.common.dto.JobPostingPreviewDto
+import com.swm.idle.domain.user.carer.entity.jpa.Carer
 import com.swm.idle.support.transfer.jobposting.carer.CarerAppliedJobPostingScrollResponse
 import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingResponse
 import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingScrollResponse
 import com.swm.idle.support.transfer.jobposting.carer.CursorScrollRequest
+import com.swm.idle.support.transfer.jobposting.carer.JobPostingFavoriteResponse
 import org.locationtech.jts.geom.Point
 import org.springframework.stereotype.Service
 import java.util.*
@@ -183,6 +185,31 @@ class CarerJobPostingFacadeService(
                 limit.toInt()
             )
         return items to newNext
+    }
+
+    fun getMyFavoriteJobPostings(
+        carer: Carer,
+        location: Point,
+    ): JobPostingFavoriteResponse {
+        val jobPostingPreviewDtos: List<JobPostingPreviewDto>? =
+            jobPostingService.findAllFavorites(carer.id)
+
+        jobPostingPreviewDtos?.map { jobPostingPreviewDto ->
+            val distance = jobPostingService.calculateDistance(
+                jobPostingPreviewDto.jobPosting,
+                PointConverter.convertToPoint(
+                    latitude = carer.latitude.toDouble(),
+                    longitude = carer.longitude.toDouble(),
+                )
+            )
+
+            JobPostingFavoriteResponse.MyFavoriteJobPostingDto.of(
+                jobPostingPreviewDto = jobPostingPreviewDto,
+                distance = distance,
+            )
+        }.let {
+            return JobPostingFavoriteResponse.from(it!!)
+        }
     }
 
 }

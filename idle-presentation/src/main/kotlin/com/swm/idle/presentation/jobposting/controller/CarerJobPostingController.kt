@@ -11,7 +11,7 @@ import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingResponse
 import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingScrollResponse
 import com.swm.idle.support.transfer.jobposting.carer.CreateJobPostingFavoriteRequest
 import com.swm.idle.support.transfer.jobposting.carer.CursorScrollRequest
-import com.swm.idle.support.transfer.jobposting.carer.GetMyFavoriteJobPostingScrollResponse
+import com.swm.idle.support.transfer.jobposting.carer.JobPostingFavoriteResponse
 import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
@@ -69,14 +69,17 @@ class CarerJobPostingController(
         )
     }
 
-    override fun getMyFavoriteJobPostings(
-        request: CursorScrollRequest,
-    ): GetMyFavoriteJobPostingScrollResponse {
+    override fun getMyFavoriteJobPostings(): JobPostingFavoriteResponse {
         val carer = carerService.getById(getUserAuthentication().userId)
 
-        return jobPostingFavoriteFacadeService.getMyFavoriteJobPostings(
-            request = request,
-            carerId = carer.id,
+        val location = PointConverter.convertToPoint(
+            latitude = carer.latitude.toDouble(),
+            longitude = carer.longitude.toDouble(),
+        )
+
+        return carerJobPostingFacadeService.getMyFavoriteJobPostings(
+            carer = carer,
+            location = location,
         )
     }
 
