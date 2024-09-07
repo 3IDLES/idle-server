@@ -46,6 +46,10 @@ springdoc:
   swagger-ui:
     enabled: true
 
+sentry:
+  dsn: ${SENTRY_DSN}
+  environment: dev
+
 logging:
   level:
     root: WARN
@@ -62,3 +66,7 @@ spring:
 springdoc:
   swagger-ui:
     enabled: true
+
+sentry:
+  dsn: ${SENTRY_DSN}
+  environment: prod

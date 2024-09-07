@@ -2,6 +2,7 @@ package com.swm.idle.presentation.common.exception
 
 import com.swm.idle.support.common.exception.SystemException
 import io.github.oshai.kotlinlogging.KotlinLogging
+import io.sentry.Sentry
 import io.swagger.v3.oas.annotations.Hidden
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.core.Ordered
@@ -33,10 +34,25 @@ class SystemExceptionHandler {
             "$requestMethod $requestUrl$queryString from $clientIp\n" +
                     "[SYSTEM-ERROR] : ${exception.message}"
         }
+
+        Sentry.captureException(exception) { scope ->
+            scope.setExtra("requestMethod", requestMethod)
+            scope.setExtra("requestUrl", requestUrl)
+            scope.setExtra("queryString", queryString)
+            scope.setExtra("clientIp", clientIp)
+            getRequestBody(request)?.let { scope.setExtra("requestBody", it) }
+        }
+
         return ErrorResponse(
             code = SystemException.InternalServerError().code,
             message = "Internal Server Error"
         )
+    }
+
+    private fun getRequestBody(request: HttpServletRequest): String? {
+        return runCatching {
+            request.inputStream.bufferedReader().use { it.readText() }
+        }.getOrNull()
     }
 
 }

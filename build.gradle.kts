@@ -44,6 +44,9 @@ subprojects {
         implementation(rootProject.libs.jakarta.persistence.api)
         implementation(rootProject.libs.jackson.module.kotlin)
 
+        implementation(rootProject.libs.sentry.spring.boot.starter.jakarta)
+        implementation(rootProject.libs.sentry.logback)
+
         kapt("com.querydsl:querydsl-apt:5.1.0:jakarta")
         kapt(rootProject.libs.spring.boot.configuration.processor)
 
