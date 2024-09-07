@@ -8,9 +8,9 @@ import com.swm.idle.domain.jobposting.entity.jpa.JobPosting
 import com.swm.idle.domain.jobposting.repository.jpa.JobPostingJpaRepository
 import com.swm.idle.domain.jobposting.repository.querydsl.JobPostingQueryRepository
 import com.swm.idle.domain.jobposting.repository.querydsl.JobPostingSpatialQueryRepository
-import com.swm.idle.domain.jobposting.vo.ApplyDeadlineType
-import com.swm.idle.domain.jobposting.vo.MentalStatus
-import com.swm.idle.domain.jobposting.vo.PayType
+import com.swm.idle.domain.jobposting.enums.ApplyDeadlineType
+import com.swm.idle.domain.jobposting.enums.MentalStatus
+import com.swm.idle.domain.jobposting.enums.PayType
 import com.swm.idle.domain.user.common.enum.GenderType
 import com.swm.idle.domain.user.common.vo.BirthYear
 import org.locationtech.jts.geom.Point

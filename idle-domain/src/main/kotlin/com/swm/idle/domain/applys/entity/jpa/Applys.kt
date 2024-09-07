@@ -1,7 +1,7 @@
 package com.swm.idle.domain.applys.entity.jpa
 
 import com.swm.idle.domain.common.entity.BaseEntity
-import com.swm.idle.domain.jobposting.vo.ApplyMethodType
+import com.swm.idle.domain.jobposting.enums.ApplyMethodType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType

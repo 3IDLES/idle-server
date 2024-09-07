@@ -1,10 +1,10 @@
 package com.swm.idle.domain.jobposting.entity.jpa
 
 import com.swm.idle.domain.common.entity.BaseEntity
-import com.swm.idle.domain.jobposting.vo.ApplyDeadlineType
-import com.swm.idle.domain.jobposting.vo.JobPostingStatus
-import com.swm.idle.domain.jobposting.vo.MentalStatus
-import com.swm.idle.domain.jobposting.vo.PayType
+import com.swm.idle.domain.jobposting.enums.ApplyDeadlineType
+import com.swm.idle.domain.jobposting.enums.JobPostingStatus
+import com.swm.idle.domain.jobposting.enums.MentalStatus
+import com.swm.idle.domain.jobposting.enums.PayType
 import com.swm.idle.domain.user.common.enum.GenderType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
