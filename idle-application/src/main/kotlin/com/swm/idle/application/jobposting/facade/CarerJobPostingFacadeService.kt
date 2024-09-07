@@ -11,6 +11,7 @@ import com.swm.idle.application.jobposting.domain.JobPostingWeekdayService
 import com.swm.idle.application.user.carer.domain.CarerService
 import com.swm.idle.application.user.center.service.domain.CenterService
 import com.swm.idle.domain.common.dto.JobPostingPreviewDto
+import com.swm.idle.domain.common.enums.EntityStatus
 import com.swm.idle.domain.user.carer.entity.jpa.Carer
 import com.swm.idle.support.transfer.jobposting.carer.CarerAppliedJobPostingScrollResponse
 import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingResponse
@@ -74,7 +75,7 @@ class CarerJobPostingFacadeService(
             center = center,
             distance = distance,
             applyTime = applyInfo?.createdAt,
-            isFavorite = jobPostingFavorite != null,
+            isFavorite = jobPostingFavorite != null && jobPostingFavorite.entityStatus == EntityStatus.ACTIVE,
         )
     }
 
@@ -213,4 +214,3 @@ class CarerJobPostingFacadeService(
     }
 
 }
-
