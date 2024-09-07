@@ -71,8 +71,7 @@ class CustomExceptionHandler {
     fun handlerSecurityException(
         exception: SecurityException,
         request: HttpServletRequest,
-
-        ): ErrorResponse {
+    ): ErrorResponse {
         val requestMethod: String = request.method
         val requestUrl: String = request.requestURI
         val queryString: String = request.queryString?.let { "?$it" } ?: ""

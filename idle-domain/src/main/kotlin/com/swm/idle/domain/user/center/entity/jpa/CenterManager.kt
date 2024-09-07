@@ -38,4 +38,8 @@ class CenterManager(
     var centerBusinessRegistrationNumber: String = centerBusinessRegistrationNumber
         private set
 
+    fun updatePassword(newPassword: String) {
+        this.password = newPassword
+    }
+
 }
