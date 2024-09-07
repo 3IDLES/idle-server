@@ -2,9 +2,9 @@ package com.swm.idle.support.transfer.jobposting.carer
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.swm.idle.domain.jobposting.entity.jpa.JobPosting
-import com.swm.idle.domain.jobposting.enums.JobPostingType
 import com.swm.idle.domain.jobposting.enums.ApplyDeadlineType
 import com.swm.idle.domain.jobposting.enums.ApplyMethodType
+import com.swm.idle.domain.jobposting.enums.JobPostingType
 import com.swm.idle.domain.jobposting.enums.LifeAssistanceType
 import com.swm.idle.domain.jobposting.enums.MentalStatus
 import com.swm.idle.domain.jobposting.enums.PayType

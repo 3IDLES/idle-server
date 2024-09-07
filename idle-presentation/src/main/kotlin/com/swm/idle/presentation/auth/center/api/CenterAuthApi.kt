@@ -3,6 +3,7 @@ package com.swm.idle.presentation.auth.center.api
 import com.swm.idle.presentation.common.exception.ErrorResponse
 import com.swm.idle.presentation.common.security.annotation.Secured
 import com.swm.idle.support.transfer.auth.center.CenterLoginRequest
+import com.swm.idle.support.transfer.auth.center.ChangePasswordRequest
 import com.swm.idle.support.transfer.auth.center.JoinRequest
 import com.swm.idle.support.transfer.auth.center.ValidateBusinessRegistrationNumberResponse
 import com.swm.idle.support.transfer.auth.center.WithdrawRequest
@@ -16,6 +17,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -92,5 +94,11 @@ interface CenterAuthApi {
     fun validateIdentifier(
         @PathVariable("identifier") identifier: String,
     )
+
+    @Secured
+    @Operation(summary = "비밀번호 신규 발급 API")
+    @PatchMapping("/password/new")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun changePassword(@RequestBody request: ChangePasswordRequest)
 
 }

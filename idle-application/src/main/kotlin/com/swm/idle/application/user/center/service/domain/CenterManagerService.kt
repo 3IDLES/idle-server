@@ -43,6 +43,17 @@ class CenterManagerService(
         }
     }
 
+    fun updatePassword(centerManager: CenterManager, newPassword: Password) {
+        val encryptedPassword = PasswordEncryptor.encrypt(rawPassword = newPassword.value)
+
+        centerManager.updatePassword(encryptedPassword)
+    }
+
+    @Transactional
+    fun delete(centerManagerId: UUID) {
+        centerManagerJpaRepository.deleteById(centerManagerId)
+    }
+
     fun findByIdentifier(identifier: Identifier): CenterManager? {
         return centerManagerJpaRepository.findByIdentifier(identifier.value)
     }
@@ -61,11 +72,6 @@ class CenterManagerService(
 
     fun existsById(centerManagerId: UUID): Boolean {
         return centerManagerJpaRepository.existsById(centerManagerId)
-    }
-
-    @Transactional
-    fun delete(centerManagerId: UUID) {
-        centerManagerJpaRepository.deleteById(centerManagerId)
     }
 
     fun findByPhoneNumber(phoneNumber: PhoneNumber): CenterManager? {
