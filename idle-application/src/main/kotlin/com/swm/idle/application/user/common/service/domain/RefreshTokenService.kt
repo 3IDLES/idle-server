@@ -37,6 +37,8 @@ class RefreshTokenService(
             UserType.CENTER -> centerManagerService.getById(token.userId)
         }
 
+        delete(user.id)
+
         return JwtTokens(
             accessToken = jwtTokenService.generateAccessToken(user),
             refreshToken = jwtTokenService.generateRefreshToken(user)
