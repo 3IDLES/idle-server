@@ -99,7 +99,7 @@ class CenterAuthFacadeService(
             throw PersistenceException.ResourceNotFound("센터 관리자(id: $centerManagerId)를 찾을 수 없습니다.")
         }
 
-        refreshTokenService.delete(
+        refreshTokenService.deleteById(
             userId = centerManagerId,
         )
     }
