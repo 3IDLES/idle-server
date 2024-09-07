@@ -107,7 +107,7 @@ data class JobPostingFavoriteResponse(
                     applyDeadlineType = jobPostingPreviewDto.jobPosting.applyDeadlineType,
                     distance = distance,
                     applyTime = jobPostingPreviewDto.applyTime,
-                    isFavorite = true,
+                    isFavorite = jobPostingPreviewDto.isFavorite,
                     createdAt = jobPostingPreviewDto.jobPosting.createdAt!!
                 )
             }
