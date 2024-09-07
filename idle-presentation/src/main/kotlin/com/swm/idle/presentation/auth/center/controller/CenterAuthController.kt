@@ -52,7 +52,10 @@ class CenterAuthController(
     }
 
     override fun changePassword(request: ChangePasswordRequest) {
-        centerAuthFacadeService.changePassword(Password(request.newPassword))
+        centerAuthFacadeService.changePassword(
+            phoneNumber = PhoneNumber(request.phoneNumber),
+            newPassword = Password(request.newPassword)
+        )
     }
 
     override fun logout() {

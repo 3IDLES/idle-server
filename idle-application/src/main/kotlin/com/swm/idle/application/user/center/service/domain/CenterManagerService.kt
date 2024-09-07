@@ -78,4 +78,9 @@ class CenterManagerService(
         return centerManagerJpaRepository.findByPhoneNumber(phoneNumber.value)
     }
 
+    fun getByPhoneNumber(phoneNumber: PhoneNumber): CenterManager {
+        return centerManagerJpaRepository.findByPhoneNumber(phoneNumber.value)
+            ?: throw PersistenceException.ResourceNotFound("등록되지 않은 전화번호(phoneNumber: ${phoneNumber.value}입니다.")
+    }
+
 }
