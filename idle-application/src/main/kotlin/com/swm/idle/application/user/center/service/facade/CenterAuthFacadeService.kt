@@ -126,10 +126,11 @@ class CenterAuthFacadeService(
     }
 
     @Transactional
-    fun changePassword(newPassword: Password) {
-        val centerManager = getUserAuthentication().userId.let {
-            centerManagerService.getById(it)
-        }
+    fun changePassword(
+        phoneNumber: PhoneNumber,
+        newPassword: Password,
+    ) {
+        val centerManager = centerManagerService.getByPhoneNumber(phoneNumber)
 
         centerManagerService.updatePassword(centerManager, newPassword)
     }

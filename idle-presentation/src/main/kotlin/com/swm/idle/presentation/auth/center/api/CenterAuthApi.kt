@@ -95,7 +95,6 @@ interface CenterAuthApi {
         @PathVariable("identifier") identifier: String,
     )
 
-    @Secured
     @Operation(summary = "비밀번호 신규 발급 API")
     @PatchMapping("/password/new")
     @ResponseStatus(HttpStatus.NO_CONTENT)
