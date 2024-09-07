@@ -1,6 +1,17 @@
 # 👋 반갑습니다! 세 얼간이 입니다!
 
 <img width="1920" alt="ppt_표지" src="https://github.com/user-attachments/assets/a022bac8-ad7e-4948-a796-7b1522c617dd">
+<br>
+<img src="https://github.com/user-attachments/assets/c99ac7d2-206e-409a-a184-6d28f06c7fe7" width=200/>
+<img src="https://github.com/user-attachments/assets/8912d291-6f49-4bd1-91af-bf91927a5ceb" width=200/>
+<br>
+<img src="https://github.com/user-attachments/assets/cee77003-f877-445c-934a-2552f8063391" width=200/>
+<img src="https://github.com/user-attachments/assets/7a9bf9e7-c30e-475f-8461-94a86f6c2e0e" width=200/>
+<img src="https://github.com/user-attachments/assets/71c6d9e8-2d8f-4579-9424-956ed936b6eb" width=200/>
+<br>
+<img src="https://github.com/user-attachments/assets/22afdfea-6f4b-46e0-8268-d6918bc72557" width=200/>
+<img src="https://github.com/user-attachments/assets/63d4dd49-c37d-43c2-a6e3-6f6cfe911f8e" width=200/>
+<img src="https://github.com/user-attachments/assets/a3c1c1e9-d288-4768-ab47-eee4fe71426c" width=200/>
 
 <br><br>
 
@@ -62,6 +73,23 @@
 </tr>
 <tr>
 <td><b>BE Developer</b></td>
+</tr>
+</table>
+
+### Design
+
+<table>
+<tr>
+<td>
+<img src="https://github.com/user-attachments/assets/8e29eb2d-436f-458c-9270-e2aaa52f24c4" width="120px" />
+</a>
+</td>
+</tr>
+<tr>
+<td><b>장린</b></td>
+</tr>
+<tr>
+<td><b>Designer</b></td>
 </tr>
 </table>
 
