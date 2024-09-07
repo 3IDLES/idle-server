@@ -3,7 +3,7 @@ package com.swm.idle.application.jobposting.domain
 import com.swm.idle.domain.jobposting.entity.jpa.JobPosting
 import com.swm.idle.domain.jobposting.entity.jpa.JobPostingWeekday
 import com.swm.idle.domain.jobposting.repository.jpa.JobPostingWeekdayJpaRepository
-import com.swm.idle.domain.jobposting.vo.Weekdays
+import com.swm.idle.domain.jobposting.enums.Weekdays
 import org.springframework.stereotype.Service
 import java.util.*
 

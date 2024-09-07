@@ -2,13 +2,13 @@ package com.swm.idle.support.transfer.jobposting.center
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.swm.idle.domain.jobposting.entity.jpa.JobPosting
-import com.swm.idle.domain.jobposting.vo.ApplyDeadlineType
-import com.swm.idle.domain.jobposting.vo.ApplyMethodType
-import com.swm.idle.domain.jobposting.vo.JobPostingStatus
-import com.swm.idle.domain.jobposting.vo.LifeAssistanceType
-import com.swm.idle.domain.jobposting.vo.MentalStatus
-import com.swm.idle.domain.jobposting.vo.PayType
-import com.swm.idle.domain.jobposting.vo.Weekdays
+import com.swm.idle.domain.jobposting.enums.ApplyDeadlineType
+import com.swm.idle.domain.jobposting.enums.ApplyMethodType
+import com.swm.idle.domain.jobposting.enums.JobPostingStatus
+import com.swm.idle.domain.jobposting.enums.LifeAssistanceType
+import com.swm.idle.domain.jobposting.enums.MentalStatus
+import com.swm.idle.domain.jobposting.enums.PayType
+import com.swm.idle.domain.jobposting.enums.Weekdays
 import com.swm.idle.domain.user.common.enum.GenderType
 import com.swm.idle.domain.user.common.vo.BirthYear
 import io.swagger.v3.oas.annotations.media.Schema

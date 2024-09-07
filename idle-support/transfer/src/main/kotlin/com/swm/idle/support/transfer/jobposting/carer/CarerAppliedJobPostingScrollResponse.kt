@@ -3,9 +3,9 @@ package com.swm.idle.support.transfer.jobposting.carer
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.swm.idle.domain.common.dto.JobPostingPreviewDto
 import com.swm.idle.domain.jobposting.enums.JobPostingType
-import com.swm.idle.domain.jobposting.vo.ApplyDeadlineType
-import com.swm.idle.domain.jobposting.vo.PayType
-import com.swm.idle.domain.jobposting.vo.Weekdays
+import com.swm.idle.domain.jobposting.enums.ApplyDeadlineType
+import com.swm.idle.domain.jobposting.enums.PayType
+import com.swm.idle.domain.jobposting.enums.Weekdays
 import com.swm.idle.domain.user.common.enum.GenderType
 import com.swm.idle.domain.user.common.vo.BirthYear
 import com.swm.idle.support.transfer.common.ScrollResponse

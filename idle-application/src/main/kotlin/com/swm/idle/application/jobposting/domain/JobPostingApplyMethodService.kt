@@ -3,7 +3,7 @@ package com.swm.idle.application.jobposting.domain
 import com.swm.idle.domain.jobposting.entity.jpa.JobPosting
 import com.swm.idle.domain.jobposting.entity.jpa.JobPostingApplyMethod
 import com.swm.idle.domain.jobposting.repository.jpa.JobPostingApplyMethodJpaRepository
-import com.swm.idle.domain.jobposting.vo.ApplyMethodType
+import com.swm.idle.domain.jobposting.enums.ApplyMethodType
 import org.springframework.stereotype.Service
 import java.util.*
 

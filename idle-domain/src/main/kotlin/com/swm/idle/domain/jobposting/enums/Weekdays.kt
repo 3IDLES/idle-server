@@ -1,4 +1,4 @@
-package com.swm.idle.domain.jobposting.vo
+package com.swm.idle.domain.jobposting.enums
 
 enum class Weekdays {
     MONDAY,

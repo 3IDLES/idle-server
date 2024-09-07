@@ -12,7 +12,7 @@ import com.swm.idle.domain.common.enums.EntityStatus
 import com.swm.idle.domain.jobposting.entity.jpa.QJobPosting.jobPosting
 import com.swm.idle.domain.jobposting.entity.jpa.QJobPostingFavorite.jobPostingFavorite
 import com.swm.idle.domain.jobposting.entity.jpa.QJobPostingWeekday.jobPostingWeekday
-import com.swm.idle.domain.jobposting.vo.JobPostingStatus
+import com.swm.idle.domain.jobposting.enums.JobPostingStatus
 import org.locationtech.jts.geom.Point
 import org.springframework.stereotype.Repository
 import java.util.*

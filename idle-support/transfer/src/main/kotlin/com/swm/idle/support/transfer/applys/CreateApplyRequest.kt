@@ -1,6 +1,6 @@
 package com.swm.idle.support.transfer.applys
 
-import com.swm.idle.domain.jobposting.vo.ApplyMethodType
+import com.swm.idle.domain.jobposting.enums.ApplyMethodType
 import io.swagger.v3.oas.annotations.media.Schema
 import java.util.*
 

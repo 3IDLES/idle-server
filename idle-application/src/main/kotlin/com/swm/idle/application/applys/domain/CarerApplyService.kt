@@ -2,7 +2,7 @@ package com.swm.idle.application.applys.domain
 
 import com.swm.idle.domain.applys.entity.jpa.Applys
 import com.swm.idle.domain.applys.repository.CarerApplyJpaRepository
-import com.swm.idle.domain.jobposting.vo.ApplyMethodType
+import com.swm.idle.domain.jobposting.enums.ApplyMethodType
 import org.springframework.stereotype.Service
 import java.util.*
 

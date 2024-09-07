@@ -27,7 +27,7 @@ class JwtTokenService(
         val (expireSeconds, userType) = when (user) {
             is CenterManager -> jwtTokenProperties.access.center.expireSeconds to UserType.CENTER
             is Carer -> jwtTokenProperties.access.carer.expireSeconds to UserType.CARER
-            else -> throw IllegalArgumentException(NOT_SUPPORTED_USER_TYPE)
+            else -> throw JwtException.NotSupportUserTokenType()
         }
 
         val jwtClaims = JwtClaims {

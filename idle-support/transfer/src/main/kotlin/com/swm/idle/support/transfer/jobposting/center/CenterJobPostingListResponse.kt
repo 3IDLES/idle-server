@@ -1,7 +1,7 @@
 package com.swm.idle.support.transfer.jobposting.center
 
 import com.swm.idle.domain.jobposting.entity.jpa.JobPosting
-import com.swm.idle.domain.jobposting.vo.ApplyDeadlineType
+import com.swm.idle.domain.jobposting.enums.ApplyDeadlineType
 import com.swm.idle.domain.user.common.enum.GenderType
 import com.swm.idle.domain.user.common.vo.BirthYear
 import io.swagger.v3.oas.annotations.media.Schema

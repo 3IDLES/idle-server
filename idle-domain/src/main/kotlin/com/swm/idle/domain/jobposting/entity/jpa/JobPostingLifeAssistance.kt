@@ -1,7 +1,7 @@
 package com.swm.idle.domain.jobposting.entity.jpa
 
 import com.swm.idle.domain.common.entity.BaseEntity
-import com.swm.idle.domain.jobposting.vo.LifeAssistanceType
+import com.swm.idle.domain.jobposting.enums.LifeAssistanceType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType

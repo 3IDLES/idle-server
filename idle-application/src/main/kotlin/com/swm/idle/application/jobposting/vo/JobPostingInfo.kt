@@ -1,8 +1,8 @@
 package com.swm.idle.application.jobposting.vo
 
-import com.swm.idle.domain.jobposting.vo.ApplyDeadlineType
-import com.swm.idle.domain.jobposting.vo.MentalStatus
-import com.swm.idle.domain.jobposting.vo.PayType
+import com.swm.idle.domain.jobposting.enums.ApplyDeadlineType
+import com.swm.idle.domain.jobposting.enums.MentalStatus
+import com.swm.idle.domain.jobposting.enums.PayType
 import com.swm.idle.domain.user.common.enum.GenderType
 import com.swm.idle.domain.user.common.vo.BirthYear
 import com.swm.idle.support.transfer.jobposting.center.CreateJobPostingRequest
