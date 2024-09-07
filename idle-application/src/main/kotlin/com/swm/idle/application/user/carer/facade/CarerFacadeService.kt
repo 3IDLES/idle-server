@@ -6,6 +6,7 @@ import com.swm.idle.domain.user.carer.enums.JobSearchStatus
 import com.swm.idle.domain.user.common.vo.BirthYear
 import com.swm.idle.infrastructure.client.geocode.service.GeoCodeService
 import com.swm.idle.support.transfer.user.carer.GetCarerProfileResponse
+import com.swm.idle.support.transfer.user.common.logging.GetMyCarerInfoResponse
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -81,5 +82,13 @@ class CarerFacadeService(
                 jobSearchStatus = jobSearchStatus,
             )
         }
+    }
+
+    fun getMyCarerInfo(): GetMyCarerInfoResponse {
+        val carer = getUserAuthentication().userId.let {
+            carerService.getById(it)
+        }
+
+        return GetMyCarerInfoResponse(carer.id)
     }
 }
