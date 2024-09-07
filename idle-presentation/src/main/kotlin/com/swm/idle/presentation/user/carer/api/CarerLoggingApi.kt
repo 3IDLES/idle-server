@@ -15,7 +15,7 @@ interface CarerLoggingApi {
 
     @Secured
     @Operation(summary = "로그인 된 요양 보호사 정보 조회 API")
-    @GetMapping
+    @GetMapping("/my")
     @ResponseStatus(HttpStatus.OK)
     fun getMyCarerInfo(): GetMyCarerInfoResponse
 
