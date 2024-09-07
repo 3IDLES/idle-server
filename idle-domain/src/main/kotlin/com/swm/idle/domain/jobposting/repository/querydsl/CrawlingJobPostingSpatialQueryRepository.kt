@@ -6,8 +6,8 @@ import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.core.types.dsl.Expressions
 import com.querydsl.jpa.impl.JPAQueryFactory
 import com.swm.idle.domain.common.dto.CrawlingJobPostingPreviewDto
+import com.swm.idle.domain.common.enums.EntityStatus
 import com.swm.idle.domain.jobposting.entity.jpa.QCrawledJobPosting.crawledJobPosting
-import com.swm.idle.domain.jobposting.entity.jpa.QJobPosting.jobPosting
 import com.swm.idle.domain.jobposting.entity.jpa.QJobPostingFavorite.jobPostingFavorite
 import org.locationtech.jts.geom.Point
 import org.springframework.stereotype.Repository
@@ -49,6 +49,7 @@ class CrawlingJobPostingSpatialQueryRepository(
                             CrawlingJobPostingPreviewDto::class.java,
                             crawledJobPosting,
                             jobPostingFavorite.id.isNotNull
+                                .and(jobPostingFavorite.entityStatus.eq(EntityStatus.ACTIVE))
                         )
                     )
             )
@@ -60,7 +61,7 @@ class CrawlingJobPostingSpatialQueryRepository(
         return Expressions.booleanTemplate(
             "ST_Contains(ST_BUFFER({0}, 3000), {1})",
             location,
-            jobPosting.location,
+            crawledJobPosting.location,
         )
     }
 
