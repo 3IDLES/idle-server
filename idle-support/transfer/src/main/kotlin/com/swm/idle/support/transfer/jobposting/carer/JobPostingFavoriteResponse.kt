@@ -2,8 +2,8 @@ package com.swm.idle.support.transfer.jobposting.carer
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.swm.idle.domain.common.dto.JobPostingPreviewDto
-import com.swm.idle.domain.jobposting.enums.JobPostingType
 import com.swm.idle.domain.jobposting.enums.ApplyDeadlineType
+import com.swm.idle.domain.jobposting.enums.JobPostingType
 import com.swm.idle.domain.jobposting.enums.PayType
 import com.swm.idle.domain.jobposting.enums.Weekdays
 import com.swm.idle.domain.user.common.enum.GenderType
@@ -79,6 +79,9 @@ data class JobPostingFavoriteResponse(
 
         @Schema(description = "공고 타입")
         val jobPostingType: JobPostingType = JobPostingType.CAREMEET,
+
+        @Schema(description = "공고 생성 시각")
+        val createdAt: LocalDateTime,
     ) {
 
         companion object {
@@ -104,7 +107,8 @@ data class JobPostingFavoriteResponse(
                     applyDeadlineType = jobPostingPreviewDto.jobPosting.applyDeadlineType,
                     distance = distance,
                     applyTime = jobPostingPreviewDto.applyTime,
-                    isFavorite = true
+                    isFavorite = true,
+                    createdAt = jobPostingPreviewDto.jobPosting.createdAt!!
                 )
             }
 
