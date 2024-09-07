@@ -39,8 +39,8 @@ data class CrawlingJobPostingFavoriteResponse(
 
         @get:JsonProperty("isFavorite")
         @param:JsonProperty("isFavorite")
-        @Schema(description = "즐겨찾기 설정 여부, 항상 true")
-        val isFavorite: Boolean = true,
+        @Schema(description = "즐겨찾기 설정 여부")
+        val isFavorite: Boolean,
 
         @Schema(description = "공고 타입", example = "WORKNET")
         val jobPostingType: JobPostingType = JobPostingType.WORKNET,

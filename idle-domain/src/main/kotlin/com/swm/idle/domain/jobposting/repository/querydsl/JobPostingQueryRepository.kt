@@ -72,7 +72,10 @@ class JobPostingQueryRepository(
             .leftJoin(applys)
             .on(jobPosting.id.eq(applys.jobPostingId))
             .innerJoin(jobPostingFavorite).fetchJoin()
-            .on(jobPosting.id.eq(jobPostingFavorite.jobPostingId))
+            .on(
+                jobPosting.id.eq(jobPostingFavorite.jobPostingId)
+                    .and(jobPostingFavorite.entityStatus.eq(EntityStatus.ACTIVE))
+            )
             .transform(
                 groupBy(jobPosting.id)
                     .list(
