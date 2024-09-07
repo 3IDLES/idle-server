@@ -37,7 +37,7 @@ class RefreshTokenService(
             UserType.CENTER -> centerManagerService.getById(token.userId)
         }
 
-        delete(user.id)
+        deleteById(user.id)
 
         return JwtTokens(
             accessToken = jwtTokenService.generateAccessToken(user),
@@ -52,7 +52,7 @@ class RefreshTokenService(
     }
 
     @Transactional
-    fun delete(userId: UUID) {
+    fun deleteById(userId: UUID) {
         userRefreshTokenRepository.deleteById(userId)
     }
 

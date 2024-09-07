@@ -83,7 +83,7 @@ class CarerAuthFacadeService(
             carerService.getById(it)
         }
 
-        refreshTokenService.delete(carer.id)
+        refreshTokenService.deleteById(carer.id)
     }
 
     fun withdraw(reason: String) {
