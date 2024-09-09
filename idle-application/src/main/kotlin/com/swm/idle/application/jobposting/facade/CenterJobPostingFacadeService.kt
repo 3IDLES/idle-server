@@ -11,6 +11,7 @@ import com.swm.idle.application.jobposting.vo.JobPostingInfo
 import com.swm.idle.application.user.carer.domain.CarerService
 import com.swm.idle.application.user.center.service.domain.CenterManagerService
 import com.swm.idle.application.user.center.service.domain.CenterService
+import com.swm.idle.application.user.common.service.domain.DeletedUserInfoService
 import com.swm.idle.domain.jobposting.entity.jpa.JobPosting
 import com.swm.idle.domain.user.carer.entity.jpa.Carer
 import com.swm.idle.domain.user.center.exception.CenterException
@@ -41,6 +42,7 @@ class CenterJobPostingFacadeService(
     private val carerService: CarerService,
     private val carerApplyService: CarerApplyService,
     private val applicantService: ApplicantService,
+    private val deletedUserInfoService: DeletedUserInfoService,
 ) {
 
     @Transactional
@@ -163,10 +165,10 @@ class CenterJobPostingFacadeService(
             )
         }
 
-        request.applyMethod?.let {
+        request.applyMethod.let {
             jobPostingApplyMethodService.update(
                 jobPosting = jobPosting,
-                applyMethods = request.applyMethod!!,
+                applyMethods = request.applyMethod,
             )
         }
     }
@@ -240,8 +242,10 @@ class CenterJobPostingFacadeService(
 
     fun getJobPostingApplicants(jobPostingId: UUID): JobPostingApplicantsResponse {
         val applys = carerApplyService.findAllByJobPostingId(jobPostingId)
-        val applicants: List<Carer> = applys.map { apply ->
-            carerService.getById(apply.carerId)
+        val applicants: List<Carer> = applys.mapNotNull { apply ->
+            carerService.getById(apply.carerId).takeIf {
+                deletedUserInfoService.findById(apply.carerId) == null
+            }
         }
 
         val jobPosting = jobPostingService.getById(jobPostingId)
