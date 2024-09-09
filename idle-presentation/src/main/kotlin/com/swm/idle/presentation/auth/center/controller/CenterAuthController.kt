@@ -34,6 +34,10 @@ class CenterAuthController(
         return centerAuthFacadeService.getCenterManagerJoinStatusInfo()
     }
 
+    override fun requestCenterManagerVerification() {
+        return centerAuthFacadeService.requestCenterManagerVerification()
+    }
+
     override fun validateBusinessRegistrationNumber(businessRegistrationNumber: String): ValidateBusinessRegistrationNumberResponse {
         return centerAuthFacadeService.validateCompany(
             businessRegistrationNumber = BusinessRegistrationNumber(businessRegistrationNumber),

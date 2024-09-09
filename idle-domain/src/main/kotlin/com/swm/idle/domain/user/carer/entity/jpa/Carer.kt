@@ -11,13 +11,11 @@ import jakarta.persistence.Enumerated
 import jakarta.persistence.Table
 import org.hibernate.annotations.DynamicUpdate
 import java.math.BigDecimal
-import java.util.*
 
 @Entity
 @Table(name = "carer")
 @DynamicUpdate
 class Carer(
-    id: UUID,
     phoneNumber: String,
     carerName: String,
     birthYear: Int,
@@ -32,7 +30,7 @@ class Carer(
     profileImageUrl: String? = null,
     jobSearchStatus: JobSearchStatus = JobSearchStatus.YES,
     carerAccountStatus: CarerAccountStatus = CarerAccountStatus.ACTIVE,
-) : User(id, phoneNumber, carerName) {
+) : User(phoneNumber, carerName) {
 
     @Column(nullable = false)
     var birthYear: Int = birthYear
