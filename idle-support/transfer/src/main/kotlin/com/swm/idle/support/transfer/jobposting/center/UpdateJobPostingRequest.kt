@@ -64,7 +64,7 @@ data class UpdateJobPostingRequest(
     @Schema(description = "경력자 우대 여부", name = "isExperiencePreferred")
     val isExperiencePreferred: Boolean?,
     @Schema(description = "접수 방법", example = "[CALLING, MESSAGE]")
-    val applyMethod: List<ApplyMethodType>?,
+    val applyMethod: List<ApplyMethodType>,
     @Schema(description = "접수 마감 일자")
     val applyDeadline: String? = null,
     @Schema(description = "접수 마감일 상태")
