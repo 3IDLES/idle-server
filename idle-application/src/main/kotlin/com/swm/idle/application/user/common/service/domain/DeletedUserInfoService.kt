@@ -2,16 +2,18 @@ package com.swm.idle.application.user.common.service.domain
 
 import com.swm.idle.domain.user.common.entity.jpa.DeletedUserInfo
 import com.swm.idle.domain.user.common.enum.UserType
-import com.swm.idle.domain.user.common.repository.jpa.DeletedUserInfoRepository
+import com.swm.idle.domain.user.common.repository.jpa.DeletedUserInfoJpaRepository
 import com.swm.idle.domain.user.common.vo.PhoneNumber
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 import java.util.*
+import kotlin.jvm.optionals.getOrNull
 
 @Service
+@Transactional(readOnly = true)
 class DeletedUserInfoService(
-    private val deletedUserInfoRepository: DeletedUserInfoRepository,
+    private val deletedUserInfoJpaRepository: DeletedUserInfoJpaRepository,
 ) {
 
     @Transactional
@@ -21,7 +23,7 @@ class DeletedUserInfoService(
         role: UserType,
         reason: String,
     ) {
-        deletedUserInfoRepository.save(
+        deletedUserInfoJpaRepository.save(
             DeletedUserInfo(
                 id = id,
                 phoneNumber = phoneNumber.value,
@@ -30,6 +32,10 @@ class DeletedUserInfoService(
                 deletedAt = LocalDateTime.now(),
             )
         )
+    }
+
+    fun findById(carerId: UUID): DeletedUserInfo? {
+        return deletedUserInfoJpaRepository.findById(carerId).getOrNull()
     }
 
 }
