@@ -81,10 +81,10 @@ jobs:
           key: ${{ secrets.INSTANCE_PEM_KEY }}
           script: |
             sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-            sudo docker pull public.ecr.aws/f5q3r6m5/idle-ecr:$IMAGE_TAG
+            sudo docker pull public.ecr.aws/f5q3r6m5/idle-prod-ecr:$IMAGE_TAG
             sudo docker stop caremeet_server_prod || true
             sudo docker rm caremeet_server_prod || true
-            sudo docker run --name caremeet_server_prod --env-file ./.env -d -p 8080:8080 public.ecr.aws/f5q3r6m5/idle-ecr:$IMAGE_TAG
+            sudo docker run --name caremeet_server_prod --env-file ./.env -d -p 8080:8080 public.ecr.aws/f5q3r6m5/idle-prod-ecr:$IMAGE_TAG
 
       - name: Remove GitHub Actions IP
         run: |
