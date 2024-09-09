@@ -1,0 +1,95 @@
+name: Develop Server Deployer (CD)
+
+on: workflow_dispatch
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: prod
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Send discord notification (production server deploy start)
+        uses: appleboy/discord-action@master
+        with:
+          webhook_id: ${{ secrets.SERVER_DEPLOY_DISCORD_WEBHOOK_ID }}
+          webhook_token: ${{ secrets.SERVER_DEPLOY_DISCORD_WEBHOOK_TOKEN }}
+          message: |
+            > **🌈 Server Deployment Start (Production)**
+            >
+            > 🛢️ Repository  : ${{ github.repository }}
+            > 🎋 Branch      : ${{ github.ref }}
+            > 🔁 Run Attempt : ${{ github.run_attempt }}
+            > 🤗 Actor       : ${{ github.triggering_actor }}
+
+      - name: Get Github Actions IP Addresses
+        id: publicip
+        run: |
+          response=$(curl -s canhazip.com)
+          echo "ip=$response" >> "$GITHUB_OUTPUT"
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: 'ap-northeast-2'
+
+      - name: Add GitHub Actions IP
+        run: |
+          aws ec2 authorize-security-group-ingress \
+              --group-id ${{ secrets.SECURITY_GROUP_ID }} \
+              --protocol tcp \
+              --port 22 \
+              --cidr ${{ steps.publicip.outputs.ip }}/32
+
+      - name: Install Docker if not present
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ vars.INSTANCE_HOST }}
+          username: ${{ vars.INSTANCE_USERNAME }}
+          key: ${{ secrets.INSTANCE_PEM_KEY }}
+          script: |
+            if ! command -v docker >/dev/null 2>&1; then
+              echo "Installing Docker..."
+              sudo apt-get update
+              sudo apt-get install -y docker.io
+            else
+              echo "Docker already installed."
+            fi
+
+      - name: Configuration Env file
+        uses: appleboy/ssh-action@master
+        env:
+          VARS_CONTEXT: ${{ toJson(vars) }}
+          SECRETS_CONTEXT: ${{ toJson(secrets) }}
+        with:
+          host: ${{ vars.INSTANCE_HOST }}
+          username: ${{ vars.INSTANCE_USERNAME }}
+          key: ${{ secrets.INSTANCE_PEM_KEY }}
+          envs: VARS_CONTEXT,SECRETS_CONTEXT
+          script: |
+            cd ~/app/docker
+            jq -s '.[0] * .[1]' <(echo "$VARS_CONTEXT") <(echo "$SECRETS_CONTEXT") \
+              | jq -r 'to_entries | map("\(.key)=\(.value)") | .[]' > .env
+
+      - name: Run Docker
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ vars.INSTANCE_HOST }}
+          username: ${{ vars.INSTANCE_USERNAME }}
+          key: ${{ secrets.INSTANCE_PEM_KEY }}
+          script: |
+            sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+            sudo docker pull public.ecr.aws/f5q3r6m5/idle-ecr:$IMAGE_TAG
+            sudo docker stop caremeet_server_prod || true
+            sudo docker rm caremeet_server_prod || true
+            sudo docker run --name caremeet_server_prod --env-file ./.env -d -p 8080:8080 public.ecr.aws/f5q3r6m5/idle-ecr:$IMAGE_TAG
+
+      - name: Remove GitHub Actions IP
+        run: |
+          aws ec2 revoke-security-group-ingress \
+              --group-id ${{ secrets.SECURITY_GROUP_ID }} \
+              --protocol tcp \
+              --port 22 \
+              --cidr ${{ steps.publicip.outputs.ip }}/32
