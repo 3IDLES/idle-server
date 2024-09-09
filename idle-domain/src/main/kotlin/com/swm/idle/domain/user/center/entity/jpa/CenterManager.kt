@@ -7,19 +7,17 @@ import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
 import jakarta.persistence.Table
-import java.util.*
 
 @Entity
 @Table(name = "center_manager")
 class CenterManager(
-    id: UUID,
     identifier: String,
     password: String,
     managerName: String,
     phoneNumber: String,
     status: CenterManagerAccountStatus,
     centerBusinessRegistrationNumber: String,
-) : User(id, phoneNumber, managerName) {
+) : User(phoneNumber, managerName) {
 
     @Column(nullable = false, columnDefinition = "varchar(255)")
     var identifier: String = identifier
@@ -40,6 +38,10 @@ class CenterManager(
 
     fun updatePassword(newPassword: String) {
         this.password = newPassword
+    }
+
+    fun updateAccountStatusToPending() {
+        this.status = CenterManagerAccountStatus.PENDING
     }
 
 }

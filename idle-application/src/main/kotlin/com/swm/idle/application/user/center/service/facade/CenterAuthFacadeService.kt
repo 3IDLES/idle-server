@@ -5,6 +5,7 @@ import com.swm.idle.application.user.center.service.domain.CenterManagerService
 import com.swm.idle.application.user.common.service.domain.DeletedUserInfoService
 import com.swm.idle.application.user.common.service.domain.RefreshTokenService
 import com.swm.idle.application.user.common.service.util.JwtTokenService
+import com.swm.idle.domain.common.enums.EntityStatus
 import com.swm.idle.domain.common.exception.PersistenceException
 import com.swm.idle.domain.user.center.exception.CenterException
 import com.swm.idle.domain.user.center.vo.BusinessRegistrationNumber
@@ -133,6 +134,14 @@ class CenterAuthFacadeService(
         val centerManager = centerManagerService.getByPhoneNumber(phoneNumber)
 
         centerManagerService.updatePassword(centerManager, newPassword)
+    }
+
+    @Transactional
+    fun requestCenterManagerVerification() {
+        getUserAuthentication().userId
+            .let { centerManagerService.getById(it) }
+            .takeIf { it.entityStatus == EntityStatus.ACTIVE }
+            ?.let { centerManagerService.updateAccountStatusToPending(it) }
     }
 
 }

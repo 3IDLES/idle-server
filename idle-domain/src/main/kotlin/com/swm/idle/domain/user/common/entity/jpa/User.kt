@@ -1,21 +1,14 @@
 package com.swm.idle.domain.user.common.entity.jpa
 
+import com.swm.idle.domain.common.entity.BaseEntity
 import jakarta.persistence.Column
-import jakarta.persistence.Id
 import jakarta.persistence.MappedSuperclass
-import java.util.*
 
 @MappedSuperclass
 open class User(
-    id: UUID,
     phoneNumber: String,
     name: String,
-) {
-
-    @Id
-    @Column(nullable = false)
-    var id: UUID = id
-        private set
+) : BaseEntity() {
 
     @Column(nullable = false, columnDefinition = "varchar(255)")
     var phoneNumber: String = phoneNumber
