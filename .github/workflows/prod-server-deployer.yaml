@@ -1,4 +1,4 @@
-name: Develop Server Deployer (CD)
+name: Production Server Deployer (CD)
 
 on: workflow_dispatch
 jobs:
