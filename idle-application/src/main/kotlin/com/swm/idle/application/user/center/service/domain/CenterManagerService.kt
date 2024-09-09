@@ -10,7 +10,6 @@ import com.swm.idle.domain.user.center.vo.Identifier
 import com.swm.idle.domain.user.center.vo.Password
 import com.swm.idle.domain.user.common.vo.PhoneNumber
 import com.swm.idle.support.common.encrypt.PasswordEncryptor
-import com.swm.idle.support.common.uuid.UuidCreator
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -31,12 +30,11 @@ class CenterManagerService(
         val encryptedPassword = PasswordEncryptor.encrypt(rawPassword = password.value)
 
         CenterManager(
-            id = UuidCreator.create(),
             identifier = identifier.value,
             password = encryptedPassword,
             phoneNumber = phoneNumber.value,
             managerName = managerName,
-            status = CenterManagerAccountStatus.PENDING,
+            status = CenterManagerAccountStatus.NEW,
             centerBusinessRegistrationNumber = centerBusinessRegistrationNumber.value,
         ).also {
             centerManagerJpaRepository.save(it)
@@ -81,6 +79,10 @@ class CenterManagerService(
     fun getByPhoneNumber(phoneNumber: PhoneNumber): CenterManager {
         return centerManagerJpaRepository.findByPhoneNumber(phoneNumber.value)
             ?: throw PersistenceException.ResourceNotFound("등록되지 않은 전화번호(phoneNumber: ${phoneNumber.value}입니다.")
+    }
+
+    fun updateAccountStatusToPending(centerManager: CenterManager) {
+        centerManager.updateAccountStatusToPending()
     }
 
 }

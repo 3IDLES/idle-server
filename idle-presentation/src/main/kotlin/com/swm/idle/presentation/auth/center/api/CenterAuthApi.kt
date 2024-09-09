@@ -41,6 +41,12 @@ interface CenterAuthApi {
     @ResponseStatus(HttpStatus.OK)
     fun getJoinStatusInfo(): JoinStatusInfoResponse
 
+    @Secured
+    @Operation(summary = "센터 관리자 전화 인증 요청 API")
+    @PatchMapping("/join/verify")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun requestCenterManagerVerification()
+
     @Operation(summary = "사업자 등록번호 인증 API")
     @GetMapping("/authentication/{business-registration-number}")
     @ResponseStatus(HttpStatus.OK)

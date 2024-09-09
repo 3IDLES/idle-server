@@ -7,7 +7,6 @@ import com.swm.idle.domain.user.carer.repository.jpa.CarerJpaRepository
 import com.swm.idle.domain.user.common.enum.GenderType
 import com.swm.idle.domain.user.common.vo.BirthYear
 import com.swm.idle.domain.user.common.vo.PhoneNumber
-import com.swm.idle.support.common.uuid.UuidCreator
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -32,7 +31,6 @@ class CarerService(
     ): Carer {
         return carerJpaRepository.save(
             Carer(
-                id = UuidCreator.create(),
                 birthYear = birthYear.value,
                 carerName = carerName,
                 gender = gender,
