@@ -13,7 +13,7 @@ class CrawlingJobScheduler(
     private val crawlingJobConfig: CrawlingJobConfig,
 ) {
 
-    @Scheduled(cron = "0 0 3 ? * TUE,WED,THU,FRI,SAT")
+    @Scheduled(cron = "0 0 22 * * *")
     fun scheduleJob() {
         val jobParameters: JobParameters = JobParametersBuilder()
             .addLong("timestamp", System.currentTimeMillis())
