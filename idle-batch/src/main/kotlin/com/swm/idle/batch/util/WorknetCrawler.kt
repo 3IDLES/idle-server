@@ -1,7 +1,9 @@
 package com.swm.idle.batch.util
 
 import com.swm.idle.batch.common.dto.CrawledJobPostingDto
+import org.openqa.selenium.Alert
 import org.openqa.selenium.By
+import org.openqa.selenium.NoAlertPresentException
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.support.ui.ExpectedConditions
@@ -21,7 +23,8 @@ object WorknetCrawler {
 
     fun run(): List<CrawledJobPostingDto>? {
         val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
-        val today = LocalDate.now().minusDays(1).format(formatter)
+//        val today = LocalDate.now().minusDays(1).format(formatter)
+        val today = LocalDate.now().format(formatter)
         val crawlingUrl = CRAWLING_TARGET_URL_FORMAT
             .replace("{today}", today)
             .replace("{pageIndex}", "1")
@@ -38,7 +41,7 @@ object WorknetCrawler {
 
         val pageCount = jobPostingCount / JOB_POSTING_COUNT_PER_PAGE
 
-        for (i in 1..pageCount) {
+        for (i in 1..2) {
             if (i >= 2) {
                 val updatedCrawlingUrl = crawlingUrl
                     .replace("{today}", today)
@@ -70,66 +73,91 @@ object WorknetCrawler {
         return postings
     }
 
+    private fun handleAlertIfPresent() {
+        try {
+            val alert: Alert = driver.switchTo().alert()
+            println("Alert detected: ${alert.text}")
+            alert.accept()  // Alert 창의 '확인'을 누름
+        } catch (e: NoAlertPresentException) {
+            // 알림창이 없으면 무시하고 넘어감
+        }
+    }
+
     private fun crawlPosts(
         start: Int,
         end: Int,
         postings: MutableList<CrawledJobPostingDto>,
     ) {
         for (i in start..end) {
-            val originalWindow = driver.windowHandle
+            try {
+                val originalWindow = driver.windowHandle
 
-            val em = driver.findElement(By.id("list$i"))
-            val thirdTd = em.findElements(By.tagName("td"))[2]
-            val jobPostingDetail = thirdTd.findElement(By.cssSelector(".cp-info .cp-info-in a"))
-            jobPostingDetail.click()
+                val em = driver.findElement(By.id("list$i"))
+                val thirdTd = em.findElements(By.tagName("td"))[2]
+                val jobPostingDetail = thirdTd.findElement(By.cssSelector(".cp-info .cp-info-in a"))
+                jobPostingDetail.click()
 
-            val wait = WebDriverWait(driver, Duration.ofSeconds(20))
-            wait.until(ExpectedConditions.numberOfWindowsToBe(2))
+                handleAlertIfPresent()
 
-            val allWindows = driver.windowHandles
+                val wait = WebDriverWait(driver, Duration.ofSeconds(2))
+                wait.until(ExpectedConditions.numberOfWindowsToBe(2))
 
-            for (windowHandle in allWindows) {
-                if (windowHandle != originalWindow) {
-                    driver.switchTo().window(windowHandle)
-                    break
+                val allWindows = driver.windowHandles
+
+                for (windowHandle in allWindows) {
+                    if (windowHandle != originalWindow) {
+                        driver.switchTo().window(windowHandle)
+                        break
+                    }
                 }
+
+                val crawledJobPostingDto = CrawledJobPostingDto(
+                    title = getTitle(),
+                    content = getContent(),
+                    clientAddress = getClientAddress(),
+                    createdAt = getCreatedAt(),
+                    payInfo = getPayInfo(),
+                    workTime = getWorkTime(),
+                    workSchedule = getWorkSchedule(),
+                    applyDeadline = getApplyDeadline(),
+                    recruitmentProcess = getRecruitmentProcess(),
+                    applyMethod = getApplyMethod(),
+                    requiredDocument = getRequiredDocument(),
+                    centerName = getCenterName(),
+                    centerAddress = getCenterAddress(),
+                    directUrl = driver.currentUrl,
+                )
+
+                postings.add(crawledJobPostingDto)
+
+                driver.close()
+                driver.switchTo().window(originalWindow)
+            } catch (e: Exception) {
+                println("Error crawling job posting $i: ${e.message}")
+                handleAlertIfPresent()
             }
-
-            val crawledJobPostingDto = CrawledJobPostingDto(
-                title = getTitle(),
-                content = getContent(),
-                clientAddress = getClientAddress(),
-                createdAt = getCreatedAt(),
-                payInfo = getPayInfo(),
-                workTime = getWorkTime(),
-                workSchedule = getWorkSchedule(),
-                applyDeadline = getApplyDeadline(),
-                recruitmentProcess = getRecruitmentProcess(),
-                applyMethod = getApplyMethod(),
-                requiredDocument = getRequiredDocument(),
-                centerName = getCenterName(),
-                centerAddress = getCenterAddress(),
-                directUrl = driver.currentUrl,
-            )
-
-            postings.add(crawledJobPostingDto)
-
-            driver.close()
-            driver.switchTo().window(originalWindow)
         }
     }
 
     private fun getClientAddress(): String {
-        try {
-            val address =
-                driver.findElement(By.xpath("//*[@id=\"contents\"]/section/div/div[3]/div[15]/div/table/tbody/tr[4]/td/p[2]")).text
-            return address.replace("지도보기", "").trim()
-        } catch (e: Exception) {
-            val address =
-                driver.findElement(By.xpath("//*[@id=\"contents\"]/section/div/div[3]/div[17]/div/table/tbody/tr[4]/td/p[2]")).text
-            return address.replace("지도보기", "").trim()
+        val xpaths = listOf(
+            "//*[@id=\"contents\"]/section/div/div[3]/div[15]/div/table/tbody/tr[4]/td/p[2]",
+            "//*[@id=\"contents\"]/section/div/div[3]/div[17]/div/table/tbody/tr[4]/td/p[2]",
+            "//*[@id=\"contents\"]/section/div/div[3]/div[16]/div/table/tbody/tr[4]/td/p[2]"
+        )
+
+        for (xpath in xpaths) {
+            try {
+                val address = driver.findElement(By.xpath(xpath)).text
+                return address.replace("지도보기", "").trim()
+            } catch (e: Exception) {
+                // Ignore and try the next XPath
+            }
         }
+
+        throw NoSuchElementException("클라이언트 주소 크롤링 에러")
     }
+
 
     private fun getRequiredDocument(): String {
         return driver.findElement(By.xpath("//*[@id=\"contents\"]/section/div/div[3]/div[7]/table/tbody/tr/td[4]")).text
@@ -173,24 +201,43 @@ object WorknetCrawler {
     }
 
     private fun getCreatedAt(): String {
-        try {
-            return driver.findElement(By.xpath("//*[@id=\"contents\"]/section/div/div[3]/div[16]/table/tbody/tr/td[1]")).text
-        } catch (e: Exception) {
-            return driver.findElement(By.xpath("//*[@id=\"contents\"]/section/div/div[3]/div[18]/table/tbody/tr/td[1]")).text
+        val xpaths = listOf(
+            "//*[@id=\"contents\"]/section/div/div[3]/div[16]/table/tbody/tr/td[1]",
+            "//*[@id=\"contents\"]/section/div/div[3]/div[18]/table/tbody/tr/td[1]",
+            "//*[@id=\"contents\"]/section/div/div[3]/div[17]/table/tbody/tr/td[1]"
+        )
+
+        for (xpath in xpaths) {
+            try {
+                return driver.findElement(By.xpath(xpath)).text
+            } catch (e: Exception) {
+                // Ignore and try the next XPath
+            }
         }
+
+        throw NoSuchElementException("CreatedAt element not found using any of the provided XPaths")
     }
 
+
     private fun getCenterAddress(): String {
-        try {
-            val address =
-                driver.findElement(By.xpath("//*[@id=\"contents\"]/section/div/div[3]/div[15]/div/table/tbody/tr[1]/td")).text
-            return address.replace("지도보기", "").trim().replace(Regex("\\(\\d{5}\\)"), "").trim()
-        } catch (e: Exception) {
-            val address =
-                driver.findElement(By.xpath("//*[@id=\"contents\"]/section/div/div[3]/div[17]/div/table/tbody/tr[1]/td")).text
-            return address.replace("지도보기", "").trim().replace(Regex("\\(\\d{5}\\)"), "").trim()
+        val xpaths = listOf(
+            "//*[@id=\"contents\"]/section/div/div[3]/div[15]/div/table/tbody/tr[1]/td",
+            "//*[@id=\"contents\"]/section/div/div[3]/div[17]/div/table/tbody/tr[1]/td",
+            "//*[@id=\"contents\"]/section/div/div[3]/div[16]/div/table/tbody/tr[4]/td/p[2]"
+        )
+
+        for (xpath in xpaths) {
+            try {
+                val address = driver.findElement(By.xpath(xpath)).text
+                return address.replace("지도보기", "").trim().replace(Regex("\\(\\d{5}\\)"), "").trim()
+            } catch (e: Exception) {
+                // Ignore and try the next XPath
+            }
         }
+
+        throw NoSuchElementException("Center address not found using any of the provided XPaths")
     }
+
 
     private fun getContent(): String {
         return driver.findElement(By.xpath("//*[@id=\"contents\"]/section/div/div[3]/div[3]/table/tbody/tr/td")).text

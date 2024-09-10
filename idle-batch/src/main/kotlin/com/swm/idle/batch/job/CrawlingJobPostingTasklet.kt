@@ -10,6 +10,7 @@ import org.springframework.batch.core.scope.context.ChunkContext
 import org.springframework.batch.core.step.tasklet.Tasklet
 import org.springframework.batch.repeat.RepeatStatus
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 
 @Component
 class CrawlingJobPostingTasklet(
@@ -17,12 +18,18 @@ class CrawlingJobPostingTasklet(
     private val geoCodeService: GeoCodeService,
 ) : Tasklet {
 
+    @Transactional
     override fun execute(contribution: StepContribution, chunkContext: ChunkContext): RepeatStatus {
         val crawlingJobPostings: List<CrawledJobPostingDto>? = WorknetCrawler.run()
 
         if (crawlingJobPostings != null) {
-            crawlingJobPostings.map { crawledJobPosting ->
-                val clientLocationInfo = geoCodeService.search(crawledJobPosting.clientAddress)
+            crawlingJobPostings.mapNotNull { crawledJobPosting ->
+                val clientRoadNameAddress = extractRoadNameAddress(crawledJobPosting.clientAddress)
+                val clientLocationInfo = geoCodeService.search(clientRoadNameAddress)
+
+                if (clientLocationInfo.addresses.isEmpty()) {
+                    return@mapNotNull null
+                }
 
                 val clientLocation = PointConverter.convertToPoint(
                     latitude = clientLocationInfo.addresses[0].y.toDouble(),
@@ -46,11 +53,26 @@ class CrawlingJobPostingTasklet(
                     directUrl = crawledJobPosting.directUrl,
                 ).toDomain(clientLocation)
             }.let {
+                println("크롤링된 data 크기 : ${it.size}")
                 crawlingJobPostingService.saveAll(it)
             }
+
+            return RepeatStatus.FINISHED
         }
 
         return RepeatStatus.FINISHED
+    }
+
+    private fun extractRoadNameAddress(clientAddress: String): String {
+        return clientAddress.replace(Regex(REGEX_FORMAT), "")
+            .substringBefore(SPLIT_DELIMITER)
+            .trim()
+    }
+
+    companion object {
+
+        const val REGEX_FORMAT = "\\(.*?\\)"
+        const val SPLIT_DELIMITER = ","
     }
 
 }
