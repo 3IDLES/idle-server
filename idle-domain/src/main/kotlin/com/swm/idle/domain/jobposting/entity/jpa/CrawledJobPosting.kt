@@ -5,7 +5,6 @@ import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.locationtech.jts.geom.Point
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
 
@@ -13,84 +12,85 @@ import java.util.*
 @Table(name = "crawled_job_posting")
 class CrawledJobPosting(
     id: UUID,
-    title: String,
-    content: String,
+    title: String?,
+    content: String?,
     clientAddress: String,
-    payInfo: String,
-    workTime: String,
-    workSchedule: String,
-    applyDeadline: LocalDate,
-    recruitmentProcess: String,
-    applyMethod: String,
-    requiredDocument: String,
-    centerName: String,
+    payInfo: String?,
+    workTime: String?,
+    workSchedule: String?,
+    applyDeadline: String?,
+    recruitmentProcess: String?,
+    applyMethod: String?,
+    requiredDocument: String?,
+    centerName: String?,
     centerAddress: String,
-    directUrl: String,
-    createdAt: LocalDateTime,
+    directUrl: String?,
+    createdAt: LocalDateTime?,
     location: Point,
 ) {
 
     @Id
-    @Column(nullable = false)
+    @Column(nullable = true)
     var id: UUID = id
         private set
 
-    @Column(columnDefinition = "varchar(255)")
-    var title: String = title
+    @Column(columnDefinition = "varchar(255)", nullable = true)
+    var title: String? = title
         private set
 
-    @Column(columnDefinition = "TEXT")
-    var content: String = content
+    @Column(columnDefinition = "TEXT", nullable = true)
+    var content: String? = content
         private set
 
-    @Column(columnDefinition = "varchar(255)")
+    @Column(columnDefinition = "varchar(255)", nullable = true)
     var clientAddress: String = clientAddress
         private set
 
-    @Column(columnDefinition = "varchar(255)")
-    var payInfo: String = payInfo
+    @Column(columnDefinition = "varchar(255)", nullable = true)
+    var payInfo: String? = payInfo
         private set
 
-    @Column(columnDefinition = "varchar(255)")
-    var workTime: String = workTime
+    @Column(columnDefinition = "varchar(255)", nullable = true)
+    var workTime: String? = workTime
         private set
 
-    @Column(columnDefinition = "varchar(255)")
-    var workSchedule: String = workSchedule
+    @Column(columnDefinition = "varchar(255)", nullable = true)
+    var workSchedule: String? = workSchedule
         private set
 
-    var applyDeadline: LocalDate = applyDeadline
+    @Column(nullable = true)
+    var applyDeadline: String? = applyDeadline
         private set
 
-    @Column(columnDefinition = "varchar(255)")
-    var recruitmentProcess: String = recruitmentProcess
+    @Column(columnDefinition = "varchar(255)", nullable = true)
+    var recruitmentProcess: String? = recruitmentProcess
         private set
 
-    @Column(columnDefinition = "varchar(255)")
-    var applyMethod: String = applyMethod
+    @Column(columnDefinition = "varchar(255)", nullable = true)
+    var applyMethod: String? = applyMethod
         private set
 
-    @Column(columnDefinition = "varchar(255)")
-    var requiredDocument: String = requiredDocument
+    @Column(columnDefinition = "varchar(255)", nullable = true)
+    var requiredDocument: String? = requiredDocument
         private set
 
-    @Column(columnDefinition = "varchar(255)")
-    var centerName: String = centerName
+    @Column(columnDefinition = "varchar(255)", nullable = true)
+    var centerName: String? = centerName
         private set
 
     @Column(columnDefinition = "varchar(255)")
     var centerAddress: String = centerAddress
         private set
 
-    @Column(columnDefinition = "varchar(255)")
-    var directUrl: String = directUrl
+    @Column(columnDefinition = "text", nullable = true)
+    var directUrl: String? = directUrl
         private set
 
-    @Column(columnDefinition = "varchar(255)")
-    var createdAt: LocalDateTime = createdAt
+    @Column(columnDefinition = "timestamp", nullable = true)
+    var createdAt: LocalDateTime? = createdAt
         private set
 
-    @Column(nullable = false, columnDefinition = "POINT SRID 4326")
+    @Column(columnDefinition = "POINT SRID 4326")
     var location: Point = location
         private set
 

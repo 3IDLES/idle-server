@@ -40,5 +40,4 @@ interface CrawlingJobPostingJpaRepository : JpaRepository<CrawledJobPosting, UUI
         nativeQuery = true
     )
     fun findAllFavoritesByCarerId(carerId: UUID): List<CrawledJobPosting>?
-
 }

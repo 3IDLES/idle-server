@@ -18,7 +18,10 @@ object PointConverter {
         latitude: Double,
         longitude: Double,
     ): Point {
-        return geometryFactory.createPoint(Coordinate(longitude, latitude))
+        val correctedLongitude = if (longitude > latitude) longitude else latitude
+        val correctedLatitude = if (longitude > latitude) latitude else longitude
+
+        return geometryFactory.createPoint(Coordinate(correctedLongitude, correctedLatitude))
     }
 
 }

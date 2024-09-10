@@ -42,7 +42,8 @@ class CrawlingJobPostingFacadeService(
         )
 
         return crawlingJobPostingService.getById(crawlingJobPostingId).let {
-            val isFavorite = jobPostingFavoriteService.existsByJobPostingId(crawlingJobPostingId)
+            val isFavorite =
+                jobPostingFavoriteService.existsByJobPostingId(crawlingJobPostingId)
 
             CrawlingJobPostingResponse.from(
                 crawlingJobPosting = it,

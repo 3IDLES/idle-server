@@ -15,49 +15,49 @@ data class CrawlingJobPostingResponse(
     val id: UUID,
 
     @Schema(description = "모집 요강")
-    val content: String,
+    val content: String?,
 
     @Schema(description = "고객 주소")
-    val clientAddress: String,
+    val clientAddress: String?,
 
     @Schema(description = "경도")
-    val longitude: String,
+    val longitude: String?,
 
     @Schema(description = "위도")
-    val latitude: String,
+    val latitude: String?,
 
     @Schema(description = "생성 시각")
-    val createdAt: LocalDateTime,
+    val createdAt: LocalDateTime?,
 
     @Schema(description = "급여 정보")
-    val payInfo: String,
+    val payInfo: String?,
 
     @Schema(description = "근무 시간")
-    val workingTime: String,
+    val workingTime: String?,
 
     @Schema(description = "근무 스케줄")
-    val workingSchedule: String,
+    val workingSchedule: String?,
 
     @Schema(description = "마감 일자")
-    val applyDeadline: String,
+    val applyDeadline: String?,
 
     @Schema(description = "채용 절차")
-    val recruitmentProcess: String,
+    val recruitmentProcess: String?,
 
     @Schema(description = "지원 방법")
-    val applyMethod: String,
+    val applyMethod: String?,
 
     @Schema(description = "필요 서류")
-    val requiredDocumentation: String,
+    val requiredDocumentation: String?,
 
     @Schema(description = "센터명")
-    val centerName: String,
+    val centerName: String?,
 
     @Schema(description = "센터 주소")
-    val centerAddress: String,
+    val centerAddress: String?,
 
     @Schema(description = "외부 공고 url")
-    val jobPostingUrl: String,
+    val jobPostingUrl: String?,
 
     @get:JsonProperty("isFavorite")
     @param:JsonProperty("isFavorite")
@@ -68,7 +68,7 @@ data class CrawlingJobPostingResponse(
     val jobPostingType: JobPostingType = JobPostingType.WORKNET,
 
     @Schema(description = "거리", example = "700(단위 M)")
-    val distance: Int,
+    val distance: Int?,
 ) {
 
     companion object {
