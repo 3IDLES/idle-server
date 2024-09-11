@@ -10,7 +10,6 @@ import org.springframework.batch.core.scope.context.ChunkContext
 import org.springframework.batch.core.step.tasklet.Tasklet
 import org.springframework.batch.repeat.RepeatStatus
 import org.springframework.stereotype.Component
-import org.springframework.transaction.annotation.Transactional
 
 @Component
 class CrawlingJobPostingTasklet(
@@ -18,7 +17,6 @@ class CrawlingJobPostingTasklet(
     private val geoCodeService: GeoCodeService,
 ) : Tasklet {
 
-    @Transactional
     override fun execute(contribution: StepContribution, chunkContext: ChunkContext): RepeatStatus {
         val crawlingJobPostings: List<CrawledJobPostingDto>? = WorknetCrawler.run()
 

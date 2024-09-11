@@ -19,4 +19,5 @@ spring:
 
   batch:
     job:
+      name: crawlingJob
       enabled: true

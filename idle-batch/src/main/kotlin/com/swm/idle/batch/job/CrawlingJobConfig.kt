@@ -2,7 +2,6 @@ package com.swm.idle.batch.job
 
 import org.springframework.batch.core.Job
 import org.springframework.batch.core.Step
-import org.springframework.batch.core.configuration.support.DefaultBatchConfiguration
 import org.springframework.batch.core.job.builder.JobBuilder
 import org.springframework.batch.core.repository.JobRepository
 import org.springframework.batch.core.step.builder.StepBuilder
@@ -15,7 +14,7 @@ class CrawlingJobConfig(
     private val jobRepository: JobRepository,
     private val transactionManager: PlatformTransactionManager,
     private val crawlingJobPostingTasklet: CrawlingJobPostingTasklet,
-) : DefaultBatchConfiguration() {
+) {
 
     @Bean
     fun crawlingJob(): Job {
