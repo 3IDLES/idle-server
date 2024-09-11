@@ -2,5 +2,21 @@ spring:
   batch:
     jdbc:
       initialize-schema: never
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  batch:
     job:
       enabled: false
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  batch:
+    job:
+      enabled: true
