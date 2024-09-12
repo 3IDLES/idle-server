@@ -24,9 +24,10 @@ object WorknetCrawler {
 
     init {
         val options = ChromeOptions()
-        options.addArguments("--headless=new")
+        options.addArguments("--headless")
         options.addArguments("--no-sandbox")
         options.addArguments("--disable-dev-shm-usage")
+        options.addArguments("--disable-gpu")
 
         driver = ChromeDriver(options)
     }
