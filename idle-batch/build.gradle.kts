@@ -13,7 +13,7 @@ dependencies {
     implementation(project(":idle-infrastructure:client"))
 
     implementation(rootProject.libs.spring.boot.starter.batch)
-    implementation(rootProject.libs.selenium.java)
-    implementation(rootProject.libs.selenium.chrome.driver)
+    implementation("org.seleniumhq.selenium:selenium-java:4.24.0")
+    implementation("org.seleniumhq.selenium:selenium-chrome-driver:4.24.0")
     implementation(libs.mysql.connector.java)
 }
