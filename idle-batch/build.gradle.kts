@@ -14,7 +14,6 @@ dependencies {
 
     implementation(rootProject.libs.spring.boot.starter.batch)
     implementation(rootProject.libs.selenium.java)
-//    implementation(rootProject.libs.selenium.chrome.driver)
-    implementation(rootProject.libs.selenium.remote.driver)
+    implementation(rootProject.libs.selenium.chrome.driver)
     implementation(libs.mysql.connector.java)
 }
