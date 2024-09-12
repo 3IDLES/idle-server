@@ -6,6 +6,7 @@ import org.openqa.selenium.By
 import org.openqa.selenium.NoAlertPresentException
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.chrome.ChromeDriver
+import org.openqa.selenium.chrome.ChromeOptions
 import org.openqa.selenium.support.ui.ExpectedConditions
 import org.openqa.selenium.support.ui.WebDriverWait
 import java.time.Duration
@@ -18,7 +19,18 @@ object WorknetCrawler {
         "https://www.work.go.kr/empInfo/empInfoSrch/list/dtlEmpSrchList.do?careerTo=&keywordJobCd=&occupation=550100%2C550104&templateInfo=&shsyWorkSecd=&rot2WorkYn=&payGbn=&resultCnt=50&keywordJobCont=&cert=&cloDateStdt=&moreCon=&minPay=&codeDepth2Info=11000&isChkLocCall=&sortFieldInfo=DATE&major=&resrDutyExcYn=&eodwYn=&sortField=DATE&staArea=&sortOrderBy=DESC&keyword=&termSearchGbn=D-0&carrEssYns=&benefitSrchAndOr=O&disableEmpHopeGbn=&webIsOut=&actServExcYn=&maxPay=&keywordStaAreaNm=&emailApplyYn=&listCookieInfo=DTL&pageCode=&codeDepth1Info=11000&keywordEtcYn=&publDutyExcYn=&keywordJobCdSeqNo=&exJobsCd=&templateDepthNmInfo=&computerPreferential=&regDateStdt={today}&employGbn=&empTpGbcd=&region=&infaYn=&resultCntInfo=50&siteClcd=WORK%2CP&cloDateEndt=&sortOrderByInfo=DESC&currntPageNo=1&indArea=&careerTypes=&searchOn=Y&tlmgYn=&subEmpHopeYn=&academicGbn=&templateDepthNoInfo=&foriegn=&mealOfferClcd=&station=&moerButtonYn=Y&holidayGbn=&srcKeyword=&enterPriseGbn=all&academicGbnoEdu=noEdu&cloTermSearchGbn=all&keywordWantedTitle=&stationNm=&benefitGbn=&keywordFlag=&notSrcKeyword=&essCertChk=&isEmptyHeader=&depth2SelCode=&_csrf=355cf055-ee67-497a-9695-a65cabc28829&keywordBusiNm=&preferentialGbn=&rot3WorkYn=&pfMatterPreferential=&regDateEndt={today}&staAreaLineInfo1=11000&staAreaLineInfo2=1&pageIndex={pageIndex}&termContractMmcnt=&careerFrom=&laborHrShortYn=#viewSPL"
 
     private const val JOB_POSTING_COUNT_PER_PAGE = 50
-    private val driver: WebDriver = ChromeDriver()
+
+    private var driver: WebDriver
+
+    init {
+        val options = ChromeOptions()
+        options.addArguments("--headless")
+        options.addArguments("--no-sandbox")
+        options.addArguments("--disable-dev-shm-usage")
+
+        driver = ChromeDriver(options)
+    }
+
     private val postings = mutableListOf<CrawledJobPostingDto>()
 
     fun run(): List<CrawledJobPostingDto>? {
