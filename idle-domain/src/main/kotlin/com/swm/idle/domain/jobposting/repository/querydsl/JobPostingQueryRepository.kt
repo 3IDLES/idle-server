@@ -74,6 +74,7 @@ class JobPostingQueryRepository(
             .innerJoin(jobPostingFavorite).fetchJoin()
             .on(
                 jobPosting.id.eq(jobPostingFavorite.jobPostingId)
+                    .and(jobPostingFavorite.carerId.eq(carerId))
                     .and(jobPostingFavorite.entityStatus.eq(EntityStatus.ACTIVE))
             )
             .transform(

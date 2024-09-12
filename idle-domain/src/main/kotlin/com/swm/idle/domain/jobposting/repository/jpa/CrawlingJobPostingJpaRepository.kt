@@ -35,6 +35,7 @@ interface CrawlingJobPostingJpaRepository : JpaRepository<CrawledJobPosting, UUI
             ON jpf.job_posting_id = cjp.id
             WHERE cjp.entity_status = 'ACTIVE'
             AND jpf.entity_status = 'ACTIVE'
+            AND jpf.carer_id = :carerId
             ORDER BY cjp.id DESC;
         """,
         nativeQuery = true
