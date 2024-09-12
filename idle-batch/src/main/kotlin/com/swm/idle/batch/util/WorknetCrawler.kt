@@ -24,7 +24,7 @@ object WorknetCrawler {
 
     init {
         val options = ChromeOptions()
-        options.addArguments("--headless")
+        options.addArguments("--headless=new")
         options.addArguments("--no-sandbox")
         options.addArguments("--disable-dev-shm-usage")
 
