@@ -1,6 +1,7 @@
 package com.swm.idle.batch.util
 
 import com.swm.idle.batch.common.dto.CrawledJobPostingDto
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.openqa.selenium.Alert
 import org.openqa.selenium.By
 import org.openqa.selenium.NoAlertPresentException
@@ -21,6 +22,7 @@ object WorknetCrawler {
     private const val JOB_POSTING_COUNT_PER_PAGE = 50
 
     private var driver: WebDriver
+    private val logger = KotlinLogging.logger { }
 
     init {
         val options = ChromeOptions()
@@ -42,7 +44,15 @@ object WorknetCrawler {
             .replace("{today}", today)
             .replace("{pageIndex}", "1")
 
+        logger.warn {
+            "기본 세팅중"
+        }
+
         driver.get(crawlingUrl)
+
+        logger.warn {
+            "초기화 완료"
+        }
 
         val jobPostingCountText =
             driver.findElement(By.xpath("//*[@id=\"srcFrm\"]/div[3]/div[1]/p[2]/em")).text
