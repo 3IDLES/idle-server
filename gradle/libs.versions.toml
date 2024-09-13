@@ -30,6 +30,7 @@ kotlin-logging = "5.1.0"
 auth0-java-jwt = "4.4.0"
 auth0-jwks-rsa = "0.22.1"
 selenium = "4.24.0"
+web-driver-manager = "5.9.2"
 
 hibernate-spatial = "6.4.4.Final"
 querydsl = "5.1.0"
@@ -84,7 +85,7 @@ java-jwt = { group = "com.auth0", name = "java-jwt", version.ref = "auth0-java-j
 jwks-rsa = { group = "com.auth0", name = "jwks-rsa", version.ref = "auth0-jwks-rsa" }
 
 selenium-java = { group = "org.seleniumhq.selenium", name = "selenium-java", version.ref = "selenium"}
-selenium-chrome-driver = { group = "org.seleniumhq.selenium", name = "selenium-chrome-driver", version.ref = "selenium"}
+web-driver-manager = { group = "io.github.bonigarcia", name = "webdrivermanager", version.ref = "web-driver-manager"}
 
 hibernate-spatial = { group = "org.hibernate.orm", name = "hibernate-spatial", version.ref = "hibernate-spatial" }
 querydsl-spatial = { group = "com.querydsl", name = "querydsl-spatial", version.ref = "querydsl" }

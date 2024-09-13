@@ -10,7 +10,7 @@ spring:
 
   batch:
     job:
-      enabled: false
+      enabled: true
 ---
 spring:
   config:
