@@ -35,6 +35,7 @@ object WorknetCrawler {
         options.addArguments("--no-sandbox")
         options.addArguments("--disable-dev-shm-usage")
         options.addArguments("--disable-gpu")
+        options.addArguments("window-size=1400,1500");
         driver = ChromeDriver(options)
     }
 
