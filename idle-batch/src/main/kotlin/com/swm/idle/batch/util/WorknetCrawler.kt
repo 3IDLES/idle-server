@@ -26,6 +26,7 @@ object WorknetCrawler {
 
     init {
         initializeDriver()
+        System.setProperty("webdriver.chrome.verboseLogging", "true")
     }
 
     // Driver 초기화 메서드
@@ -35,7 +36,11 @@ object WorknetCrawler {
         options.addArguments("--no-sandbox")
         options.addArguments("--disable-dev-shm-usage")
         options.addArguments("--disable-gpu")
-        options.addArguments("window-size=1400,1500");
+        options.addArguments("window-size=1400,1500")
+        options.addArguments("--disable-software-rasterizer")
+        options.addArguments("--remote-debugging-port=9222")
+        options.addArguments("--disable-extensions")
+
         driver = ChromeDriver(options)
     }
 

@@ -14,6 +14,8 @@ services:
       - mysql
     ports:
       - "8080:8080"
+    network_mode: "host"
+
   mysql:
     image: mysql:8.0.33
     environment:
@@ -22,12 +24,14 @@ services:
       TZ: Asia/Seoul
     ports:
       - "3306:3306"
+    network_mode: "host"
 
   redis:
     image: redis:7.2.5
     container_name: redis_dev
     ports:
       - "6379:6379"
+    network_mode: "host"
 
 volumes:
   mysql-volume:
