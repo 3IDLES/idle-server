@@ -21,44 +21,48 @@ object WorknetCrawler {
 
     private const val JOB_POSTING_COUNT_PER_PAGE = 50
 
-    private var driver: WebDriver
+    private lateinit var driver: WebDriver
     private val logger = KotlinLogging.logger { }
 
     init {
+        initializeDriver()
+    }
+
+    // Driver 초기화 메서드
+    private fun initializeDriver() {
         val options = ChromeOptions()
         options.addArguments("--headless")
         options.addArguments("--no-sandbox")
         options.addArguments("--disable-dev-shm-usage")
         options.addArguments("--disable-gpu")
-
         driver = ChromeDriver(options)
     }
 
     private val postings = mutableListOf<CrawledJobPostingDto>()
 
     fun run(): List<CrawledJobPostingDto>? {
+        initializeDriver()
+
         val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
-//        val today = LocalDate.now().minusDays(1).format(formatter)
         val today = LocalDate.now().format(formatter)
         val crawlingUrl = CRAWLING_TARGET_URL_FORMAT
             .replace("{today}", today)
             .replace("{pageIndex}", "1")
 
-        logger.warn {
-            "기본 세팅중"
-        }
-
+        logger.warn { "기본 세팅중" }
         driver.get(crawlingUrl)
+        logger.warn { "초기화 완료" }
 
-        logger.warn {
-            "초기화 완료"
-        }
+        // WebDriverWait에 대기 시간을 충분히 설정 (10초)
+        val wait = WebDriverWait(driver, Duration.ofSeconds(10))
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"srcFrm\"]/div[3]/div[1]/p[2]/em")))
 
         val jobPostingCountText =
             driver.findElement(By.xpath("//*[@id=\"srcFrm\"]/div[3]/div[1]/p[2]/em")).text
         val jobPostingCount = jobPostingCountText.replace(",", "").toInt()
 
         if (jobPostingCount == 0) {
+            driver.quit()
             return null
         }
 
@@ -71,7 +75,8 @@ object WorknetCrawler {
                     .replace(Regex("pageIndex=\\d+"), "pageIndex=${i}")
                 driver.get(updatedCrawlingUrl)
             }
-            val wait = WebDriverWait(driver, Duration.ofSeconds(5))
+
+            // 대기 시간을 10초로 늘림
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#list1")))
 
             crawlPosts(1, JOB_POSTING_COUNT_PER_PAGE, postings)
@@ -85,21 +90,20 @@ object WorknetCrawler {
                 .replace(Regex("pageIndex=\\d+"), "pageIndex=${pageCount + 1}")
             driver.get(updateCrawlingUrl)
 
-            val wait = WebDriverWait(driver, Duration.ofSeconds(5))
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#list1")))
 
             crawlPosts(1, lastPageJobPostingCount, postings)
         }
 
         driver.quit()
-
         return postings
     }
 
+    // 알림창(Alert) 처리 - 없으면 예외를 잡고 처리
     private fun handleAlertIfPresent() {
         try {
             val alert: Alert = driver.switchTo().alert()
-            println("Alert detected: ${alert.text}")
+            logger.warn { "Alert detected: ${alert.text}" }
             alert.accept()  // Alert 창의 '확인'을 누름
         } catch (e: NoAlertPresentException) {
             // 알림창이 없으면 무시하고 넘어감
@@ -122,7 +126,8 @@ object WorknetCrawler {
 
                 handleAlertIfPresent()
 
-                val wait = WebDriverWait(driver, Duration.ofSeconds(2))
+                // 대기 시간 5초로 설정 (새 창이 뜨는 것을 기다림)
+                val wait = WebDriverWait(driver, Duration.ofSeconds(5))
                 wait.until(ExpectedConditions.numberOfWindowsToBe(2))
 
                 val allWindows = driver.windowHandles
@@ -156,7 +161,7 @@ object WorknetCrawler {
                 driver.close()
                 driver.switchTo().window(originalWindow)
             } catch (e: Exception) {
-                println("Error crawling job posting $i: ${e.message}")
+                logger.error { "Error crawling job posting $i: ${e.message}" }
                 handleAlertIfPresent()
             }
         }

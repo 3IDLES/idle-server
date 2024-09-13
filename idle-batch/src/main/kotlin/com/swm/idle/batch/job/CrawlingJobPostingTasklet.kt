@@ -13,7 +13,6 @@ import org.springframework.batch.repeat.RepeatStatus
 import org.springframework.stereotype.Component
 
 @Component
-
 class CrawlingJobPostingTasklet(
     private val crawlingJobPostingService: CrawlingJobPostingService,
     private val geoCodeService: GeoCodeService,
