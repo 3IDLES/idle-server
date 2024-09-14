@@ -53,7 +53,7 @@ object WorknetCrawler {
         initializeDriver()
 
         val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
-        val today = LocalDate.now().minusDays(1).format(formatter)
+        val today = LocalDate.now().minusDays(3).format(formatter)
         val crawlingUrl = CRAWLING_TARGET_URL_FORMAT
             .replace("{today}", today)
             .replace("{pageIndex}", "1")
