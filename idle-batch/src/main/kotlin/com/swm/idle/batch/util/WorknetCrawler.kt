@@ -22,32 +22,6 @@ object WorknetCrawler {
 
     private const val JOB_POSTING_COUNT_PER_PAGE = 50
 
-    //    private const val CHROMIUM_DRIVER_PATH = "/usr/bin/chromedriver"
-//    private const val CHROMIUM_BROWSER_PATH = "/usr/bin/chromium-browser"
-//
-//    private lateinit var driver: WebDriver
-//    private val logger = KotlinLogging.logger { }
-//
-//    init {
-//        initializeDriver()
-//    }
-//
-//    private fun initializeDriver() {
-//        System.setProperty("webdriver.chrome.driver", CHROMIUM_DRIVER_PATH)
-//
-//        val options = ChromeOptions().apply {
-//            addArguments("--headless")
-//            addArguments("--no-sandbox")
-//            addArguments("--disable-dev-shm-usage")
-//            addArguments("--disable-gpu")
-//            addArguments("window-size=1920x1080")
-//            addArguments("--disable-software-rasterizer")
-//            setBinary(CHROMIUM_BROWSER_PATH)
-//        }
-//
-//        driver = ChromeDriver(options)
-//    }
-
     private const val CHROMIUM_DRIVER_PATH = "/usr/bin/chromedriver"
     private const val CHROMIUM_BROWSER_PATH = "/usr/bin/chromium-browser"
 
@@ -65,10 +39,10 @@ object WorknetCrawler {
             addArguments("--disable-gpu")
             addArguments("window-size=1920x1080")
             addArguments("--disable-software-rasterizer")
+
             setBinary(CHROMIUM_BROWSER_PATH)
         }
 
-        // Initialize the ChromeDriver with service and options
         driver = ChromeDriver(service, options)
     }
 
@@ -79,7 +53,7 @@ object WorknetCrawler {
         initializeDriver()
 
         val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
-        val today = LocalDate.now().format(formatter)
+        val today = LocalDate.now().minusDays(1).format(formatter)
         val crawlingUrl = CRAWLING_TARGET_URL_FORMAT
             .replace("{today}", today)
             .replace("{pageIndex}", "1")
