@@ -1,15 +1,16 @@
 package com.swm.idle.batch.util
 
 import com.swm.idle.batch.common.dto.CrawledJobPostingDto
-import io.github.oshai.kotlinlogging.KotlinLogging
 import org.openqa.selenium.Alert
 import org.openqa.selenium.By
 import org.openqa.selenium.NoAlertPresentException
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.chrome.ChromeDriver
+import org.openqa.selenium.chrome.ChromeDriverService
 import org.openqa.selenium.chrome.ChromeOptions
 import org.openqa.selenium.support.ui.ExpectedConditions
 import org.openqa.selenium.support.ui.WebDriverWait
+import java.io.File
 import java.time.Duration
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -20,18 +21,42 @@ object WorknetCrawler {
         "https://www.work.go.kr/empInfo/empInfoSrch/list/dtlEmpSrchList.do?careerTo=&keywordJobCd=&occupation=550100%2C550104&templateInfo=&shsyWorkSecd=&rot2WorkYn=&payGbn=&resultCnt=50&keywordJobCont=&cert=&cloDateStdt=&moreCon=&minPay=&codeDepth2Info=11000&isChkLocCall=&sortFieldInfo=DATE&major=&resrDutyExcYn=&eodwYn=&sortField=DATE&staArea=&sortOrderBy=DESC&keyword=&termSearchGbn=D-0&carrEssYns=&benefitSrchAndOr=O&disableEmpHopeGbn=&webIsOut=&actServExcYn=&maxPay=&keywordStaAreaNm=&emailApplyYn=&listCookieInfo=DTL&pageCode=&codeDepth1Info=11000&keywordEtcYn=&publDutyExcYn=&keywordJobCdSeqNo=&exJobsCd=&templateDepthNmInfo=&computerPreferential=&regDateStdt={today}&employGbn=&empTpGbcd=&region=&infaYn=&resultCntInfo=50&siteClcd=WORK%2CP&cloDateEndt=&sortOrderByInfo=DESC&currntPageNo=1&indArea=&careerTypes=&searchOn=Y&tlmgYn=&subEmpHopeYn=&academicGbn=&templateDepthNoInfo=&foriegn=&mealOfferClcd=&station=&moerButtonYn=Y&holidayGbn=&srcKeyword=&enterPriseGbn=all&academicGbnoEdu=noEdu&cloTermSearchGbn=all&keywordWantedTitle=&stationNm=&benefitGbn=&keywordFlag=&notSrcKeyword=&essCertChk=&isEmptyHeader=&depth2SelCode=&_csrf=355cf055-ee67-497a-9695-a65cabc28829&keywordBusiNm=&preferentialGbn=&rot3WorkYn=&pfMatterPreferential=&regDateEndt={today}&staAreaLineInfo1=11000&staAreaLineInfo2=1&pageIndex={pageIndex}&termContractMmcnt=&careerFrom=&laborHrShortYn=#viewSPL"
 
     private const val JOB_POSTING_COUNT_PER_PAGE = 50
+
+    //    private const val CHROMIUM_DRIVER_PATH = "/usr/bin/chromedriver"
+//    private const val CHROMIUM_BROWSER_PATH = "/usr/bin/chromium-browser"
+//
+//    private lateinit var driver: WebDriver
+//    private val logger = KotlinLogging.logger { }
+//
+//    init {
+//        initializeDriver()
+//    }
+//
+//    private fun initializeDriver() {
+//        System.setProperty("webdriver.chrome.driver", CHROMIUM_DRIVER_PATH)
+//
+//        val options = ChromeOptions().apply {
+//            addArguments("--headless")
+//            addArguments("--no-sandbox")
+//            addArguments("--disable-dev-shm-usage")
+//            addArguments("--disable-gpu")
+//            addArguments("window-size=1920x1080")
+//            addArguments("--disable-software-rasterizer")
+//            setBinary(CHROMIUM_BROWSER_PATH)
+//        }
+//
+//        driver = ChromeDriver(options)
+//    }
+
     private const val CHROMIUM_DRIVER_PATH = "/usr/bin/chromedriver"
     private const val CHROMIUM_BROWSER_PATH = "/usr/bin/chromium-browser"
 
     private lateinit var driver: WebDriver
-    private val logger = KotlinLogging.logger { }
-
-    init {
-        initializeDriver()
-    }
 
     private fun initializeDriver() {
-        System.setProperty("webdriver.chrome.driver", CHROMIUM_DRIVER_PATH)
+        val service = ChromeDriverService.Builder()
+            .usingDriverExecutable(File(CHROMIUM_DRIVER_PATH))
+            .build()
 
         val options = ChromeOptions().apply {
             addArguments("--headless")
@@ -43,8 +68,10 @@ object WorknetCrawler {
             setBinary(CHROMIUM_BROWSER_PATH)
         }
 
-        driver = ChromeDriver(options)
+        // Initialize the ChromeDriver with service and options
+        driver = ChromeDriver(service, options)
     }
+
 
     private val postings = mutableListOf<CrawledJobPostingDto>()
 
@@ -57,9 +84,7 @@ object WorknetCrawler {
             .replace("{today}", today)
             .replace("{pageIndex}", "1")
 
-        logger.warn { "기본 세팅중" }
         driver.get(crawlingUrl)
-        logger.warn { "초기화 완료" }
 
         // WebDriverWait에 대기 시간을 충분히 설정 (10초)
         val wait = WebDriverWait(driver, Duration.ofSeconds(10))
@@ -111,7 +136,6 @@ object WorknetCrawler {
     private fun handleAlertIfPresent() {
         try {
             val alert: Alert = driver.switchTo().alert()
-            logger.warn { "Alert detected: ${alert.text}" }
             alert.accept()  // Alert 창의 '확인'을 누름
         } catch (e: NoAlertPresentException) {
             // 알림창이 없으면 무시하고 넘어감
@@ -169,7 +193,6 @@ object WorknetCrawler {
                 driver.close()
                 driver.switchTo().window(originalWindow)
             } catch (e: Exception) {
-                logger.error { "Error crawling job posting $i: ${e.message}" }
                 handleAlertIfPresent()
             }
         }
