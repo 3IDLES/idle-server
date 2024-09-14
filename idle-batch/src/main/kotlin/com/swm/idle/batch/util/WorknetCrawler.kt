@@ -25,8 +25,8 @@ object WorknetCrawler {
 
     private const val JOB_POSTING_COUNT_PER_PAGE = 50
 
-    private const val CHROMIUM_DRIVER_PATH = "../usr/bin/chromedriver"
-    private const val CHROMIUM_BROWSER_PATH = "../usr/bin/chromium-browser"
+    private const val CHROMIUM_DRIVER_PATH = "/usr/bin/chromedriver"
+    private const val CHROMIUM_BROWSER_PATH = "/usr/bin/chromium-browser"
 
     private lateinit var driver: WebDriver
 
