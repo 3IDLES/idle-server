@@ -106,15 +106,15 @@ object WorknetCrawler {
         return postings
     }
 
-    // 알림창(Alert) 처리 - 없으면 예외를 잡고 처리
     private fun handleAlertIfPresent() {
         try {
             val alert: Alert = driver.switchTo().alert()
-            alert.accept()  // Alert 창의 '확인'을 누름
+            alert.accept()
+            driver.navigate().back()
         } catch (e: NoAlertPresentException) {
-            // 알림창이 없으면 무시하고 넘어감
         }
     }
+
 
     private fun crawlPosts(
         start: Int,
@@ -132,7 +132,6 @@ object WorknetCrawler {
 
                 handleAlertIfPresent()
 
-                // 대기 시간 5초로 설정 (새 창이 뜨는 것을 기다림)
                 val wait = WebDriverWait(driver, Duration.ofSeconds(5))
                 wait.until(ExpectedConditions.numberOfWindowsToBe(2))
 
@@ -145,6 +144,7 @@ object WorknetCrawler {
                     }
                 }
 
+                // 게시물 세부 정보를 크롤링
                 val crawledJobPostingDto = CrawledJobPostingDto(
                     title = getTitle(),
                     content = getContent(),
@@ -164,13 +164,15 @@ object WorknetCrawler {
 
                 postings.add(crawledJobPostingDto)
 
-                driver.close()
-                driver.switchTo().window(originalWindow)
+                driver.close()  // 현재 창 닫기
+                driver.switchTo().window(originalWindow)  // 원래 창으로 돌아가기
             } catch (e: Exception) {
+                // 예외 처리 (알림창이 있을 경우 처리 포함)
                 handleAlertIfPresent()
             }
         }
     }
+
 
     private fun getClientAddress(): String {
         val xpaths = listOf(
