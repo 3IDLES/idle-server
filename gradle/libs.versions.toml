@@ -85,7 +85,6 @@ java-jwt = { group = "com.auth0", name = "java-jwt", version.ref = "auth0-java-j
 jwks-rsa = { group = "com.auth0", name = "jwks-rsa", version.ref = "auth0-jwks-rsa" }
 
 selenium-java = { group = "org.seleniumhq.selenium", name = "selenium-java", version.ref = "selenium"}
-web-driver-manager = { group = "io.github.bonigarcia", name = "webdrivermanager", version.ref = "web-driver-manager"}
 
 hibernate-spatial = { group = "org.hibernate.orm", name = "hibernate-spatial", version.ref = "hibernate-spatial" }
 querydsl-spatial = { group = "com.querydsl", name = "querydsl-spatial", version.ref = "querydsl" }

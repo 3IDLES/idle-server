@@ -20,26 +20,28 @@ object WorknetCrawler {
         "https://www.work.go.kr/empInfo/empInfoSrch/list/dtlEmpSrchList.do?careerTo=&keywordJobCd=&occupation=550100%2C550104&templateInfo=&shsyWorkSecd=&rot2WorkYn=&payGbn=&resultCnt=50&keywordJobCont=&cert=&cloDateStdt=&moreCon=&minPay=&codeDepth2Info=11000&isChkLocCall=&sortFieldInfo=DATE&major=&resrDutyExcYn=&eodwYn=&sortField=DATE&staArea=&sortOrderBy=DESC&keyword=&termSearchGbn=D-0&carrEssYns=&benefitSrchAndOr=O&disableEmpHopeGbn=&webIsOut=&actServExcYn=&maxPay=&keywordStaAreaNm=&emailApplyYn=&listCookieInfo=DTL&pageCode=&codeDepth1Info=11000&keywordEtcYn=&publDutyExcYn=&keywordJobCdSeqNo=&exJobsCd=&templateDepthNmInfo=&computerPreferential=&regDateStdt={today}&employGbn=&empTpGbcd=&region=&infaYn=&resultCntInfo=50&siteClcd=WORK%2CP&cloDateEndt=&sortOrderByInfo=DESC&currntPageNo=1&indArea=&careerTypes=&searchOn=Y&tlmgYn=&subEmpHopeYn=&academicGbn=&templateDepthNoInfo=&foriegn=&mealOfferClcd=&station=&moerButtonYn=Y&holidayGbn=&srcKeyword=&enterPriseGbn=all&academicGbnoEdu=noEdu&cloTermSearchGbn=all&keywordWantedTitle=&stationNm=&benefitGbn=&keywordFlag=&notSrcKeyword=&essCertChk=&isEmptyHeader=&depth2SelCode=&_csrf=355cf055-ee67-497a-9695-a65cabc28829&keywordBusiNm=&preferentialGbn=&rot3WorkYn=&pfMatterPreferential=&regDateEndt={today}&staAreaLineInfo1=11000&staAreaLineInfo2=1&pageIndex={pageIndex}&termContractMmcnt=&careerFrom=&laborHrShortYn=#viewSPL"
 
     private const val JOB_POSTING_COUNT_PER_PAGE = 50
+    private const val CHROMIUM_DRIVER_PATH = "/usr/bin/chromedriver"
+    private const val CHROMIUM_BROWSER_PATH = "/usr/bin/chromium-browser"
 
     private lateinit var driver: WebDriver
     private val logger = KotlinLogging.logger { }
 
     init {
         initializeDriver()
-        System.setProperty("webdriver.chrome.verboseLogging", "true")
     }
 
-    // Driver 초기화 메서드
     private fun initializeDriver() {
-        val options = ChromeOptions()
-        options.addArguments("--headless")
-        options.addArguments("--no-sandbox")
-        options.addArguments("--disable-dev-shm-usage")
-        options.addArguments("--disable-gpu")
-        options.addArguments("window-size=1400,1500")
-        options.addArguments("--disable-software-rasterizer")
-        options.addArguments("--remote-debugging-port=9222")
-        options.addArguments("--disable-extensions")
+        System.setProperty("webdriver.chrome.driver", CHROMIUM_DRIVER_PATH)
+
+        val options = ChromeOptions().apply {
+            addArguments("--headless")
+            addArguments("--no-sandbox")
+            addArguments("--disable-dev-shm-usage")
+            addArguments("--disable-gpu")
+            addArguments("window-size=1920x1080")
+            addArguments("--disable-software-rasterizer")
+            setBinary(CHROMIUM_BROWSER_PATH)
+        }
 
         driver = ChromeDriver(options)
     }
