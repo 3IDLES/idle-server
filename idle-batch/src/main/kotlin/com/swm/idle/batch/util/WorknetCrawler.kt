@@ -1,6 +1,7 @@
 package com.swm.idle.batch.util
 
 import com.swm.idle.batch.common.dto.CrawledJobPostingDto
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.openqa.selenium.Alert
 import org.openqa.selenium.By
 import org.openqa.selenium.NoAlertPresentException
@@ -17,6 +18,8 @@ import java.time.format.DateTimeFormatter
 
 object WorknetCrawler {
 
+    private val logger = KotlinLogging.logger { }
+
     private const val CRAWLING_TARGET_URL_FORMAT =
         "https://www.work24.go.kr/wk/a/b/1200/retriveDtlEmpSrchList.do?basicSetupYn=&careerTo=&keywordJobCd=&occupation=&seqNo=&cloDateEndtParam=&payGbn=&templateInfo=&rot2WorkYn=&shsyWorkSecd=&srcKeywordParam=%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC&resultCnt=10&keywordJobCont=&cert=&moreButtonYn=Y&minPay=&codeDepth2Info=11000&currentPageNo=1&eventNo=&mode=&major=&resrDutyExcYn=&eodwYn=&sortField=DATE&staArea=&sortOrderBy=DESC&keyword=%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC&termSearchGbn=all&carrEssYns=&benefitSrchAndOr=O&disableEmpHopeGbn=&actServExcYn=&keywordStaAreaNm=&maxPay=&emailApplyYn=&codeDepth1Info=11000&keywordEtcYn=&regDateStdtParam={today}&publDutyExcYn=&keywordJobCdSeqNo=&viewType=&exJobsCd=&templateDepthNmInfo=&region=&employGbn=&empTpGbcd=&computerPreferential=&infaYn=&cloDateStdtParam=&siteClcd=WORK&searchMode=Y&birthFromYY=&indArea=&careerTypes=&subEmpHopeYn=&tlmgYn=&academicGbn=&templateDepthNoInfo=&foriegn=&entryRoute=&mealOfferClcd=&basicSetupYnChk=&station=&holidayGbn=&srcKeyword=%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC&academicGbnoEdu=noEdu&enterPriseGbn=all&cloTermSearchGbn=all&birthToYY=&keywordWantedTitle=&stationNm=&benefitGbn=&notSrcKeywordParam=&keywordFlag=&notSrcKeyword=&essCertChk=&depth2SelCode=&keywordBusiNm=&preferentialGbn=&rot3WorkYn=&regDateEndtParam={today}&pfMatterPreferential=&pageIndex={pageIndex}&termContractMmcnt=&careerFrom=&laborHrShortYn=#scrollLoc"
 
@@ -26,6 +29,8 @@ object WorknetCrawler {
     private const val CHROMIUM_BROWSER_PATH = "/usr/bin/chromium-browser"
 
     private lateinit var driver: WebDriver
+
+    private val postings = mutableListOf<CrawledJobPostingDto>()
 
     private fun initializeDriver() {
         val service = ChromeDriverService.Builder()
@@ -47,8 +52,6 @@ object WorknetCrawler {
     }
 
 
-    private val postings = mutableListOf<CrawledJobPostingDto>()
-
     fun run(): List<CrawledJobPostingDto>? {
         initializeDriver()
 
@@ -69,12 +72,15 @@ object WorknetCrawler {
 
         if (jobPostingCount == 0) {
             driver.quit()
+            logger.warn { "0" }
             return null
         }
 
         val pageCount = jobPostingCount / JOB_POSTING_COUNT_PER_PAGE
 
-        for (i in 1..2) {
+        logger.warn { "pageCount= " + pageCount }
+
+        for (i in 1..pageCount) {
             if (i >= 2) {
                 val updatedCrawlingUrl = crawlingUrl
                     .replace("{today}", today)
