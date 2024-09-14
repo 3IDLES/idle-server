@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter
 object WorknetCrawler {
 
     private const val CRAWLING_TARGET_URL_FORMAT =
-        "https://www.work.go.kr/empInfo/empInfoSrch/list/dtlEmpSrchList.do?careerTo=&keywordJobCd=&occupation=550100%2C550104&templateInfo=&shsyWorkSecd=&rot2WorkYn=&payGbn=&resultCnt=50&keywordJobCont=&cert=&cloDateStdt=&moreCon=&minPay=&codeDepth2Info=11000&isChkLocCall=&sortFieldInfo=DATE&major=&resrDutyExcYn=&eodwYn=&sortField=DATE&staArea=&sortOrderBy=DESC&keyword=&termSearchGbn=D-0&carrEssYns=&benefitSrchAndOr=O&disableEmpHopeGbn=&webIsOut=&actServExcYn=&maxPay=&keywordStaAreaNm=&emailApplyYn=&listCookieInfo=DTL&pageCode=&codeDepth1Info=11000&keywordEtcYn=&publDutyExcYn=&keywordJobCdSeqNo=&exJobsCd=&templateDepthNmInfo=&computerPreferential=&regDateStdt={today}&employGbn=&empTpGbcd=&region=&infaYn=&resultCntInfo=50&siteClcd=WORK%2CP&cloDateEndt=&sortOrderByInfo=DESC&currntPageNo=1&indArea=&careerTypes=&searchOn=Y&tlmgYn=&subEmpHopeYn=&academicGbn=&templateDepthNoInfo=&foriegn=&mealOfferClcd=&station=&moerButtonYn=Y&holidayGbn=&srcKeyword=&enterPriseGbn=all&academicGbnoEdu=noEdu&cloTermSearchGbn=all&keywordWantedTitle=&stationNm=&benefitGbn=&keywordFlag=&notSrcKeyword=&essCertChk=&isEmptyHeader=&depth2SelCode=&_csrf=355cf055-ee67-497a-9695-a65cabc28829&keywordBusiNm=&preferentialGbn=&rot3WorkYn=&pfMatterPreferential=&regDateEndt={today}&staAreaLineInfo1=11000&staAreaLineInfo2=1&pageIndex={pageIndex}&termContractMmcnt=&careerFrom=&laborHrShortYn=#viewSPL"
+        "https://www.work24.go.kr/wk/a/b/1200/retriveDtlEmpSrchList.do?basicSetupYn=&careerTo=&keywordJobCd=&occupation=&seqNo=&cloDateEndtParam=&payGbn=&templateInfo=&rot2WorkYn=&shsyWorkSecd=&srcKeywordParam=%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC&resultCnt=10&keywordJobCont=&cert=&moreButtonYn=Y&minPay=&codeDepth2Info=11000&currentPageNo=1&eventNo=&mode=&major=&resrDutyExcYn=&eodwYn=&sortField=DATE&staArea=&sortOrderBy=DESC&keyword=%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC&termSearchGbn=all&carrEssYns=&benefitSrchAndOr=O&disableEmpHopeGbn=&actServExcYn=&keywordStaAreaNm=&maxPay=&emailApplyYn=&codeDepth1Info=11000&keywordEtcYn=&regDateStdtParam={today}&publDutyExcYn=&keywordJobCdSeqNo=&viewType=&exJobsCd=&templateDepthNmInfo=&region=&employGbn=&empTpGbcd=&computerPreferential=&infaYn=&cloDateStdtParam=&siteClcd=WORK&searchMode=Y&birthFromYY=&indArea=&careerTypes=&subEmpHopeYn=&tlmgYn=&academicGbn=&templateDepthNoInfo=&foriegn=&entryRoute=&mealOfferClcd=&basicSetupYnChk=&station=&holidayGbn=&srcKeyword=%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC&academicGbnoEdu=noEdu&enterPriseGbn=all&cloTermSearchGbn=all&birthToYY=&keywordWantedTitle=&stationNm=&benefitGbn=&notSrcKeywordParam=&keywordFlag=&notSrcKeyword=&essCertChk=&depth2SelCode=&keywordBusiNm=&preferentialGbn=&rot3WorkYn=&regDateEndtParam={today}&pfMatterPreferential=&pageIndex={pageIndex}&termContractMmcnt=&careerFrom=&laborHrShortYn=#scrollLoc"
 
     private const val JOB_POSTING_COUNT_PER_PAGE = 50
 
@@ -60,13 +60,12 @@ object WorknetCrawler {
 
         driver.get(crawlingUrl)
 
-        // WebDriverWait에 대기 시간을 충분히 설정 (10초)
         val wait = WebDriverWait(driver, Duration.ofSeconds(10))
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"srcFrm\"]/div[3]/div[1]/p[2]/em")))
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"mForm\"]/div[2]/div/div[1]/div[1]/span/span")))
 
         val jobPostingCountText =
-            driver.findElement(By.xpath("//*[@id=\"srcFrm\"]/div[3]/div[1]/p[2]/em")).text
-        val jobPostingCount = jobPostingCountText.replace(",", "").toInt()
+            driver.findElement(By.xpath("//*[@id=\"mForm\"]/div[2]/div/div[1]/div[1]/span/span")).text
+        val jobPostingCount = Integer.parseInt(jobPostingCountText)
 
         if (jobPostingCount == 0) {
             driver.quit()
@@ -83,7 +82,6 @@ object WorknetCrawler {
                 driver.get(updatedCrawlingUrl)
             }
 
-            // 대기 시간을 10초로 늘림
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#list1")))
 
             crawlPosts(1, JOB_POSTING_COUNT_PER_PAGE, postings)
@@ -125,10 +123,8 @@ object WorknetCrawler {
             try {
                 val originalWindow = driver.windowHandle
 
-                val em = driver.findElement(By.id("list$i"))
-                val thirdTd = em.findElements(By.tagName("td"))[2]
-                val jobPostingDetail = thirdTd.findElement(By.cssSelector(".cp-info .cp-info-in a"))
-                jobPostingDetail.click()
+                val element = driver.findElement(By.xpath("//*[@id=\"list$i\"]/td[2]/a"))
+                element.click()
 
                 handleAlertIfPresent()
 
@@ -144,7 +140,6 @@ object WorknetCrawler {
                     }
                 }
 
-                // 게시물 세부 정보를 크롤링
                 val crawledJobPostingDto = CrawledJobPostingDto(
                     title = getTitle(),
                     content = getContent(),
@@ -164,10 +159,9 @@ object WorknetCrawler {
 
                 postings.add(crawledJobPostingDto)
 
-                driver.close()  // 현재 창 닫기
-                driver.switchTo().window(originalWindow)  // 원래 창으로 돌아가기
+                driver.close()
+                driver.switchTo().window(originalWindow)
             } catch (e: Exception) {
-                // 예외 처리 (알림창이 있을 경우 처리 포함)
                 handleAlertIfPresent()
             }
         }
@@ -266,7 +260,6 @@ object WorknetCrawler {
                 val address = driver.findElement(By.xpath(xpath)).text
                 return address.replace("지도보기", "").trim().replace(Regex("\\(\\d{5}\\)"), "").trim()
             } catch (e: Exception) {
-                // Ignore and try the next XPath
             }
         }
 
