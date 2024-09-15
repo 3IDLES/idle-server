@@ -1,15 +1,35 @@
+#version: '3.8'
+#services:
+#  spring:
+#    image: public.ecr.aws/${ECR_REGISTRY_ALIAS}/idle-ecr:${VERSION:-latest}
+#    volumes:
+#      - mysql-volume:/var/lib/mysql
+#      - /home/ubuntu/usr/bin/chromedriver:/usr/bin/chromedriver
+#      - /home/ubuntu/usr/bin/chromium-browser:/usr/bin/chromium-browser
+#    environment:
+#      - VERSION=${VERSION:-latest}
+#      - SPRING_PROFILES_ACTIVE=dev
+#    entrypoint: ["/bin/sh", "-c", "chmod +x /usr/bin/chromedriver /usr/bin/chromium-browser && java -jar /app.jar"]
+#    pull_policy: always
+#    env_file:
+#      - .env
+#    depends_on:
+#      - mysql
+#    ports:
+#      - "8080:8080"
+#    network_mode: "host"
+#
 version: '3.8'
 services:
   spring:
     image: public.ecr.aws/${ECR_REGISTRY_ALIAS}/idle-ecr:${VERSION:-latest}
     volumes:
       - mysql-volume:/var/lib/mysql
-      - /home/ubuntu/usr/bin/chromedriver:/usr/bin/chromedriver
-      - /home/ubuntu/usr/bin/chromium-browser:/usr/bin/chromium-browser
+      - /snap/bin:/snap/bin
     environment:
       - VERSION=${VERSION:-latest}
       - SPRING_PROFILES_ACTIVE=dev
-    entrypoint: ["/bin/sh", "-c", "chmod +x /usr/bin/chromedriver /usr/bin/chromium-browser && java -jar /app.jar"]
+    entrypoint: ["/bin/sh", "-c", "chmod +x /snap/bin/chromium.chromedriver /snap/bin/chromium && java -jar /app.jar"]
     pull_policy: always
     env_file:
       - .env
@@ -38,3 +58,4 @@ services:
 
 volumes:
   mysql-volume:
+

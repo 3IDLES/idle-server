@@ -25,8 +25,35 @@ object WorknetCrawler {
 
     private const val JOB_POSTING_COUNT_PER_PAGE = 50
 
-    private const val CHROMIUM_DRIVER_PATH = "/usr/bin/chromedriver"
-    private const val CHROMIUM_BROWSER_PATH = "/usr/bin/chromium-browser"
+    //    private const val CHROMIUM_DRIVER_PATH = "/usr/bin/chromedriver"
+//    private const val CHROMIUM_BROWSER_PATH = "/usr/bin/chromium-browser"
+//
+//    private lateinit var driver: WebDriver
+//
+//    private val postings = mutableListOf<CrawledJobPostingDto>()
+//
+//    private fun initializeDriver() {
+//        val service = ChromeDriverService.Builder()
+//            .usingDriverExecutable(File(CHROMIUM_DRIVER_PATH))
+//            .build()
+//
+//        val options = ChromeOptions().apply {
+//            addArguments("--headless")
+//            addArguments("--no-sandbox")
+//            addArguments("--disable-dev-shm-usage")
+//            addArguments("--disable-gpu")
+//            addArguments("window-size=1920x1080")
+//            addArguments("--disable-software-rasterizer")
+//            addArguments("--ignore-ssl-errors=yes");
+//            addArguments("--ignore-certificate-errors");
+//
+//            setBinary(CHROMIUM_BROWSER_PATH)
+//        }
+//
+//        driver = ChromeDriver(service, options)
+//    }
+    private const val CHROMIUM_DRIVER_PATH = "/snap/bin/chromium.chromedriver"
+    private const val CHROMIUM_BROWSER_PATH = "/snap/bin/chromium"
 
     private lateinit var driver: WebDriver
 
@@ -44,8 +71,8 @@ object WorknetCrawler {
             addArguments("--disable-gpu")
             addArguments("window-size=1920x1080")
             addArguments("--disable-software-rasterizer")
-            addArguments("--ignore-ssl-errors=yes");
-            addArguments("--ignore-certificate-errors");
+            addArguments("--ignore-ssl-errors=yes")
+            addArguments("--ignore-certificate-errors")
 
             setBinary(CHROMIUM_BROWSER_PATH)
         }
