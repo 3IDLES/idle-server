@@ -5,12 +5,12 @@ import com.swm.idle.application.jobposting.domain.CrawlingJobPostingService
 import com.swm.idle.batch.common.dto.CrawledJobPostingDto
 import com.swm.idle.batch.util.WorknetCrawler
 import com.swm.idle.infrastructure.client.geocode.service.GeoCodeService
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.batch.core.StepContribution
 import org.springframework.batch.core.scope.context.ChunkContext
 import org.springframework.batch.core.step.tasklet.Tasklet
 import org.springframework.batch.repeat.RepeatStatus
 import org.springframework.stereotype.Component
-import org.springframework.transaction.annotation.Transactional
 
 @Component
 class CrawlingJobPostingTasklet(
@@ -18,9 +18,18 @@ class CrawlingJobPostingTasklet(
     private val geoCodeService: GeoCodeService,
 ) : Tasklet {
 
-    @Transactional
+    private val logger = KotlinLogging.logger { }
+
     override fun execute(contribution: StepContribution, chunkContext: ChunkContext): RepeatStatus {
-        val crawlingJobPostings: List<CrawledJobPostingDto>? = WorknetCrawler.run()
+        val crawlingJobPostings: List<CrawledJobPostingDto>? = try {
+            WorknetCrawler.run()
+        } catch (e: Exception) {
+            logger.warn {
+                e.toString()
+            }
+            e.printStackTrace()  // 오류 로그 출력
+            null  // 오류 발생
+        }
 
         if (crawlingJobPostings != null) {
             crawlingJobPostings.mapNotNull { crawledJobPosting ->
