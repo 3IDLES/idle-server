@@ -1,7 +1,10 @@
 package com.swm.idle.domain.jobposting.entity.jpa
 
+import com.swm.idle.domain.common.enums.EntityStatus
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.locationtech.jts.geom.Point
@@ -92,5 +95,9 @@ class CrawledJobPosting(
     @Column(columnDefinition = "POINT SRID 4326")
     var location: Point = location
         private set
+
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "varchar(255)")
+    var entityStatus: EntityStatus = EntityStatus.ACTIVE
 
 }
