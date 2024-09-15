@@ -25,16 +25,13 @@ object WorknetCrawler {
 
     private const val JOB_POSTING_COUNT_PER_PAGE = 50
 
-    private const val CHROMIUM_DRIVER_PATH = "/usr/lib/chromium/chromedriver"
-    private const val CHROMIUM_BROWSER_PATH = "/usr/bin/chromium"
-
     private lateinit var driver: WebDriver
 
     private val postings = mutableListOf<CrawledJobPostingDto>()
 
     private fun initializeDriver() {
         val service = ChromeDriverService.Builder()
-            .usingDriverExecutable(File(CHROMIUM_DRIVER_PATH))
+            .usingDriverExecutable(File(System.getenv("CHROMEDRIVER_BIN")))
             .build()
 
         val options = ChromeOptions().apply {
@@ -47,7 +44,7 @@ object WorknetCrawler {
             addArguments("--ignore-ssl-errors=yes")
             addArguments("--ignore-certificate-errors")
 
-            setBinary(CHROMIUM_BROWSER_PATH)
+            setBinary(System.getenv("CHROME_BIN"))
         }
 
         driver = ChromeDriver(service, options)

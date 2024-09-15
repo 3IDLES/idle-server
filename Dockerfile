@@ -41,7 +41,7 @@ RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearm
 
 # Set environment variables for Chromium and ChromeDriver
 ENV CHROME_BIN=/usr/bin/chromium
-ENV CHROMEDRIVER_BIN=/usr/lib/chromium/chromedriver
+ENV CHROMEDRIVER_BIN=/usr/bin/chromedriver
 
 # Copy the built JAR file
 COPY --from=build /home/gradle/src/idle-presentation/build/libs/*.jar /app.jar
