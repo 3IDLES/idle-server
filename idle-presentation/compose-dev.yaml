@@ -4,8 +4,8 @@ services:
     image: public.ecr.aws/${ECR_REGISTRY_ALIAS}/idle-ecr:${VERSION:-latest}
     volumes:
       - mysql-volume:/var/lib/mysql
-      - /usr/bin/chromedriver:/usr/bin
-      - /usr/bin/chromium-browser:/usr/bin
+      - /home/ubuntu/usr/bin/chromedriver:/usr/bin
+      - /home/ubuntu/usr/bin/chromium-browser:/usr/bin
     environment:
       - VERSION=${VERSION:-latest}
       - SPRING_PROFILES_ACTIVE=dev
