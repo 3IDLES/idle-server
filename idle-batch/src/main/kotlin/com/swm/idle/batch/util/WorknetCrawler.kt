@@ -44,6 +44,8 @@ object WorknetCrawler {
             addArguments("--disable-gpu")
             addArguments("window-size=1920x1080")
             addArguments("--disable-software-rasterizer")
+            addArguments("--ignore-ssl-errors=yes");
+            addArguments("--ignore-certificate-errors");
 
             setBinary(CHROMIUM_BROWSER_PATH)
         }
