@@ -1,29 +1,59 @@
 package com.swm.idle.batch.util
 
 import com.swm.idle.batch.common.dto.CrawledJobPostingDto
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.openqa.selenium.Alert
 import org.openqa.selenium.By
 import org.openqa.selenium.NoAlertPresentException
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.chrome.ChromeDriver
+import org.openqa.selenium.chrome.ChromeDriverService
+import org.openqa.selenium.chrome.ChromeOptions
 import org.openqa.selenium.support.ui.ExpectedConditions
 import org.openqa.selenium.support.ui.WebDriverWait
+import java.io.File
 import java.time.Duration
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 object WorknetCrawler {
 
+    private val logger = KotlinLogging.logger { }
+
     private const val CRAWLING_TARGET_URL_FORMAT =
-        "https://www.work.go.kr/empInfo/empInfoSrch/list/dtlEmpSrchList.do?careerTo=&keywordJobCd=&occupation=550100%2C550104&templateInfo=&shsyWorkSecd=&rot2WorkYn=&payGbn=&resultCnt=50&keywordJobCont=&cert=&cloDateStdt=&moreCon=&minPay=&codeDepth2Info=11000&isChkLocCall=&sortFieldInfo=DATE&major=&resrDutyExcYn=&eodwYn=&sortField=DATE&staArea=&sortOrderBy=DESC&keyword=&termSearchGbn=D-0&carrEssYns=&benefitSrchAndOr=O&disableEmpHopeGbn=&webIsOut=&actServExcYn=&maxPay=&keywordStaAreaNm=&emailApplyYn=&listCookieInfo=DTL&pageCode=&codeDepth1Info=11000&keywordEtcYn=&publDutyExcYn=&keywordJobCdSeqNo=&exJobsCd=&templateDepthNmInfo=&computerPreferential=&regDateStdt={today}&employGbn=&empTpGbcd=&region=&infaYn=&resultCntInfo=50&siteClcd=WORK%2CP&cloDateEndt=&sortOrderByInfo=DESC&currntPageNo=1&indArea=&careerTypes=&searchOn=Y&tlmgYn=&subEmpHopeYn=&academicGbn=&templateDepthNoInfo=&foriegn=&mealOfferClcd=&station=&moerButtonYn=Y&holidayGbn=&srcKeyword=&enterPriseGbn=all&academicGbnoEdu=noEdu&cloTermSearchGbn=all&keywordWantedTitle=&stationNm=&benefitGbn=&keywordFlag=&notSrcKeyword=&essCertChk=&isEmptyHeader=&depth2SelCode=&_csrf=355cf055-ee67-497a-9695-a65cabc28829&keywordBusiNm=&preferentialGbn=&rot3WorkYn=&pfMatterPreferential=&regDateEndt={today}&staAreaLineInfo1=11000&staAreaLineInfo2=1&pageIndex={pageIndex}&termContractMmcnt=&careerFrom=&laborHrShortYn=#viewSPL"
+        "https://www.work24.go.kr/wk/a/b/1200/retriveDtlEmpSrchList.do?basicSetupYn=&careerTo=&keywordJobCd=&occupation=&seqNo=&cloDateEndtParam=&payGbn=&templateInfo=&rot2WorkYn=&shsyWorkSecd=&srcKeywordParam=%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC&resultCnt=10&keywordJobCont=&cert=&moreButtonYn=Y&minPay=&codeDepth2Info=11000&currentPageNo=1&eventNo=&mode=&major=&resrDutyExcYn=&eodwYn=&sortField=DATE&staArea=&sortOrderBy=DESC&keyword=%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC&termSearchGbn=all&carrEssYns=&benefitSrchAndOr=O&disableEmpHopeGbn=&actServExcYn=&keywordStaAreaNm=&maxPay=&emailApplyYn=&codeDepth1Info=11000&keywordEtcYn=&regDateStdtParam={today}&publDutyExcYn=&keywordJobCdSeqNo=&viewType=&exJobsCd=&templateDepthNmInfo=&region=&employGbn=&empTpGbcd=&computerPreferential=&infaYn=&cloDateStdtParam=&siteClcd=WORK&searchMode=Y&birthFromYY=&indArea=&careerTypes=&subEmpHopeYn=&tlmgYn=&academicGbn=&templateDepthNoInfo=&foriegn=&entryRoute=&mealOfferClcd=&basicSetupYnChk=&station=&holidayGbn=&srcKeyword=%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC&academicGbnoEdu=noEdu&enterPriseGbn=all&cloTermSearchGbn=all&birthToYY=&keywordWantedTitle=&stationNm=&benefitGbn=&notSrcKeywordParam=&keywordFlag=&notSrcKeyword=&essCertChk=&depth2SelCode=&keywordBusiNm=&preferentialGbn=&rot3WorkYn=&regDateEndtParam={today}&pfMatterPreferential=&pageIndex={pageIndex}&termContractMmcnt=&careerFrom=&laborHrShortYn=#scrollLoc"
 
     private const val JOB_POSTING_COUNT_PER_PAGE = 50
-    private val driver: WebDriver = ChromeDriver()
+
+    private lateinit var driver: WebDriver
+
     private val postings = mutableListOf<CrawledJobPostingDto>()
 
+    private fun initializeDriver() {
+        val service = ChromeDriverService.Builder()
+            .usingDriverExecutable(File(System.getenv("CHROMEDRIVER_BIN")))
+            .build()
+
+        val options = ChromeOptions().apply {
+            addArguments("--headless")
+            addArguments("--no-sandbox")
+            addArguments("--disable-dev-shm-usage")
+            addArguments("--disable-gpu")
+            addArguments("window-size=1920x1080")
+            addArguments("--disable-software-rasterizer")
+            addArguments("--ignore-ssl-errors=yes")
+            addArguments("--ignore-certificate-errors")
+
+            setBinary(System.getenv("CHROME_BIN"))
+        }
+
+        driver = ChromeDriver(service, options)
+    }
+
     fun run(): List<CrawledJobPostingDto>? {
+        initializeDriver()
+
         val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
-//        val today = LocalDate.now().minusDays(1).format(formatter)
         val today = LocalDate.now().format(formatter)
         val crawlingUrl = CRAWLING_TARGET_URL_FORMAT
             .replace("{today}", today)
@@ -31,24 +61,30 @@ object WorknetCrawler {
 
         driver.get(crawlingUrl)
 
+        val wait = WebDriverWait(driver, Duration.ofSeconds(10))
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"mForm\"]/div[2]/div/div[1]/div[1]/span/span")))
+
         val jobPostingCountText =
-            driver.findElement(By.xpath("//*[@id=\"srcFrm\"]/div[3]/div[1]/p[2]/em")).text
-        val jobPostingCount = jobPostingCountText.replace(",", "").toInt()
+            driver.findElement(By.xpath("//*[@id=\"mForm\"]/div[2]/div/div[1]/div[1]/span/span")).text
+        val jobPostingCount = Integer.parseInt(jobPostingCountText)
 
         if (jobPostingCount == 0) {
+            driver.quit()
             return null
         }
 
         val pageCount = jobPostingCount / JOB_POSTING_COUNT_PER_PAGE
 
-        for (i in 1..2) {
+        logger.warn { "pageCount= " + pageCount }
+
+        for (i in 1..pageCount) {
             if (i >= 2) {
                 val updatedCrawlingUrl = crawlingUrl
                     .replace("{today}", today)
                     .replace(Regex("pageIndex=\\d+"), "pageIndex=${i}")
                 driver.get(updatedCrawlingUrl)
             }
-            val wait = WebDriverWait(driver, Duration.ofSeconds(5))
+
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#list1")))
 
             crawlPosts(1, JOB_POSTING_COUNT_PER_PAGE, postings)
@@ -62,24 +98,21 @@ object WorknetCrawler {
                 .replace(Regex("pageIndex=\\d+"), "pageIndex=${pageCount + 1}")
             driver.get(updateCrawlingUrl)
 
-            val wait = WebDriverWait(driver, Duration.ofSeconds(5))
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#list1")))
 
             crawlPosts(1, lastPageJobPostingCount, postings)
         }
 
         driver.quit()
-
         return postings
     }
 
     private fun handleAlertIfPresent() {
         try {
             val alert: Alert = driver.switchTo().alert()
-            println("Alert detected: ${alert.text}")
-            alert.accept()  // Alert 창의 '확인'을 누름
+            alert.accept()
+            driver.navigate().back()
         } catch (e: NoAlertPresentException) {
-            // 알림창이 없으면 무시하고 넘어감
         }
     }
 
@@ -92,14 +125,12 @@ object WorknetCrawler {
             try {
                 val originalWindow = driver.windowHandle
 
-                val em = driver.findElement(By.id("list$i"))
-                val thirdTd = em.findElements(By.tagName("td"))[2]
-                val jobPostingDetail = thirdTd.findElement(By.cssSelector(".cp-info .cp-info-in a"))
-                jobPostingDetail.click()
+                val element = driver.findElement(By.xpath("//*[@id=\"list$i\"]/td[2]/a"))
+                element.click()
 
                 handleAlertIfPresent()
 
-                val wait = WebDriverWait(driver, Duration.ofSeconds(2))
+                val wait = WebDriverWait(driver, Duration.ofSeconds(5))
                 wait.until(ExpectedConditions.numberOfWindowsToBe(2))
 
                 val allWindows = driver.windowHandles
@@ -133,7 +164,6 @@ object WorknetCrawler {
                 driver.close()
                 driver.switchTo().window(originalWindow)
             } catch (e: Exception) {
-                println("Error crawling job posting $i: ${e.message}")
                 handleAlertIfPresent()
             }
         }
@@ -231,7 +261,6 @@ object WorknetCrawler {
                 val address = driver.findElement(By.xpath(xpath)).text
                 return address.replace("지도보기", "").trim().replace(Regex("\\(\\d{5}\\)"), "").trim()
             } catch (e: Exception) {
-                // Ignore and try the next XPath
             }
         }
 
