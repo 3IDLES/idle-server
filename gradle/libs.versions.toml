@@ -29,7 +29,7 @@ kotlin-logging = "5.1.0"
 
 auth0-java-jwt = "4.4.0"
 auth0-jwks-rsa = "0.22.1"
-selenium = "4.23.0"
+selenium = "4.24.0"
 
 hibernate-spatial = "6.4.4.Final"
 querydsl = "5.1.0"
