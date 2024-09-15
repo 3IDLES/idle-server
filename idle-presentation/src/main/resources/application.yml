@@ -50,9 +50,6 @@ sentry:
   dsn: ${SENTRY_DSN}
   environment: dev
 
-logging:
-  level:
-    root: WARN
 ---
 spring:
   config:
