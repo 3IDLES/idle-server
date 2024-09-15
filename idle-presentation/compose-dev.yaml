@@ -9,6 +9,7 @@ services:
     environment:
       - VERSION=${VERSION:-latest}
       - SPRING_PROFILES_ACTIVE=dev
+    entrypoint: ["/bin/sh", "-c", "chmod +x /usr/bin/chromedriver /usr/bin/chromium-browser && java -jar /app.jar"]
     pull_policy: always
     env_file:
       - .env
