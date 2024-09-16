@@ -71,7 +71,7 @@ jobs:
           script: |
             cd ~/app/docker
             jq -s '.[0] * .[1]' <(echo "$VARS_CONTEXT") <(echo "$SECRETS_CONTEXT") \
-              | jq -r 'to_entries | map("\(.key)=\(.value)") | .[]' > .env
+              | jq -r 'to_entries | map("\(.key)=\(.value | gsub("\\s+"; ""))") | .[]' > .env
 
       - name: Print all environment variables
         uses: appleboy/ssh-action@master
