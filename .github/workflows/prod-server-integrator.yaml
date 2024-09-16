@@ -3,7 +3,7 @@ name: Production Server Integrator (CI)
 on:
   push:
     branches:
-      - main
+      - hotfix/v1.0.0
 
 jobs:
   build_and_push:
