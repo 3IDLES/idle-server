@@ -21,3 +21,14 @@ spring:
     job:
       name: crawlingJob
       enabled: false
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  batch:
+    job:
+      name: crawlingJob
+      enabled: false
+
