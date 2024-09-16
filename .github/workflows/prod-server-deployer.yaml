@@ -73,16 +73,14 @@ jobs:
             jq -s '.[0] * .[1]' <(echo "$VARS_CONTEXT") <(echo "$SECRETS_CONTEXT") \
               | jq -r 'to_entries | map("\(.key)=\(.value)") | .[]' > .env
 
-      - name: Check for environment variables with spaces
+      - name: Print all environment variables
         uses: appleboy/ssh-action@master
         with:
           host: ${{ vars.INSTANCE_HOST }}
           username: ${{ vars.INSTANCE_USERNAME }}
           key: ${{ secrets.INSTANCE_PEM_KEY }}
           script: |
-            for var in $(printenv | grep -E '^[^=]+=.*\s+.*' | cut -d '=' -f 1); do
-              echo "Environment variable with spaces: $var"
-            done
+            printenv
 
       - name: Run Docker
         uses: appleboy/ssh-action@master
