@@ -12,4 +12,9 @@ data class CrawlingJobPostingPreviewDto(
         crawledJobPosting: CrawledJobPosting,
     ) : this(crawledJobPosting = crawledJobPosting, distance = 0, isFavorite = false)
 
+    constructor(
+        crawledJobPosting: CrawledJobPosting,
+        isFavorite: Boolean,
+    ) : this(crawledJobPosting = crawledJobPosting, distance = 0, isFavorite = isFavorite)
+
 }
