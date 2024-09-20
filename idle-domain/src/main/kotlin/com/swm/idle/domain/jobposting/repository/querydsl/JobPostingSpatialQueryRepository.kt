@@ -1,10 +1,9 @@
 package com.swm.idle.domain.jobposting.repository.querydsl
 
-import com.querydsl.core.group.GroupBy.groupBy
-import com.querydsl.core.group.GroupBy.list
 import com.querydsl.core.types.Projections
 import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.core.types.dsl.Expressions
+import com.querydsl.jpa.JPAExpressions
 import com.querydsl.jpa.impl.JPAQueryFactory
 import com.swm.idle.domain.applys.entity.jpa.QApplys.applys
 import com.swm.idle.domain.common.dto.JobPostingPreviewDto
@@ -43,29 +42,33 @@ class JobPostingSpatialQueryRepository(
             return emptyList()
         }
 
-        return jpaQueryFactory
-            .select(jobPosting, jobPostingWeekday, jobPostingFavorite, applys)
-            .from(jobPosting)
-            .leftJoin(jobPostingWeekday).fetchJoin()
-            .on(jobPosting.id.eq(jobPostingWeekday.jobPostingId))
-            .leftJoin(applys).fetchJoin()
-            .on(jobPosting.id.eq(applys.jobPostingId))
-            .leftJoin(jobPostingFavorite).fetchJoin()
-            .on(jobPosting.id.eq(jobPostingFavorite.jobPostingId))
-            .where(jobPosting.id.`in`(jobPostingIds))
-            .transform(
-                groupBy(jobPosting.id)
-                    .list(
-                        Projections.constructor(
-                            JobPostingPreviewDto::class.java,
-                            jobPosting,
-                            list(jobPostingWeekday),
-                            applys.createdAt ?: null,
-                            jobPostingFavorite.id.isNotNull
-                                .and(jobPostingFavorite.entityStatus.eq(EntityStatus.ACTIVE))
-                        )
-                    )
+        val applysSub = JPAExpressions
+            .select(applys.jobPostingId, applys.createdAt)
+            .from(applys)
+            .where(applys.jobPostingId.`in`(jobPostingIds))
+
+        val favoriteSub = JPAExpressions
+            .select(jobPostingFavorite.jobPostingId)
+            .from(jobPostingFavorite)
+            .where(
+                jobPostingFavorite.jobPostingId.`in`(jobPostingIds)
+                    .and(jobPostingFavorite.entityStatus.eq(EntityStatus.ACTIVE))
             )
+
+        return jpaQueryFactory
+            .selectDistinct(
+                Projections.constructor(
+                    JobPostingPreviewDto::class.java,
+                    jobPosting,
+                    jobPostingWeekday,
+                    applysSub,
+                    favoriteSub.exists()
+                )
+            )
+            .from(jobPosting)
+            .leftJoin(jobPostingWeekday).on(jobPosting.id.eq(jobPostingWeekday.jobPostingId))
+            .where(jobPosting.id.`in`(jobPostingIds))
+            .fetch()
     }
 
     private fun isExistInRange(
