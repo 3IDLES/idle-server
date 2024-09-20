@@ -7,7 +7,6 @@ import com.swm.idle.domain.common.config.RedisConfig
 import com.swm.idle.infrastructure.aws.common.AwsConfig
 import com.swm.idle.infrastructure.client.common.config.ClientConfig
 import com.swm.idle.infrastructure.sms.common.config.SmsConfig
-import jakarta.annotation.PostConstruct
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Import
@@ -27,15 +26,11 @@ import java.util.*
 )
 class IdleServerApplication {
 
-    @PostConstruct
-    fun started() {
-        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"))
-    }
-
     companion object {
 
         @JvmStatic
         fun main(args: Array<String>) {
+            TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"))
             runApplication<IdleServerApplication>(*args)
         }
     }
