@@ -23,17 +23,18 @@ class CrawlingJobPostingSpatialQueryRepository(
         next: UUID?,
         limit: Long,
     ): List<CrawlingJobPostingPreviewDto> {
-        val jobPostingIds = jpaQueryFactory
+        val crawledJobPostingIds = jpaQueryFactory
             .select(crawledJobPosting.id)
             .from(crawledJobPosting)
             .where(
                 isExistInRange(location)
                     .and(next?.let { crawledJobPosting.id.goe(it) })
+                    .and(crawledJobPosting.entityStatus.eq(EntityStatus.ACTIVE))
             )
             .limit(limit)
             .fetch()
 
-        if (jobPostingIds.isEmpty()) {
+        if (crawledJobPostingIds.isEmpty()) {
             return emptyList()
         }
 
@@ -42,6 +43,7 @@ class CrawlingJobPostingSpatialQueryRepository(
             .from(crawledJobPosting)
             .leftJoin(jobPostingFavorite).fetchJoin()
             .on(crawledJobPosting.id.eq(jobPostingFavorite.jobPostingId))
+            .where(crawledJobPosting.id.`in`(crawledJobPostingIds))
             .transform(
                 groupBy(crawledJobPosting.id)
                     .list(
