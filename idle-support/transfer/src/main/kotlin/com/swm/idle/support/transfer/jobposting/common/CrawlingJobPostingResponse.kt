@@ -75,8 +75,8 @@ data class CrawlingJobPostingResponse(
 
         fun from(
             crawlingJobPosting: CrawledJobPosting,
-            longitude: String,
-            latitude: String,
+            longitude: Double,
+            latitude: Double,
             isFavorite: Boolean,
             distance: Int,
         ): CrawlingJobPostingResponse {
@@ -84,13 +84,13 @@ data class CrawlingJobPostingResponse(
                 id = crawlingJobPosting.id,
                 content = crawlingJobPosting.content,
                 clientAddress = crawlingJobPosting.clientAddress,
-                longitude = longitude,
-                latitude = latitude,
+                longitude = longitude.toString(),
+                latitude = latitude.toString(),
                 createdAt = crawlingJobPosting.createdAt,
                 payInfo = crawlingJobPosting.payInfo,
                 workingTime = crawlingJobPosting.workTime,
                 workingSchedule = crawlingJobPosting.workSchedule,
-                applyDeadline = crawlingJobPosting.applyDeadline.toString(),
+                applyDeadline = crawlingJobPosting.applyDeadline,
                 recruitmentProcess = crawlingJobPosting.recruitmentProcess,
                 applyMethod = crawlingJobPosting.applyMethod,
                 requiredDocumentation = crawlingJobPosting.requiredDocument,

@@ -31,8 +31,6 @@ class CrawlingJobPostingFacadeService(
 
         val jobPosting = crawlingJobPostingService.getById(crawlingJobPostingId)
 
-        val clientLocationInfo = geoCodeService.search(jobPosting.clientAddress)
-
         val distance = crawlingJobPostingService.calculateDistance(
             jobPosting,
             PointConverter.convertToPoint(
@@ -47,8 +45,8 @@ class CrawlingJobPostingFacadeService(
 
             CrawlingJobPostingResponse.from(
                 crawlingJobPosting = it,
-                longitude = clientLocationInfo.addresses[0].x,
-                latitude = clientLocationInfo.addresses[0].y,
+                longitude = jobPosting.location.x,
+                latitude = jobPosting.location.y,
                 isFavorite = isFavorite,
                 distance = distance,
             )
