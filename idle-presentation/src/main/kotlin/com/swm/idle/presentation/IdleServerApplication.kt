@@ -10,8 +10,10 @@ import com.swm.idle.infrastructure.sms.common.config.SmsConfig
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Import
+import org.springframework.scheduling.annotation.EnableScheduling
 import java.util.*
 
+@EnableScheduling
 @SpringBootApplication
 @Import(
     value = [
