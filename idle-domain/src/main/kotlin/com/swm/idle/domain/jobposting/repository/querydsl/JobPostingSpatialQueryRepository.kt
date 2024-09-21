@@ -43,8 +43,21 @@ class JobPostingSpatialQueryRepository(
             return emptyList()
         }
 
+        val isFavorite = jobPostingFavorite.id.isNotNull
+            .and(jobPostingFavorite.entityStatus.eq(EntityStatus.ACTIVE))
+
         return jpaQueryFactory
-            .selectDistinct(jobPosting, jobPostingWeekday, jobPostingFavorite, applys)
+            .selectDistinct(
+                jobPosting,
+                jobPostingWeekday,
+                applys.createdAt,
+                Expressions.booleanTemplate(
+                    "case when {0} is not null and {1} = {2} then true else false end",
+                    jobPostingFavorite.id,
+                    jobPostingFavorite.entityStatus,
+                    EntityStatus.ACTIVE
+                )
+            )
             .from(jobPosting)
             .leftJoin(jobPostingWeekday).fetchJoin()
             .on(jobPosting.id.eq(jobPostingWeekday.jobPostingId))
@@ -61,8 +74,12 @@ class JobPostingSpatialQueryRepository(
                             jobPosting,
                             list(jobPostingWeekday),
                             applys.createdAt ?: null,
-                            jobPostingFavorite.id.isNotNull
-                                .and(jobPostingFavorite.entityStatus.eq(EntityStatus.ACTIVE))
+                            Expressions.booleanTemplate(
+                                "case when {0} is not null and {1} = {2} then true else false end",
+                                jobPostingFavorite.id,
+                                jobPostingFavorite.entityStatus,
+                                EntityStatus.ACTIVE
+                            )
                         )
                     )
             )
