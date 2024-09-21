@@ -14,6 +14,9 @@ import java.util.*
 data class CrawlingJobPostingResponse(
     val id: UUID,
 
+    @Schema(description = "공고 제목")
+    val title: String?,
+
     @Schema(description = "모집 요강")
     val content: String?,
 
@@ -82,6 +85,7 @@ data class CrawlingJobPostingResponse(
         ): CrawlingJobPostingResponse {
             return CrawlingJobPostingResponse(
                 id = crawlingJobPosting.id,
+                title = crawlingJobPosting.title,
                 content = crawlingJobPosting.content,
                 clientAddress = crawlingJobPosting.clientAddress,
                 longitude = longitude.toString(),
