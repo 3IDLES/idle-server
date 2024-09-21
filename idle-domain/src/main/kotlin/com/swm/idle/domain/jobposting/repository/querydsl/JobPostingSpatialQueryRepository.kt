@@ -53,7 +53,7 @@ class JobPostingSpatialQueryRepository(
                 jobPostingFavorite
             )
             .from(jobPosting)
-            .leftJoin(jobPostingWeekday).fetchJoin()
+            .leftJoin(jobPostingWeekday)
             .on(jobPosting.id.eq(jobPostingWeekday.jobPostingId))
             .leftJoin(applys)
             .on(
