@@ -1,7 +1,7 @@
 spring:
   batch:
     jdbc:
-      initialize-schema: always
+      initialize-schema: never
 ---
 spring:
   config:
