@@ -43,9 +43,6 @@ class JobPostingSpatialQueryRepository(
             return emptyList()
         }
 
-        val isFavorite = jobPostingFavorite.id.isNotNull
-            .and(jobPostingFavorite.entityStatus.eq(EntityStatus.ACTIVE))
-
         return jpaQueryFactory
             .selectDistinct(
                 jobPosting,
