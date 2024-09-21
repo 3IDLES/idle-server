@@ -20,7 +20,7 @@ spring:
   batch:
     job:
       name: crawlingJob
-      enabled: false
+      enabled: true
 ---
 spring:
   config:
