@@ -27,6 +27,7 @@ class CrawlingJobConfig(
     fun crawlingJobPostStep(): Step {
         return StepBuilder("crawlingJobPostStep", jobRepository)
             .tasklet(crawlingJobPostingTasklet, transactionManager)
+            .allowStartIfComplete(true)
             .build()
     }
 
