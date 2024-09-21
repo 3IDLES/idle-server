@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.swm.idle.domain.jobposting.entity.jpa.CrawledJobPosting
 import com.swm.idle.domain.jobposting.enums.JobPostingType
 import io.swagger.v3.oas.annotations.media.Schema
-import java.time.LocalDateTime
+import java.time.LocalDate
 import java.util.*
 
 @Schema(
@@ -46,7 +46,7 @@ data class CrawlingJobPostingFavoriteResponse(
         val jobPostingType: JobPostingType = JobPostingType.WORKNET,
 
         @Schema(description = "공고 생성 시각")
-        val createdAt: LocalDateTime?,
+        val createdAt: LocalDate?,
     ) {
 
         companion object {
@@ -61,7 +61,7 @@ data class CrawlingJobPostingFavoriteResponse(
                     workingTime = crawledJobPosting.workTime,
                     workingSchedule = crawledJobPosting.workSchedule,
                     payInfo = crawledJobPosting.payInfo,
-                    applyDeadline = crawledJobPosting.applyDeadline.toString(),
+                    applyDeadline = crawledJobPosting.applyDeadline,
                     distance = distance,
                     isFavorite = true,
                     createdAt = crawledJobPosting.createdAt,
