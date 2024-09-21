@@ -1,7 +1,7 @@
 package com.swm.idle.domain.jobposting.repository.querydsl
 
 import com.querydsl.core.group.GroupBy.groupBy
-import com.querydsl.core.group.GroupBy.list
+import com.querydsl.core.group.GroupBy.set
 import com.querydsl.core.types.Projections
 import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.core.types.dsl.Expressions
@@ -53,7 +53,7 @@ class JobPostingSpatialQueryRepository(
                 jobPostingFavorite
             )
             .from(jobPosting)
-            .leftJoin(jobPostingWeekday)
+            .innerJoin(jobPostingWeekday)
             .on(jobPosting.id.eq(jobPostingWeekday.jobPostingId))
             .leftJoin(applys)
             .on(
@@ -69,7 +69,7 @@ class JobPostingSpatialQueryRepository(
                         Projections.constructor(
                             JobPostingPreviewDto::class.java,
                             jobPosting,
-                            list(jobPostingWeekday),
+                            set(jobPostingWeekday),
                             applys.createdAt ?: null,
                             Expressions.booleanTemplate(
                                 "case when {0} is not null and {1} = {2} then true else false end",
