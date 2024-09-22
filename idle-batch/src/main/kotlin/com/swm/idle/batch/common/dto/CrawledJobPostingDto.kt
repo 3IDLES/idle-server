@@ -3,7 +3,7 @@ package com.swm.idle.batch.common.dto
 import com.swm.idle.domain.jobposting.entity.jpa.CrawledJobPosting
 import com.swm.idle.support.common.uuid.UuidCreator
 import org.locationtech.jts.geom.Point
-import java.time.LocalDateTime
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 data class CrawledJobPostingDto(
@@ -29,9 +29,9 @@ data class CrawledJobPostingDto(
             title = title,
             content = content,
             clientAddress = clientAddress,
-            createdAt = LocalDateTime.parse(
-                createdAt,
-                DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss")
+            createdAt = LocalDate.parse(
+                createdAt.substring(0, 10),
+                DateTimeFormatter.ofPattern("yyyy.MM.dd")
             ),
             payInfo = payInfo,
             workTime = workTime,

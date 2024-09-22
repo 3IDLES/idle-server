@@ -1,7 +1,7 @@
 package com.swm.idle.domain.jobposting.repository.querydsl
 
 import com.querydsl.core.group.GroupBy.groupBy
-import com.querydsl.core.group.GroupBy.list
+import com.querydsl.core.group.GroupBy.set
 import com.querydsl.core.types.Projections
 import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.core.types.dsl.Expressions
@@ -13,6 +13,7 @@ import com.swm.idle.domain.jobposting.entity.jpa.QJobPosting.jobPosting
 import com.swm.idle.domain.jobposting.entity.jpa.QJobPostingFavorite.jobPostingFavorite
 import com.swm.idle.domain.jobposting.entity.jpa.QJobPostingWeekday.jobPostingWeekday
 import com.swm.idle.domain.jobposting.enums.JobPostingStatus
+import com.swm.idle.domain.user.carer.entity.jpa.Carer
 import org.locationtech.jts.geom.Point
 import org.springframework.stereotype.Repository
 import java.util.*
@@ -23,6 +24,7 @@ class JobPostingSpatialQueryRepository(
 ) {
 
     fun findAllWithWeekdaysInRange(
+        carer: Carer,
         location: Point,
         next: UUID?,
         limit: Long,
@@ -44,12 +46,20 @@ class JobPostingSpatialQueryRepository(
         }
 
         return jpaQueryFactory
-            .selectDistinct(jobPosting, jobPostingWeekday, jobPostingFavorite, applys)
+            .selectDistinct(
+                jobPosting,
+                jobPostingWeekday,
+                applys,
+                jobPostingFavorite
+            )
             .from(jobPosting)
-            .leftJoin(jobPostingWeekday).fetchJoin()
+            .innerJoin(jobPostingWeekday)
             .on(jobPosting.id.eq(jobPostingWeekday.jobPostingId))
-            .leftJoin(applys).fetchJoin()
-            .on(jobPosting.id.eq(applys.jobPostingId))
+            .leftJoin(applys)
+            .on(
+                jobPosting.id.eq(applys.jobPostingId)
+                    .and(applys.carerId.eq(carer.id))
+            )
             .leftJoin(jobPostingFavorite).fetchJoin()
             .on(jobPosting.id.eq(jobPostingFavorite.jobPostingId))
             .where(jobPosting.id.`in`(jobPostingIds))
@@ -59,10 +69,14 @@ class JobPostingSpatialQueryRepository(
                         Projections.constructor(
                             JobPostingPreviewDto::class.java,
                             jobPosting,
-                            list(jobPostingWeekday),
+                            set(jobPostingWeekday),
                             applys.createdAt ?: null,
-                            jobPostingFavorite.id.isNotNull
-                                .and(jobPostingFavorite.entityStatus.eq(EntityStatus.ACTIVE))
+                            Expressions.booleanTemplate(
+                                "case when {0} is not null and {1} = {2} then true else false end",
+                                jobPostingFavorite.id,
+                                jobPostingFavorite.entityStatus,
+                                EntityStatus.ACTIVE
+                            )
                         )
                     )
             )

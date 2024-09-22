@@ -14,15 +14,15 @@ data class JobPostingPreviewDto(
 
     constructor(
         jobPosting: JobPosting,
-        jobPostingWeekdays: List<JobPostingWeekday>,
+        jobPostingWeekdays: Set<JobPostingWeekday>,
         applyTime: LocalDateTime?,
-    ) : this(jobPosting, jobPostingWeekdays, 0, applyTime, true)
+    ) : this(jobPosting, jobPostingWeekdays.toList(), 0, applyTime, true)
 
     constructor(
         jobPosting: JobPosting,
-        jobPostingWeekdays: List<JobPostingWeekday>,
+        jobPostingWeekdays: Set<JobPostingWeekday>,
         applyTime: LocalDateTime?,
         isFavorite: Boolean,
-    ) : this(jobPosting, jobPostingWeekdays, 0, applyTime, isFavorite)
+    ) : this(jobPosting, jobPostingWeekdays.toList(), 0, applyTime, isFavorite)
 
 }

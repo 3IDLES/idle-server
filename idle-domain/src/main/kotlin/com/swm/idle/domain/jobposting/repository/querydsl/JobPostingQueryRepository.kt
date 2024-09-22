@@ -1,7 +1,7 @@
 package com.swm.idle.domain.jobposting.repository.querydsl
 
 import com.querydsl.core.group.GroupBy.groupBy
-import com.querydsl.core.group.GroupBy.list
+import com.querydsl.core.group.GroupBy.set
 import com.querydsl.core.types.Projections
 import com.querydsl.jpa.impl.JPAQueryFactory
 import com.swm.idle.domain.applys.entity.jpa.QApplys.applys
@@ -54,7 +54,7 @@ class JobPostingQueryRepository(
                         Projections.constructor(
                             JobPostingPreviewDto::class.java,
                             jobPosting,
-                            list(jobPostingWeekday),
+                            set(jobPostingWeekday),
                             applys.createdAt,
                             jobPostingFavorite.id.isNotNull
                                 .and(jobPostingFavorite.entityStatus.eq(EntityStatus.ACTIVE))
@@ -83,7 +83,7 @@ class JobPostingQueryRepository(
                         Projections.constructor(
                             JobPostingPreviewDto::class.java,
                             jobPosting,
-                            list(jobPostingWeekday),
+                            set(jobPostingWeekday),
                             applys.createdAt ?: null,
                         )
                     )
