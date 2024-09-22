@@ -88,7 +88,7 @@ class CrawledJobPosting(
     var directUrl: String = directUrl
         private set
 
-    @Column(columnDefinition = "timestamp")
+    @Column(columnDefinition = "date")
     var createdAt: LocalDate = createdAt
         private set
 
