@@ -30,7 +30,7 @@ data class CrawledJobPostingDto(
             content = content,
             clientAddress = clientAddress,
             createdAt = LocalDate.parse(
-                createdAt,
+                createdAt.substring(0, 10),
                 DateTimeFormatter.ofPattern("yyyy.MM.dd")
             ),
             payInfo = payInfo,
