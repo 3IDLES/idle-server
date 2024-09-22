@@ -5,12 +5,12 @@ import com.swm.idle.application.jobposting.vo.JobPostingInfo
 import com.swm.idle.domain.common.dto.JobPostingPreviewDto
 import com.swm.idle.domain.common.exception.PersistenceException
 import com.swm.idle.domain.jobposting.entity.jpa.JobPosting
-import com.swm.idle.domain.jobposting.repository.jpa.JobPostingJpaRepository
-import com.swm.idle.domain.jobposting.repository.querydsl.JobPostingQueryRepository
-import com.swm.idle.domain.jobposting.repository.querydsl.JobPostingSpatialQueryRepository
 import com.swm.idle.domain.jobposting.enums.ApplyDeadlineType
 import com.swm.idle.domain.jobposting.enums.MentalStatus
 import com.swm.idle.domain.jobposting.enums.PayType
+import com.swm.idle.domain.jobposting.repository.jpa.JobPostingJpaRepository
+import com.swm.idle.domain.jobposting.repository.querydsl.JobPostingQueryRepository
+import com.swm.idle.domain.jobposting.repository.querydsl.JobPostingSpatialQueryRepository
 import com.swm.idle.domain.user.common.enum.GenderType
 import com.swm.idle.domain.user.common.vo.BirthYear
 import org.locationtech.jts.geom.Point
@@ -61,8 +61,8 @@ class JobPostingService(
                 } ?: LocalDate.now().plusMonths(1),
                 applyDeadlineType = jobPostingInfo.applyDeadlineType,
                 location = PointConverter.convertToPoint(
-                    jobPostingInfo.latitude.toDouble(),
-                    jobPostingInfo.longitude.toDouble(),
+                    latitude = jobPostingInfo.latitude.toDouble(),
+                    longitude = jobPostingInfo.longitude.toDouble(),
                 )
             )
         ).also {

@@ -44,7 +44,7 @@ class JobPostingSpatialQueryRepository(
         }
 
         return jpaQueryFactory
-            .select(jobPosting, jobPostingWeekday, jobPostingFavorite, applys)
+            .selectDistinct(jobPosting, jobPostingWeekday, jobPostingFavorite, applys)
             .from(jobPosting)
             .leftJoin(jobPostingWeekday).fetchJoin()
             .on(jobPosting.id.eq(jobPostingWeekday.jobPostingId))
