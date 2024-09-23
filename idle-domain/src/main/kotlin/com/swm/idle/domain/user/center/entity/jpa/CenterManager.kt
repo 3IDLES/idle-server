@@ -44,4 +44,8 @@ class CenterManager(
         this.status = CenterManagerAccountStatus.PENDING
     }
 
+    fun isNew(): Boolean {
+        return status == CenterManagerAccountStatus.NEW
+    }
+
 }
