@@ -31,7 +31,11 @@ services:
       - "6379:6379"
     environment:
       REDIS_PASSWORD: ${REDIS_PASSWORD}
-    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD}"]
+    command: [ "redis-server", "--requirepass", "$REDIS_PASSWORD" ]
+    volumes:
+      - redis-volume:/data
+    restart: unless-stopped
 
 volumes:
   mysql-volume:
+  redis-volume:
