@@ -6,4 +6,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 data class RedisProperties(
     val host: String,
     val port: Int,
+    val password: String,
 )
