@@ -12,7 +12,7 @@ geocode:
 client:
   events:
     center-manager-verification:
-      active: true
+      active: false
       url: https://discord.com/api/webhooks/1287686530143617034/eeh-aBBsR2kd8KV2COCF5BCv-y6Oo-fGFCyQBcsYBobVEsNcpHMcHfP3dYWgG8ERoHGC
 
 ---

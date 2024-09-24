@@ -7,12 +7,12 @@ import org.springframework.stereotype.Component
 
 @Component
 class CenterManagerEventListener(
-    private val centerMangerVerifyEventService: CenterManagerVerifyEventService,
+    private val centerManagerVerifyEventService: CenterManagerVerifyEventService,
 ) {
 
     @EventListener
     fun handleCenterManagerVerifyEvent(centerManagerVerifyEvent: CenterManagerVerifyEvent) {
-        centerMangerVerifyEventService.sendVerifyMessage(centerManagerVerifyEvent)
+        centerManagerVerifyEventService.sendVerifyMessage(centerManagerVerifyEvent)
     }
 
 }
