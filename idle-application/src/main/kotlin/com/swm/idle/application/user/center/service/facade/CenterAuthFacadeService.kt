@@ -23,6 +23,7 @@ import com.swm.idle.support.transfer.auth.center.ValidateBusinessRegistrationNum
 import com.swm.idle.support.transfer.auth.common.LoginResponse
 import com.swm.idle.support.transfer.user.center.JoinStatusInfoResponse
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 
 @Service
@@ -139,7 +140,7 @@ class CenterAuthFacadeService(
         centerManagerService.updatePassword(centerManager, newPassword)
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     fun requestCenterManagerVerification() {
         val centerManager = getUserAuthentication().userId
             .let { centerManagerService.getById(it) }
