@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.swm.idle.domain.jobposting.entity.jpa.CrawledJobPosting
 import com.swm.idle.domain.jobposting.enums.JobPostingType
 import io.swagger.v3.oas.annotations.media.Schema
-import java.time.LocalDateTime
+import java.time.LocalDate
 import java.util.*
 
 @Schema(
@@ -13,6 +13,9 @@ import java.util.*
 )
 data class CrawlingJobPostingResponse(
     val id: UUID,
+
+    @Schema(description = "공고 제목")
+    val title: String?,
 
     @Schema(description = "모집 요강")
     val content: String?,
@@ -27,7 +30,7 @@ data class CrawlingJobPostingResponse(
     val latitude: String?,
 
     @Schema(description = "생성 시각")
-    val createdAt: LocalDateTime?,
+    val createdAt: LocalDate?,
 
     @Schema(description = "급여 정보")
     val payInfo: String?,
@@ -82,6 +85,7 @@ data class CrawlingJobPostingResponse(
         ): CrawlingJobPostingResponse {
             return CrawlingJobPostingResponse(
                 id = crawlingJobPosting.id,
+                title = crawlingJobPosting.title,
                 content = crawlingJobPosting.content,
                 clientAddress = crawlingJobPosting.clientAddress,
                 longitude = longitude.toString(),

@@ -81,6 +81,7 @@ jobs:
           key: ${{ secrets.INSTANCE_PEM_KEY }}
           script: |
             sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
             sudo docker pull public.ecr.aws/f5q3r6m5/idle-prod-ecr:latest
             if sudo docker ps -q -f name=caremeet_server_prod; then
               sudo docker stop caremeet_server_prod

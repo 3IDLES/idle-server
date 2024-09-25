@@ -101,20 +101,23 @@ class CarerJobPostingFacadeService(
         next: UUID?,
         limit: Long,
     ): Pair<List<JobPostingPreviewDto>, UUID?> {
+        val carer = getUserAuthentication().userId.let {
+            carerService.getById(it)
+        }
+
         val jobPostingPreviewDtos = jobPostingService.findAllByCarerLocationInRange(
+            carer = carer,
             location = location,
             next = next,
             limit = limit + 1,
         )
 
-        val carerLocation = getUserAuthentication().userId.let {
-            carerService.getById(it)
-        }.let {
-            PointConverter.convertToPoint(
-                latitude = it.latitude.toDouble(),
-                longitude = it.longitude.toDouble(),
-            )
-        }
+
+        val carerLocation = PointConverter.convertToPoint(
+            latitude = carer.latitude.toDouble(),
+            longitude = carer.longitude.toDouble(),
+        )
+
 
         for (jobPostingPreviewDto in jobPostingPreviewDtos) {
             jobPostingPreviewDto.distance = jobPostingService.calculateDistance(
