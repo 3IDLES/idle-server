@@ -43,11 +43,6 @@ class AuthFacadeService(
         phoneNumber: PhoneNumber,
         verificationNumber: UserPhoneVerificationNumber,
     ) {
-        // 앱 심사 통과를 위한 임시 로직
-        if (phoneNumber.value.equals("010-1234-5678")) {
-            return
-        }
-
         userPhoneVerificationService.findByPhoneNumber(phoneNumber)?.let {
             if (it.first != phoneNumber || it.second != verificationNumber) {
                 throw UserException.InvalidVerificationNumber()
