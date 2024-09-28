@@ -43,6 +43,11 @@ jobs:
               --port 22 \
               --cidr ${{ steps.publicip.outputs.ip }}/32
 
+      - name: Set Up Firebase Service Key
+        run : |
+          mkdir ./idle-infrastructure/fcm/main/resources/firebase
+          echo ${{ secrets.FIREBASE_SERVICE_KEY_BASE64_ENCODE }} | base64 -d > /idle-infrastructure/fcm/main/resources/firebase/adminkey.json
+
       - name: Copy Docker Compose file to server
         uses: appleboy/scp-action@master
         with:

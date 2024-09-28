@@ -43,6 +43,8 @@ jackson-module-kotlin = "2.17.0"
 
 sentry = "7.14.0"
 
+fcm = "9.3.0"
+
 [libraries]
 kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
 kotlin-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
@@ -100,6 +102,8 @@ jackson-module-kotlin = { group = "com.fasterxml.jackson.module", name = "jackso
 
 sentry-spring-boot-starter-jakarta = { group = "io.sentry", name = "sentry-spring-boot-starter-jakarta", version.ref = "sentry" }
 sentry-logback = { group = "io.sentry", name = "sentry-logback", version.ref = "sentry" }
+
+fcm = { group = 'com.google.firebase', name = 'firebase-admin', version.ref = "fcm"}
 
 [plugins]
 sonarqube = { id = "org.sonarqube", version.ref = "sonar-cloud" }

@@ -43,7 +43,6 @@ subprojects {
         implementation(rootProject.libs.locationtech)
         implementation(rootProject.libs.jakarta.persistence.api)
         implementation(rootProject.libs.jackson.module.kotlin)
-
         implementation(rootProject.libs.sentry.spring.boot.starter.jakarta)
         implementation(rootProject.libs.sentry.logback)
 
