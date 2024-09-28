@@ -38,3 +38,6 @@ out/
 
 ### Kotlin ###
 .kotlin
+
+### JSON ###
+idle-infrastructure/fcm/src/main/resources/firebase
