@@ -1,4 +1,4 @@
-# 쉽고 빠른 재가요양 시장의 구인구직 서비스, 케어밋(Caremeet)
+# 케어밋(Caremeet) : 쉽고 빠른 요양 보호사 구인 구직 서비스
 
 <img width="1920" alt="ppt_표지" src="https://github.com/user-attachments/assets/a022bac8-ad7e-4948-a796-7b1522c617dd">
 <br>
