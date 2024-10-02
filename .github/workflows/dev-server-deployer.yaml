@@ -46,7 +46,7 @@ jobs:
       - name: Set Up Firebase Service Key
         run : |
           mkdir ./src/main/resources/firebase
-          echo ${{ secrets.FIREBASE_SERVICE_KEY_BASE64_ENCODE }} | base64 -d > /idle-infrastructure/fcm/main/resources/firebase/adminkey.json
+          echo ${{ secrets.FIREBASE_SERVICE_KEY_BASE64_ENCODE }} | base64 -d > ./src/main/resources/firebase/adminkey.json
 
       - name: Copy Docker Compose file to server
         uses: appleboy/scp-action@master
