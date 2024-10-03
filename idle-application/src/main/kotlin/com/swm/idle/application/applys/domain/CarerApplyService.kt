@@ -15,8 +15,8 @@ class CarerApplyService(
         jobPostingId: UUID,
         carerId: UUID,
         applyMethodType: ApplyMethodType,
-    ) {
-        carerApplyJpaRepository.save(
+    ): Applys {
+        return carerApplyJpaRepository.save(
             Applys(
                 jobPostingId = jobPostingId,
                 carerId = carerId,
