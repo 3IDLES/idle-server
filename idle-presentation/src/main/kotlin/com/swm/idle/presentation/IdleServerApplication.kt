@@ -6,6 +6,7 @@ import com.swm.idle.domain.common.config.DomainConfig
 import com.swm.idle.domain.common.config.RedisConfig
 import com.swm.idle.infrastructure.aws.common.AwsConfig
 import com.swm.idle.infrastructure.client.common.config.ClientConfig
+import com.swm.idle.infrastructure.fcm.common.config.FcmConfig
 import com.swm.idle.infrastructure.sms.common.config.SmsConfig
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -24,6 +25,7 @@ import java.util.*
         SmsConfig::class,
         AwsConfig::class,
         BatchConfig::class,
+        FcmConfig::class,
     ]
 )
 class IdleServerApplication {
