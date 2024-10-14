@@ -12,6 +12,7 @@ spring:
       - sms
       - client
       - batch
+      - fcm
 
 swagger:
   server:

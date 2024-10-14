@@ -9,10 +9,10 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.ClassPathResource
 
 @Configuration
-class FirebaseConfig {
-
+class FirebaseConfig(
     @Value("\${firebase.json.path}")
-    lateinit var firebaseConfigJsonPath: String
+    var firebaseConfigJsonPath: String,
+) {
 
     @PostConstruct
     fun initializeFirebaseApp() {
