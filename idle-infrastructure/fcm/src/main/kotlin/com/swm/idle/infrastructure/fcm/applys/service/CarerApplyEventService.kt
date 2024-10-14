@@ -1,6 +1,6 @@
 package com.swm.idle.infrastructure.fcm.applys.service
 
-import com.google.firebase.messaging.Message
+import com.google.firebase.messaging.MulticastMessage
 import com.google.firebase.messaging.Notification
 import com.swm.idle.domain.applys.event.ApplyEvent
 import com.swm.idle.domain.user.common.vo.BirthYear
@@ -13,9 +13,10 @@ class CarerApplyEventService(
     private val fcmClient: FcmClient,
 ) {
 
-    fun send(applyEvent: ApplyEvent) {
-        createMessage(applyEvent).also {
-            fcmClient.send(it)
+
+    fun sendForMulticast(applyEvent: ApplyEvent) {
+        createMulticastMessage(applyEvent).also {
+            fcmClient.sendMulticast(it)
         }
     }
 
@@ -26,7 +27,7 @@ class CarerApplyEventService(
             .build()
     }
 
-    private fun createBodyMessage(applyEvent: ApplyEvent): String? {
+    private fun createBodyMessage(applyEvent: ApplyEvent): String {
         val filteredLotNumberAddress = applyEvent.jobPosting.lotNumberAddress.split(" ")
             .take(3)
             .joinToString(" ")
@@ -37,11 +38,15 @@ class CarerApplyEventService(
                 applyEvent.jobPosting.gender.value
     }
 
-    private fun createMessage(applyEvent: ApplyEvent): Message {
+    private fun createMulticastMessage(applyEvent: ApplyEvent): MulticastMessage {
         val applyNotification = createApplyNotification(applyEvent)
 
-        return Message.builder()
-            .setToken(applyEvent.deviceToken.deviceToken)
+        val deviceTokens = applyEvent.deviceTokens.map { deviceToken ->
+            deviceToken.deviceToken
+        }
+
+        return MulticastMessage.builder()
+            .addAllTokens(deviceTokens)
             .setNotification(applyNotification)
             .putData("destination", DestinationType.APPLICANTS.toString())
             .putData("jobPostingId", applyEvent.jobPosting.id.toString())

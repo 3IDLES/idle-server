@@ -5,7 +5,7 @@ import com.swm.idle.domain.notification.jpa.DeviceToken
 import com.swm.idle.domain.user.carer.entity.jpa.Carer
 
 data class ApplyEvent(
-    val deviceToken: DeviceToken,
+    val deviceTokens: List<DeviceToken>,
     val jobPosting: JobPosting,
     val carer: Carer,
 ) {
@@ -13,11 +13,11 @@ data class ApplyEvent(
     companion object {
 
         fun createApplyEvent(
-            deviceToken: DeviceToken,
+            deviceTokens: List<DeviceToken>,
             jobPosting: JobPosting,
             carer: Carer,
         ): ApplyEvent {
-            return ApplyEvent(deviceToken, jobPosting, carer)
+            return ApplyEvent(deviceTokens, jobPosting, carer)
         }
 
     }

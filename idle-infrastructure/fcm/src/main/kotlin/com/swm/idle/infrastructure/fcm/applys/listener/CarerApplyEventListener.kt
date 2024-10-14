@@ -6,14 +6,13 @@ import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
 
 @Component
-
 class CarerApplyEventListener(
     private val carerApplyEventService: CarerApplyEventService,
 ) {
 
     @EventListener
-    fun handleCarerApplyEvent(applyEvent: ApplyEvent) {
-        carerApplyEventService.send(applyEvent)
+    fun handleApplyEvent(applyEvent: ApplyEvent) {
+        carerApplyEventService.sendForMulticast(applyEvent)
     }
 
 }
