@@ -39,4 +39,8 @@ class NotificationService(
         notification.read()
     }
 
+    fun countUnreadNotificationByUserId(userId: UUID): Int {
+        return notificationJpaRepository.countByUserIdWithUnreadStatus(userId)
+    }
+
 }

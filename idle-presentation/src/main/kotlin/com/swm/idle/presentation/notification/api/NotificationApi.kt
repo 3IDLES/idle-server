@@ -2,6 +2,7 @@ package com.swm.idle.presentation.notification.api
 
 import com.swm.idle.presentation.common.exception.ErrorResponse
 import com.swm.idle.presentation.common.security.annotation.Secured
+import com.swm.idle.support.transfer.notification.UnreadNotificationCountResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -9,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -44,5 +46,11 @@ interface NotificationApi {
         ]
     )
     fun readNotification(@PathVariable("notification-id") notificationId: UUID)
+
+    @Secured
+    @Operation(summary = "읽지 않은 알림 수 집계 API")
+    @GetMapping("/count")
+    @ResponseStatus(HttpStatus.OK)
+    fun countUnreadNotification(): UnreadNotificationCountResponse
 
 }
