@@ -32,5 +32,5 @@ spring:
       on-profile: dev
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     show-sql: false

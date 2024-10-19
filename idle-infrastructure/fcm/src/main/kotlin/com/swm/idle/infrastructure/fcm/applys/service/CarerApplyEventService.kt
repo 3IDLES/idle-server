@@ -1,11 +1,10 @@
 package com.swm.idle.infrastructure.fcm.applys.service
 
-import com.google.firebase.messaging.MulticastMessage
+import com.google.firebase.messaging.Message
 import com.google.firebase.messaging.Notification
 import com.swm.idle.domain.applys.event.ApplyEvent
-import com.swm.idle.domain.user.common.vo.BirthYear
 import com.swm.idle.infrastructure.fcm.common.client.FcmClient
-import com.swm.idle.infrastructure.fcm.common.enums.DestinationType
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Component
 
 @Component
@@ -13,43 +12,37 @@ class CarerApplyEventService(
     private val fcmClient: FcmClient,
 ) {
 
+    private val logger = KotlinLogging.logger {}
 
-    fun sendForMulticast(applyEvent: ApplyEvent) {
-        createMulticastMessage(applyEvent).also {
-            fcmClient.sendMulticast(it)
+    fun send(applyEvent: ApplyEvent) {
+        val message = createMessage(applyEvent)
+
+        try {
+            fcmClient.send(message)
+        } catch (e: Exception) {
+            logger.warn { "FCM 알림 전송에 실패했습니다 : ${message}" }
         }
     }
 
     private fun createApplyNotification(applyEvent: ApplyEvent): Notification {
         return Notification.builder()
-            .setTitle("${applyEvent.carer.name} 님이 공고에 지원하였습니다.")
-            .setBody(createBodyMessage(applyEvent))
+            .setTitle(applyEvent.notificationInfo.title)
+            .setBody(applyEvent.notificationInfo.body)
             .build()
     }
 
-    private fun createBodyMessage(applyEvent: ApplyEvent): String {
-        val filteredLotNumberAddress = applyEvent.jobPosting.lotNumberAddress.split(" ")
-            .take(3)
-            .joinToString(" ")
-
-        return "$filteredLotNumberAddress " +
-                "${applyEvent.jobPosting.careLevel}등급 " +
-                "${BirthYear.calculateAge(applyEvent.jobPosting.birthYear)}세 " +
-                applyEvent.jobPosting.gender.value
-    }
-
-    private fun createMulticastMessage(applyEvent: ApplyEvent): MulticastMessage {
+    private fun createMessage(applyEvent: ApplyEvent): Message {
         val applyNotification = createApplyNotification(applyEvent)
 
-        val deviceTokens = applyEvent.deviceTokens.map { deviceToken ->
-            deviceToken.deviceToken
-        }
-
-        return MulticastMessage.builder()
-            .addAllTokens(deviceTokens)
+        return Message.builder()
+            .setToken(applyEvent.deviceToken.deviceToken)
             .setNotification(applyNotification)
-            .putData("destination", DestinationType.APPLICANTS.toString())
-            .putData("jobPostingId", applyEvent.jobPosting.id.toString())
+            .putData("notificationId", applyEvent.notificationId.toString())
+            .putData("notificationType", applyEvent.notificationInfo.notificationType.toString())
+            .putData(
+                "jobPostingId",
+                applyEvent.notificationInfo.notificationDetails!!["jobPostingId"].toString()
+            )
             .build();
     }
 

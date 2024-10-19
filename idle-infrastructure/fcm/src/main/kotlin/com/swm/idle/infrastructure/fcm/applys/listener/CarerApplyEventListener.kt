@@ -12,7 +12,7 @@ class CarerApplyEventListener(
 
     @EventListener
     fun handleApplyEvent(applyEvent: ApplyEvent) {
-        carerApplyEventService.sendForMulticast(applyEvent)
+        carerApplyEventService.send(applyEvent)
     }
 
 }
