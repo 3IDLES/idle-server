@@ -19,7 +19,12 @@ data class JobPostingFavoriteFacadeService(
         carerId: UUID,
         jobPostingType: JobPostingType,
     ) {
-        jobPostingFavoriteService.create(
+        jobPostingFavoriteService.findByJobPostingIdAndCarerId(
+            jobPostingId = jobPostingId,
+            carerId = carerId,
+        )?.let {
+            it.active()
+        } ?: jobPostingFavoriteService.create(
             jobPostingId = jobPostingId,
             carerId = carerId,
             jobPostingType = jobPostingType,
