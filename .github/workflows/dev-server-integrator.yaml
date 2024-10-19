@@ -3,7 +3,7 @@ name: Develop Server Integrator (CI)
 on:
   push:
     branches:
-      - feat/IDLE-400
+      - develop
 
 jobs:
   build_and_push:
