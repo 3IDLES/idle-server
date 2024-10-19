@@ -1,23 +1,23 @@
 package com.swm.idle.domain.applys.event
 
-import com.swm.idle.domain.jobposting.entity.jpa.JobPosting
 import com.swm.idle.domain.notification.jpa.DeviceToken
-import com.swm.idle.domain.user.carer.entity.jpa.Carer
+import com.swm.idle.domain.notification.jpa.NotificationInfo
+import java.util.*
 
 data class ApplyEvent(
-    val deviceTokens: List<DeviceToken>,
-    val jobPosting: JobPosting,
-    val carer: Carer,
+    val deviceToken: DeviceToken,
+    val notificationId: UUID,
+    val notificationInfo: NotificationInfo,
 ) {
 
     companion object {
 
         fun createApplyEvent(
-            deviceTokens: List<DeviceToken>,
-            jobPosting: JobPosting,
-            carer: Carer,
+            deviceToken: DeviceToken,
+            notificationId: UUID,
+            notificationInfo: NotificationInfo,
         ): ApplyEvent {
-            return ApplyEvent(deviceTokens, jobPosting, carer)
+            return ApplyEvent(deviceToken, notificationId, notificationInfo)
         }
 
     }
