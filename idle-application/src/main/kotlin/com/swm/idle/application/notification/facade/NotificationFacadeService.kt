@@ -5,7 +5,7 @@ import com.swm.idle.application.notification.domain.NotificationService
 import com.swm.idle.application.notification.utils.converter.NotificationDetailsConverter
 import com.swm.idle.domain.common.dto.NotificationQueryDto
 import com.swm.idle.support.security.exception.SecurityException
-import com.swm.idle.support.transfer.jobposting.carer.CursorScrollRequest
+import com.swm.idle.support.transfer.common.CursorScrollRequest
 import com.swm.idle.support.transfer.notification.NotificationScrollResponse
 import com.swm.idle.support.transfer.notification.UnreadNotificationCountResponse
 import org.springframework.stereotype.Service

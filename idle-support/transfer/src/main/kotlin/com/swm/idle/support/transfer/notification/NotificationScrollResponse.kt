@@ -28,7 +28,7 @@ data class NotificationScrollResponse(
         val notificationType: NotificationType,
         val createdAt: LocalDateTime,
         val imageUrl: String?,
-        var notificationDetails: Map<String, Any>,
+        val notificationDetails: Map<String, Any>,
     )
 
     companion object {

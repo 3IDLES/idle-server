@@ -12,5 +12,5 @@ data class NotificationQueryDto(
     val notificationType: NotificationType,
     val createdAt: LocalDateTime,
     val imageUrl: String?,
-    var notificationDetails: String,
+    val notificationDetails: String,
 )

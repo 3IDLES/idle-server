@@ -1,4 +1,4 @@
-package com.swm.idle.domain.notification.repository
+package com.swm.idle.domain.notification.repository.jpa
 
 import com.swm.idle.domain.notification.jpa.DeviceToken
 import org.springframework.data.jpa.repository.JpaRepository
