@@ -30,6 +30,7 @@ class JobPostingQueryRepository(
             .where(
                 applys.carerId.eq(carerId)
                     .and(next?.let { jobPosting.id.goe(it) })
+                    .and(jobPosting.entityStatus.eq(EntityStatus.ACTIVE))
             )
             .limit(limit)
             .fetch()
