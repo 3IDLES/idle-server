@@ -3,7 +3,7 @@ name: Production Server Integrator (CI)
 on:
   push:
     branches:
-      - feat/IDLE-400
+      - main
 
 jobs:
   build_and_push:
