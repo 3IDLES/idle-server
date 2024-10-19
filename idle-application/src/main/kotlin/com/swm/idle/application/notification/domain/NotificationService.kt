@@ -1,9 +1,11 @@
 package com.swm.idle.application.notification.domain
 
+import com.swm.idle.domain.common.dto.NotificationQueryDto
 import com.swm.idle.domain.common.exception.PersistenceException
 import com.swm.idle.domain.notification.jpa.Notification
 import com.swm.idle.domain.notification.jpa.NotificationInfo
-import com.swm.idle.domain.notification.repository.NotificationJpaRepository
+import com.swm.idle.domain.notification.repository.jpa.NotificationJpaRepository
+import com.swm.idle.domain.notification.repository.querydsl.NotificationQueryRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -12,6 +14,7 @@ import java.util.*
 @Service
 class NotificationService(
     private val notificationJpaRepository: NotificationJpaRepository,
+    private val notificationQueryRepository: NotificationQueryRepository,
 ) {
 
     @Transactional
@@ -41,6 +44,18 @@ class NotificationService(
 
     fun countUnreadNotificationByUserId(userId: UUID): Int {
         return notificationJpaRepository.countByUserIdWithUnreadStatus(userId)
+    }
+
+    fun findAllByUserId(
+        next: UUID?,
+        limit: Long,
+        userId: UUID,
+    ): List<NotificationQueryDto> {
+        return notificationQueryRepository.findAllByUserId(
+            next = next,
+            limit = limit,
+            userId = userId,
+        )
     }
 
 }
