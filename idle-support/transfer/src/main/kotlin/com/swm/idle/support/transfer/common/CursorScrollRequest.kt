@@ -1,6 +1,5 @@
-package com.swm.idle.support.transfer.jobposting.carer
+package com.swm.idle.support.transfer.common
 
-import com.swm.idle.support.transfer.common.ScrollRequest
 import io.swagger.v3.oas.annotations.Parameter
 import org.springdoc.core.annotations.ParameterObject
 import java.util.*

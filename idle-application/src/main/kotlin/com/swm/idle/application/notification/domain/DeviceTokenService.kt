@@ -1,7 +1,7 @@
 package com.swm.idle.application.notification.domain
 
 import com.swm.idle.domain.notification.jpa.DeviceToken
-import com.swm.idle.domain.notification.repository.DeviceTokenJpaRepository
+import com.swm.idle.domain.notification.repository.jpa.DeviceTokenJpaRepository
 import com.swm.idle.domain.user.common.enum.UserType
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

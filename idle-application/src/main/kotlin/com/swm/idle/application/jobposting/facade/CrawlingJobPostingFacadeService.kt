@@ -8,9 +8,9 @@ import com.swm.idle.application.user.carer.domain.CarerService
 import com.swm.idle.domain.common.dto.CrawlingJobPostingPreviewDto
 import com.swm.idle.domain.user.carer.entity.jpa.Carer
 import com.swm.idle.infrastructure.client.geocode.service.GeoCodeService
+import com.swm.idle.support.transfer.common.CursorScrollRequest
 import com.swm.idle.support.transfer.jobposting.carer.CrawlingJobPostingFavoriteResponse
 import com.swm.idle.support.transfer.jobposting.carer.CrawlingJobPostingScrollResponse
-import com.swm.idle.support.transfer.jobposting.carer.CursorScrollRequest
 import com.swm.idle.support.transfer.jobposting.common.CrawlingJobPostingResponse
 import org.locationtech.jts.geom.Point
 import org.springframework.stereotype.Service

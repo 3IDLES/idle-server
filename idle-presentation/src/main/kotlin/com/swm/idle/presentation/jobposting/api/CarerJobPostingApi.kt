@@ -1,11 +1,11 @@
 package com.swm.idle.presentation.jobposting.api
 
 import com.swm.idle.presentation.common.security.annotation.Secured
+import com.swm.idle.support.transfer.common.CursorScrollRequest
 import com.swm.idle.support.transfer.jobposting.carer.CarerAppliedJobPostingScrollResponse
 import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingResponse
 import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingScrollResponse
 import com.swm.idle.support.transfer.jobposting.carer.CreateJobPostingFavoriteRequest
-import com.swm.idle.support.transfer.jobposting.carer.CursorScrollRequest
 import com.swm.idle.support.transfer.jobposting.carer.JobPostingFavoriteResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag

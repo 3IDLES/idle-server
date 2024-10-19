@@ -2,7 +2,7 @@ package com.swm.idle.presentation.notification.api
 
 import com.swm.idle.presentation.common.exception.ErrorResponse
 import com.swm.idle.presentation.common.security.annotation.Secured
-import com.swm.idle.support.transfer.jobposting.carer.CursorScrollRequest
+import com.swm.idle.support.transfer.common.CursorScrollRequest
 import com.swm.idle.support.transfer.notification.NotificationScrollResponse
 import com.swm.idle.support.transfer.notification.UnreadNotificationCountResponse
 import io.swagger.v3.oas.annotations.Operation
