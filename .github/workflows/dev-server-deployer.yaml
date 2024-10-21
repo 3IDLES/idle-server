@@ -43,24 +43,28 @@ jobs:
               --port 22 \
               --cidr ${{ steps.publicip.outputs.ip }}/32
 
-      - name: Set Up Firebase Service Key
+      - name: Create firebase directory
         run: |
-          mkdir -p ./idle-infrastructure/fcm/src/main/resources/firebase/
-          echo ${{ secrets.FIREBASE_SERVICE_KEY_BASE64_ENCODE }} | base64 -d > ./idle-infrastructure/fcm/src/main/resources/firebase/adminkey.json
+          mkdir ./idle-infrastructure/fcm/src/main/resources/firebase/
 
-          # 파일이 제대로 생성되었는지 확인
-          if [ -f "./idle-infrastructure/fcm/src/main/resources/firebase/adminkey.json" ]; then
-            echo "Firebase admin key file created successfully."
-          else
-            echo "Firebase admin key file not found. Listing directory contents..."
-            # 해당 디렉토리 구조 출력
-            find ./idle-infrastructure/fcm/src/main/resources/firebase
-          fi
+      - name: Create Firebase Admin SDK JSON file
+        id: create-json
+        uses: jsdaniell/create-json@v1.2.3
+        with:
+          name: "adminkey.json"
+          json: ${{ secrets.FIREBASE_SERVICE_KEY_FILE }}
+          dir: './idle-infrastructure/fcm/src/main/resources/firebase/'
 
-          # 상위 디렉토리까지 파일 구조 확인
-          echo "Listing contents of ./idle-infrastructure/fcm/src/main/resources directory:"
-          find ./idle-infrastructure/fcm/src/main/resources
-      
+      - name: Create firebase directory
+        run: mkdir ./client/src/main/resources/firebase/
+
+      - name: Create Firebase Admin SDK JSON file
+        id: create-json
+        uses: jsdaniell/create-json@v1.2.3
+        with:
+          name: "blooming-firebase-adminsdk.json"
+          json: ${{ secrets.FIREBASE_ADMIN_SDK_JSON }}
+          dir: './client/src/main/resources/firebase/'
 
       - name: Copy Docker Compose file to server
         uses: appleboy/scp-action@master
