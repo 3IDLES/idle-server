@@ -8,11 +8,12 @@ import jakarta.annotation.PostConstruct
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Configuration
 import java.io.ByteArrayInputStream
+import java.util.*
 
 @Configuration
 class FirebaseConfig(
     @Value("\${firebase.json}")
-    var firebaseJsonString: String,
+    private val firebaseJsonBase64: String,
 ) {
 
     private val logger = KotlinLogging.logger {}
@@ -20,7 +21,8 @@ class FirebaseConfig(
     @PostConstruct
     fun initializeFirebaseApp() {
         try {
-            val inputStream = ByteArrayInputStream(firebaseJsonString.toByteArray(Charsets.UTF_8))
+            val decodedBytes = Base64.getDecoder().decode(firebaseJsonBase64)
+            val inputStream = ByteArrayInputStream(decodedBytes)
 
             val googleCredentials = GoogleCredentials.fromStream(inputStream)
 
