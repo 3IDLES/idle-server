@@ -1,3 +1,2 @@
 firebase:
-  json:
-    path: ./firebase/adminkey.json
+  json: ${FIREBASE_SERVICE_KEY_JSON}

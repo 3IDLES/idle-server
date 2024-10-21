@@ -43,17 +43,6 @@ jobs:
               --port 22 \
               --cidr ${{ steps.publicip.outputs.ip }}/32
 
-      - name: Create firebase directory
-        run: mkdir ./idle-infrastructure/fcm/src/main/resources/firebase/
-
-      - name: Create Firebase Admin SDK JSON file
-        id: create-json
-        uses: jsdaniell/create-json@v1.2.3
-        with:
-          name: "adminkey.json"
-          json: ${{ secrets.FIREBASE_SERVICE_KEY_FILE }}
-          dir: './idle-infrastructure/fcm/src/main/resources/firebase/'
-
       - name: Copy Docker Compose file to server
         uses: appleboy/scp-action@master
         with:
