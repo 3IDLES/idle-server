@@ -26,4 +26,10 @@ class FirebaseConfig(
         FirebaseApp.initializeApp(fireBaseOptions)
     }
 
+    @PostConstruct
+    fun printWorkingDirectory() {
+        println("Current working directory: " + System.getProperty("user.dir"))
+    }
+
+
 }
