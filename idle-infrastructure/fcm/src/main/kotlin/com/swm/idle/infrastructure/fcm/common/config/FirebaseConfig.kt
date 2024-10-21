@@ -20,9 +20,9 @@ class FirebaseConfig(
     @PostConstruct
     fun initializeFirebaseApp() {
         try {
-            // JSON 문자열을 InputStream으로 변환
-            val inputStream = ByteArrayInputStream(firebaseJsonString.toByteArray(Charsets.UTF_8))
+            logger.info { "Loaded Firebase JSON: $firebaseJsonString" }
 
+            val inputStream = ByteArrayInputStream(firebaseJsonString.toByteArray(Charsets.UTF_8))
             val googleCredentials = GoogleCredentials.fromStream(inputStream)
 
             val fireBaseOptions = FirebaseOptions.builder()
@@ -36,5 +36,6 @@ class FirebaseConfig(
             logger.error(e) { "Error initializing FirebaseApp." }
         }
     }
+
 
 }
