@@ -45,7 +45,7 @@ jobs:
 
       - name: Set Up Firebase Service Key
         run: |
-          mkdir -p ./idle-infrastructure/fcm/src/main/resources/firebase
+          mkdir -p ./idle-infrastructure/fcm/src/main/resources/firebase/
           echo ${{ secrets.FIREBASE_SERVICE_KEY_BASE64_ENCODE }} | base64 -d > ./idle-infrastructure/fcm/src/main/resources/firebase/adminkey.json
 
           # 파일이 제대로 생성되었는지 확인
