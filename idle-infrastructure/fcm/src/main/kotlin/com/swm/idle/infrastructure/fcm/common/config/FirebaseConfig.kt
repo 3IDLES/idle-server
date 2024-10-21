@@ -3,6 +3,7 @@ package com.swm.idle.infrastructure.fcm.common.config
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
+import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.annotation.PostConstruct
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Configuration
@@ -13,6 +14,8 @@ class FirebaseConfig(
     @Value("\${firebase.json.path}")
     var firebaseConfigJsonPath: String,
 ) {
+
+    private val logger = KotlinLogging.logger {}
 
     @PostConstruct
     fun initializeFirebaseApp() {
@@ -28,7 +31,7 @@ class FirebaseConfig(
 
     @PostConstruct
     fun printWorkingDirectory() {
-        println("Current working directory: " + System.getProperty("user.dir"))
+        logger.warn { "Current working directory: " + System.getProperty("user.dir") }
     }
 
 
