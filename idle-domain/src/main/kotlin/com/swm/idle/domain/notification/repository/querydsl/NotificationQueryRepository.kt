@@ -38,7 +38,7 @@ class NotificationQueryRepository(
                     .and(next?.let { notification.id.goe(it) })
                     .and(notification.entityStatus.eq(EntityStatus.ACTIVE))
             )
-            .orderBy(notification.createdAt.desc())
+            .orderBy(notification.id.desc())
             .limit(limit)
             .fetch()
     }
