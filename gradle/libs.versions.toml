@@ -44,7 +44,7 @@ jackson-module-kotlin = "2.17.0"
 sentry = "7.14.0"
 
 fcm = "9.3.0"
-flyway = "10.2.0"
+flyway = "10.20.0"
 
 [libraries]
 kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
