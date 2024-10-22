@@ -19,6 +19,7 @@ class NotificationFacadeService(
     private val notificationDetailsConverter: NotificationDetailsConverter,
 ) {
 
+    @Transactional
     fun readNotification(notificationId: UUID) {
         val notification = notificationService.getById(notificationId)
 
