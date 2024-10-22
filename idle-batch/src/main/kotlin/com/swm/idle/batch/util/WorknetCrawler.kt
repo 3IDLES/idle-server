@@ -30,24 +30,30 @@ object WorknetCrawler {
     private val postings = mutableListOf<CrawledJobPostingDto>()
 
     private fun initializeDriver() {
-        val service = ChromeDriverService.Builder()
-            .usingDriverExecutable(File(System.getenv("CHROMEDRIVER_BIN")))
-            .build()
 
-        val options = ChromeOptions().apply {
-            addArguments("--headless")
-            addArguments("--no-sandbox")
-            addArguments("--disable-dev-shm-usage")
-            addArguments("--disable-gpu")
-            addArguments("window-size=1920x1080")
-            addArguments("--disable-software-rasterizer")
-            addArguments("--ignore-ssl-errors=yes")
-            addArguments("--ignore-certificate-errors")
+        try {
+            val service = ChromeDriverService.Builder()
+                .usingDriverExecutable(File(System.getenv("CHROMEDRIVER_BIN")))
+                .build()
 
-            setBinary(System.getenv("CHROME_BIN"))
+            val options = ChromeOptions().apply {
+                addArguments("--headless")
+                addArguments("--no-sandbox")
+                addArguments("--disable-dev-shm-usage")
+                addArguments("--disable-gpu")
+                addArguments("window-size=1920x1080")
+                addArguments("--disable-software-rasterizer")
+                addArguments("--ignore-ssl-errors=yes")
+                addArguments("--ignore-certificate-errors")
+
+                setBinary(System.getenv("CHROME_BIN"))
+            }
+
+            driver = ChromeDriver(service, options)
+        } catch (e: Exception) {
+            logger.error { e.message }
         }
 
-        driver = ChromeDriver(service, options)
     }
 
     fun run(): List<CrawledJobPostingDto>? {
