@@ -7,5 +7,6 @@ bootJar.enabled = false
 jar.enabled = true
 
 dependencies {
-
+    implementation(libs.prometheus)
+    implementation(libs.spring.boot.starter.actuator)
 }
