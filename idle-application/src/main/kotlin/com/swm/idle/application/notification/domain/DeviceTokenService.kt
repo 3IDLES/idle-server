@@ -17,8 +17,8 @@ class DeviceTokenService(
         return deviceTokenJpaRepository.findByDeviceToken(deviceToken)
     }
 
-    fun findByUserId(userId: UUID): DeviceToken? {
-        return deviceTokenJpaRepository.findByUserId(userId)
+    fun findAllByUserId(userId: UUID): List<DeviceToken>? {
+        return deviceTokenJpaRepository.findAllByUserId(userId)
     }
 
     @Transactional

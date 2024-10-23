@@ -59,10 +59,10 @@ class CarerApplyFacadeService(
             }
         }
 
-        centerManagers?.map { centerManager ->
-            val deviceToken = deviceTokenService.findByUserId(centerManager.id)
+        centerManagers?.forEach { centerManager ->
+            val deviceTokens = deviceTokenService.findAllByUserId(centerManager.id)
 
-            if (deviceToken != null) {
+            deviceTokens?.forEach { deviceToken ->
                 val notificationInfo = CarerApplyNotificationInfo(
                     title = "${carer.name} 님이 공고에 지원하였습니다.",
                     body = createBodyMessage(jobPosting),
@@ -85,6 +85,7 @@ class CarerApplyFacadeService(
                 }
             }
         }
+
         carerApplyService.create(jobPostingId, carer.id, applyMethodType)
     }
 
@@ -98,4 +99,5 @@ class CarerApplyFacadeService(
                 "${BirthYear.calculateAge(jobPosting.birthYear)}세 " +
                 jobPosting.gender.value
     }
+
 }
