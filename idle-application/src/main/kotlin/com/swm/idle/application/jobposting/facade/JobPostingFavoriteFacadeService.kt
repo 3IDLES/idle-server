@@ -5,6 +5,7 @@ import com.swm.idle.application.jobposting.domain.JobPostingService
 import com.swm.idle.application.user.carer.domain.CarerService
 import com.swm.idle.domain.jobposting.enums.JobPostingType
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @Service
@@ -14,6 +15,7 @@ data class JobPostingFavoriteFacadeService(
     private val jobPostingService: JobPostingService,
 ) {
 
+    @Transactional
     fun createJobPostingFavorite(
         jobPostingId: UUID,
         carerId: UUID,
@@ -31,6 +33,7 @@ data class JobPostingFavoriteFacadeService(
         )
     }
 
+    @Transactional
     fun deleteJobPostingFavorite(
         jobPostingId: UUID,
         carerId: UUID,

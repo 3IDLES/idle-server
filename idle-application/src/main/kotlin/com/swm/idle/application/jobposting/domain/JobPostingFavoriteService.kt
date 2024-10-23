@@ -23,15 +23,15 @@ class JobPostingFavoriteService(
         val jobPostingFavorite = jobPostingFavoriteJpaRepository.findByJobPostingIdAndCarerId(
             jobPostingId = jobPostingId,
             carerId = carerId
-        ) ?: jobPostingFavoriteJpaRepository.save(
+        )?.let {
+            it.active()
+        } ?: jobPostingFavoriteJpaRepository.save(
             JobPostingFavorite(
                 carerId = carerId,
                 jobPostingId = jobPostingId,
                 jobPostingType = jobPostingType,
             )
         )
-
-        jobPostingFavorite.active()
     }
 
     @Transactional
