@@ -41,6 +41,7 @@ jts-core = "1.19.0"
 
 jackson-module-kotlin = "2.17.0"
 
+prometheus = "1.13.6"
 sentry = "7.14.0"
 
 fcm = "9.3.0"
@@ -72,6 +73,7 @@ spring-mockk = { group = "com.ninja-squad", name = "springmockk", version.ref = 
 kotest-runner-junit5 = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
 kotest-assertions-core = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }
 kotest-extensions-spring = { group = "io.kotest.extensions", name = "kotest-extensions-spring", version.ref = "kotest-extensions-spring" }
+spring-boot-starter-actuator = { group = "org.spring.boot", name = "spring-boot-starter-actuator", version.ref = "spring-boot" }
 spring-boot-starter-test = { group = "org.springframework.boot", name = "spring-boot-starter-test", version.ref = "spring-boot" }
 kotest-extensions-testcontainers = { group = "io.kotest.extensions", name = "kotest-extensions-testcontainers", version.ref = "kotest-extensions-testcontainers" }
 testcontainers-junit-jupiter = { group = "org.testcontainers", name = "junit-jupiter", version.ref = "testcontainers" }
@@ -108,6 +110,8 @@ fcm = { group = 'com.google.firebase', name = 'firebase-admin', version.ref = "f
 
 flyway-core = { group = 'org.flywaydb', name = 'flyway-core', version.ref = "flyway"}
 flyway-mysql = { group = 'org.flywaydb', name = 'flyway-mysql', version.ref = "flyway"}
+
+prometheus = { group = "io.micrometer", name = "micrometer-registry-prometheus", version.ref = "prometheus" }
 
 [plugins]
 sonarqube = { id = "org.sonarqube", version.ref = "sonar-cloud" }
