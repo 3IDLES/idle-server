@@ -14,4 +14,6 @@ interface DeviceTokenJpaRepository : JpaRepository<DeviceToken, UUID> {
 
     fun findByUserId(userId: UUID): DeviceToken?
 
+    fun findAllByUserId(userId: UUID): List<DeviceToken>?
+
 }
