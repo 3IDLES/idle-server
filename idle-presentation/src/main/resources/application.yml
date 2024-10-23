@@ -13,6 +13,7 @@ spring:
       - client
       - batch
       - fcm
+      - monitoring
 
 swagger:
   server:
