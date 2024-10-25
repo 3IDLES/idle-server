@@ -10,6 +10,7 @@ dependencies {
     implementation(project(":idle-infrastructure:client"))
     implementation(project(":idle-infrastructure:sms"))
     implementation(project(":idle-infrastructure:fcm"))
+    implementation(project(":idle-infrastructure:monitoring"))
 
     implementation(libs.spring.boot.starter.web)
     implementation(libs.spring.boot.starter.data.jpa)

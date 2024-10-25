@@ -6,6 +6,7 @@ management:
       enabled: true
     metrics:
       enabled: true
+
     web:
       exposure:
         include: health, prometheus, metrics
