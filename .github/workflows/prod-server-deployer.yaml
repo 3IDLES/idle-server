@@ -80,11 +80,6 @@ jobs:
             jq -s '.[0] * .[1]' <(echo "$VARS_CONTEXT") <(echo "$SECRETS_CONTEXT") \
               | jq -r 'to_entries | map("\(.key)=\(.value)") | .[]' > .env
 
-      - name: Set Up Firebase Service Key
-        run: |
-          mkdir ./idle-infrastructure/fcm/src/main/resources/firebase
-          echo ${{ secrets.FIREBASE_SERVICE_KEY_BASE64_ENCODE }} | base64 -d > ./idle-infrastructure/fcm/src/main/resources/firebase/adminkey.json
-
       - name: Run Docker
         uses: appleboy/ssh-action@master
         with:
