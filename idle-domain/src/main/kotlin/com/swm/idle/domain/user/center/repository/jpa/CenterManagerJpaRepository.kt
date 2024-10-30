@@ -8,10 +8,12 @@ import java.util.*
 @Repository
 interface CenterManagerJpaRepository : JpaRepository<CenterManager, UUID> {
 
-    fun findByIdentifier(value: String): CenterManager?
+    fun findByIdentifier(identifier: String): CenterManager?
 
-    fun existsByIdentifier(value: String): Boolean
+    fun existsByIdentifier(identifier: String): Boolean
 
-    fun findByPhoneNumber(value: String): CenterManager?
+    fun findByPhoneNumber(phoneNumber: String): CenterManager?
+
+    fun findAllByCenterBusinessRegistrationNumber(centerBusinessRegistrationNumber: String): List<CenterManager>?
 
 }

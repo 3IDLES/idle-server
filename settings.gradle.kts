@@ -22,6 +22,12 @@ project(":idle-infrastructure:client").projectDir = file("idle-infrastructure/cl
 include(":idle-infrastructure:sms")
 project(":idle-infrastructure:sms").projectDir = file("idle-infrastructure/sms")
 
+include(":idle-infrastructure:fcm")
+project(":idle-infrastructure:fcm").projectDir = file("idle-infrastructure/fcm")
+
+include(":idle-infrastructure:monitoring")
+project(":idle-infrastructure:monitoring").projectDir = file("idle-infrastructure/monitoring")
+
 // support modules
 include(":idle-support:common")
 project(":idle-support:common").projectDir = file("idle-support/common")

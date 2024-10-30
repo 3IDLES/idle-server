@@ -85,4 +85,10 @@ class CenterManagerService(
         centerManager.updateAccountStatusToPending()
     }
 
+    fun findAllByCenterBusinessRegistrationNumber(centerBusinessRegistrationNumber: BusinessRegistrationNumber): List<CenterManager>? {
+        return centerManagerJpaRepository.findAllByCenterBusinessRegistrationNumber(
+            centerBusinessRegistrationNumber.value
+        )
+    }
+
 }

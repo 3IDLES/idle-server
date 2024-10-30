@@ -1,0 +1,2 @@
+firebase:
+  json: ${FIREBASE_SERVICE_KEY_JSON}

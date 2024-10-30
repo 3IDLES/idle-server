@@ -53,14 +53,14 @@ class JobPostingSpatialQueryRepository(
                 jobPostingFavorite
             )
             .from(jobPosting)
-            .innerJoin(jobPostingWeekday)
+            .leftJoin(jobPostingWeekday)
             .on(jobPosting.id.eq(jobPostingWeekday.jobPostingId))
             .leftJoin(applys)
             .on(
                 jobPosting.id.eq(applys.jobPostingId)
                     .and(applys.carerId.eq(carer.id))
             )
-            .leftJoin(jobPostingFavorite).fetchJoin()
+            .leftJoin(jobPostingFavorite)
             .on(jobPosting.id.eq(jobPostingFavorite.jobPostingId))
             .where(jobPosting.id.`in`(jobPostingIds))
             .transform(

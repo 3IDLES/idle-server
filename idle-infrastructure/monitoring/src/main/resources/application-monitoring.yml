@@ -1,0 +1,18 @@
+management:
+  endpoints:
+    health:
+      enabled: true
+    prometheus:
+      enabled: true
+    metrics:
+      enabled: true
+
+    web:
+      exposure:
+        include: health, prometheus, metrics
+      base-path: ${ACTUATOR_BASE_PATH}
+    jmx:
+      exposure:
+        exclude: "*"
+  server:
+    port: 9900

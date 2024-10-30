@@ -40,9 +40,10 @@ class SmsService(
     }
 
     companion object {
+
         const val MINIMUM_VERIFICATION_NUMBER = 100_000
         const val VERIFICATION_NUMBER_SCALE = 900_000
-        const val CENTER_VERIFICATION_MESSAGE_FORMAT = "[케어밋] 센터 회원가입 인증번호는 %s 입니다."
+        const val CENTER_VERIFICATION_MESSAGE_FORMAT = "[케어밋] 요청하신 인증번호는 %s 입니다."
     }
 
 }

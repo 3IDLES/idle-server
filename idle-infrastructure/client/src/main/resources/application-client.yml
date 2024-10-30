@@ -8,3 +8,21 @@ geocode:
     client-id: ${NAVER_MAP_API_CLIENT_ID}
     client-secret: ${NAVER_MAP_API_CLIENT_SECRET}
     base-url: ${NAVER_MAP_API_REQUEST_URL}
+
+client:
+  events:
+    center-manager-verification:
+      active: false
+      url: https://discord.com/api/webhooks/1287686530143617034/eeh-aBBsR2kd8KV2COCF5BCv-y6Oo-fGFCyQBcsYBobVEsNcpHMcHfP3dYWgG8ERoHGC
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+client:
+  events:
+    center-manager-verification:
+      active: true
+      url: https://discord.com/api/webhooks/1287686530143617034/eeh-aBBsR2kd8KV2COCF5BCv-y6Oo-fGFCyQBcsYBobVEsNcpHMcHfP3dYWgG8ERoHGC

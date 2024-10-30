@@ -57,6 +57,13 @@ jobs:
             else
               echo "Docker already installed."
             fi
+            if ! command -v docker-compose >/dev/null 2>&1; then
+              echo "Installing Docker Compose..."
+              sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+              sudo chmod +x /usr/local/bin/docker-compose
+            else
+              echo "Docker Compose already installed."
+            fi
 
       - name: Configuration Env file
         uses: appleboy/ssh-action@master
@@ -70,7 +77,7 @@ jobs:
           envs: VARS_CONTEXT,SECRETS_CONTEXT
           script: |
             cd ~/app/docker
-            jq -s '.[0] * .[1] | del(.INSTANCE_PEM_KEY)' <(echo "$VARS_CONTEXT") <(echo "$SECRETS_CONTEXT") \
+            jq -s '.[0] * .[1]' <(echo "$VARS_CONTEXT") <(echo "$SECRETS_CONTEXT") \
               | jq -r 'to_entries | map("\(.key)=\(.value)") | .[]' > .env
 
       - name: Run Docker
@@ -81,13 +88,12 @@ jobs:
           key: ${{ secrets.INSTANCE_PEM_KEY }}
           script: |
             sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-
-            sudo docker pull public.ecr.aws/f5q3r6m5/idle-prod-ecr:latest
-            if sudo docker ps -q -f name=caremeet_server_prod; then
-              sudo docker stop caremeet_server_prod
-              sudo docker rm caremeet_server_prod
+            sudo docker pull public.ecr.aws/f5q3r6m5/idle-prod-ecr:$IMAGE_TAG
+            if [ $(sudo docker ps -q -f name=caremeet_server_prod) ]; then
+            sudo docker stop caremeet_server_prod
+            sudo docker rm caremeet_server_prod
             fi
-            sudo docker run --name caremeet_server_prod --env-file ./app/docker/.env -d -p 8080:8080 public.ecr.aws/f5q3r6m5/idle-prod-ecr:latest
+            sudo docker run --name caremeet_server_prod --env-file ./app/docker/.env -d -p 8080:8080 public.ecr.aws/f5q3r6m5/idle-prod-ecr:$IMAGE_TAG
 
       - name: Remove GitHub Actions IP
         run: |

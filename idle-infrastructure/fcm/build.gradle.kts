@@ -7,5 +7,8 @@ bootJar.enabled = false
 jar.enabled = true
 
 dependencies {
+    implementation(project(":idle-domain"))
+    implementation(project(":idle-support:common"))
 
+    implementation(rootProject.libs.fcm)
 }
