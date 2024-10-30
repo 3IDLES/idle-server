@@ -78,7 +78,7 @@ jobs:
           script: |
             cd ~/app/docker
             jq -s '.[0] * .[1]' <(echo "$VARS_CONTEXT") <(echo "$SECRETS_CONTEXT") \
-              | jq -r 'to_entries | map("\(.key)=\(.value)") | .[]' > .env
+              | jq -r 'to_entries | map("\(.key)=\(.value | gsub(\"[ ]+\"; \"\"))") | .[]' > .env
 
       - name: Run Docker
         uses: appleboy/ssh-action@master
@@ -87,6 +87,7 @@ jobs:
           username: ${{ vars.INSTANCE_USERNAME }}
           key: ${{ secrets.INSTANCE_PEM_KEY }}
           script: |
+          
             sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
             sudo docker pull public.ecr.aws/f5q3r6m5/idle-prod-ecr:$IMAGE_TAG
             if [ $(sudo docker ps -q -f name=caremeet_server_prod) ]; then
