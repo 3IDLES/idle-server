@@ -78,7 +78,7 @@ jobs:
           script: |
             cd ~/app/docker
             jq -s '.[0] * .[1]' <(echo "$VARS_CONTEXT") <(echo "$SECRETS_CONTEXT") \
-              | jq -r 'to_entries | map("\(.key)=\(.value | gsub(\"[ ]+\"; \"\"))") | .[]' > .env
+            | jq -r 'to_entries | map("\(.key)=\(.value | gsub(\" +\"; \"\"))") | .[]' > .env
 
       - name: Run Docker
         uses: appleboy/ssh-action@master
