@@ -77,8 +77,8 @@ jobs:
           envs: VARS_CONTEXT,SECRETS_CONTEXT
           script: |
             cd ~/app/docker
-            jq -s '.[0] * .[1]' <(echo "$VARS_CONTEXT") <(echo "$SECRETS_CONTEXT") \
-              | jq -r 'to_entries | map("\(.key)=\(.value | gsub("[[:space:]]+$"; ""))") | .[]' > .env  
+            jq -s '.[0] * .[1] | del(.INSTANCE_PEM_KEY)' <(echo "$VARS_CONTEXT") <(echo "$SECRETS_CONTEXT") \
+              | jq -r 'to_entries | map("\(.key)=\(.value)") | .[]' > .env
 
       - name: Run Docker
         uses: appleboy/ssh-action@master
