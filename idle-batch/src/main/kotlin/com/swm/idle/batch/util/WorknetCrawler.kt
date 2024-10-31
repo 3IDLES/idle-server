@@ -92,30 +92,37 @@ object WorknetCrawler {
         logger.warn { "pageCount= " + pageCount }
 
         for (i in 1..pageCount) {
-            if (i >= 2) {
-                val updatedCrawlingUrl = crawlingUrl
-                    .replace("{yesterday}", yesterday)
-                    .replace(Regex("pageIndex=\\d+"), "pageIndex=${i}")
-                driver.get(updatedCrawlingUrl)
+            try {
+                if (i >= 2) {
+                    val updatedCrawlingUrl = crawlingUrl
+                        .replace("{yesterday}", yesterday)
+                        .replace(Regex("pageIndex=\\d+"), "pageIndex=${i}")
+                    driver.get(updatedCrawlingUrl)
+                }
+
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#list1")))
+                crawlPosts(1, JOB_POSTING_COUNT_PER_PAGE, postings)
+            } catch (e: Exception) {
+                println("크롤링 오류 발생: 페이지 $i - ${e.message}")
             }
-
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#list1")))
-
-            crawlPosts(1, JOB_POSTING_COUNT_PER_PAGE, postings)
         }
 
         val lastPageJobPostingCount = jobPostingCount % JOB_POSTING_COUNT_PER_PAGE
 
         if (lastPageJobPostingCount > 0) {
-            val updateCrawlingUrl = crawlingUrl
-                .replace("{yesterday}", yesterday)
-                .replace(Regex("pageIndex=\\d+"), "pageIndex=${pageCount + 1}")
-            driver.get(updateCrawlingUrl)
+            try {
+                val updateCrawlingUrl = crawlingUrl
+                    .replace("{yesterday}", yesterday)
+                    .replace(Regex("pageIndex=\\d+"), "pageIndex=${pageCount + 1}")
+                driver.get(updateCrawlingUrl)
 
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#list1")))
-
-            crawlPosts(1, lastPageJobPostingCount, postings)
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#list1")))
+                crawlPosts(1, lastPageJobPostingCount, postings)
+            } catch (e: Exception) {
+                println("크롤링 오류 발생: 마지막 페이지 ${pageCount + 1} - ${e.message}")
+            }
         }
+
 
         driver.quit()
         return postings
