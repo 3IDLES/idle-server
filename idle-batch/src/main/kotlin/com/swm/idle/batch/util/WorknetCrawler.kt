@@ -60,7 +60,7 @@ object WorknetCrawler {
         logger.info { "=====초기화 완료, 크롤링 작업 시작" }
 
         val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
-        val today = LocalDate.now().format(formatter)
+        val today = LocalDate.now().minusDays(1).format(formatter)
         val crawlingUrl = CRAWLING_TARGET_URL_FORMAT
             .replace("{today}", today)
             .replace("{pageIndex}", "1")
