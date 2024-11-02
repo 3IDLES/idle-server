@@ -9,18 +9,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Send discord notification (production server deploy start)
-        uses: appleboy/discord-action@master
-        with:
-          webhook_id: ${{ secrets.SERVER_DEPLOY_DISCORD_WEBHOOK_ID }}
-          webhook_token: ${{ secrets.SERVER_DEPLOY_DISCORD_WEBHOOK_TOKEN }}
-          message: |
-            > **🌈 Server Deployment Start (Production)**
-            >
-            > 🛢️ Repository  : ${{ github.repository }}
-            > 🎋 Branch      : ${{ github.ref }}
-            > 🔁 Run Attempt : ${{ github.run_attempt }}
-            > 🤗 Actor       : ${{ github.triggering_actor }}
+#      - name: Send discord notification (production server deploy start)
+#        uses: appleboy/discord-action@master
+#        with:
+#          webhook_id: ${{ secrets.SERVER_DEPLOY_DISCORD_WEBHOOK_ID }}
+#          webhook_token: ${{ secrets.SERVER_DEPLOY_DISCORD_WEBHOOK_TOKEN }}
+#          message: |
+#            > **🌈 Server Deployment Start (Production)**
+#            >
+#            > 🛢️ Repository  : ${{ github.repository }}
+#            > 🎋 Branch      : ${{ github.ref }}
+#            > 🔁 Run Attempt : ${{ github.run_attempt }}
+#            > 🤗 Actor       : ${{ github.triggering_actor }}
 
       - name: Get Github Actions IP Addresses
         id: publicip
