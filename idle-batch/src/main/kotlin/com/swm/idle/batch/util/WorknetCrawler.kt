@@ -21,9 +21,7 @@ object WorknetCrawler {
     private val logger = KotlinLogging.logger { }
 
     private const val CRAWLING_TARGET_URL_FORMAT =
-        "https://www.work24.go.kr/wk/a/b/1200/retriveDtlEmpSrchList.do?basicSetupYn=&careerTo=&keywordJobCd=&occupation=&seqNo=&cloDateEndtParam=&payGbn=&templateInfo=&rot2WorkYn=&shsyWorkSecd=&srcKeywordParam=%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC&resultCnt=10&keywordJobCont=&cert=&moreButtonYn=Y&minPay=&codeDepth2Info=11000&currentPageNo=1&eventNo=&mode=&major=&resrDutyExcYn=&eodwYn=&sortField=DATE&staArea=&sortOrderBy=DESC&keyword=%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC&termSearchGbn=&carrEssYns=&benefitSrchAndOr=O&disableEmpHopeGbn=&actServExcYn=&keywordStaAreaNm=&maxPay=&regionParam=41460&emailApplyYn=&codeDepth1Info=11000&keywordEtcYn=&regDateStdtParam=20241028&publDutyExcYn=&keywordJobCdSeqNo=&viewType=&exJobsCd=&templateDepthNmInfo=&region=41460&employGbn=&empTpGbcd=&computerPreferential=&infaYn=&cloDateStdtParam=&siteClcd=all&searchMode=Y&birthFromYY=&indArea=&careerTypes=&subEmpHopeYn=&tlmgYn=&academicGbn=&templateDepthNoInfo=&foriegn=&entryRoute=&mealOfferClcd=&basicSetupYnChk=&station=&holidayGbn=&srcKeyword=%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC&academicGbnoEdu=noEdu&enterPriseGbn=all&cloTermSearchGbn=all&birthToYY=&keywordWantedTitle=&stationNm=&benefitGbn=&notSrcKeywordParam=&keywordFlag=&notSrcKeyword=&essCertChk=&depth2SelCode=&keywordBusiNm=&preferentialGbn=&rot3WorkYn=&regDateEndtParam=20241101&pfMatterPreferential=&pageIndex=1&termContractMmcnt=&careerFrom=&laborHrShortYn=#scrollLoc"
-
-//        "https://www.work24.go.kr/wk/a/b/1200/retriveDtlEmpSrchList.do?basicSetupYn=&careerTo=&keywordJobCd=&occupation=&seqNo=&cloDateEndtParam=&payGbn=&templateInfo=&rot2WorkYn=&shsyWorkSecd=&srcKeywordParam=%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC&resultCnt=10&keywordJobCont=&cert=&moreButtonYn=Y&minPay=&codeDepth2Info=11000&currentPageNo=1&eventNo=&mode=&major=&resrDutyExcYn=&eodwYn=&sortField=DATE&staArea=&sortOrderBy=DESC&keyword=%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC&termSearchGbn=all&carrEssYns=&benefitSrchAndOr=O&disableEmpHopeGbn=&actServExcYn=&keywordStaAreaNm=&maxPay=&emailApplyYn=&codeDepth1Info=11000&keywordEtcYn=&regDateStdtParam=20241028&publDutyExcYn=&keywordJobCdSeqNo=&viewType=&exJobsCd=&templateDepthNmInfo=&region=&employGbn=&empTpGbcd=&computerPreferential=&infaYn=&cloDateStdtParam=&siteClcd=WORK&searchMode=Y&birthFromYY=&indArea=&careerTypes=&subEmpHopeYn=&tlmgYn=&academicGbn=&templateDepthNoInfo=&foriegn=&entryRoute=&mealOfferClcd=&basicSetupYnChk=&station=&holidayGbn=&srcKeyword=%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC&academicGbnoEdu=noEdu&enterPriseGbn=all&cloTermSearchGbn=all&birthToYY=&keywordWantedTitle=&stationNm=&benefitGbn=&notSrcKeywordParam=&keywordFlag=&notSrcKeyword=&essCertChk=&depth2SelCode=&keywordBusiNm=&preferentialGbn=&rot3WorkYn=&regDateEndtParam={yesterday}&pfMatterPreferential=&pageIndex={pageIndex}&termContractMmcnt=&careerFrom=&laborHrShortYn=#scrollLoc"
+        "https://www.work24.go.kr/wk/a/b/1200/retriveDtlEmpSrchList.do?basicSetupYn=&careerTo=&keywordJobCd=&occupation=&seqNo=&cloDateEndtParam=&payGbn=&templateInfo=&rot2WorkYn=&shsyWorkSecd=&srcKeywordParam=%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC&resultCnt=10&keywordJobCont=&cert=&moreButtonYn=Y&minPay=&codeDepth2Info=11000&currentPageNo=1&eventNo=&mode=&major=&resrDutyExcYn=&eodwYn=&sortField=DATE&staArea=&sortOrderBy=DESC&keyword=%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC&termSearchGbn=all&carrEssYns=&benefitSrchAndOr=O&disableEmpHopeGbn=&actServExcYn=&keywordStaAreaNm=&maxPay=&emailApplyYn=&codeDepth1Info=11000&keywordEtcYn=&regDateStdtParam={today}&publDutyExcYn=&keywordJobCdSeqNo=&viewType=&exJobsCd=&templateDepthNmInfo=&region=&employGbn=&empTpGbcd=&computerPreferential=&infaYn=&cloDateStdtParam=&siteClcd=WORK&searchMode=Y&birthFromYY=&indArea=&careerTypes=&subEmpHopeYn=&tlmgYn=&academicGbn=&templateDepthNoInfo=&foriegn=&entryRoute=&mealOfferClcd=&basicSetupYnChk=&station=&holidayGbn=&srcKeyword=%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC&academicGbnoEdu=noEdu&enterPriseGbn=all&cloTermSearchGbn=all&birthToYY=&keywordWantedTitle=&stationNm=&benefitGbn=&notSrcKeywordParam=&keywordFlag=&notSrcKeyword=&essCertChk=&depth2SelCode=&keywordBusiNm=&preferentialGbn=&rot3WorkYn=&regDateEndtParam={today}&pfMatterPreferential=&pageIndex={pageIndex}&termContractMmcnt=&careerFrom=&laborHrShortYn=#scrollLoc"
 
     private const val JOB_POSTING_COUNT_PER_PAGE = 50
 
@@ -62,12 +60,10 @@ object WorknetCrawler {
         logger.info { "=====초기화 완료, 크롤링 작업 시작" }
 
         val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
-        val yesterday = LocalDate.now().format(formatter)
-//        val crawlingUrl = CRAWLING_TARGET_URL_FORMAT
-//            .replace("{yesterday}", yesterday)
-//            .replace("{pageIndex}", "1")
-
+        val today = LocalDate.now().format(formatter)
         val crawlingUrl = CRAWLING_TARGET_URL_FORMAT
+            .replace("{today}", today)
+            .replace("{pageIndex}", "1")
 
         driver.get(crawlingUrl)
 
@@ -81,7 +77,7 @@ object WorknetCrawler {
 
         logger.info { "=====크롤링 대상 공고 수: $jobPostingCountText" }
 
-        val jobPostingCount = jobPostingCountText.replace(",", "").toInt()
+        val jobPostingCount = Integer.parseInt(jobPostingCountText.replace(",", ""))
 
         if (jobPostingCount == 0) {
             driver.quit()
@@ -90,80 +86,35 @@ object WorknetCrawler {
         }
 
         val pageCount = jobPostingCount / JOB_POSTING_COUNT_PER_PAGE
-
-        logger.info { "=====크롤링 페이지 수: $pageCount" }
-
-//        for (i in 1..pageCount) {
-//            if (i >= 2) {
-//                val updatedCrawlingUrl = crawlingUrl
-//                    .replace("{yesterday}", yesterday)
-//                    .replace(Regex("pageIndex=\\d+"), "pageIndex=${i}")
-//                driver.get(updatedCrawlingUrl)
-//            }
-//
-//            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#list1")))
-//            crawlPosts(1, JOB_POSTING_COUNT_PER_PAGE, postings)
-//        }
-//
-//        val lastPageJobPostingCount = jobPostingCount % JOB_POSTING_COUNT_PER_PAGE
-//
-//        if (lastPageJobPostingCount > 0) {
-//            val updateCrawlingUrl = crawlingUrl
-//                .replace("{yesterday}", yesterday)
-//                .replace(Regex("pageIndex=\\d+"), "pageIndex=${pageCount + 1}")
-//            driver.get(updateCrawlingUrl)
-//
-//            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#list1")))
-//            crawlPosts(1, lastPageJobPostingCount, postings)
-//        }
+        logger.warn { "=====크롤링 페이지 수:" + pageCount }
 
         for (i in 1..pageCount) {
-            var pageLoaded = false
             if (i >= 2) {
                 val updatedCrawlingUrl = crawlingUrl
-                    .replace("{yesterday}", yesterday)
+                    .replace("{today}", today)
                     .replace(Regex("pageIndex=\\d+"), "pageIndex=${i}")
                 driver.get(updatedCrawlingUrl)
             }
 
-            try {
-                wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#list1")))
-                pageLoaded = true
-            } catch (e: Exception) {
-                logger.warn { "페이지 로드 오류 발생: 페이지 $i - ${e.message}" }
-            }
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#list1")))
 
-            if (pageLoaded) {
-                crawlPosts(1, JOB_POSTING_COUNT_PER_PAGE, postings)
-            }
+            crawlPosts(1, JOB_POSTING_COUNT_PER_PAGE, postings)
         }
 
         val lastPageJobPostingCount = jobPostingCount % JOB_POSTING_COUNT_PER_PAGE
 
         if (lastPageJobPostingCount > 0) {
             val updateCrawlingUrl = crawlingUrl
-                .replace("{yesterday}", yesterday)
+                .replace("{today}", today)
                 .replace(Regex("pageIndex=\\d+"), "pageIndex=${pageCount + 1}")
             driver.get(updateCrawlingUrl)
 
-            var pageLoaded = false
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#list1")))
 
-            try {
-                wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#list1")))
-                pageLoaded = true
-            } catch (e: Exception) {
-                println("페이지 로드 오류 발생: 마지막 페이지 - ${e.message}")
-            }
-
-            if (pageLoaded) {
-                crawlPosts(1, lastPageJobPostingCount, postings)
-            }
+            crawlPosts(1, lastPageJobPostingCount, postings)
         }
 
         driver.quit()
-
-        logger.warn { "크롤링 완료 공고 대상 크기 : ${postings.size}" }
-
         return postings
     }
 
