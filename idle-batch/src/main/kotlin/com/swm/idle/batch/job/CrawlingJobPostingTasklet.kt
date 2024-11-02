@@ -62,7 +62,7 @@ class CrawlingJobPostingTasklet(
                     directUrl = crawledJobPosting.directUrl,
                 ).toDomain(clientLocation)
             }.let {
-                println("크롤링된 data 크기 : ${it.size}")
+                logger.warn { "크롤링된 data 크기 : ${it.size}" }
                 crawlingJobPostingService.saveAll(it)
             }
 
