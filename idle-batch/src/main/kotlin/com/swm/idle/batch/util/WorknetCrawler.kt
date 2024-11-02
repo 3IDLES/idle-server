@@ -77,7 +77,7 @@ object WorknetCrawler {
 
         logger.info { "=====크롤링 대상 공고 수: $jobPostingCountText" }
 
-        val jobPostingCount = Integer.parseInt(jobPostingCountText)
+        val jobPostingCount = jobPostingCountText.replace(",", "").toInt()
 
         logger.info { "=====크롤링 페이지 수: $jobPostingCount" }
 
