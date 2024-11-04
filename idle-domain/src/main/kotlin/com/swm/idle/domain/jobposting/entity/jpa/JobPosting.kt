@@ -225,8 +225,12 @@ class JobPosting(
         this.applyDeadlineType = applyDeadlineType ?: this.applyDeadlineType
     }
 
-    fun updateToComplete() {
+    fun updateToCompleted() {
         this.jobPostingStatus = JobPostingStatus.COMPLETED
+    }
+
+    fun isCompleted(): Boolean {
+        return this.jobPostingStatus == JobPostingStatus.COMPLETED
     }
 
 }
