@@ -51,6 +51,10 @@ class CarerApplyFacadeService(
             throw ApplyException.AlreadyApplied()
         }
 
+        if (jobPosting.isCompleted()) {
+            throw ApplyException.JobPostingCompleted()
+        }
+
         val centerManagers = centerService.getById(jobPosting.centerId).let {
             centerManagerService.findAllByCenterBusinessRegistrationNumber(
                 BusinessRegistrationNumber(it.businessRegistrationNumber)

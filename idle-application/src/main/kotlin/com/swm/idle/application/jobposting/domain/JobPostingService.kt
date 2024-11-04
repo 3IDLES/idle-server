@@ -191,7 +191,7 @@ class JobPostingService(
     }
 
     fun updateToComplete(jobPosting: JobPosting) {
-        jobPosting.updateToComplete()
+        jobPosting.updateToCompleted()
     }
 
     fun findAllByCarerLocationInRange(
