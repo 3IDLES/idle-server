@@ -190,7 +190,7 @@ class JobPostingService(
         jobPosting.delete()
     }
 
-    fun updateToComplete(jobPosting: JobPosting) {
+    fun updateToCompleted(jobPosting: JobPosting) {
         jobPosting.updateToCompleted()
     }
 

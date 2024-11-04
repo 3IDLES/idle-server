@@ -193,9 +193,9 @@ class CenterJobPostingFacadeService(
     }
 
     @Transactional
-    fun updateToComplete(jobPostingId: UUID) {
+    fun updateToCompleted(jobPostingId: UUID) {
         jobPostingService.getById(jobPostingId).let {
-            jobPostingService.updateToComplete(it)
+            jobPostingService.updateToCompleted(it)
         }
     }
 
