@@ -77,9 +77,7 @@ object WorknetCrawler {
 
         logger.info { "=====크롤링 대상 공고 수: $jobPostingCountText" }
 
-        val jobPostingCount = Integer.parseInt(jobPostingCountText)
-
-        logger.info { "=====크롤링 페이지 수: $jobPostingCount" }
+        val jobPostingCount = Integer.parseInt(jobPostingCountText.replace(",", ""))
 
         if (jobPostingCount == 0) {
             driver.quit()
@@ -89,7 +87,7 @@ object WorknetCrawler {
 
         val pageCount = jobPostingCount / JOB_POSTING_COUNT_PER_PAGE
 
-        logger.warn { "pageCount= " + pageCount }
+        logger.warn { "===== 크롤링 페이지 수 " + pageCount }
 
         for (i in 1..pageCount) {
             if (i >= 2) {
@@ -202,7 +200,6 @@ object WorknetCrawler {
         throw NoSuchElementException("클라이언트 주소 크롤링 에러")
     }
 
-
     private fun getRequiredDocument(): String {
         return driver.findElement(By.xpath("//*[@id=\"contents\"]/section/div/div[3]/div[7]/table/tbody/tr/td[4]")).text
     }
@@ -262,7 +259,6 @@ object WorknetCrawler {
         throw NoSuchElementException("CreatedAt element not found using any of the provided XPaths")
     }
 
-
     private fun getCenterAddress(): String {
         val xpaths = listOf(
             "//*[@id=\"contents\"]/section/div/div[3]/div[15]/div/table/tbody/tr[1]/td",
@@ -280,7 +276,6 @@ object WorknetCrawler {
 
         throw NoSuchElementException("Center address not found using any of the provided XPaths")
     }
-
 
     private fun getContent(): String {
         return driver.findElement(By.xpath("//*[@id=\"contents\"]/section/div/div[3]/div[3]/table/tbody/tr/td")).text
