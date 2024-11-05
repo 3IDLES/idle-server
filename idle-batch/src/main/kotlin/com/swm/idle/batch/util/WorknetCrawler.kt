@@ -21,7 +21,7 @@ object WorknetCrawler {
     private val logger = KotlinLogging.logger { }
 
     private const val CRAWLING_TARGET_URL_FORMAT =
-        "https://www.work24.go.kr/wk/a/b/1200/retriveDtlEmpSrchList.do?basicSetupYn=&careerTo=&keywordJobCd=&occupation=&seqNo=&cloDateEndtParam=&payGbn=&templateInfo=&rot2WorkYn=&shsyWorkSecd=&srcKeywordParam=%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC&resultCnt=10&keywordJobCont=&cert=&moreButtonYn=Y&minPay=&codeDepth2Info=11000&currentPageNo=1&eventNo=&mode=&major=&resrDutyExcYn=&eodwYn=&sortField=DATE&staArea=&sortOrderBy=DESC&keyword=%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC&termSearchGbn=all&carrEssYns=&benefitSrchAndOr=O&disableEmpHopeGbn=&actServExcYn=&keywordStaAreaNm=&maxPay=&emailApplyYn=&codeDepth1Info=11000&keywordEtcYn=&regDateStdtParam={today}&publDutyExcYn=&keywordJobCdSeqNo=&viewType=&exJobsCd=&templateDepthNmInfo=&region=&employGbn=&empTpGbcd=&computerPreferential=&infaYn=&cloDateStdtParam=&siteClcd=WORK&searchMode=Y&birthFromYY=&indArea=&careerTypes=&subEmpHopeYn=&tlmgYn=&academicGbn=&templateDepthNoInfo=&foriegn=&entryRoute=&mealOfferClcd=&basicSetupYnChk=&station=&holidayGbn=&srcKeyword=%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC&academicGbnoEdu=noEdu&enterPriseGbn=all&cloTermSearchGbn=all&birthToYY=&keywordWantedTitle=&stationNm=&benefitGbn=&notSrcKeywordParam=&keywordFlag=&notSrcKeyword=&essCertChk=&depth2SelCode=&keywordBusiNm=&preferentialGbn=&rot3WorkYn=&regDateEndtParam={today}&pfMatterPreferential=&pageIndex={pageIndex}&termContractMmcnt=&careerFrom=&laborHrShortYn=#scrollLoc"
+        "https://www.work24.go.kr/wk/a/b/1200/retriveDtlEmpSrchList.do?basicSetupYn=&careerTo=&keywordJobCd=&occupation=&seqNo=&cloDateEndtParam=&payGbn=&templateInfo=&rot2WorkYn=&shsyWorkSecd=&srcKeywordParam=%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC&resultCnt=10&keywordJobCont=&cert=&moreButtonYn=Y&minPay=&codeDepth2Info=11000&currentPageNo=1&eventNo=&mode=&major=&resrDutyExcYn=&eodwYn=&sortField=DATE&staArea=&sortOrderBy=DESC&keyword=%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC&termSearchGbn=all&carrEssYns=&benefitSrchAndOr=O&disableEmpHopeGbn=&actServExcYn=&keywordStaAreaNm=&maxPay=&emailApplyYn=&codeDepth1Info=11000&keywordEtcYn=&regDateStdtParam={yesterday}&publDutyExcYn=&keywordJobCdSeqNo=&viewType=&exJobsCd=&templateDepthNmInfo=&region=&employGbn=&empTpGbcd=&computerPreferential=&infaYn=&cloDateStdtParam=&siteClcd=WORK&searchMode=Y&birthFromYY=&indArea=&careerTypes=&subEmpHopeYn=&tlmgYn=&academicGbn=&templateDepthNoInfo=&foriegn=&entryRoute=&mealOfferClcd=&basicSetupYnChk=&station=&holidayGbn=&srcKeyword=%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC&academicGbnoEdu=noEdu&enterPriseGbn=all&cloTermSearchGbn=all&birthToYY=&keywordWantedTitle=&stationNm=&benefitGbn=&notSrcKeywordParam=&keywordFlag=&notSrcKeyword=&essCertChk=&depth2SelCode=&keywordBusiNm=&preferentialGbn=&rot3WorkYn=&regDateEndtParam={yesterday}&pfMatterPreferential=&pageIndex={pageIndex}&termContractMmcnt=&careerFrom=&laborHrShortYn=#scrollLoc"
 
     private const val JOB_POSTING_COUNT_PER_PAGE = 50
 
@@ -60,9 +60,9 @@ object WorknetCrawler {
         logger.info { "=====초기화 완료, 크롤링 작업 시작" }
 
         val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
-        val today = LocalDate.now().minusDays(1).format(formatter)
+        val yesterday = LocalDate.now().minusDays(1).format(formatter)
         val crawlingUrl = CRAWLING_TARGET_URL_FORMAT
-            .replace("{today}", today)
+            .replace("{yesterday}", yesterday)
             .replace("{pageIndex}", "1")
 
         driver.get(crawlingUrl)
@@ -86,12 +86,13 @@ object WorknetCrawler {
         }
 
         val pageCount = jobPostingCount / JOB_POSTING_COUNT_PER_PAGE
-        logger.warn { "=====크롤링 페이지 수:" + pageCount }
+
+        logger.warn { "===== 크롤링 페이지 수 " + pageCount }
 
         for (i in 1..pageCount) {
             if (i >= 2) {
                 val updatedCrawlingUrl = crawlingUrl
-                    .replace("{today}", today)
+                    .replace("{yesterday}", yesterday)
                     .replace(Regex("pageIndex=\\d+"), "pageIndex=${i}")
                 driver.get(updatedCrawlingUrl)
             }
@@ -105,7 +106,7 @@ object WorknetCrawler {
 
         if (lastPageJobPostingCount > 0) {
             val updateCrawlingUrl = crawlingUrl
-                .replace("{today}", today)
+                .replace("{yesterday}", yesterday)
                 .replace(Regex("pageIndex=\\d+"), "pageIndex=${pageCount + 1}")
             driver.get(updateCrawlingUrl)
 
@@ -199,7 +200,6 @@ object WorknetCrawler {
         throw NoSuchElementException("클라이언트 주소 크롤링 에러")
     }
 
-
     private fun getRequiredDocument(): String {
         return driver.findElement(By.xpath("//*[@id=\"contents\"]/section/div/div[3]/div[7]/table/tbody/tr/td[4]")).text
     }
@@ -259,7 +259,6 @@ object WorknetCrawler {
         throw NoSuchElementException("CreatedAt element not found using any of the provided XPaths")
     }
 
-
     private fun getCenterAddress(): String {
         val xpaths = listOf(
             "//*[@id=\"contents\"]/section/div/div[3]/div[15]/div/table/tbody/tr[1]/td",
@@ -277,7 +276,6 @@ object WorknetCrawler {
 
         throw NoSuchElementException("Center address not found using any of the provided XPaths")
     }
-
 
     private fun getContent(): String {
         return driver.findElement(By.xpath("//*[@id=\"contents\"]/section/div/div[3]/div[3]/table/tbody/tr/td")).text

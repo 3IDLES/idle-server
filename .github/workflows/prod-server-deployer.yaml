@@ -9,18 +9,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-#      - name: Send discord notification (production server deploy start)
-#        uses: appleboy/discord-action@master
-#        with:
-#          webhook_id: ${{ secrets.SERVER_DEPLOY_DISCORD_WEBHOOK_ID }}
-#          webhook_token: ${{ secrets.SERVER_DEPLOY_DISCORD_WEBHOOK_TOKEN }}
-#          message: |
-#            > **🌈 Server Deployment Start (Production)**
-#            >
-#            > 🛢️ Repository  : ${{ github.repository }}
-#            > 🎋 Branch      : ${{ github.ref }}
-#            > 🔁 Run Attempt : ${{ github.run_attempt }}
-#            > 🤗 Actor       : ${{ github.triggering_actor }}
+      - name: Send discord notification (production server deploy start)
+        uses: appleboy/discord-action@master
+        with:
+          webhook_id: ${{ secrets.SERVER_DEPLOY_DISCORD_WEBHOOK_ID }}
+          webhook_token: ${{ secrets.SERVER_DEPLOY_DISCORD_WEBHOOK_TOKEN }}
+          message: |
+            > **🌈 Server Deployment Start (Production)**
+            >
+            > 🛢️ Repository  : ${{ github.repository }}
+            > 🎋 Branch      : ${{ github.ref }}
+            > 🔁 Run Attempt : ${{ github.run_attempt }}
+            > 🤗 Actor       : ${{ github.triggering_actor }}
 
       - name: Get Github Actions IP Addresses
         id: publicip
@@ -88,13 +88,14 @@ jobs:
           key: ${{ secrets.INSTANCE_PEM_KEY }}
           script: |
             sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-            sudo docker pull public.ecr.aws/f5q3r6m5/idle-prod-ecr:latest
+            sudo docker pull public.ecr.aws/f5q3r6m5/idle-prod-ecr:$IMAGE_TAG
             if [ $(sudo docker ps -q -f name=caremeet_server_prod) ]; then
             sudo docker stop caremeet_server_prod
             sudo docker rm caremeet_server_prod
             fi
-            sudo docker run --name caremeet_server_prod --env INSTANCE_PEM_KEY="${{ secrets.INSTANCE_PEM_KEY }}" \
-            --env-file ./app/docker/.env -d -p 8080:8080 public.ecr.aws/f5q3r6m5/idle-prod-ecr:latest
+            sudo docker run --name caremeet_server_prod --env-file ./app/docker/.env \
+            -e SPRING_PROFILES_ACTIVE=prod \
+            -d -p 8080:8080 public.ecr.aws/f5q3r6m5/idle-prod-ecr:$IMAGE_TAG
 
       - name: Remove GitHub Actions IP
         run: |

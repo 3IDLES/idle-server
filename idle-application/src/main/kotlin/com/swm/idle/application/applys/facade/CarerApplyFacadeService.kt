@@ -51,6 +51,10 @@ class CarerApplyFacadeService(
             throw ApplyException.AlreadyApplied()
         }
 
+        if (jobPosting.isCompleted()) {
+            throw ApplyException.JobPostingCompleted()
+        }
+
         val centerManagers = centerService.getById(jobPosting.centerId).let {
             centerManagerService.findAllByCenterBusinessRegistrationNumber(
                 BusinessRegistrationNumber(it.businessRegistrationNumber)
@@ -62,20 +66,20 @@ class CarerApplyFacadeService(
         centerManagers?.forEach { centerManager ->
             val deviceTokens = deviceTokenService.findAllByUserId(centerManager.id)
 
-            deviceTokens?.forEach { deviceToken ->
-                val notificationInfo = CarerApplyNotificationInfo(
-                    title = "${carer.name} 님이 공고에 지원하였습니다.",
-                    body = createBodyMessage(jobPosting),
-                    receiverId = centerManager.id,
-                    notificationType = NotificationType.APPLICANT,
-                    imageUrl = carer.profileImageUrl,
-                    notificationDetails = mapOf(
-                        "jobPostingId" to jobPostingId,
-                    )
+            val notificationInfo = CarerApplyNotificationInfo(
+                title = "${carer.name} 님이 공고에 지원하였습니다.",
+                body = createBodyMessage(jobPosting),
+                receiverId = centerManager.id,
+                notificationType = NotificationType.APPLICANT,
+                imageUrl = carer.profileImageUrl,
+                notificationDetails = mapOf(
+                    "jobPostingId" to jobPostingId,
                 )
+            )
 
-                val notification = notificationService.create(notificationInfo)
+            val notification = notificationService.create(notificationInfo)
 
+            deviceTokens?.forEach { deviceToken ->
                 ApplyEvent.createApplyEvent(
                     deviceToken = deviceToken,
                     notificationId = notification.id,

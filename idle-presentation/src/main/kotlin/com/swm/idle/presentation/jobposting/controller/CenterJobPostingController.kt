@@ -35,7 +35,7 @@ class CenterJobPostingController(
     }
 
     override fun completeJobPosting(jobPostingId: UUID) {
-        centerJobPostingFacadeService.updateToComplete(jobPostingId)
+        centerJobPostingFacadeService.updateToCompleted(jobPostingId)
     }
 
     override fun getJobPostingDetail(jobPostingId: UUID): CenterJobPostingResponse {

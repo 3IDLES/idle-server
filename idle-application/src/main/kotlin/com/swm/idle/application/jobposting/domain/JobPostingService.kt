@@ -190,8 +190,8 @@ class JobPostingService(
         jobPosting.delete()
     }
 
-    fun updateToComplete(jobPosting: JobPosting) {
-        jobPosting.updateToComplete()
+    fun updateToCompleted(jobPosting: JobPosting) {
+        jobPosting.updateToCompleted()
     }
 
     fun findAllByCarerLocationInRange(
