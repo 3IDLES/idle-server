@@ -93,7 +93,9 @@ jobs:
             sudo docker stop caremeet_server_prod
             sudo docker rm caremeet_server_prod
             fi
-            sudo docker run --name caremeet_server_prod --env-file ./app/docker/.env -d -p 8080:8080 public.ecr.aws/f5q3r6m5/idle-prod-ecr:$IMAGE_TAG
+            sudo docker run --name caremeet_server_prod --env-file ./app/docker/.env \
+            -e SPRING_PROFILES_ACTIVE=prod \
+            -d -p 8080:8080 public.ecr.aws/f5q3r6m5/idle-prod-ecr:$IMAGE_TAG
 
       - name: Remove GitHub Actions IP
         run: |
