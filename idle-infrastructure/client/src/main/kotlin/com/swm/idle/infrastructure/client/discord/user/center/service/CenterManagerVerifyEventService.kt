@@ -23,7 +23,9 @@ class CenterManagerVerifyEventService(
             val discordUri =
                 URI(this.discordClientProperties.events.getValue(EventType.CENTER_MANAGER_VERIFICATION).url)
             val message =
-                "[🌟새로운 센터 관리자 ${centerManagerVerifyEvent.centerManager.name} 님이 관리자 인증 요청을 보냈어요! 빠르게 확인해주세요 :)"
+                "[🌟새로운 센터 관리자 ${centerManagerVerifyEvent.centerManager.name} 님이 관리자 인증 요청을 보냈어요! 빠르게 확인해주세요 :) \n" +
+                        "사업자 등록번호 [${centerManagerVerifyEvent.centerManager.centerBusinessRegistrationNumber}]\n " +
+                        "연락처는 [${centerManagerVerifyEvent.centerManager.phoneNumber} 이에요."
 
             runCatching {
                 discordMessageClient.send(
