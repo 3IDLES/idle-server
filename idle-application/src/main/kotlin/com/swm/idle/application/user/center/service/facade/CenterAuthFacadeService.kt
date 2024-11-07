@@ -19,6 +19,7 @@ import com.swm.idle.infrastructure.client.businessregistration.exception.Busines
 import com.swm.idle.infrastructure.client.businessregistration.service.BusinessRegistrationNumberValidationService
 import com.swm.idle.support.common.encrypt.PasswordEncryptor
 import com.swm.idle.support.security.exception.SecurityException
+import com.swm.idle.support.transfer.auth.center.CenterManagerForPendingResponse
 import com.swm.idle.support.transfer.auth.center.ValidateBusinessRegistrationNumberResponse
 import com.swm.idle.support.transfer.auth.common.LoginResponse
 import com.swm.idle.support.transfer.user.center.JoinStatusInfoResponse
@@ -149,6 +150,16 @@ class CenterAuthFacadeService(
             centerManagerEventPublisher.publish(centerManager.createVerifyEvent())
             centerManagerService.updateAccountStatusToPending(centerManager)
         }
+    }
+
+    fun getCenterManagerForPending(): CenterManagerForPendingResponse {
+        val centerManagers = centerManagerService.findAllByStatusPending()
+
+        return centerManagers?.map { centerManager ->
+            CenterManagerForPendingResponse.PendingCenterManagerDto.of(centerManager)
+        }?.let {
+            CenterManagerForPendingResponse.of(it)
+        } ?: CenterManagerForPendingResponse.of(emptyList())
     }
 
 }
