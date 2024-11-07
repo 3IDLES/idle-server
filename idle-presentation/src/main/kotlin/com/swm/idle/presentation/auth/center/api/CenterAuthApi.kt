@@ -3,12 +3,14 @@ package com.swm.idle.presentation.auth.center.api
 import com.swm.idle.presentation.common.exception.ErrorResponse
 import com.swm.idle.presentation.common.security.annotation.Secured
 import com.swm.idle.support.transfer.auth.center.CenterLoginRequest
+import com.swm.idle.support.transfer.auth.center.CenterManagerForPendingResponse
 import com.swm.idle.support.transfer.auth.center.ChangePasswordRequest
 import com.swm.idle.support.transfer.auth.center.JoinRequest
 import com.swm.idle.support.transfer.auth.center.ValidateBusinessRegistrationNumberResponse
 import com.swm.idle.support.transfer.auth.center.WithdrawRequest
 import com.swm.idle.support.transfer.auth.common.LoginResponse
 import com.swm.idle.support.transfer.user.center.JoinStatusInfoResponse
+import io.swagger.v3.oas.annotations.Hidden
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -46,6 +48,12 @@ interface CenterAuthApi {
     @PatchMapping("/join/verify")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun requestCenterManagerVerification()
+
+    @Hidden
+    @Operation(summary = "센터 관리자 인증 대기 목록 조회 API")
+    @GetMapping("/join/requests")
+    @ResponseStatus(HttpStatus.OK)
+    fun getCenterManagerForPending(): CenterManagerForPendingResponse
 
     @Operation(summary = "사업자 등록번호 인증 API")
     @GetMapping("/authentication/{business-registration-number}")
