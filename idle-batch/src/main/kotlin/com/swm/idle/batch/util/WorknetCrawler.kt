@@ -132,16 +132,6 @@ object WorknetCrawler {
         errorCountMap[method] = errorCountMap.getOrDefault(method, 0) + 1
     }
 
-    private fun handleAlertIfPresent() {
-        try {
-            val alert: Alert = driver.switchTo().alert()
-            alert.accept()
-            driver.navigate().back()
-        } catch (e: NoAlertPresentException) {
-            logError("handleAlertIfPresent", e)
-        }
-    }
-
     private fun crawlPosts(
         start: Int,
         end: Int,
@@ -154,7 +144,10 @@ object WorknetCrawler {
                 val element = driver.findElement(By.xpath("//*[@id=\"list$i\"]/td[2]/a"))
                 element.click()
 
-                handleAlertIfPresent()
+                if (handleAlertIfPresent()) {
+                    driver.navigate().back()
+                    continue
+                }
 
                 val wait = WebDriverWait(driver, Duration.ofSeconds(5))
                 wait.until(ExpectedConditions.numberOfWindowsToBe(2))
@@ -190,9 +183,18 @@ object WorknetCrawler {
                 driver.close()
                 driver.switchTo().window(originalWindow)
             } catch (e: Exception) {
-                logError("crawlPosts", e)
-                handleAlertIfPresent()
+                logError("=== 에러 원인은..", e)
             }
+        }
+    }
+
+    private fun handleAlertIfPresent(): Boolean {
+        return try {
+            val alert: Alert = driver.switchTo().alert()
+            alert.accept()  // 알림창이 있을 경우 수락
+            true // 알림창이 있었음을 표시
+        } catch (e: NoAlertPresentException) {
+            false // 알림창이 없었음을 표시
         }
     }
 
