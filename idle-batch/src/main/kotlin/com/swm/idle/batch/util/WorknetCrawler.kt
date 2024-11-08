@@ -29,25 +29,32 @@ object WorknetCrawler {
 
     private val postings = mutableListOf<CrawledJobPostingDto>()
 
+    // 에러 카운트를 저장할 맵
+    private val errorCountMap = mutableMapOf<String, Int>()
+
     private fun initializeDriver() {
-        val service = ChromeDriverService.Builder()
-            .usingDriverExecutable(File(System.getenv("CHROMEDRIVER_BIN")))
-            .build()
+        try {
+            val service = ChromeDriverService.Builder()
+                .usingDriverExecutable(File(System.getenv("CHROMEDRIVER_BIN")))
+                .build()
 
-        val options = ChromeOptions().apply {
-            addArguments("--headless")
-            addArguments("--no-sandbox")
-            addArguments("--disable-dev-shm-usage")
-            addArguments("--disable-gpu")
-            addArguments("window-size=1920x1080")
-            addArguments("--disable-software-rasterizer")
-            addArguments("--ignore-ssl-errors=yes")
-            addArguments("--ignore-certificate-errors")
+            val options = ChromeOptions().apply {
+                addArguments("--headless")
+                addArguments("--no-sandbox")
+                addArguments("--disable-dev-shm-usage")
+                addArguments("--disable-gpu")
+                addArguments("window-size=1920x1080")
+                addArguments("--disable-software-rasterizer")
+                addArguments("--ignore-ssl-errors=yes")
+                addArguments("--ignore-certificate-errors")
 
-            setBinary(System.getenv("CHROME_BIN"))
+                setBinary(System.getenv("CHROME_BIN"))
+            }
+
+            driver = ChromeDriver(service, options)
+        } catch (e: Exception) {
+            logError("initializeDriver", e)
         }
-
-        driver = ChromeDriver(service, options)
     }
 
     fun run(): List<CrawledJobPostingDto>? {
@@ -55,6 +62,7 @@ object WorknetCrawler {
             initializeDriver()
         } catch (e: Exception) {
             logger.error { e.toString() }
+            logError("run", e)
         }
 
         logger.info { "=====초기화 완료, 크롤링 작업 시작" }
@@ -119,12 +127,18 @@ object WorknetCrawler {
         return postings
     }
 
+    private fun logError(method: String, e: Exception) {
+        logger.error(e) { "Error occurred in $method: ${e.message}" }
+        errorCountMap[method] = errorCountMap.getOrDefault(method, 0) + 1
+    }
+
     private fun handleAlertIfPresent() {
         try {
             val alert: Alert = driver.switchTo().alert()
             alert.accept()
             driver.navigate().back()
         } catch (e: NoAlertPresentException) {
+            logError("handleAlertIfPresent", e)
         }
     }
 
@@ -176,6 +190,7 @@ object WorknetCrawler {
                 driver.close()
                 driver.switchTo().window(originalWindow)
             } catch (e: Exception) {
+                logError("crawlPosts", e)
                 handleAlertIfPresent()
             }
         }
@@ -193,7 +208,7 @@ object WorknetCrawler {
                 val address = driver.findElement(By.xpath(xpath)).text
                 return address.replace("지도보기", "").trim()
             } catch (e: Exception) {
-                // Ignore and try the next XPath
+                logError("getClientAddress", e)
             }
         }
 
@@ -201,44 +216,84 @@ object WorknetCrawler {
     }
 
     private fun getRequiredDocument(): String {
-        return driver.findElement(By.xpath("//*[@id=\"contents\"]/section/div/div[3]/div[7]/table/tbody/tr/td[4]")).text
+        return try {
+            driver.findElement(By.xpath("//*[@id=\"contents\"]/section/div/div[3]/div[7]/table/tbody/tr/td[4]")).text
+        } catch (e: Exception) {
+            logError("getRequiredDocument", e)
+            throw e
+        }
     }
 
     private fun getApplyMethod(): String {
-        return driver.findElement(By.xpath("//*[@id=\"contents\"]/section/div/div[3]/div[7]/table/tbody/tr/td[3]")).text
+        return try {
+            driver.findElement(By.xpath("//*[@id=\"contents\"]/section/div/div[3]/div[7]/table/tbody/tr/td[3]")).text
+        } catch (e: Exception) {
+            logError("getApplyMethod", e)
+            throw e
+        }
     }
 
     private fun getRecruitmentProcess(): String {
-        return driver.findElement(By.xpath("//*[@id=\"contents\"]/section/div/div[3]/div[7]/table/tbody/tr/td[2]")).text
+        return try {
+            driver.findElement(By.xpath("//*[@id=\"contents\"]/section/div/div[3]/div[7]/table/tbody/tr/td[2]")).text
+        } catch (e: Exception) {
+            logError("getRecruitmentProcess", e)
+            throw e
+        }
     }
 
     private fun getApplyDeadline(): String {
-        val applyDeadline =
-            driver.findElement(By.xpath("//*[@id=\"contents\"]/section/div/div[3]/div[7]/table/tbody/tr/td[1]")).text
+        return try {
+            val applyDeadline =
+                driver.findElement(By.xpath("//*[@id=\"contents\"]/section/div/div[3]/div[7]/table/tbody/tr/td[1]")).text
 
-        return if (applyDeadline.contains("채용시까지")) {
-            LocalDate.now().plusDays(15).format(DateTimeFormatter.ofPattern("yyyyMMdd"))
-        } else {
-            applyDeadline
+            if (applyDeadline.contains("채용시까지")) {
+                LocalDate.now().plusDays(15).format(DateTimeFormatter.ofPattern("yyyyMMdd"))
+            } else {
+                applyDeadline
+            }
+        } catch (e: Exception) {
+            logError("getApplyDeadline", e)
+            throw e
         }
     }
 
     private fun getWorkSchedule(): String {
-        return driver.findElement(By.xpath("//*[@id=\"contents\"]/section/div/div[3]/div[6]/table/tbody/tr/td[3]")).text
+        return try {
+            driver.findElement(By.xpath("//*[@id=\"contents\"]/section/div/div[3]/div[6]/table/tbody/tr/td[3]")).text
+        } catch (e: Exception) {
+            logError("getWorkSchedule", e)
+            throw e
+        }
     }
 
     private fun getWorkTime(): String {
-        return driver.findElement(By.xpath("//*[@id=\"contents\"]/section/div/div[3]/div[6]/table/tbody/tr/td[2]")).text
-            .replace("(근무시간) ", "")
-            .substringBefore("주 소정근로시간").trim()
+        return try {
+            driver.findElement(By.xpath("//*[@id=\"contents\"]/section/div/div[3]/div[6]/table/tbody/tr/td[2]")).text
+                .replace("(근무시간) ", "")
+                .substringBefore("주 소정근로시간").trim()
+        } catch (e: Exception) {
+            logError("getWorkTime", e)
+            throw e
+        }
     }
 
     private fun getPayInfo(): String {
-        return driver.findElement(By.xpath("//*[@id=\"contents\"]/section/div/div[3]/div[2]/div[1]/div[1]/div[2]/div[2]/div/ul/li[2]/span")).text
+        return try {
+            driver.findElement(By.xpath("//*[@id=\"contents\"]/section/div/div[3]/div[2]/div[1]/div[1]/div[2]/div[2]/div/ul/li[2]/span")).text
+        } catch (e: Exception) {
+            logError("getPayInfo", e)
+            throw e
+        }
     }
 
     private fun getCenterName(): String {
-        return driver.findElement(By.xpath("//*[@id=\"contents\"]/section/div/div[3]/div[2]/div[1]/div[2]/div[2]/ul/li[1]/div")).text
+        return try {
+            driver.findElement(By.xpath("//*[@id=\"contents\"]/section/div/div[3]/div[2]/div[1]/div[2]/div[2]/ul/li[1]/div")).text
+        } catch (e: Exception) {
+            logError("getCenterName", e)
+            throw e
+        }
     }
 
     private fun getCreatedAt(): String {
@@ -252,7 +307,7 @@ object WorknetCrawler {
             try {
                 return driver.findElement(By.xpath(xpath)).text
             } catch (e: Exception) {
-                // Ignore and try the next XPath
+                logError("getCreatedAt", e)
             }
         }
 
@@ -271,6 +326,7 @@ object WorknetCrawler {
                 val address = driver.findElement(By.xpath(xpath)).text
                 return address.replace("지도보기", "").trim().replace(Regex("\\(\\d{5}\\)"), "").trim()
             } catch (e: Exception) {
+                logError("getCenterAddress", e)
             }
         }
 
@@ -278,12 +334,29 @@ object WorknetCrawler {
     }
 
     private fun getContent(): String {
-        return driver.findElement(By.xpath("//*[@id=\"contents\"]/section/div/div[3]/div[3]/table/tbody/tr/td")).text
+        return try {
+            driver.findElement(By.xpath("//*[@id=\"contents\"]/section/div/div[3]/div[3]/table/tbody/tr/td")).text
+        } catch (e: Exception) {
+            logError("getContent", e)
+            throw e
+        }
     }
 
     private fun getTitle(): String {
-        val em = driver.findElement(By.cssSelector(".left"))
-        return em.findElement(By.cssSelector(".tit-area .tit")).text
+        return try {
+            val em = driver.findElement(By.cssSelector(".left"))
+            em.findElement(By.cssSelector(".tit-area .tit")).text
+        } catch (e: Exception) {
+            logError("getTitle", e)
+            throw e
+        }
     }
 
+    // 에러 집계를 출력하는 메서드 추가
+    fun printErrorSummary() {
+        logger.error { "===== 에러 집계 =====" }
+        errorCountMap.forEach { (method, count) ->
+            logger.error { "$method: $count errors" }
+        }
+    }
 }
