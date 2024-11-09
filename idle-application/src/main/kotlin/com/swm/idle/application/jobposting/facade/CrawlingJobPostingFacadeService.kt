@@ -110,14 +110,10 @@ class CrawlingJobPostingFacadeService(
             limit = limit + 1,
         )
 
-        val carerLocation = getUserAuthentication().userId.let {
-            carerService.getById(it)
-        }.let {
-            PointConverter.convertToPoint(
-                latitude = it.latitude.toDouble(),
-                longitude = it.longitude.toDouble(),
-            )
-        }
+        val carerLocation = PointConverter.convertToPoint(
+            latitude = carer.latitude.toDouble(),
+            longitude = carer.longitude.toDouble(),
+        )
 
         for (crawlingJobPostingPreviewDto in crawlingJobPostingPreviewDtos) {
             crawlingJobPostingPreviewDto.distance = crawlingJobPostingService.calculateDistance(
