@@ -13,7 +13,6 @@ import com.swm.idle.domain.jobposting.entity.jpa.QJobPosting.jobPosting
 import com.swm.idle.domain.jobposting.entity.jpa.QJobPostingFavorite.jobPostingFavorite
 import com.swm.idle.domain.jobposting.entity.jpa.QJobPostingWeekday.jobPostingWeekday
 import com.swm.idle.domain.jobposting.enums.JobPostingStatus
-import com.swm.idle.domain.user.carer.entity.jpa.Carer
 import org.locationtech.jts.geom.Point
 import org.springframework.stereotype.Repository
 import java.util.*
@@ -24,7 +23,7 @@ class JobPostingSpatialQueryRepository(
 ) {
 
     fun findAllWithWeekdaysInRange(
-        carer: Carer,
+        carerId: UUID,
         location: Point,
         next: UUID?,
         limit: Long,
@@ -58,7 +57,7 @@ class JobPostingSpatialQueryRepository(
             .leftJoin(applys)
             .on(
                 jobPosting.id.eq(applys.jobPostingId)
-                    .and(applys.carerId.eq(carer.id))
+                    .and(applys.carerId.eq(carerId))
             )
             .leftJoin(jobPostingFavorite)
             .on(jobPosting.id.eq(jobPostingFavorite.jobPostingId))
@@ -86,7 +85,7 @@ class JobPostingSpatialQueryRepository(
         location: Point,
     ): BooleanExpression {
         return Expressions.booleanTemplate(
-            "ST_Contains(ST_BUFFER({0}, 3000), {1})",
+            "ST_Contains(ST_BUFFER({0}, 5000), {1})",
             location,
             jobPosting.location,
         )

@@ -91,4 +91,8 @@ class CenterManagerService(
         )
     }
 
+    fun findAllByStatusPending(): List<CenterManager>? {
+        return centerManagerJpaRepository.findAllByStatusPending()
+    }
+
 }

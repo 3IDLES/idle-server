@@ -106,18 +106,16 @@ class CarerJobPostingFacadeService(
         }
 
         val jobPostingPreviewDtos = jobPostingService.findAllByCarerLocationInRange(
-            carer = carer,
+            carerId = carer.id,
             location = location,
             next = next,
             limit = limit + 1,
         )
 
-
         val carerLocation = PointConverter.convertToPoint(
             latitude = carer.latitude.toDouble(),
             longitude = carer.longitude.toDouble(),
         )
-
 
         for (jobPostingPreviewDto in jobPostingPreviewDtos) {
             jobPostingPreviewDto.distance = jobPostingService.calculateDistance(

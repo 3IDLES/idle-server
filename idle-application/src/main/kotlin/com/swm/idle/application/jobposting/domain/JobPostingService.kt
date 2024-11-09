@@ -11,7 +11,6 @@ import com.swm.idle.domain.jobposting.enums.PayType
 import com.swm.idle.domain.jobposting.repository.jpa.JobPostingJpaRepository
 import com.swm.idle.domain.jobposting.repository.querydsl.JobPostingQueryRepository
 import com.swm.idle.domain.jobposting.repository.querydsl.JobPostingSpatialQueryRepository
-import com.swm.idle.domain.user.carer.entity.jpa.Carer
 import com.swm.idle.domain.user.common.enum.GenderType
 import com.swm.idle.domain.user.common.vo.BirthYear
 import org.locationtech.jts.geom.Point
@@ -195,13 +194,13 @@ class JobPostingService(
     }
 
     fun findAllByCarerLocationInRange(
-        carer: Carer,
+        carerId: UUID,
         location: Point,
         next: UUID?,
         limit: Long,
     ): List<JobPostingPreviewDto> {
         return jobPostingSpatialQueryRepository.findAllWithWeekdaysInRange(
-            carer = carer,
+            carerId = carerId,
             location = location,
             next = next,
             limit = limit,
