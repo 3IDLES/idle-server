@@ -19,6 +19,7 @@ class CrawlingJobPostingSpatialQueryRepository(
 ) {
 
     fun findAllInRange(
+        carerId: UUID,
         location: Point,
         next: UUID?,
         limit: Long,
@@ -41,8 +42,11 @@ class CrawlingJobPostingSpatialQueryRepository(
         return jpaQueryFactory
             .select(crawledJobPosting, jobPostingFavorite)
             .from(crawledJobPosting)
-            .leftJoin(jobPostingFavorite).fetchJoin()
-            .on(crawledJobPosting.id.eq(jobPostingFavorite.jobPostingId))
+            .leftJoin(jobPostingFavorite)
+            .on(
+                crawledJobPosting.id.eq(jobPostingFavorite.jobPostingId)
+                    .and(jobPostingFavorite.carerId.eq(carerId))
+            )
             .where(crawledJobPosting.id.`in`(crawledJobPostingIds))
             .transform(
                 groupBy(crawledJobPosting.id)
@@ -61,7 +65,7 @@ class CrawlingJobPostingSpatialQueryRepository(
         location: Point,
     ): BooleanExpression {
         return Expressions.booleanTemplate(
-            "ST_Contains(ST_BUFFER({0}, 3000), {1})",
+            "ST_Contains(ST_BUFFER({0}, 5000), {1})",
             location,
             crawledJobPosting.location,
         )

@@ -29,11 +29,13 @@ class CrawlingJobPostingService(
     }
 
     fun findAllByCarerLocationInRange(
+        carerId: UUID,
         location: Point,
         next: UUID?,
         limit: Long,
     ): List<CrawlingJobPostingPreviewDto> {
         return crawlingJobPostingSpatialQueryRepository.findAllInRange(
+            carerId = carerId,
             location = location,
             next = next,
             limit = limit,

@@ -99,7 +99,12 @@ class CrawlingJobPostingFacadeService(
         next: UUID?,
         limit: Long,
     ): Pair<List<CrawlingJobPostingPreviewDto>, UUID?> {
+        val carer = getUserAuthentication().userId.let {
+            carerService.getById(it)
+        }
+
         val crawlingJobPostingPreviewDtos = crawlingJobPostingService.findAllByCarerLocationInRange(
+            carerId = carer.id,
             location = location,
             next = next,
             limit = limit + 1,
