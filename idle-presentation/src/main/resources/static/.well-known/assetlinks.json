@@ -1,9 +1,11 @@
-[{
-  "relation": ["delegate_permission/common.handle_all_urls"],
-  "target": {
-    "namespace": "android_app",
-    "package_name": "com.idle.care",
-    "sha256_cert_fingerprints":
-    ["5C:27:CE:2F:E7:FE:C6:18:47:0A:F4:CE:8F:8B:01:D3:3C:99:24:9A:C0:8C:C1:43:A4:14:F8:32:E7:25:6F:E6"]
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.idle.care",
+      "sha256_cert_fingerprints":
+      ["0F:82:C2:F8:FE:04:0F:B0:61:7E:8A:68:DE:D8:35:81:15:D1:E5:6D:30:78:1C:1A:0E:83:F3:EB:5E:2F:8E:68"]
+    }
   }
-}]
+]
