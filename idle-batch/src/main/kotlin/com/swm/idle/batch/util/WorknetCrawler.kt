@@ -143,7 +143,7 @@ object WorknetCrawler {
             try {
                 val originalWindow = driver.windowHandle
 
-                val element = driver.findElement(By.xpath("//*[@id=\"list$i\"]/td[2]/a"))
+                val element = driver.findElement(By.xpath("//*[@id=\"list$i\"]/td[1]/div/div[2]/a"))
                 element.click()
 
                 if (handleAlertIfPresent()) {
