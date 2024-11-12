@@ -1,4 +1,4 @@
-package com.swm.idle.domain.notification.jpa
+package com.swm.idle.domain.notification.event
 
 import com.swm.idle.domain.notification.enums.NotificationType
 import java.util.*

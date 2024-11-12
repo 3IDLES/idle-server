@@ -4,4 +4,5 @@ enum class CenterManagerAccountStatus {
     NEW,
     PENDING,
     APPROVED,
+    REJECTED,
 }

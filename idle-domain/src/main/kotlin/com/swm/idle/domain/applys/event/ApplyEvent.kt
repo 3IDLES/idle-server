@@ -1,7 +1,7 @@
 package com.swm.idle.domain.applys.event
 
+import com.swm.idle.domain.notification.event.NotificationInfo
 import com.swm.idle.domain.notification.jpa.DeviceToken
-import com.swm.idle.domain.notification.jpa.NotificationInfo
 import java.util.*
 
 data class ApplyEvent(

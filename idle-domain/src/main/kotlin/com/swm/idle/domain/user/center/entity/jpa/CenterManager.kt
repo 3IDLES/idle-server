@@ -48,4 +48,16 @@ class CenterManager(
         return status == CenterManagerAccountStatus.NEW
     }
 
+    fun isPending(): Boolean {
+        return status == CenterManagerAccountStatus.PENDING
+    }
+
+    fun updateStatusToApproved() {
+        this.status = CenterManagerAccountStatus.APPROVED
+    }
+
+    fun updateStatusToRejected() {
+        this.status = CenterManagerAccountStatus.REJECTED
+    }
+
 }
