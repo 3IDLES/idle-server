@@ -103,7 +103,7 @@ class CenterJobPostingFacadeService(
             val deviceTokens = deviceTokenService.findAllByUserId(carer.id)
 
             val notificationInfo = CreateJobPostingNotificationInfo(
-                title = "${carer.name} 님이 공고에 지원하였습니다.",
+                title = "주변에 새로운 공고가 등록되었어요, 얼른 확인해 보세요!",
                 body = createBodyMessage(jobPosting),
                 receiverId = carer.id,
                 notificationType = NotificationType.NEW_JOB_POSTING,
