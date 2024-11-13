@@ -103,11 +103,11 @@ class CenterJobPostingFacadeService(
             val deviceTokens = deviceTokenService.findAllByUserId(carer.id)
 
             val notificationInfo = CreateJobPostingNotificationInfo(
-                title = "주변에 새로운 공고가 등록되었어요, 얼른 확인해 보세요!",
+                title = "주변에 새로운 공고가 등록되었어요!",
                 body = createBodyMessage(jobPosting),
                 receiverId = carer.id,
                 notificationType = NotificationType.NEW_JOB_POSTING,
-                imageUrl = carer.profileImageUrl,
+                imageUrl = null,
                 notificationDetails = mapOf(
                     "jobPostingId" to jobPosting.id,
                 )
