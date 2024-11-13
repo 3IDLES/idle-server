@@ -7,12 +7,18 @@ import com.swm.idle.application.jobposting.domain.JobPostingApplyMethodService
 import com.swm.idle.application.jobposting.domain.JobPostingLifeAssistanceService
 import com.swm.idle.application.jobposting.domain.JobPostingService
 import com.swm.idle.application.jobposting.domain.JobPostingWeekdayService
+import com.swm.idle.application.jobposting.event.CreateJobPostingEventPublisher
+import com.swm.idle.application.jobposting.vo.CreateJobPostingNotificationInfo
 import com.swm.idle.application.jobposting.vo.JobPostingInfo
+import com.swm.idle.application.notification.domain.DeviceTokenService
+import com.swm.idle.application.notification.domain.NotificationService
 import com.swm.idle.application.user.carer.domain.CarerService
 import com.swm.idle.application.user.center.service.domain.CenterManagerService
 import com.swm.idle.application.user.center.service.domain.CenterService
 import com.swm.idle.application.user.common.service.domain.DeletedUserInfoService
 import com.swm.idle.domain.jobposting.entity.jpa.JobPosting
+import com.swm.idle.domain.jobposting.event.CreateJobPostingEvent
+import com.swm.idle.domain.notification.enums.NotificationType
 import com.swm.idle.domain.user.carer.entity.jpa.Carer
 import com.swm.idle.domain.user.center.exception.CenterException
 import com.swm.idle.domain.user.center.vo.BusinessRegistrationNumber
@@ -43,6 +49,9 @@ class CenterJobPostingFacadeService(
     private val carerApplyService: CarerApplyService,
     private val applicantService: ApplicantService,
     private val deletedUserInfoService: DeletedUserInfoService,
+    private val deviceTokenService: DeviceTokenService,
+    private val notificationService: NotificationService,
+    private val createJobPostingEventPublisher: CreateJobPostingEventPublisher,
 ) {
 
     @Transactional
@@ -56,37 +65,77 @@ class CenterJobPostingFacadeService(
 
         val geoCodeSearchResult = geoCodeService.search(request.roadNameAddress)
 
-        jobPostingService.create(
+        val jobPosting = jobPostingService.create(
             centerId = centerId,
             jobPostingInfo = JobPostingInfo.of(
                 request = request,
                 latitude = geoCodeSearchResult.addresses[0].y,
                 longitude = geoCodeSearchResult.addresses[0].x
             )
-        ).let { jobPosting ->
-            coroutineScope {
-                request.lifeAssistance?.let {
-                    jobPostingLifeAssistanceService.create(
-                        jobPostingId = jobPosting.id,
-                        lifeAssistance = request.lifeAssistance!!,
-                    )
-                }
+        )
 
-                launch {
-                    jobPostingWeekdayService.create(
-                        jobPostingId = jobPosting.id,
-                        weekdays = request.weekdays,
-                    )
-                }
+        coroutineScope {
+            request.lifeAssistance?.let {
+                jobPostingLifeAssistanceService.create(
+                    jobPostingId = jobPosting.id,
+                    lifeAssistance = request.lifeAssistance!!,
+                )
+            }
 
-                launch {
-                    jobPostingApplyMethodService.create(
-                        jobPostingId = jobPosting.id,
-                        applyMethods = request.applyMethod,
-                    )
+            launch {
+                jobPostingWeekdayService.create(
+                    jobPostingId = jobPosting.id,
+                    weekdays = request.weekdays,
+                )
+            }
+
+            launch {
+                jobPostingApplyMethodService.create(
+                    jobPostingId = jobPosting.id,
+                    applyMethods = request.applyMethod,
+                )
+            }
+        }
+
+        val carers = carerService.findAllByLocationWithinRadius(jobPosting.location)
+
+        carers?.forEach { carer ->
+            val deviceTokens = deviceTokenService.findAllByUserId(carer.id)
+
+            val notificationInfo = CreateJobPostingNotificationInfo(
+                title = "${carer.name} 님이 공고에 지원하였습니다.",
+                body = createBodyMessage(jobPosting),
+                receiverId = carer.id,
+                notificationType = NotificationType.NEW_JOB_POSTING,
+                imageUrl = carer.profileImageUrl,
+                notificationDetails = mapOf(
+                    "jobPostingId" to jobPosting.id,
+                )
+            )
+
+            val notification = notificationService.create(notificationInfo)
+
+            deviceTokens?.forEach { deviceToken ->
+                CreateJobPostingEvent.of(
+                    deviceToken = deviceToken,
+                    notificationId = notification.id,
+                    notificationInfo = notificationInfo
+                ).also {
+                    createJobPostingEventPublisher.publish(it)
                 }
             }
         }
+    }
+
+    private fun createBodyMessage(jobPosting: JobPosting): String {
+        val filteredLotNumberAddress = jobPosting.lotNumberAddress.split(" ")
+            .take(3)
+            .joinToString(" ")
+
+        return "$filteredLotNumberAddress " +
+                "${jobPosting.careLevel}등급 " +
+                "${BirthYear.calculateAge(jobPosting.birthYear)}세 " +
+                jobPosting.gender.value
     }
 
     @Transactional
