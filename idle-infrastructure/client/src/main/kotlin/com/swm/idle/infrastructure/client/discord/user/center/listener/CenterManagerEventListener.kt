@@ -1,6 +1,6 @@
 package com.swm.idle.infrastructure.client.discord.user.center.listener
 
-import com.swm.idle.domain.user.center.event.CenterManagerVerifyEvent
+import com.swm.idle.domain.user.center.event.CenterManagerVerificationRequestEvent
 import com.swm.idle.infrastructure.client.discord.user.center.service.CenterManagerVerifyEventService
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
@@ -11,8 +11,8 @@ class CenterManagerEventListener(
 ) {
 
     @EventListener
-    fun handleCenterManagerVerifyEvent(centerManagerVerifyEvent: CenterManagerVerifyEvent) {
-        centerManagerVerifyEventService.sendVerifyMessage(centerManagerVerifyEvent)
+    fun handleCenterManagerVerifyEvent(centerManagerVerificationRequestEvent: CenterManagerVerificationRequestEvent) {
+        centerManagerVerifyEventService.sendVerifyMessage(centerManagerVerificationRequestEvent)
     }
 
 }
