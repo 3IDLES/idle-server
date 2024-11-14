@@ -6,7 +6,7 @@ import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
 
 @Component
-class CenterManagerEventListener(
+class CenterManagerVerificationRequestEventListener(
     private val centerManagerVerifyEventService: CenterManagerVerifyEventService,
 ) {
 

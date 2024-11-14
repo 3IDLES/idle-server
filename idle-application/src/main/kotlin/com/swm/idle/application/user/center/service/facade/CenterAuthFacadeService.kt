@@ -1,14 +1,14 @@
 package com.swm.idle.application.user.center.service.facade
 
 import com.swm.idle.application.common.security.getUserAuthentication
-import com.swm.idle.application.user.center.service.domain.CenterManagerEventPublisher
 import com.swm.idle.application.user.center.service.domain.CenterManagerService
+import com.swm.idle.application.user.center.service.event.CenterManagerVerificationRequestEventPublisher
 import com.swm.idle.application.user.common.service.domain.DeletedUserInfoService
 import com.swm.idle.application.user.common.service.domain.RefreshTokenService
 import com.swm.idle.application.user.common.service.util.JwtTokenService
 import com.swm.idle.domain.common.enums.EntityStatus
 import com.swm.idle.domain.common.exception.PersistenceException
-import com.swm.idle.domain.user.center.event.CenterManagerVerifyEvent.Companion.createVerifyEvent
+import com.swm.idle.domain.user.center.event.CenterManagerVerificationRequestEvent.Companion.createVerifyEvent
 import com.swm.idle.domain.user.center.exception.CenterException
 import com.swm.idle.domain.user.center.vo.BusinessRegistrationNumber
 import com.swm.idle.domain.user.center.vo.Identifier
@@ -34,7 +34,7 @@ class CenterAuthFacadeService(
     private val deletedUserInfoService: DeletedUserInfoService,
     private val jwtTokenService: JwtTokenService,
     private val refreshTokenService: RefreshTokenService,
-    private val centerManagerEventPublisher: CenterManagerEventPublisher,
+    private val centerManagerVerificationRequestEventPublisher: CenterManagerVerificationRequestEventPublisher,
 ) {
 
     fun join(
@@ -147,7 +147,7 @@ class CenterAuthFacadeService(
             .let { centerManagerService.getById(it) }
 
         if (centerManager.entityStatus == EntityStatus.ACTIVE && centerManager.isNew()) {
-            centerManagerEventPublisher.publish(centerManager.createVerifyEvent())
+            centerManagerVerificationRequestEventPublisher.publish(centerManager.createVerifyEvent())
             centerManagerService.updateAccountStatusToPending(centerManager)
         }
     }

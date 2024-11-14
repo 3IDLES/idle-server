@@ -1,10 +1,11 @@
-package com.swm.idle.application.applys.vo
+package com.swm.idle.application.jobposting.vo
 
+import com.swm.idle.application.applys.vo.CarerApplyNotificationInfo
 import com.swm.idle.domain.notification.enums.NotificationType
 import com.swm.idle.domain.notification.event.NotificationInfo
 import java.util.*
 
-data class CarerApplyNotificationInfo(
+class CreateJobPostingNotificationInfo(
     override val title: String,
     override val body: String,
     override val receiverId: UUID,

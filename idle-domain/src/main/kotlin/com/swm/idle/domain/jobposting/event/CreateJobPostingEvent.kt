@@ -1,10 +1,10 @@
-package com.swm.idle.domain.applys.event
+package com.swm.idle.domain.jobposting.event
 
 import com.swm.idle.domain.notification.event.NotificationInfo
 import com.swm.idle.domain.notification.jpa.DeviceToken
 import java.util.*
 
-data class ApplyEvent(
+data class CreateJobPostingEvent(
     val deviceToken: DeviceToken,
     val notificationId: UUID,
     val notificationInfo: NotificationInfo,
@@ -12,14 +12,17 @@ data class ApplyEvent(
 
     companion object {
 
-        fun createApplyEvent(
+        fun of(
             deviceToken: DeviceToken,
             notificationId: UUID,
             notificationInfo: NotificationInfo,
-        ): ApplyEvent {
-            return ApplyEvent(deviceToken, notificationId, notificationInfo)
+        ): CreateJobPostingEvent {
+            return CreateJobPostingEvent(
+                deviceToken = deviceToken,
+                notificationId = notificationId,
+                notificationInfo = notificationInfo
+            )
         }
-
     }
 
 }

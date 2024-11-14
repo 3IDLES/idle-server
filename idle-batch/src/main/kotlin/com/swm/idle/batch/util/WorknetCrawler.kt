@@ -21,9 +21,7 @@ object WorknetCrawler {
     private val logger = KotlinLogging.logger { }
 
     private const val CRAWLING_TARGET_URL_FORMAT =
-//        "https://www.work24.go.kr/wk/a/b/1200/retriveDtlEmpSrchList.do?basicSetupYn=&careerTo=&keywordJobCd=&occupation=&seqNo=&cloDateEndtParam=&payGbn=&templateInfo=&rot2WorkYn=&shsyWorkSecd=&srcKeywordParam=%EC%9A%94%EC%96%91+%EB%B3%B4%ED%98%B8%EC%82%AC&resultCnt=50&keywordJobCont=&cert=&moreButtonYn=Y&minPay=&codeDepth2Info=11000&currentPageNo=1&eventNo=&mode=&major=&resrDutyExcYn=&eodwYn=&sortField=DATE&staArea=&sortOrderBy=DESC&keyword=%EC%9A%94%EC%96%91+%EB%B3%B4%ED%98%B8%EC%82%AC&termSearchGbn=&carrEssYns=&benefitSrchAndOr=O&disableEmpHopeGbn=&actServExcYn=&keywordStaAreaNm=&maxPay=&emailApplyYn=&codeDepth1Info=11000&keywordEtcYn=&regDateStdtParam=20241111&publDutyExcYn=&keywordJobCdSeqNo=&viewType=&exJobsCd=&templateDepthNmInfo=&region=&employGbn=&empTpGbcd=1&computerPreferential=&infaYn=&cloDateStdtParam=&siteClcd=WORK&searchMode=Y&birthFromYY=&indArea=&careerTypes=&subEmpHopeYn=&tlmgYn=&academicGbn=&templateDepthNoInfo=&foriegn=&entryRoute=&mealOfferClcd=&basicSetupYnChk=&station=&holidayGbn=&srcKeyword=%EC%9A%94%EC%96%91+%EB%B3%B4%ED%98%B8%EC%82%AC&academicGbnoEdu=noEdu&enterPriseGbn=all&cloTermSearchGbn=&birthToYY=&keywordWantedTitle=&stationNm=&benefitGbn=&notSrcKeywordParam=&keywordFlag=&notSrcKeyword=&essCertChk=&depth2SelCode=&keywordBusiNm=&preferentialGbn=&rot3WorkYn=&regDateEndtParam=20241112&pfMatterPreferential=&pageIndex=1&termContractMmcnt=&careerFrom=&laborHrShortYn=#scrollLoc"
-
-        "https://www.work24.go.kr/wk/a/b/1200/retriveDtlEmpSrchList.do?basicSetupYn=&careerTo=&keywordJobCd=&occupation=&seqNo=&cloDateEndtParam=&payGbn=&templateInfo=&rot2WorkYn=&shsyWorkSecd=&srcKeywordParam=%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC&resultCnt=10&keywordJobCont=&cert=&moreButtonYn=Y&minPay=&codeDepth2Info=11000&currentPageNo=1&eventNo=&mode=&major=&resrDutyExcYn=&eodwYn=&sortField=DATE&staArea=&sortOrderBy=DESC&keyword=%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC&termSearchGbn=all&carrEssYns=&benefitSrchAndOr=O&disableEmpHopeGbn=&actServExcYn=&keywordStaAreaNm=&maxPay=&emailApplyYn=&codeDepth1Info=11000&keywordEtcYn=&regDateStdtParam=20241104&publDutyExcYn=&keywordJobCdSeqNo=&viewType=&exJobsCd=&templateDepthNmInfo=&region=&employGbn=&empTpGbcd=&computerPreferential=&infaYn=&cloDateStdtParam=&siteClcd=WORK&searchMode=Y&birthFromYY=&indArea=&careerTypes=&subEmpHopeYn=&tlmgYn=&academicGbn=&templateDepthNoInfo=&foriegn=&entryRoute=&mealOfferClcd=&basicSetupYnChk=&station=&holidayGbn=&srcKeyword=%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC&academicGbnoEdu=noEdu&enterPriseGbn=all&cloTermSearchGbn=all&birthToYY=&keywordWantedTitle=&stationNm=&benefitGbn=&notSrcKeywordParam=&keywordFlag=&notSrcKeyword=&essCertChk=&depth2SelCode=&keywordBusiNm=&preferentialGbn=&rot3WorkYn=&regDateEndtParam=20241108&pfMatterPreferential=&pageIndex={pageIndex}&termContractMmcnt=&careerFrom=&laborHrShortYn=#scrollLoc"
+        "https://www.work24.go.kr/wk/a/b/1200/retriveDtlEmpSrchList.do?basicSetupYn=&careerTo=&keywordJobCd=&occupation=&seqNo=&cloDateEndtParam=&payGbn=&templateInfo=&rot2WorkYn=&shsyWorkSecd=&srcKeywordParam=%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC&resultCnt=10&keywordJobCont=&cert=&moreButtonYn=Y&minPay=&codeDepth2Info=11000&currentPageNo=1&eventNo=&mode=&major=&resrDutyExcYn=&eodwYn=&sortField=DATE&staArea=&sortOrderBy=DESC&keyword=%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC&termSearchGbn=all&carrEssYns=&benefitSrchAndOr=O&disableEmpHopeGbn=&actServExcYn=&keywordStaAreaNm=&maxPay=&emailApplyYn=&codeDepth1Info=11000&keywordEtcYn=&regDateStdtParam={yesterday}&publDutyExcYn=&keywordJobCdSeqNo=&viewType=&exJobsCd=&templateDepthNmInfo=&region=&employGbn=&empTpGbcd=&computerPreferential=&infaYn=&cloDateStdtParam=&siteClcd=WORK&searchMode=Y&birthFromYY=&indArea=&careerTypes=&subEmpHopeYn=&tlmgYn=&academicGbn=&templateDepthNoInfo=&foriegn=&entryRoute=&mealOfferClcd=&basicSetupYnChk=&station=&holidayGbn=&srcKeyword=%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC&academicGbnoEdu=noEdu&enterPriseGbn=all&cloTermSearchGbn=all&birthToYY=&keywordWantedTitle=&stationNm=&benefitGbn=&notSrcKeywordParam=&keywordFlag=&notSrcKeyword=&essCertChk=&depth2SelCode=&keywordBusiNm=&preferentialGbn=&rot3WorkYn=&regDateEndtParam={yesterday}&pfMatterPreferential=&pageIndex={pageIndex}&termContractMmcnt=&careerFrom=&laborHrShortYn=#scrollLoc"
 
     private const val JOB_POSTING_COUNT_PER_PAGE = 50
 
@@ -60,77 +58,74 @@ object WorknetCrawler {
     }
 
     fun run(): List<CrawledJobPostingDto>? {
-        return try {
-            try {
-                initializeDriver()
-            } catch (e: Exception) {
-                logger.error { e.toString() }
-                logError("run", e)
-            }
-
-            logger.info { "=====초기화 완료, 크롤링 작업 시작" }
-
-            val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
-            val yesterday = LocalDate.now().format(formatter)
-            val crawlingUrl = CRAWLING_TARGET_URL_FORMAT
-                .replace("{yesterday}", yesterday)
-                .replace("{pageIndex}", "1")
-
-            driver.get(crawlingUrl)
-
-            logger.info { "=====크롤링 url: $crawlingUrl" }
-
-            val wait = WebDriverWait(driver, Duration.ofSeconds(15))
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"mForm\"]/div[2]/div/div[1]/div[1]/span/span")))
-
-            val jobPostingCountText =
-                driver.findElement(By.xpath("//*[@id=\"mForm\"]/div[2]/div/div[1]/div[1]/span/span")).text
-
-            logger.info { "=====크롤링 대상 공고 수: $jobPostingCountText" }
-
-            val jobPostingCount = Integer.parseInt(jobPostingCountText.replace(",", ""))
-
-            if (jobPostingCount == 0) {
-                driver.quit()
-                logger.info { "=====크롤링 할 공고가 없어 미리 종료합니다." }
-                return emptyList() // 데이터가 없는 경우 빈 리스트 반환
-            }
-
-            val pageCount = jobPostingCount / JOB_POSTING_COUNT_PER_PAGE
-            logger.warn { "===== 크롤링 페이지 수 $pageCount" }
-
-            for (i in 1..pageCount) {
-                if (i >= 2) {
-                    val updatedCrawlingUrl = crawlingUrl
-                        .replace("{yesterday}", yesterday)
-                        .replace(Regex("pageIndex=\\d+"), "pageIndex=${i}")
-                    driver.get(updatedCrawlingUrl)
-                }
-
-                wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#list1")))
-                crawlPosts(1, JOB_POSTING_COUNT_PER_PAGE, postings)
-            }
-
-            val lastPageJobPostingCount = jobPostingCount % JOB_POSTING_COUNT_PER_PAGE
-            if (lastPageJobPostingCount > 0) {
-                val updateCrawlingUrl = crawlingUrl
-                    .replace("{yesterday}", yesterday)
-                    .replace(Regex("pageIndex=\\d+"), "pageIndex=${pageCount + 1}")
-                driver.get(updateCrawlingUrl)
-
-                wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#list1")))
-                crawlPosts(1, lastPageJobPostingCount, postings)
-            }
-
-            postings // 정상적으로 크롤링이 완료되었을 경우 수집한 데이터를 반환
+        try {
+            initializeDriver()
         } catch (e: Exception) {
-            logger.error { "Error occurred during crawling, returning collected data so far: ${e.message}" }
-            postings // 에러가 발생해도 현재까지 수집된 데이터를 반환
-        } finally {
-            driver.quit()
+            logger.error { e.toString() }
+            logError("run", e)
         }
-    }
 
+        logger.warn { "=====초기화 완료, 크롤링 작업 시작" }
+
+        val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+        val yesterday = LocalDate.now().format(formatter)
+        val crawlingUrl = CRAWLING_TARGET_URL_FORMAT
+            .replace("{yesterday}", yesterday)
+            .replace("{pageIndex}", "1")
+
+        driver.get(crawlingUrl)
+
+        logger.warn { "=====크롤링 url: $crawlingUrl" }
+
+        val wait = WebDriverWait(driver, Duration.ofSeconds(10))
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"mForm\"]/div[2]/div/div[1]/div[1]/span/span")))
+
+        val jobPostingCountText =
+            driver.findElement(By.xpath("//*[@id=\"mForm\"]/div[2]/div/div[1]/div[1]/span/span")).text
+
+        logger.warn { "=====크롤링 대상 공고 수: $jobPostingCountText" }
+
+        val jobPostingCount = Integer.parseInt(jobPostingCountText.replace(",", ""))
+
+        if (jobPostingCount == 0) {
+            driver.quit()
+            logger.warn { "=====크롤링 할 공고가 없어 미리 종료합니다." }
+            return null
+        }
+
+        val pageCount = jobPostingCount / JOB_POSTING_COUNT_PER_PAGE
+
+        logger.warn { "===== 크롤링 페이지 수 " + pageCount }
+
+        for (i in 1..pageCount) {
+            if (i >= 2) {
+                val updatedCrawlingUrl = crawlingUrl
+                    .replace("{yesterday}", yesterday)
+                    .replace(Regex("pageIndex=\\d+"), "pageIndex=${i}")
+                driver.get(updatedCrawlingUrl)
+            }
+
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#list1")))
+
+            crawlPosts(1, JOB_POSTING_COUNT_PER_PAGE, postings)
+        }
+
+        val lastPageJobPostingCount = jobPostingCount % JOB_POSTING_COUNT_PER_PAGE
+
+        if (lastPageJobPostingCount > 0) {
+            val updateCrawlingUrl = crawlingUrl
+                .replace("{yesterday}", yesterday)
+                .replace(Regex("pageIndex=\\d+"), "pageIndex=${pageCount + 1}")
+            driver.get(updateCrawlingUrl)
+
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#list1")))
+
+            crawlPosts(1, lastPageJobPostingCount, postings)
+        }
+
+        driver.quit()
+        return postings
+    }
 
     private fun logError(method: String, e: Exception) {
         logger.error(e) { "Error occurred in $method: ${e.message}" }
@@ -146,7 +141,7 @@ object WorknetCrawler {
             try {
                 val originalWindow = driver.windowHandle
 
-                val element = driver.findElement(By.xpath("//*[@id=\"list$i\"]/td[1]/div/div[2]/a"))
+                val element = driver.findElement(By.xpath("//*[@id=\"list$i\"]/td[2]/a"))
                 element.click()
 
                 if (handleAlertIfPresent()) {
@@ -184,6 +179,8 @@ object WorknetCrawler {
                 )
 
                 postings.add(crawledJobPostingDto)
+
+                printErrorSummary()
 
                 driver.close()
                 driver.switchTo().window(originalWindow)

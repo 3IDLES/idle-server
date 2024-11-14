@@ -21,7 +21,15 @@ class CrawlingJobPostingTasklet(
     private val logger = KotlinLogging.logger { }
 
     override fun execute(contribution: StepContribution, chunkContext: ChunkContext): RepeatStatus {
-        val crawlingJobPostings: List<CrawledJobPostingDto>? = WorknetCrawler.run()
+        val crawlingJobPostings: List<CrawledJobPostingDto>? = try {
+            WorknetCrawler.run()
+        } catch (e: Exception) {
+            logger.warn {
+                e.toString()
+            }
+            e.printStackTrace()  // 오류 로그 출력
+            null  // 오류 발생
+        }
 
         if (crawlingJobPostings != null) {
             crawlingJobPostings.mapNotNull { crawledJobPosting ->
