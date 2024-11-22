@@ -15,6 +15,7 @@ import com.swm.idle.support.transfer.auth.center.WithdrawRequest
 import com.swm.idle.support.transfer.auth.common.LoginResponse
 import com.swm.idle.support.transfer.user.center.JoinStatusInfoResponse
 import org.springframework.web.bind.annotation.RestController
+import java.util.*
 
 @RestController
 class CenterAuthController(
@@ -41,6 +42,14 @@ class CenterAuthController(
 
     override fun getCenterManagerForPending(): CenterManagerForPendingResponse {
         return centerAuthFacadeService.getCenterManagerForPending()
+    }
+
+    override fun approveCenterManagerVerification(centerManagerId: UUID) {
+        centerAuthFacadeService.approveVerification(centerManagerId)
+    }
+
+    override fun rejectCenterManagerVerification(centerManagerId: UUID) {
+        centerAuthFacadeService.rejectVerification(centerManagerId)
     }
 
     override fun validateBusinessRegistrationNumber(businessRegistrationNumber: String): ValidateBusinessRegistrationNumberResponse {

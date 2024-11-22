@@ -65,7 +65,7 @@ object WorknetCrawler {
             logError("run", e)
         }
 
-        logger.warn { "=====초기화 완료, 크롤링 작업 시작" }
+        logger.info { "=====초기화 완료, 크롤링 작업 시작" }
 
         val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
         val yesterday = LocalDate.now().format(formatter)
@@ -75,7 +75,7 @@ object WorknetCrawler {
 
         driver.get(crawlingUrl)
 
-        logger.warn { "=====크롤링 url: $crawlingUrl" }
+        logger.info { "=====크롤링 url: $crawlingUrl" }
 
         val wait = WebDriverWait(driver, Duration.ofSeconds(10))
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"mForm\"]/div[2]/div/div[1]/div[1]/span/span")))
@@ -83,13 +83,13 @@ object WorknetCrawler {
         val jobPostingCountText =
             driver.findElement(By.xpath("//*[@id=\"mForm\"]/div[2]/div/div[1]/div[1]/span/span")).text
 
-        logger.warn { "=====크롤링 대상 공고 수: $jobPostingCountText" }
+        logger.info { "=====크롤링 대상 공고 수: $jobPostingCountText" }
 
         val jobPostingCount = Integer.parseInt(jobPostingCountText.replace(",", ""))
 
         if (jobPostingCount == 0) {
             driver.quit()
-            logger.warn { "=====크롤링 할 공고가 없어 미리 종료합니다." }
+            logger.info { "=====크롤링 할 공고가 없어 미리 종료합니다." }
             return null
         }
 
@@ -179,8 +179,6 @@ object WorknetCrawler {
                 )
 
                 postings.add(crawledJobPostingDto)
-
-                printErrorSummary()
 
                 driver.close()
                 driver.switchTo().window(originalWindow)

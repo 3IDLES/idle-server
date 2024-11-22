@@ -1,13 +1,22 @@
 package com.swm.idle.application.user.center.service.facade
 
 import com.swm.idle.application.common.security.getUserAuthentication
+import com.swm.idle.application.notification.domain.DeviceTokenService
+import com.swm.idle.application.notification.domain.NotificationService
 import com.swm.idle.application.user.center.service.domain.CenterManagerService
+import com.swm.idle.application.user.center.service.event.CenterManagerVerificationApproveEventPublisher
+import com.swm.idle.application.user.center.service.event.CenterManagerVerificationRejectEventPublisher
 import com.swm.idle.application.user.center.service.event.CenterManagerVerificationRequestEventPublisher
+import com.swm.idle.application.user.center.vo.CenterManagerVerificationApproveNotificationInfo
+import com.swm.idle.application.user.center.vo.CenterManagerVerificationRejectNotificationInfo
 import com.swm.idle.application.user.common.service.domain.DeletedUserInfoService
 import com.swm.idle.application.user.common.service.domain.RefreshTokenService
 import com.swm.idle.application.user.common.service.util.JwtTokenService
 import com.swm.idle.domain.common.enums.EntityStatus
 import com.swm.idle.domain.common.exception.PersistenceException
+import com.swm.idle.domain.notification.enums.NotificationType
+import com.swm.idle.domain.user.center.event.CenterManagerVerificationApproveEvent
+import com.swm.idle.domain.user.center.event.CenterManagerVerificationRejectEvent
 import com.swm.idle.domain.user.center.event.CenterManagerVerificationRequestEvent.Companion.createVerifyEvent
 import com.swm.idle.domain.user.center.exception.CenterException
 import com.swm.idle.domain.user.center.vo.BusinessRegistrationNumber
@@ -26,6 +35,7 @@ import com.swm.idle.support.transfer.user.center.JoinStatusInfoResponse
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 
 @Service
 class CenterAuthFacadeService(
@@ -35,6 +45,10 @@ class CenterAuthFacadeService(
     private val jwtTokenService: JwtTokenService,
     private val refreshTokenService: RefreshTokenService,
     private val centerManagerVerificationRequestEventPublisher: CenterManagerVerificationRequestEventPublisher,
+    private val centerManagerVerificationApproveEventPublisher: CenterManagerVerificationApproveEventPublisher,
+    private val centerManagerVerificationRejectEventPublisher: CenterManagerVerificationRejectEventPublisher,
+    private val deviceTokenService: DeviceTokenService,
+    private val notificationService: NotificationService,
 ) {
 
     fun join(
@@ -152,6 +166,7 @@ class CenterAuthFacadeService(
         }
     }
 
+
     fun getCenterManagerForPending(): CenterManagerForPendingResponse {
         val centerManagers = centerManagerService.findAllByStatusPending()
 
@@ -160,6 +175,67 @@ class CenterAuthFacadeService(
         }?.let {
             CenterManagerForPendingResponse.of(it)
         } ?: CenterManagerForPendingResponse.of(emptyList())
+    }
+
+    @Transactional
+    fun approveVerification(centerManagerId: UUID) {
+        val centerManager = centerManagerService.getById(centerManagerId)
+
+        if (centerManager.isPending().not()) {
+            throw CenterException.IsNotPendingException()
+        }
+
+        centerManager.approve()
+
+        deviceTokenService.findByUserId(centerManagerId)?.let {
+            val notificationInfo = CenterManagerVerificationApproveNotificationInfo.of(
+                title = "[케어밋] 센터 관리자 인증 요청이 승인되었어요!",
+                body = "${centerManager.name} 관리자님! 센터 관리자 인증 요청이 최종 승인되었어요! 어서 확인해 보세요!",
+                receiverId = centerManager.id,
+                notificationType = NotificationType.CENTER_AUTHENTICATION,
+            )
+
+            val notification = notificationService.create(notificationInfo)
+
+
+            CenterManagerVerificationApproveEvent(
+                deviceToken = it.toString(),
+                notificationId = notification.id,
+                notificationInfo = notificationInfo
+            ).also {
+                centerManagerVerificationApproveEventPublisher.publish(it)
+            }
+        }
+    }
+
+    @Transactional
+    fun rejectVerification(centerManagerId: UUID) {
+        val centerManager = centerManagerService.getById(centerManagerId)
+
+        if (centerManager.isPending().not()) {
+            throw CenterException.IsNotPendingException()
+        }
+
+        centerManager.reject()
+
+        deviceTokenService.findByUserId(centerManagerId)?.let {
+            val notificationInfo = CenterManagerVerificationRejectNotificationInfo.of(
+                title = "[케어밋] 센터 관리자 인증 요청이 거절되었어요.",
+                body = "${centerManager.name} 관리자님, 센터 관리자 인증 요청이 거절되었어요. 문의사항을 통해 연락해 주세요.",
+                receiverId = centerManager.id,
+                notificationType = NotificationType.CENTER_AUTHENTICATION,
+            )
+
+            val notification = notificationService.create(notificationInfo)
+
+            CenterManagerVerificationRejectEvent(
+                deviceToken = it.toString(),
+                notificationId = notification.id,
+                notificationInfo = notificationInfo
+            ).also {
+                centerManagerVerificationRejectEventPublisher.publish(it)
+            }
+        }
     }
 
 }
