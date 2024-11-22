@@ -4,6 +4,7 @@ import com.querydsl.core.types.Projections
 import com.querydsl.jpa.impl.JPAQueryFactory
 import com.swm.idle.domain.common.dto.NotificationQueryDto
 import com.swm.idle.domain.common.enums.EntityStatus
+import com.swm.idle.domain.notification.enums.NotificationType
 import com.swm.idle.domain.notification.jpa.QNotification.notification
 import org.springframework.stereotype.Repository
 import java.util.*
@@ -37,6 +38,7 @@ class NotificationQueryRepository(
                 notification.receiverId.eq(userId)
                     .and(next?.let { notification.id.loe(it) })
                     .and(notification.entityStatus.eq(EntityStatus.ACTIVE))
+                    .and(notification.notificationType.ne(NotificationType.CENTER_AUTHENTICATION))
             )
             .orderBy(notification.id.desc())
             .limit(limit)

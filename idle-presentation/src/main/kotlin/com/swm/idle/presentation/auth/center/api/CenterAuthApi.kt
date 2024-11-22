@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
+import java.util.*
 
 @Tag(name = "Auth-Center", description = "Center Auth API")
 @RequestMapping("/api/v1/auth/center", produces = ["application/json"])
@@ -54,6 +55,18 @@ interface CenterAuthApi {
     @GetMapping("/join/requests")
     @ResponseStatus(HttpStatus.OK)
     fun getCenterManagerForPending(): CenterManagerForPendingResponse
+
+    @Hidden
+    @Operation(summary = "센터 관리자 인증 요청 승인 API")
+    @PostMapping("/join/requests/{center-manager-id}/approval")
+    @ResponseStatus(HttpStatus.OK)
+    fun approveCenterManagerVerification(@PathVariable("center-manager-id") centerManagerId: UUID)
+
+    @Hidden
+    @Operation(summary = "센터 관리자 인증 요청 거절 API")
+    @PostMapping("/join/requests/{center-manager-id}/rejection")
+    @ResponseStatus(HttpStatus.OK)
+    fun rejectCenterManagerVerification(@PathVariable("center-manager-id") centerManagerId: UUID)
 
     @Operation(summary = "사업자 등록번호 인증 API")
     @GetMapping("/authentication/{business-registration-number}")
