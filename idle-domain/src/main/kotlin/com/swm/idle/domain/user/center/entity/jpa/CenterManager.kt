@@ -52,11 +52,11 @@ class CenterManager(
         return status == CenterManagerAccountStatus.PENDING
     }
 
-    fun updateStatusToApproved() {
+    fun approve() {
         this.status = CenterManagerAccountStatus.APPROVED
     }
 
-    fun updateStatusToRejected() {
+    fun reject() {
         this.status = CenterManagerAccountStatus.REJECTED
     }
 
