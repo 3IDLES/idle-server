@@ -7,6 +7,7 @@ import com.swm.idle.domain.user.center.vo.Password
 import com.swm.idle.domain.user.common.vo.PhoneNumber
 import com.swm.idle.presentation.auth.center.api.CenterAuthApi
 import com.swm.idle.support.transfer.auth.center.CenterLoginRequest
+import com.swm.idle.support.transfer.auth.center.CenterManagerForPendingResponse
 import com.swm.idle.support.transfer.auth.center.ChangePasswordRequest
 import com.swm.idle.support.transfer.auth.center.JoinRequest
 import com.swm.idle.support.transfer.auth.center.ValidateBusinessRegistrationNumberResponse
@@ -14,6 +15,7 @@ import com.swm.idle.support.transfer.auth.center.WithdrawRequest
 import com.swm.idle.support.transfer.auth.common.LoginResponse
 import com.swm.idle.support.transfer.user.center.JoinStatusInfoResponse
 import org.springframework.web.bind.annotation.RestController
+import java.util.*
 
 @RestController
 class CenterAuthController(
@@ -36,6 +38,18 @@ class CenterAuthController(
 
     override fun requestCenterManagerVerification() {
         return centerAuthFacadeService.requestCenterManagerVerification()
+    }
+
+    override fun getCenterManagerForPending(): CenterManagerForPendingResponse {
+        return centerAuthFacadeService.getCenterManagerForPending()
+    }
+
+    override fun approveCenterManagerVerification(centerManagerId: UUID) {
+        centerAuthFacadeService.approveVerification(centerManagerId)
+    }
+
+    override fun rejectCenterManagerVerification(centerManagerId: UUID) {
+        centerAuthFacadeService.rejectVerification(centerManagerId)
     }
 
     override fun validateBusinessRegistrationNumber(businessRegistrationNumber: String): ValidateBusinessRegistrationNumberResponse {

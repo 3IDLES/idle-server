@@ -54,8 +54,8 @@ class JobPostingFavoriteService(
         )
     }
 
-    fun existsByJobPostingId(jobPostingId: UUID): Boolean {
-        return jobPostingFavoriteJpaRepository.existsByJobPostingId(jobPostingId)
+    fun findByByJobPostingId(jobPostingId: UUID): JobPostingFavorite? {
+        return jobPostingFavoriteJpaRepository.findByJobPostingId(jobPostingId)
     }
 
 }

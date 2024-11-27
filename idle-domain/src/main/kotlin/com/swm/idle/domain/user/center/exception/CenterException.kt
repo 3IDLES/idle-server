@@ -19,6 +19,9 @@ sealed class CenterException(
     class NotFoundException(message: String = "존재하지 않는 센터입니다.") :
         CenterException(codeNumber = 4, message = message)
 
+    class IsNotPendingException(message: String = "관리자 인증 요청이 가능한 상태가 아닙니다.") :
+        CenterException(codeNumber = 5, message = message)
+
     companion object {
 
         const val CODE_PREFIX = "CENTER"

@@ -1,7 +1,7 @@
 package com.swm.idle.application.applys.vo
 
 import com.swm.idle.domain.notification.enums.NotificationType
-import com.swm.idle.domain.notification.jpa.NotificationInfo
+import com.swm.idle.domain.notification.event.NotificationInfo
 import java.util.*
 
 data class CarerApplyNotificationInfo(
@@ -26,6 +26,7 @@ data class CarerApplyNotificationInfo(
             val notificationDetails = mapOf(
                 "jobPostingId" to jobPostingId,
             )
+
             return CarerApplyNotificationInfo(
                 title,
                 body,

@@ -6,8 +6,8 @@ import com.swm.idle.application.jobposting.domain.CrawlingJobPostingService
 import com.swm.idle.application.jobposting.domain.JobPostingFavoriteService
 import com.swm.idle.application.user.carer.domain.CarerService
 import com.swm.idle.domain.common.dto.CrawlingJobPostingPreviewDto
+import com.swm.idle.domain.common.enums.EntityStatus
 import com.swm.idle.domain.user.carer.entity.jpa.Carer
-import com.swm.idle.infrastructure.client.geocode.service.GeoCodeService
 import com.swm.idle.support.transfer.common.CursorScrollRequest
 import com.swm.idle.support.transfer.jobposting.carer.CrawlingJobPostingFavoriteResponse
 import com.swm.idle.support.transfer.jobposting.carer.CrawlingJobPostingScrollResponse
@@ -19,7 +19,6 @@ import java.util.*
 @Service
 class CrawlingJobPostingFacadeService(
     private val crawlingJobPostingService: CrawlingJobPostingService,
-    private val geoCodeService: GeoCodeService,
     private val carerService: CarerService,
     private val jobPostingFavoriteService: JobPostingFavoriteService,
 ) {
@@ -41,7 +40,9 @@ class CrawlingJobPostingFacadeService(
 
         return crawlingJobPostingService.getById(crawlingJobPostingId).let {
             val isFavorite =
-                jobPostingFavoriteService.existsByJobPostingId(crawlingJobPostingId)
+                jobPostingFavoriteService.findByByJobPostingId(crawlingJobPostingId)?.let {
+                    it.entityStatus == EntityStatus.ACTIVE
+                } ?: false
 
             CrawlingJobPostingResponse.from(
                 crawlingJobPosting = it,
@@ -99,20 +100,21 @@ class CrawlingJobPostingFacadeService(
         next: UUID?,
         limit: Long,
     ): Pair<List<CrawlingJobPostingPreviewDto>, UUID?> {
+        val carer = getUserAuthentication().userId.let {
+            carerService.getById(it)
+        }
+
         val crawlingJobPostingPreviewDtos = crawlingJobPostingService.findAllByCarerLocationInRange(
+            carerId = carer.id,
             location = location,
             next = next,
             limit = limit + 1,
         )
 
-        val carerLocation = getUserAuthentication().userId.let {
-            carerService.getById(it)
-        }.let {
-            PointConverter.convertToPoint(
-                latitude = it.latitude.toDouble(),
-                longitude = it.longitude.toDouble(),
-            )
-        }
+        val carerLocation = PointConverter.convertToPoint(
+            latitude = carer.latitude.toDouble(),
+            longitude = carer.longitude.toDouble(),
+        )
 
         for (crawlingJobPostingPreviewDto in crawlingJobPostingPreviewDtos) {
             crawlingJobPostingPreviewDto.distance = crawlingJobPostingService.calculateDistance(

@@ -1,4 +1,4 @@
-package com.swm.idle.application.applys.domain
+package com.swm.idle.application.applys.event
 
 import com.swm.idle.domain.applys.event.ApplyEvent
 import org.springframework.context.ApplicationEventPublisher

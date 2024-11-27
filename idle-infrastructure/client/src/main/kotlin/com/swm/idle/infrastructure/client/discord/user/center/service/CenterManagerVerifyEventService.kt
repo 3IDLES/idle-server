@@ -1,6 +1,6 @@
 package com.swm.idle.infrastructure.client.discord.user.center.service
 
-import com.swm.idle.domain.user.center.event.CenterManagerVerifyEvent
+import com.swm.idle.domain.user.center.event.CenterManagerVerificationRequestEvent
 import com.swm.idle.infrastructure.client.discord.common.event.EventType
 import com.swm.idle.infrastructure.client.discord.common.properties.DiscordClientProperties
 import com.swm.idle.infrastructure.client.discord.common.utils.DiscordMessageClient
@@ -17,13 +17,15 @@ class CenterManagerVerifyEventService(
 
     private val logger = KotlinLogging.logger { }
 
-    fun sendVerifyMessage(centerManagerVerifyEvent: CenterManagerVerifyEvent) {
+    fun sendVerifyMessage(centerManagerVerificationRequestEvent: CenterManagerVerificationRequestEvent) {
 
         if (this.discordClientProperties.events.getValue(EventType.CENTER_MANAGER_VERIFICATION).active) {
             val discordUri =
                 URI(this.discordClientProperties.events.getValue(EventType.CENTER_MANAGER_VERIFICATION).url)
             val message =
-                "[🌟새로운 센터 관리자 ${centerManagerVerifyEvent.centerManager.name} 님이 관리자 인증 요청을 보냈어요! 빠르게 확인해주세요 :)"
+                "[🌟새로운 센터 관리자 ${centerManagerVerificationRequestEvent.centerManager.name} 님이 관리자 인증 요청을 보냈어요! 빠르게 확인해주세요 :) \n" +
+                        "사업자 등록번호 [${centerManagerVerificationRequestEvent.centerManager.centerBusinessRegistrationNumber}]\n " +
+                        "연락처는 [${centerManagerVerificationRequestEvent.centerManager.phoneNumber} 이에요."
 
             runCatching {
                 discordMessageClient.send(

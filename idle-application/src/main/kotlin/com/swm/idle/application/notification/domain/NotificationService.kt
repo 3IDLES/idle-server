@@ -2,8 +2,8 @@ package com.swm.idle.application.notification.domain
 
 import com.swm.idle.domain.common.dto.NotificationQueryDto
 import com.swm.idle.domain.common.exception.PersistenceException
+import com.swm.idle.domain.notification.event.NotificationInfo
 import com.swm.idle.domain.notification.jpa.Notification
-import com.swm.idle.domain.notification.jpa.NotificationInfo
 import com.swm.idle.domain.notification.repository.jpa.NotificationJpaRepository
 import com.swm.idle.domain.notification.repository.querydsl.NotificationQueryRepository
 import org.springframework.data.repository.findByIdOrNull

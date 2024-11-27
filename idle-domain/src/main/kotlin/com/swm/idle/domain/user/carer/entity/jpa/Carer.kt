@@ -10,6 +10,7 @@ import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
 import jakarta.persistence.Table
 import org.hibernate.annotations.DynamicUpdate
+import org.locationtech.jts.geom.Point
 import java.math.BigDecimal
 
 @Entity
@@ -30,6 +31,7 @@ class Carer(
     profileImageUrl: String? = null,
     jobSearchStatus: JobSearchStatus = JobSearchStatus.YES,
     carerAccountStatus: CarerAccountStatus = CarerAccountStatus.ACTIVE,
+    location: Point,
 ) : User(phoneNumber, carerName) {
 
     @Column(nullable = false)
@@ -83,6 +85,10 @@ class Carer(
     var carerAccountStatus: CarerAccountStatus = carerAccountStatus
         private set
 
+    @Column(nullable = false, columnDefinition = "POINT SRID 4326")
+    var location: Point = location
+        private set
+
     fun update(
         experienceYear: Int?,
         roadNameAddress: String,
@@ -92,6 +98,7 @@ class Carer(
         introduce: String?,
         speciality: String?,
         jobSearchStatus: JobSearchStatus?,
+        location: Point,
     ) {
         this.experienceYear = experienceYear
         this.roadNameAddress = roadNameAddress
@@ -101,6 +108,7 @@ class Carer(
         this.introduce = introduce
         this.speciality = speciality
         this.jobSearchStatus = jobSearchStatus ?: this.jobSearchStatus
+        this.location = location
     }
 
     fun updateWithoutAddress(

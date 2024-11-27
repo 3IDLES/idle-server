@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.idle.care",
+      "sha256_cert_fingerprints": [
+        "0F:82:C2:F8:FE:04:0F:B0:61:7E:8A:68:DE:D8:35:81:15:D1:E5:6D:30:78:1C:1A:0E:83:F3:EB:5E:2F:8E:68"
+      ]
+    }
+  }
+]
