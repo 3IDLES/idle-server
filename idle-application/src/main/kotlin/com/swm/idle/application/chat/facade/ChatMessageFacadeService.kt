@@ -2,7 +2,6 @@ package com.swm.idle.application.chat.facade
 
 import com.swm.idle.application.chat.domain.ChatMessageService
 import com.swm.idle.domain.chat.entity.jpa.ChatMessage
-import com.swm.idle.domain.chat.enums.SenderType
 import com.swm.idle.domain.chat.event.ChatMessageRedisPublisher
 import org.springframework.stereotype.Service
 import java.util.*
@@ -18,11 +17,10 @@ class ChatMessageFacadeService(
         senderId: UUID,
         contents: List<ChatMessage.Content>,
     ) {
-        ChatMessage(
+        chatMessageService.createByUser(
             roomId = roomId,
-            senderId = senderId,
-            senderType = SenderType.USER,
-            contents = contents
+            userId = senderId,
+            contents = contents,
         ).also {
             chatMessageRedisPublisher.publish(it)
         }

@@ -17,8 +17,4 @@ class ChatMessageService {
         )
     }
 
-    fun publish(it: ChatMessage) {
-
-    }
-
 }
