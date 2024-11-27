@@ -14,11 +14,6 @@ class WebSocketConfig : WebSocketMessageBrokerConfigurer {
         registry
             .addEndpoint("/websocket")
             .setAllowedOriginPatterns("*")
-            .withSockJS()
-
-        registry
-            .addEndpoint("/websocket")
-            .setAllowedOriginPatterns("*")
     }
 
     override fun configureMessageBroker(registry: MessageBrokerRegistry) {
