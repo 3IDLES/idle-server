@@ -42,6 +42,8 @@ class RedisConfig(
             connectionFactory = redisConnectionFactory!!
             keySerializer = StringRedisSerializer()
             valueSerializer = serializer
+            hashKeySerializer = StringRedisSerializer()
+            hashValueSerializer = serializer
         }
     }
 
