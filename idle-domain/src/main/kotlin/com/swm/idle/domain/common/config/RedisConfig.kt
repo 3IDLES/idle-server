@@ -1,5 +1,6 @@
 package com.swm.idle.domain.common.config
 
+import com.fasterxml.jackson.core.json.JsonReadFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.KotlinModule
@@ -50,6 +51,7 @@ class RedisConfig(
     private val objectMapper = ObjectMapper().apply {
         registerModule(KotlinModule.Builder().build())
         registerModule(JavaTimeModule())
+        enable(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS.mappedFeature())
     }
 
 }
