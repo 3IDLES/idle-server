@@ -49,5 +49,4 @@ class ChatMessage(
             require(value.length <= 500) { "채팅 메세지는 500자를 초과할 수 없습니다." }
         }
     }
-
 }
