@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   spring:
-    image: public.ecr.aws/${ECR_REGISTRY_ALIAS}/idle-ecr:${VERSION:-latest}
+    image: public.ecr.aws/${ECR_REGISTRY_ALIAS}/caremeet:${VERSION:-latest}
     volumes:
       - mysql-volume:/var/lib/mysql
     environment:
