@@ -86,7 +86,7 @@ jobs:
           key: ${{ secrets.INSTANCE_PEM_KEY }}
           envs: VARS_CONTEXT,SECRETS_CONTEXT
           script: |
-            cd ~/app/docker
+            cd ~/app/docker/idle-presentation
             jq -s '.[0] * .[1]' <(echo "$VARS_CONTEXT") <(echo "$SECRETS_CONTEXT") \
               | jq -r 'to_entries | map("\(.key)=\(.value)") | .[]' > .env
 
