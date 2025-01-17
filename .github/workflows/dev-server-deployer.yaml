@@ -98,8 +98,8 @@ jobs:
           key: ${{ secrets.INSTANCE_PEM_KEY }}
           script: |
             echo "${{ secrets.DOCKER_PASSWORD }}" | sudo docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-            sudo docker-compose -f ~/app/docker/compose-dev.yaml pull
-            sudo docker-compose -f ~/app/docker/compose-dev.yaml up -d --force-recreate
+            sudo docker-compose -f ~/app/docker/idle-presentation/compose-dev.yaml pull
+            sudo docker-compose -f ~/app/docker/idle-presentation/compose-dev.yaml up -d --force-recreate
 
       - name: Remove GitHub Actions IP
         run: |

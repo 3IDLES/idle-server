@@ -29,7 +29,7 @@ jobs:
         env:
           REGISTRY: ${{ steps.login-ecr-public.outputs.registry }}
           REGISTRY_ALIAS: ${{ secrets.ECR_REGISTRY_ALIAS }}
-          REPOSITORY: idle-prod-ecr
+          REPOSITORY: ${{ secrets.ECR_REGISTRY_NAME }}
           IMAGE_TAG: latest
         run: |
           echo "REPOSITORY: $REPOSITORY"
