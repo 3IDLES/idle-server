@@ -93,14 +93,14 @@ jobs:
           script: |
             ssh -o "ProxyJump=${{ vars.BASTION_HOST }}" -i ${{ secrets.INSTANCE_PEM_KEY }} ${{ vars.INSTANCE_USERNAME }}@${{ vars.INSTANCE_HOST }} << 'EOF'
             sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-            sudo docker pull public.ecr.aws/${{ secrets.ECR_REGISTRY_ALIAS }}/${{ secrets.ECR_REGISTRY_NAME }}:latest
+            sudo docker pull public.ecr.aws/f5q3r6m5/caremeet:latest
             if [ $(sudo docker ps -q -f name=caremeet_server_prod) ]; then
               sudo docker stop caremeet_server_prod
               sudo docker rm caremeet_server_prod
             fi
             sudo docker run --name caremeet_server_prod --env-file ./app/docker/.env \
             -e SPRING_PROFILES_ACTIVE=prod \
-            -d -p 8080:8080 public.ecr.aws/${{ secrets.ECR_REGISTRY_ALIAS }}/${{ secrets.ECR_REGISTRY_NAME }}:latest
+            -d -p 8080:8080 public.ecr.aws/f5q3r6m5/caremeet:latest
             EOF
 
       - name: Remove GitHub Actions IP

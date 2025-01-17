@@ -29,7 +29,7 @@ jobs:
         env:
           REGISTRY: ${{ steps.login-ecr-public.outputs.registry }}
           REGISTRY_ALIAS: ${{ secrets.ECR_REGISTRY_ALIAS }}
-          REPOSITORY: ${{ secrets.ECR_REGISTRY_NAME }}
+          REPOSITORY: caremeet
           IMAGE_TAG: latest
         run: |
           echo "REPOSITORY: $REPOSITORY"
