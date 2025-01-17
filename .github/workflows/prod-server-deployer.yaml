@@ -76,7 +76,7 @@ jobs:
           script: |
             ssh -o "ProxyJump=${{ vars.BASTION_HOST }}" -i ${{ secrets.INSTANCE_PEM_KEY }} ${{ vars.INSTANCE_USERNAME }}@${{ vars.INSTANCE_HOST }} << 'EOF'
             sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-            sudo docker pull public.ecr.aws/f5q3r6m5/idle-prod-ecr:$IMAGE_TAG
+            sudo docker pull public.ecr.aws/${{ secrets.ECR_REGISTRY_ALIAS }}/${{ secrets.ECR_REGISTRY_NAME }}:$IMAGE_TAG
             if [ $(sudo docker ps -q -f name=caremeet_server_prod) ]; then
               sudo docker stop caremeet_server_prod
               sudo docker rm caremeet_server_prod
