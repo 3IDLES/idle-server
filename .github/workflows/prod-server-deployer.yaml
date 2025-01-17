@@ -83,7 +83,7 @@ jobs:
             fi
             sudo docker run --name caremeet_server_prod --env-file ./app/docker/.env \
             -e SPRING_PROFILES_ACTIVE=prod \
-            -d -p 8080:8080 public.ecr.aws/f5q3r6m5/idle-prod-ecr:$IMAGE_TAG
+            -d -p 8080:8080 public.ecr.aws/${{ secrets.ECR_REGISTRY_ALIAS }}/${{ secrets.ECR_REGISTRY_NAME }}:$IMAGE_TAG
             EOF
 
       - name: Remove GitHub Actions IP
