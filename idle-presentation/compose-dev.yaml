@@ -18,7 +18,7 @@ services:
   mysql:
     image: mysql:8.0.33
     environment:
-      MYSQL_DATABASE: idle
+      MYSQL_DATABASE: caremeet
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       TZ: Asia/Seoul
     ports:
