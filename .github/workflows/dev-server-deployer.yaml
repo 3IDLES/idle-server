@@ -49,8 +49,8 @@ jobs:
           host: ${{ vars.INSTANCE_HOST }}
           username: ${{ vars.INSTANCE_USERNAME }}
           key: ${{ secrets.INSTANCE_PEM_KEY }}
-          source: "./idle-presentation/compose-dev.yaml"
-          target: "~/app/docker/compose-dev.yaml"
+          source: "idle-presentation/compose-dev.yaml"
+          target: "~/app/docker"
           overwrite: true
 
       - name: Install Docker if not present
