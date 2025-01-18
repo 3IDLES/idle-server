@@ -54,8 +54,8 @@ jobs:
               echo "${{ secrets.INSTANCE_PEM_KEY }}" > private_key.pem
               chmod 600 private_key.pem
             fi
-            ssh -f -N -M -S my-cicd-socket -o StrictHostKeyChecking=no -i private_key.pem -L 22:${{ vars.INSTANCE_HOST }}:22 ec2-user@${{ vars.BASTION_HOST }}
-            ssh -o StrictHostKeyChecking=no -i private_key.pem -p 22 ubuntu@localhost << 'EOF'
+            ssh -f -N -M -S my-cicd-socket -o StrictHostKeyChecking=no -i private_key.pem -L 2222:${{ vars.INSTANCE_HOST }}:22 ec2-user@${{ vars.BASTION_HOST }}
+            ssh -o StrictHostKeyChecking=no -i private_key.pem -p 2222 ubuntu@localhost << 'EOF'
               echo "Connected to Private Subnet productionServer via SSH Tunneling"
               if ! command -v docker >/dev/null 2>&1; then
                 echo "Installing Docker..."
@@ -90,8 +90,8 @@ jobs:
               echo "${{ secrets.INSTANCE_PEM_KEY }}" > private_key.pem
               chmod 600 private_key.pem
             fi
-            ssh -f -N -M -S my-cicd-socket -o StrictHostKeyChecking=no -i private_key.pem -L 22:${{ vars.INSTANCE_HOST }}:22 ec2-user@${{ vars.BASTION_HOST }}
-            ssh -o StrictHostKeyChecking=no -i private_key.pem -p 22 ubuntu@localhost << 'EOF'
+            ssh -f -N -M -S my-cicd-socket -o StrictHostKeyChecking=no -i private_key.pem -L 2222:${{ vars.INSTANCE_HOST }}:22 ec2-user@${{ vars.BASTION_HOST }}
+            ssh -o StrictHostKeyChecking=no -i private_key.pem -p 2222 ubuntu@localhost << 'EOF'
               echo "Connected to Private Subnet productionServer via SSH Tunneling"
               cd ~/app/docker
               jq -s '.[0] * .[1] | del(.INSTANCE_PEM_KEY)' <(echo "$VARS_CONTEXT") <(echo "$SECRETS_CONTEXT") \
@@ -111,8 +111,8 @@ jobs:
               echo "${{ secrets.INSTANCE_PEM_KEY }}" > private_key.pem
               chmod 600 private_key.pem
             fi
-            ssh -f -N -M -S my-cicd-socket -o StrictHostKeyChecking=no -i private_key.pem -L 22:${{ vars.INSTANCE_HOST }}:22 ec2-user@${{ vars.BASTION_HOST }}
-            ssh -o StrictHostKeyChecking=no -i private_key.pem -p 22 ubuntu@localhost << 'EOF'
+            ssh -f -N -M -S my-cicd-socket -o StrictHostKeyChecking=no -i private_key.pem -L 2222:${{ vars.INSTANCE_HOST }}:22 ec2-user@${{ vars.BASTION_HOST }}
+            ssh -o StrictHostKeyChecking=no -i private_key.pem -p 2222 ubuntu@localhost << 'EOF'
               echo "Connected to Private Subnet productionServer via SSH Tunneling"
               sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
               sudo docker pull public.ecr.aws/e4z1s9l7/caremeet:latest
