@@ -10,19 +10,26 @@ services:
     pull_policy: always
     env_file:
       - .env
-    depends_on:
-      - mysql
     ports:
       - "8080:8080"
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - redis-caremeet-net
+      - mysql-caremeet-net
 
   mysql:
     image: mysql:8.0.33
+    container_name: mysql_dev
     environment:
       MYSQL_DATABASE: caremeet
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       TZ: Asia/Seoul
     ports:
       - "3306:3306"
+    networks:
+      - mysql-caremeet-net
 
   redis:
     image: redis:7.2.5
@@ -35,6 +42,14 @@ services:
     volumes:
       - redis-volume:/data
     restart: unless-stopped
+    networks:
+      - redis-caremeet-net
+
+networks:
+  mysql-caremeet-net:
+    driver: bridge
+  redis-caremeet-net:
+    driver: bridge
 
 volumes:
   mysql-volume:
