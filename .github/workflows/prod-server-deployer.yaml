@@ -95,7 +95,7 @@ jobs:
               echo "Connected to Private Subnet productionServer via SSH Tunneling"
               cd ~/app/docker
               jq -s '.[0] * .[1]' <(echo "$VARS_CONTEXT") <(echo "$SECRETS_CONTEXT") \
-              | jq -r 'to_entries | map("\(.key)=\(.value)") | .[]' > .env
+                | jq -r 'to_entries | map("\(.key)=\(.value)") | .[]' > .env
             EOF
             ssh -S my-cicd-socket -O exit ec2-user@${{ vars.BASTION_HOST }}
             rm -f private_key.pem
