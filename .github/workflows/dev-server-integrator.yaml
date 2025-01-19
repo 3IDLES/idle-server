@@ -1,9 +1,9 @@
 name: Develop Server Integrator (CI)
 
-on:
-  push:
-    branches:
-      - develop
+on: workflow_dispatch
+#  push:
+#    branches:
+#      - develop
 
 jobs:
   build_and_push:
