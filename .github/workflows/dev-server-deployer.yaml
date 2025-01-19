@@ -86,9 +86,9 @@ jobs:
           key: ${{ secrets.INSTANCE_PEM_KEY }}
           envs: VARS_CONTEXT,SECRETS_CONTEXT
           script: |
-            cd ~/app/docker
+            cd ~/app/docker/idle-presentation
             jq -s '.[0] * .[1]' <(echo "$VARS_CONTEXT") <(echo "$SECRETS_CONTEXT") \
-              | jq -r 'to_entries | map("\(.key)=\(.value)") | .[]' > .env
+              | jq -r 'to_entries | map(select(.key != "INSTANCE_PEM_KEY")) | map("\(.key)=\(.value)") | .[]' > .env
 
       - name: Run Docker Compose up
         uses: appleboy/ssh-action@master
@@ -98,8 +98,8 @@ jobs:
           key: ${{ secrets.INSTANCE_PEM_KEY }}
           script: |
             echo "${{ secrets.DOCKER_PASSWORD }}" | sudo docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-            sudo docker-compose -f ~/app/docker/compose-dev.yaml pull
-            sudo docker-compose -f ~/app/docker/compose-dev.yaml up -d --force-recreate
+            sudo docker-compose -f ~/app/docker/idle-presentation/compose-dev.yaml pull
+            sudo docker-compose -f ~/app/docker/idle-presentation/compose-dev.yaml up -d --force-recreate
 
       - name: Remove GitHub Actions IP
         run: |
