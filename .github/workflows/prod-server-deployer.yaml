@@ -101,7 +101,7 @@ jobs:
               echo "$SECRETS_CONTEXT_JSON" > secrets_context.json
 
               jq -s '.[0] * .[1]' vars_context.json secrets_context.json \
-                | jq -r 'to_entries | map("\(.key)=\(.value)") | .[]' > .env
+                | jq -r 'to_entries | map(select(.key != "INSTANCE_PEM_KEY")) | map("\(.key)=\(.value)") | .[]' > .env
 
               echo ".env file generated:"
               cat .env
