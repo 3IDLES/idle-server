@@ -77,14 +77,10 @@ jobs:
 
       - name: Configuration Env file
         uses: appleboy/ssh-action@master
-        env:
-          VARS_CONTEXT: ${{ toJson(vars) }}
-          SECRETS_CONTEXT: ${{ toJson(secrets) }}
         with:
           host: ${{ vars.BASTION_HOST }}
           username: ${{ vars.BASTION_USERNAME }}
           key: ${{ secrets.INSTANCE_PEM_KEY }}
-          envs: VARS_CONTEXT,SECRETS_CONTEXT
           script: |
             if [ ! -f private_key.pem ]; then
               echo "${{ secrets.INSTANCE_PEM_KEY }}" > private_key.pem
@@ -94,12 +90,21 @@ jobs:
             ssh -o StrictHostKeyChecking=no -i private_key.pem -p 2222 ubuntu@localhost << 'EOF'
               echo "Connected to Private Subnet productionServer via SSH Tunneling"
               cd ~/app/docker
-              echo "$VARS_CONTEXT"
-              echo "$VARS_CONTEXT"
-              echo "SECRETS_CONTEXT:"
-              echo "$SECRETS_CONTEXT"
-              jq -s '.[0] * .[1]' <(echo "$VARS_CONTEXT") <(echo "$SECRETS_CONTEXT") \
+
+              echo "VARS_CONTEXT: ${{ toJson(vars) }}"
+              echo "SECRETS_CONTEXT: ${{ toJson(secrets) }}"
+
+              VARS_CONTEXT_JSON='${{ toJson(vars) }}'
+              SECRETS_CONTEXT_JSON='${{ toJson(secrets) }}'
+
+              echo "$VARS_CONTEXT_JSON" > vars_context.json
+              echo "$SECRETS_CONTEXT_JSON" > secrets_context.json
+
+              jq -s '.[0] * .[1]' vars_context.json secrets_context.json \
                 | jq -r 'to_entries | map("\(.key)=\(.value)") | .[]' > .env
+
+              echo ".env file generated:"
+              cat .env
             EOF
             ssh -S my-cicd-socket -O exit ec2-user@${{ vars.BASTION_HOST }}
             rm -f private_key.pem
