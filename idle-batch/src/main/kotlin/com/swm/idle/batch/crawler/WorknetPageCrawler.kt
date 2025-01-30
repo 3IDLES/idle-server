@@ -14,7 +14,7 @@ class WorknetPageCrawler {
 
     fun initCounts(reader: PostingReader) {
         reader.crawlingUrl = CrawlerConsts.CRAWLING_TARGET_URL_FORMAT.value
-                .replace("{yesterday}", LocalDate.now().minusDays(5L).format(DateTimeFormatter.ofPattern("yyyyMMdd")))
+                .replace("{yesterday}", LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")))
                 .replace("{pageIndex}", "1")
 
         moveToPage(reader)
