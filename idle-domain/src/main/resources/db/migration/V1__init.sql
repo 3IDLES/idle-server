@@ -68,11 +68,12 @@ create table chat_message (
                               created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                               updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                               id BINARY(16) NOT NULL,
-                              room_id BINARY(16),
-                              sender_id BINARY(16),
-                              contents JSON NOT NULL,
+                              chat_room_id BINARY(16) NOT NULL,
+                              sender_id BINARY(16) NOT NULL,
+                              receiver_id BINARY(16) NOT NULL,
+                              content TEXT NOT NULL,
+                              is_read BIT NOT NULL,
                               entity_status VARCHAR(255),
-                              sender_type ENUM ('USER','SYSTEM'),
                               PRIMARY KEY (id)
 ) ENGINE=InnoDB;
 
@@ -80,8 +81,8 @@ create table chat_room (
                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                            id BINARY(16) NOT NULL,
-                           receiver_id BINARY(16) NOT NULL,
-                           sender_id BINARY(16) NOT NULL,
+                           carer_id BINARY(16) NOT NULL,
+                           center_id BINARY(16) NOT NULL,
                            entity_status VARCHAR(255),
                            PRIMARY KEY (id)
 ) engine=InnoDB;
@@ -131,10 +132,10 @@ create table job_posting (
                              apply_deadline date,
                              birth_year INT NOT NULL,
                              care_level INT NOT NULL,
-                             is_bowel_assistance bit NOT NULL,
-                             is_experience_preferred bit NOT NULL,
-                             is_meal_assistance bit NOT NULL,
-                             is_walking_assistance bit NOT NULL,
+                             is_bowel_assistance BIT NOT NULL,
+                             is_experience_preferred BIT NOT NULL,
+                             is_meal_assistance BIT NOT NULL,
+                             is_walking_assistance BIT NOT NULL,
                              pay_amount int NOT NULL,
                              weight int,
                              created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
