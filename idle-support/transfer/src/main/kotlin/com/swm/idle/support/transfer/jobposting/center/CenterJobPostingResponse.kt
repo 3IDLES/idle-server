@@ -23,6 +23,9 @@ data class CenterJobPostingResponse(
     @Schema(description = "공고 ID")
     val id: UUID,
 
+    @Schema(description = "센터 ID")
+    val centerId: UUID,
+
     @Schema(description = "근무 요일", example = "[\"MONDAY\", \"TUESDAY\"]")
     val weekdays: List<Weekdays>,
 
@@ -114,6 +117,7 @@ data class CenterJobPostingResponse(
         ): CenterJobPostingResponse {
             return CenterJobPostingResponse(
                 id = jobPosting.id,
+                centerId = jobPosting.centerId,
                 weekdays = weekdays!!,
                 startTime = jobPosting.startTime,
                 endTime = jobPosting.endTime,

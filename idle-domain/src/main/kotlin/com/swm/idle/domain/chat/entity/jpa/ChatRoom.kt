@@ -9,16 +9,15 @@ import java.util.*
 @Entity
 @Table(name = "chat_room")
 class ChatRoom(
-    senderId: UUID,
-    receiverId: UUID,
+    carerId: UUID,
+    centerId: UUID,
 ) : BaseEntity() {
 
     @Column(nullable = false, updatable = false)
-    var senderId: UUID = senderId
+    var carerId: UUID = carerId
         private set
 
     @Column(nullable = false, updatable = false)
-    var receiverId: UUID = receiverId
+    var centerId: UUID = centerId
         private set
-
 }

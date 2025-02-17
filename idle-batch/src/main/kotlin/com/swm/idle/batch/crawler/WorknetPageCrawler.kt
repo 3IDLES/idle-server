@@ -21,7 +21,9 @@ class WorknetPageCrawler {
 
         reader.postingCount = driver
             .findElement(By.xpath(CrawlerConsts.JOB_POSTING_COUNT.value))
-            .text.toInt()
+            .text
+            .replace(",", "")
+            .toInt()
             .takeIf { it > 0 }
             ?: run {
                 driver.quit()
