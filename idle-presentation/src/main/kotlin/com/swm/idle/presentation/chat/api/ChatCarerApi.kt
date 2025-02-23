@@ -1,6 +1,5 @@
 package com.swm.idle.presentation.chat.api
 
-import com.swm.idle.domain.chat.entity.jpa.ChatMessage
 import com.swm.idle.domain.chat.vo.ChatRoomSummaryInfo
 import com.swm.idle.presentation.common.security.annotation.Secured
 import com.swm.idle.support.transfer.chat.ChatMessageResponse
