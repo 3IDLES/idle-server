@@ -17,13 +17,13 @@ data class ChatRoomSummaryInfo(
                 lastMessage: String,
                 lastMessageTime: LocalDateTime,
                 count: Int,
-                receiverId: ByteArray,
+                opponentId: ByteArray,
         ) : this(
         fromByteArray(chatRoomId),
         lastMessage,
         lastMessageTime,
         count,
-        fromByteArray(receiverId),
+        fromByteArray(opponentId),
         "알 수 없음",
         null,
     )
