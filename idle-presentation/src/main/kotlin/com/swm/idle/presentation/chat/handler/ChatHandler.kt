@@ -18,7 +18,7 @@ class ChatHandler(
     }
 
     @EventListener
-    fun handleReadMessage(raedMessage: ReadMessage) {
-        messageTemplate.convertAndSend("/sub/${raedMessage.receiverId}", ReadNoti(raedMessage))
+    fun handleReadMessage(readMessage: ReadMessage) {
+        messageTemplate.convertAndSend("/sub/${readMessage.receiverId}", ReadNoti(readMessage))
     }
 }
