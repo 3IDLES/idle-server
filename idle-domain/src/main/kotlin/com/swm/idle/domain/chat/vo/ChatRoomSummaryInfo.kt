@@ -9,9 +9,9 @@ data class ChatRoomSummaryInfo(
     val lastMessage: String,
     val lastMessageTime: LocalDateTime,
     val count: Int,
-    val receiverId: UUID,
-    var receiverName: String,
-    var receiverProfileImageUrl: String?,
+    val opponentId: UUID,
+    var opponentName: String,
+    var opponentProfileImageUrl: String?,
 ) {
     constructor(chatRoomId: ByteArray,
                 lastMessage: String,

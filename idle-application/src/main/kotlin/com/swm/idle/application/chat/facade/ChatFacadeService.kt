@@ -96,13 +96,13 @@ class ChatFacadeService(
 
         return if (isCarer) {
             summary.map {
-                val center = centerService.getById(it.receiverId)
-                it.copy(receiverName = center.centerName, receiverProfileImageUrl = center.profileImageUrl)
+                val center = centerService.getById(it.opponentId)
+                it.copy(opponentName = center.centerName, opponentProfileImageUrl = center.profileImageUrl)
             }
         } else {
             summary.map {
-                val carer = carerService.getById(it.receiverId)
-                it.copy(receiverName = carer.name, receiverProfileImageUrl = carer.profileImageUrl)
+                val carer = carerService.getById(it.opponentId)
+                it.copy(opponentName = carer.name, opponentProfileImageUrl = carer.profileImageUrl)
             }
         }
     }
