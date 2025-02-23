@@ -52,13 +52,15 @@ class ChatFacadeService(
 
     @Transactional
     fun readMessage(request: ReadChatMessagesReqeust, userId: UUID){
-        val readRequest = ReadMessage(
-            request.chatRoomId,
-            userId
-        )
         runBlocking {
             launch { messageService.read(request, userId) }
-            launch { redisPublisher.publish(readRequest) }
+            launch {
+                val redisMessage = ReadMessage(
+                    chatRoomId = request.chatRoomId,
+                    receiverId = request.opponentId,
+                    readUserId = userId)
+                redisPublisher.publish(redisMessage)
+            }
         }
     }
 

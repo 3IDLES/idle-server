@@ -2,6 +2,8 @@ package com.swm.idle.presentation.chat.handler
 
 import com.swm.idle.domain.chat.entity.jpa.ChatMessage
 import com.swm.idle.domain.chat.vo.ReadMessage
+import com.swm.idle.support.transfer.chat.ChatMessageResponse
+import com.swm.idle.support.transfer.chat.ReadNoti
 import org.springframework.context.event.EventListener
 import org.springframework.messaging.simp.SimpMessageSendingOperations
 import org.springframework.stereotype.Controller
@@ -12,11 +14,11 @@ class ChatHandler(
 ) {
     @EventListener
     fun handleSendMessage(sendMessage: ChatMessage) {
-        messageTemplate.convertAndSend("/sub/chatrooms/${sendMessage.chatRoomId}", sendMessage)
+        messageTemplate.convertAndSend("/sub/${sendMessage.receiverId}", ChatMessageResponse(sendMessage))
     }
 
     @EventListener
     fun handleReadMessage(raedMessage: ReadMessage) {
-        messageTemplate.convertAndSend("/sub/chatrooms/${raedMessage.chatroomId}", raedMessage.readUserId)
+        messageTemplate.convertAndSend("/sub/${raedMessage.receiverId}", ReadNoti(raedMessage))
     }
 }
