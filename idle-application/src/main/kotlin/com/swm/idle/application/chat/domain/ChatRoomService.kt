@@ -10,12 +10,12 @@ import java.util.*
 @Service
 class ChatRoomService (val chatroomRepository: ChatRoomRepository){
 
-    fun create(carerId: UUID, centerId:UUID) {
+    fun create(carerId: UUID, centerId:UUID):UUID {
         val chatRoom = ChatRoom(
             carerId = carerId,
             centerId = centerId,
         )
-        chatroomRepository.save(chatRoom)
+        return chatroomRepository.save(chatRoom).id
     }
 
     fun findChatroomSummaries(userId: UUID, isCarer: Boolean): List<ChatRoomSummaryInfo> {

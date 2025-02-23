@@ -5,6 +5,7 @@ import com.swm.idle.domain.chat.entity.jpa.ChatMessage
 import com.swm.idle.domain.chat.vo.ChatRoomSummaryInfo
 import com.swm.idle.presentation.chat.api.ChatCarerApi
 import com.swm.idle.support.transfer.chat.CreateChatRoomRequest
+import com.swm.idle.support.transfer.chat.CreateChatRoomResponse
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
@@ -13,8 +14,8 @@ class ChatCarerController(
     private val chatMessageService: ChatFacadeService,
 ) : ChatCarerApi {
 
-    override fun createChatroom(request: CreateChatRoomRequest) {
-        chatMessageService.createChatroom(request,true)
+    override fun createChatroom(request: CreateChatRoomRequest): CreateChatRoomResponse {
+        return chatMessageService.createChatroom(request,true)
     }
 
     override fun carerChatroomSummary(): List<ChatRoomSummaryInfo> {

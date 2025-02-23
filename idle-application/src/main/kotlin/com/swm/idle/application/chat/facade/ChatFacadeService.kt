@@ -13,6 +13,7 @@ import com.swm.idle.domain.chat.vo.ReadMessage
 import com.swm.idle.infrastructure.fcm.chat.ChatNotificationService
 import com.swm.idle.support.common.uuid.UuidCreator
 import com.swm.idle.support.transfer.chat.CreateChatRoomRequest
+import com.swm.idle.support.transfer.chat.CreateChatRoomResponse
 import com.swm.idle.support.transfer.chat.ReadChatMessagesReqeust
 import com.swm.idle.support.transfer.chat.SendChatMessageRequest
 import kotlinx.coroutines.*
@@ -65,20 +66,22 @@ class ChatFacadeService(
     }
 
     @Transactional
-    fun createChatroom(request: CreateChatRoomRequest, isCarer: Boolean) {
+    fun createChatroom(request: CreateChatRoomRequest, isCarer: Boolean):CreateChatRoomResponse {
         val userId = getUserAuthentication().userId
 
+        val chatRoomId:UUID
         if(isCarer) {
-            chatroomService.create(
+            chatRoomId = chatroomService.create(
                 carerId = userId,
                 centerId = request.opponentId,
             )
         }else{
-            chatroomService.create(
+            chatRoomId = chatroomService.create(
                 centerId = userId,
                 carerId = request.opponentId,
             )
         }
+        return CreateChatRoomResponse(chatRoomId)
     }
 
     fun getRecentMessages(chatRoomId: UUID, messageId: UUID?): List<ChatMessage> {
