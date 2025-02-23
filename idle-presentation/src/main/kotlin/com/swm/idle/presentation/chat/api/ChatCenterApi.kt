@@ -3,6 +3,7 @@ package com.swm.idle.presentation.chat.api
 import com.swm.idle.domain.chat.entity.jpa.ChatMessage
 import com.swm.idle.domain.chat.vo.ChatRoomSummaryInfo
 import com.swm.idle.presentation.common.security.annotation.Secured
+import com.swm.idle.support.transfer.chat.ChatMessageResponse
 import com.swm.idle.support.transfer.chat.CreateChatRoomRequest
 import com.swm.idle.support.transfer.chat.CreateChatRoomResponse
 import io.swagger.v3.oas.annotations.Operation
@@ -26,7 +27,7 @@ interface ChatCenterApi {
     @GetMapping("/chatrooms/{chatroom-id}/messages")
     @ResponseStatus(HttpStatus.OK)
     fun recentMessages(@PathVariable(value = "chatroom-id") chatroomId: UUID,
-                       @RequestParam(value = "message-id", required = false) messageId: UUID?): List<ChatMessage>
+                       @RequestParam(value = "message-id", required = false) messageId: UUID?): List<ChatMessageResponse>
 
         @Secured
     @Operation(summary = "센터장의 채팅방 요약 목록 조회 API")

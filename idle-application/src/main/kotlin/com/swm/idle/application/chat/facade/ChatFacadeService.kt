@@ -12,10 +12,7 @@ import com.swm.idle.domain.chat.vo.ChatRoomSummaryInfo
 import com.swm.idle.domain.chat.vo.ReadMessage
 import com.swm.idle.infrastructure.fcm.chat.ChatNotificationService
 import com.swm.idle.support.common.uuid.UuidCreator
-import com.swm.idle.support.transfer.chat.CreateChatRoomRequest
-import com.swm.idle.support.transfer.chat.CreateChatRoomResponse
-import com.swm.idle.support.transfer.chat.ReadChatMessagesReqeust
-import com.swm.idle.support.transfer.chat.SendChatMessageRequest
+import com.swm.idle.support.transfer.chat.*
 import kotlinx.coroutines.*
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -84,12 +81,12 @@ class ChatFacadeService(
         return CreateChatRoomResponse(chatRoomId)
     }
 
-    fun getRecentMessages(chatRoomId: UUID, messageId: UUID?): List<ChatMessage> {
+    fun getRecentMessages(chatRoomId: UUID, messageId: UUID?): List<ChatMessageResponse> {
         if(messageId == null){
             val newMessageId = UuidCreator.create()
-            return chatMessageService.getRecentMessages(chatRoomId, newMessageId)
+            return chatMessageService.getRecentMessages(chatRoomId, newMessageId).map{ChatMessageResponse(it)}
         }
-        return chatMessageService.getRecentMessages(chatRoomId, messageId)
+        return chatMessageService.getRecentMessages(chatRoomId, messageId).map{ChatMessageResponse(it)}
     }
 
     fun getChatroomSummary(isCarer: Boolean): List<ChatRoomSummaryInfo> {
