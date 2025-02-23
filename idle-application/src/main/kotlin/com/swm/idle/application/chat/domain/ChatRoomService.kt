@@ -10,30 +10,51 @@ import java.util.*
 @Service
 class ChatRoomService (val chatroomRepository: ChatRoomRepository){
 
-    fun create(carerId: UUID, centerId:UUID) {
+    fun create(carerId: UUID, centerId:UUID):UUID {
         val chatRoom = ChatRoom(
             carerId = carerId,
             centerId = centerId,
         )
-        chatroomRepository.save(chatRoom)
+        return chatroomRepository.save(chatRoom).id
     }
 
     fun findChatroomSummaries(userId: UUID, isCarer: Boolean): List<ChatRoomSummaryInfo> {
         val projections: List<ChatRoomSummaryInfoProjection>
         if(isCarer) {
-            projections = chatroomRepository.findCaresChatroomSummaries(userId)
+            projections = chatroomRepository.carerFindChatRooms(userId)
         }else {
-            projections = chatroomRepository.findCentersChatroomSummaries(userId)
+            projections = chatroomRepository.centerFindChatRooms(userId)
         }
 
         return projections.map { projection ->
-            ChatRoomSummaryInfo(
-                chatRoomId = projection.getChatRoomId(),
-                lastMessage = projection.getLastMessage(),
-                lastMessageTime = projection.getLastMessageTime(),
-                count = projection.getUnreadCount(),
-                receiverId = projection.getReceiverId()
+            mappingChatRoomSummaryInfo(projection)
+        }
+    }
+
+    private fun mappingChatRoomSummaryInfo(projection: ChatRoomSummaryInfoProjection) =
+        ChatRoomSummaryInfo(
+            chatRoomId = projection.getChatRoomId(),
+            lastMessage = projection.getLastMessage(),
+            lastMessageTime = projection.getLastMessageTime(),
+            count = projection.getUnreadCount(),
+            opponentId = projection.getOpponentId()
+        )
+
+    fun getByCenterWithCarer(centerId: UUID, carerId: UUID, isCarer: Boolean): ChatRoomSummaryInfo {
+        val projections: ChatRoomSummaryInfoProjection
+
+        if(isCarer) {
+            projections = chatroomRepository.carerFindSingleChatRoom(
+                centerId = centerId,
+                carerId = carerId
+            )
+        }else {
+            projections = chatroomRepository.centerFindSingleChatRoom(
+                centerId = centerId,
+                carerId = carerId
             )
         }
+
+        return mappingChatRoomSummaryInfo(projections)
     }
 }
