@@ -34,4 +34,11 @@ interface ChatCenterApi {
     @GetMapping("/chatrooms")
     @ResponseStatus(HttpStatus.OK)
     fun centerChatroomSummary(): List<ChatRoomSummaryInfo>
+
+    @Secured
+    @Operation(summary = "센터장의 단일 채팅방 정보 조회 API")
+    @GetMapping("/chatrooms/{chatroom-id}/opponent/{opponent-id}")
+    @ResponseStatus(HttpStatus.OK)
+    fun carerSingleChatroomSummary(@PathVariable(value = "chatroom-id") chatroomId: UUID,
+                                   @PathVariable(value = "opponent-id") opponentId: UUID): ChatRoomSummaryInfo
 }

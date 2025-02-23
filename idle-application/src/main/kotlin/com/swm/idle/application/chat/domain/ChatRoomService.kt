@@ -27,13 +27,34 @@ class ChatRoomService (val chatroomRepository: ChatRoomRepository){
         }
 
         return projections.map { projection ->
-            ChatRoomSummaryInfo(
-                chatRoomId = projection.getChatRoomId(),
-                lastMessage = projection.getLastMessage(),
-                lastMessageTime = projection.getLastMessageTime(),
-                count = projection.getUnreadCount(),
-                receiverId = projection.getReceiverId()
+            mappingChatRoomSummaryInfo(projection)
+        }
+    }
+
+    private fun mappingChatRoomSummaryInfo(projection: ChatRoomSummaryInfoProjection) =
+        ChatRoomSummaryInfo(
+            chatRoomId = projection.getChatRoomId(),
+            lastMessage = projection.getLastMessage(),
+            lastMessageTime = projection.getLastMessageTime(),
+            count = projection.getUnreadCount(),
+            opponentId = projection.getOpponentId()
+        )
+
+    fun getByCenterWithCarer(centerId: UUID, carerId: UUID, isCarer: Boolean): ChatRoomSummaryInfo {
+        val projections: ChatRoomSummaryInfoProjection
+
+        if(isCarer) {
+            projections = chatroomRepository.carerFindByCenterIdWithCarerId(
+                centerId = centerId,
+                carerId = carerId
+            )
+        }else {
+            projections = chatroomRepository.centerFindByCenterIdWithCarerId(
+                centerId = centerId,
+                carerId = carerId
             )
         }
+
+        return mappingChatRoomSummaryInfo(projections)
     }
 }

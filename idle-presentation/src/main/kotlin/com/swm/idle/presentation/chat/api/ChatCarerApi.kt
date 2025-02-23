@@ -34,4 +34,11 @@ interface ChatCarerApi {
     @GetMapping("/chatrooms")
     @ResponseStatus(HttpStatus.OK)
     fun carerChatroomSummary(): List<ChatRoomSummaryInfo>
+
+    @Secured
+    @Operation(summary = "보호사의 단일 채팅방 정보 조회 API")
+    @GetMapping("/chatrooms/{chatroom-id}/single")
+    @ResponseStatus(HttpStatus.OK)
+    fun carerSingleChatroomSummary(@PathVariable(value = "chatroom-id") chatroomId: UUID,
+                                   @PathVariable(value = "opponent-id") opponentId: UUID,): ChatRoomSummaryInfo
 }

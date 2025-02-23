@@ -64,34 +64,29 @@ class ChatFacadeService(
 
     @Transactional
     fun createChatroom(request: CreateChatRoomRequest, isCarer: Boolean):CreateChatRoomResponse {
-        val userId = getUserAuthentication().userId
-
-        val chatRoomId:UUID
-        if(isCarer) {
-            chatRoomId = chatroomService.create(
-                carerId = userId,
-                centerId = request.opponentId,
-            )
-        }else{
-            chatRoomId = chatroomService.create(
-                centerId = userId,
-                carerId = request.opponentId,
-            )
+        val (carerId, centerId) = if (isCarer) {
+            getUserAuthentication().userId to request.opponentId
+        } else {
+            request.opponentId to getUserAuthentication().userId
         }
+
+        val chatRoomId = chatroomService.create(
+                carerId = carerId,
+                centerId = centerId
+        )
+
         return CreateChatRoomResponse(chatRoomId)
     }
 
     fun getRecentMessages(chatRoomId: UUID, messageId: UUID?): List<ChatMessageResponse> {
-        if(messageId == null){
-            val newMessageId = UuidCreator.create()
-            return chatMessageService.getRecentMessages(chatRoomId, newMessageId).map{ChatMessageResponse(it)}
-        }
-        return chatMessageService.getRecentMessages(chatRoomId, messageId).map{ChatMessageResponse(it)}
+        val effectiveMessageId = messageId ?: UuidCreator.create()
+
+        return chatMessageService.getRecentMessages(chatRoomId, effectiveMessageId)
+            .map { ChatMessageResponse(it) }
     }
 
     fun getChatroomSummary(isCarer: Boolean): List<ChatRoomSummaryInfo> {
         val userId = getUserAuthentication().userId
-
         val summary = chatroomService.findChatroomSummaries(userId, isCarer)
 
         return if (isCarer) {
@@ -103,6 +98,34 @@ class ChatFacadeService(
             summary.map {
                 val carer = carerService.getById(it.opponentId)
                 it.copy(opponentName = carer.name, opponentProfileImageUrl = carer.profileImageUrl)
+            }
+        }
+    }
+
+    fun getSingleChatRoomInfo(chatRoomId: UUID, opponentId: UUID,isCarer: Boolean): ChatRoomSummaryInfo {
+        val (carerId, centerId) = if (isCarer) {
+            getUserAuthentication().userId to opponentId
+        } else {
+            opponentId to getUserAuthentication().userId
+        }
+
+        val chatRoomSummaryInfo = chatroomService.getByCenterWithCarer(
+            centerId = centerId,
+            carerId =carerId,
+            isCarer)
+
+        return if (isCarer) {
+            val center = centerService.getById(centerId)
+            chatRoomSummaryInfo.also {
+                it.opponentName = center.centerName
+                it.opponentProfileImageUrl = center.profileImageUrl
+            }
+
+        }else {
+            val carer = carerService.getById(carerId)
+            chatRoomSummaryInfo.also {
+                it.opponentName = carer.name
+                it.opponentProfileImageUrl = carer.profileImageUrl
             }
         }
     }

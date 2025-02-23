@@ -1,7 +1,6 @@
 package com.swm.idle.presentation.chat.controller
 
 import com.swm.idle.application.chat.facade.ChatFacadeService
-import com.swm.idle.domain.chat.entity.jpa.ChatMessage
 import com.swm.idle.domain.chat.vo.ChatRoomSummaryInfo
 import com.swm.idle.presentation.chat.api.ChatCarerApi
 import com.swm.idle.support.transfer.chat.ChatMessageResponse
@@ -25,5 +24,9 @@ class ChatCarerController(
 
     override fun recentMessages(chatroomId: UUID, messageId: UUID?): List<ChatMessageResponse> {
         return chatMessageService.getRecentMessages(chatroomId, messageId)
+    }
+
+    override fun carerSingleChatroomSummary(chatroomId: UUID, opponentId: UUID): ChatRoomSummaryInfo {
+        return chatMessageService.getSingleChatRoomInfo(chatroomId,opponentId, true)
     }
 }
