@@ -12,68 +12,155 @@ import java.util.*
 interface ChatRoomRepository : JpaRepository<ChatRoom, UUID> {
 
     @Query("""
+    WITH FilteredChatRooms AS (
+        SELECT
+            cr.id AS chat_room_id,
+            cr.center_id 
+        FROM chat_room cr
+        WHERE cr.carer_id = :userId
+    ),
+    
+    UnreadMessageCounts AS (
+        SELECT 
+            cm.chat_room_id,
+            COUNT(*) AS unread_count
+        FROM chat_message cm
+        WHERE cm.chat_room_id IN (SELECT chat_room_id FROM FilteredChatRooms)
+          AND cm.is_read = false
+        GROUP BY cm.chat_room_id
+    )
+    
     SELECT
-        cr.id  AS chatRoomId,
-        cr.center_id  AS receiverId,
-        (
-            SELECT COUNT(*)
-            FROM chat_message cm2
-            WHERE cm2.chat_room_id = cr.id
-              AND cm2.receiver_id = :userId
-              AND cm2.is_read = false
-            LIMIT 100
-        ) AS unreadCount,
-        (
-            SELECT cm3.content
-            FROM chat_message cm3
-            WHERE cm3.chat_room_id = cr.id
-            ORDER BY cm3.id DESC
-            LIMIT 1
-        ) AS lastMessage,
-        (
-            SELECT cm3.created_at
-            FROM chat_message cm3
-            WHERE cm3.chat_room_id = cr.id
-            ORDER BY cm3.id DESC
-            LIMIT 1
-        ) AS lastMessageTime
-    FROM 
-        chat_room cr
-    WHERE 
-        cr.carer_id = :userId
+        fcr.chat_room_id AS chatRoomId,
+        fcr.center_id AS opponentId,
+        umc.unread_count AS unreadCount,  
+        cm.content AS lastMessage,
+        cm.created_at AS lastMessageTime
+    FROM FilteredChatRooms fcr
+    JOIN UnreadMessageCounts umc ON fcr.chat_room_id = umc.chat_room_id
+    JOIN LATERAL (
+        SELECT content, created_at
+        FROM chat_message
+        WHERE chat_room_id = fcr.chat_room_id AND is_read = false
+        ORDER BY id DESC
+        LIMIT 1
+    ) cm;
 """, nativeQuery = true)
-    fun findCaresChatroomSummaries(@Param("userId") userId: UUID): List<ChatRoomSummaryInfoProjection>
+    fun carerFindChatRooms(@Param("userId") userId: UUID): List<ChatRoomSummaryInfoProjection>
 
     @Query("""
+    WITH FilteredChatRooms AS (
+        SELECT
+            cr.id AS chat_room_id,
+            cr.carer_id 
+        FROM chat_room cr
+        WHERE cr.center_id = :userId
+    ),
+    
+    UnreadMessageCounts AS (
+        SELECT 
+            cm.chat_room_id,
+            COUNT(*) AS unread_count
+        FROM chat_message cm
+        WHERE cm.chat_room_id IN (SELECT chat_room_id FROM FilteredChatRooms)
+          AND cm.is_read = false
+        GROUP BY cm.chat_room_id
+    )
+    
     SELECT
-        cr.id  AS chatRoomId,
-        cr.center_id  AS receiverId,
-        (
-            SELECT COUNT(*)
-            FROM chat_message cm2
-            WHERE cm2.chat_room_id = cr.id
-              AND cm2.receiver_id = :userId
-              AND cm2.is_read = false
-            LIMIT 100
-        ) AS unreadCount,
-        (
-            SELECT cm3.content
-            FROM chat_message cm3
-            WHERE cm3.chat_room_id = cr.id
-            ORDER BY cm3.id DESC
-            LIMIT 1
-        ) AS lastMessage,
-        (
-            SELECT cm3.created_at
-            FROM chat_message cm3
-            WHERE cm3.chat_room_id = cr.id
-            ORDER BY cm3.id DESC
-            LIMIT 1
-        ) AS lastMessageTime
-    FROM 
-        chat_room cr
-    WHERE 
-        cr.center_id = :userId
+        fcr.chat_room_id AS chatRoomId,
+        fcr.carer_id AS opponentId,
+        umc.unread_count AS unreadCount,  
+        cm.content AS lastMessage,
+        cm.created_at AS lastMessageTime
+    FROM FilteredChatRooms fcr
+    JOIN UnreadMessageCounts umc ON fcr.chat_room_id = umc.chat_room_id
+    JOIN LATERAL (
+        SELECT content, created_at
+        FROM chat_message
+        WHERE chat_room_id = fcr.chat_room_id AND is_read = false
+        ORDER BY id DESC
+        LIMIT 1
+    ) cm;
 """, nativeQuery = true)
-    fun findCentersChatroomSummaries(@Param("userId") userId: UUID): List<ChatRoomSummaryInfoProjection>
+    fun centerFindChatRooms(@Param("userId") userId: UUID): List<ChatRoomSummaryInfoProjection>
+
+
+    @Query("""
+    WITH FilteredChatRooms AS (
+        SELECT
+            cr.id AS chat_room_id,
+            cr.center_id 
+        FROM chat_room cr
+        WHERE cr.carer_id = :carerId
+        AND cr.center_id =:centerId
+    ),
+    
+    UnreadMessageCounts AS (
+        SELECT 
+            cm.chat_room_id,
+            COUNT(*) AS unread_count
+        FROM chat_message cm
+        WHERE cm.chat_room_id IN (SELECT chat_room_id FROM FilteredChatRooms)
+          AND cm.is_read = false
+        GROUP BY cm.chat_room_id
+    )
+    
+    SELECT
+        fcr.chat_room_id AS chatRoomId,
+        fcr.center_id AS opponentId,
+        umc.unread_count AS unreadCount,  
+        cm.content AS lastMessage,
+        cm.created_at AS lastMessageTime
+    FROM FilteredChatRooms fcr
+    JOIN UnreadMessageCounts umc ON fcr.chat_room_id = umc.chat_room_id
+    JOIN LATERAL (
+        SELECT content, created_at
+        FROM chat_message
+        WHERE chat_room_id = fcr.chat_room_id AND is_read = false
+        ORDER BY id DESC
+        LIMIT 1
+    ) cm;
+""", nativeQuery = true)
+    fun carerFindSingleChatRoom(@Param("centerId") centerId: UUID,
+                                @Param("carerId") carerId: UUID): ChatRoomSummaryInfoProjection
+
+    @Query("""
+    WITH FilteredChatRooms AS (
+        SELECT
+            cr.id AS chat_room_id,
+            cr.carer_id 
+        FROM chat_room cr
+        WHERE cr.carer_id = :carerId
+        AND cr.center_id =:centerId
+    ),
+    
+    UnreadMessageCounts AS (
+        SELECT 
+            cm.chat_room_id,
+            COUNT(*) AS unread_count
+        FROM chat_message cm
+        WHERE cm.chat_room_id IN (SELECT chat_room_id FROM FilteredChatRooms)
+          AND cm.is_read = false
+        GROUP BY cm.chat_room_id
+    )
+    
+    SELECT
+        fcr.chat_room_id AS chatRoomId,
+        fcr.carer_id AS opponentId,
+        umc.unread_count AS unreadCount,  
+        cm.content AS lastMessage,
+        cm.created_at AS lastMessageTime
+    FROM FilteredChatRooms fcr
+    JOIN UnreadMessageCounts umc ON fcr.chat_room_id = umc.chat_room_id
+    JOIN LATERAL (
+        SELECT content, created_at
+        FROM chat_message
+        WHERE chat_room_id = fcr.chat_room_id AND is_read = false
+        ORDER BY id DESC
+        LIMIT 1
+    ) cm;
+""", nativeQuery = true)
+    fun centerFindSingleChatRoom(@Param("centerId") centerId: UUID,
+                                 @Param("carerId") carerId: UUID): ChatRoomSummaryInfoProjection
 }

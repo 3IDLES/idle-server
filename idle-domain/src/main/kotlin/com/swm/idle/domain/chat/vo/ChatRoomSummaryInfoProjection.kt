@@ -4,7 +4,7 @@ import java.time.LocalDateTime
 
 interface ChatRoomSummaryInfoProjection {
     fun getChatRoomId(): ByteArray
-    fun getReceiverId(): ByteArray
+    fun getOpponentId(): ByteArray
     fun getUnreadCount(): Int
     fun getLastMessage(): String
     fun getLastMessageTime(): LocalDateTime
