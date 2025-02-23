@@ -28,7 +28,7 @@ interface ChatCarerApi {
                        @RequestParam(value = "message-id", required = false) messageId: UUID?): List<ChatMessage>
 
     @Secured
-    @Operation(summary = "보호사의 채팅방 요약 조회 API")
+    @Operation(summary = "보호사의 채팅방 요약 목록 조회 API")
     @GetMapping("/chatrooms")
     @ResponseStatus(HttpStatus.OK)
     fun carerChatroomSummary(): List<ChatRoomSummaryInfo>
