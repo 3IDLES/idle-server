@@ -46,13 +46,13 @@ interface ChatRoomRepository : JpaRepository<ChatRoom, UUID> {
         LIMIT 1
     ) cm;
 """, nativeQuery = true)
-    fun findCaresChatroomSummaries(@Param("userId") userId: UUID): List<ChatRoomSummaryInfoProjection>
+    fun carerFindChatRooms(@Param("userId") userId: UUID): List<ChatRoomSummaryInfoProjection>
 
     @Query("""
     WITH FilteredChatRooms AS (
         SELECT
             cr.id AS chat_room_id,
-            cr.center_id 
+            cr.carer_id 
         FROM chat_room cr
         WHERE cr.center_id = :userId
     ),
@@ -83,7 +83,7 @@ interface ChatRoomRepository : JpaRepository<ChatRoom, UUID> {
         LIMIT 1
     ) cm;
 """, nativeQuery = true)
-    fun findCentersChatroomSummaries(@Param("userId") userId: UUID): List<ChatRoomSummaryInfoProjection>
+    fun centerFindChatRooms(@Param("userId") userId: UUID): List<ChatRoomSummaryInfoProjection>
 
 
     @Query("""
@@ -122,14 +122,14 @@ interface ChatRoomRepository : JpaRepository<ChatRoom, UUID> {
         LIMIT 1
     ) cm;
 """, nativeQuery = true)
-    fun carerFindByCenterIdWithCarerId(@Param("centerId") centerId: UUID,
-                                       @Param("carerId") carerId: UUID): ChatRoomSummaryInfoProjection
+    fun carerFindSingleChatRoom(@Param("centerId") centerId: UUID,
+                                @Param("carerId") carerId: UUID): ChatRoomSummaryInfoProjection
 
     @Query("""
     WITH FilteredChatRooms AS (
         SELECT
             cr.id AS chat_room_id,
-            cr.center_id 
+            cr.carer_id 
         FROM chat_room cr
         WHERE cr.carer_id = :carerId
         AND cr.center_id =:centerId
@@ -161,6 +161,6 @@ interface ChatRoomRepository : JpaRepository<ChatRoom, UUID> {
         LIMIT 1
     ) cm;
 """, nativeQuery = true)
-    fun centerFindByCenterIdWithCarerId(@Param("centerId") centerId: UUID,
-                                        @Param("carerId") carerId: UUID): ChatRoomSummaryInfoProjection
+    fun centerFindSingleChatRoom(@Param("centerId") centerId: UUID,
+                                 @Param("carerId") carerId: UUID): ChatRoomSummaryInfoProjection
 }

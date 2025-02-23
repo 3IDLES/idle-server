@@ -21,9 +21,9 @@ class ChatRoomService (val chatroomRepository: ChatRoomRepository){
     fun findChatroomSummaries(userId: UUID, isCarer: Boolean): List<ChatRoomSummaryInfo> {
         val projections: List<ChatRoomSummaryInfoProjection>
         if(isCarer) {
-            projections = chatroomRepository.findCaresChatroomSummaries(userId)
+            projections = chatroomRepository.carerFindChatRooms(userId)
         }else {
-            projections = chatroomRepository.findCentersChatroomSummaries(userId)
+            projections = chatroomRepository.centerFindChatRooms(userId)
         }
 
         return projections.map { projection ->
@@ -44,12 +44,12 @@ class ChatRoomService (val chatroomRepository: ChatRoomRepository){
         val projections: ChatRoomSummaryInfoProjection
 
         if(isCarer) {
-            projections = chatroomRepository.carerFindByCenterIdWithCarerId(
+            projections = chatroomRepository.carerFindSingleChatRoom(
                 centerId = centerId,
                 carerId = carerId
             )
         }else {
-            projections = chatroomRepository.centerFindByCenterIdWithCarerId(
+            projections = chatroomRepository.centerFindSingleChatRoom(
                 centerId = centerId,
                 carerId = carerId
             )
