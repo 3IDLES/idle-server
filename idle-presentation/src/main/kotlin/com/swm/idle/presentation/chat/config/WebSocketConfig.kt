@@ -26,9 +26,8 @@ class WebSocketConfig(
     override fun registerStompEndpoints(registry: StompEndpointRegistry) {
         registry
             .addEndpoint("/ws")
+            .addInterceptors(chatHandshakeInterceptor)
             .setAllowedOriginPatterns("*")
-            .withSockJS()
-            .setInterceptors(chatHandshakeInterceptor)
     }
 
     override fun configureMessageConverters(messageConverters: MutableList<MessageConverter>): Boolean {
