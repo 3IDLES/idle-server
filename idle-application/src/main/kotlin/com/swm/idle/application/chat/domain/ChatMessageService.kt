@@ -3,22 +3,29 @@ package com.swm.idle.application.chat.domain
 import com.swm.idle.domain.chat.entity.jpa.ChatMessage
 import com.swm.idle.domain.chat.repository.ChatMessageRepository
 import com.swm.idle.support.transfer.chat.ReadChatMessagesReqeust
+import com.swm.idle.support.transfer.chat.SendChatMessageRequest
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
-import java.util.UUID
+import java.util.*
 
 @Service
 class ChatMessageService (
     private val chatMessageRepository: ChatMessageRepository
 ){
     @Transactional
-    fun save(chatMessage: ChatMessage) {
-        chatMessageRepository.save(chatMessage)
+    fun save(request: SendChatMessageRequest, userId: UUID): ChatMessage {
+        val message = ChatMessage(
+            chatRoomId = UUID.fromString(request.chatroomId),
+            content = request.content,
+            senderId = userId,
+            receiverId = UUID.fromString(request.receiverId),
+        )
+        return chatMessageRepository.save(message)
     }
 
     @Transactional
     fun read(request: ReadChatMessagesReqeust, readUserId: UUID) {
-        chatMessageRepository.readByChatroomId(request.chatRoomId, readUserId)
+        chatMessageRepository.readByChatroomId(request.chatroomId, readUserId)
     }
 
     @Transactional

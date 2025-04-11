@@ -5,19 +5,23 @@ import java.util.UUID
 import java.time.LocalDateTime
 
 data class ChatMessageResponse(
+    val type: ChatMessageType,
     val id: UUID,
-    val chatRoomId: UUID,
+    val chatroomId: UUID,
     val senderId: UUID,
     val receiverId: UUID,
     val content: String,
-    val createdAt: LocalDateTime?
+    val createdAt: LocalDateTime,
+    val isRead: Boolean
 ) {
     constructor(message: ChatMessage) : this(
+        type = ChatMessageType.MESSAGE,
         id = message.id,
-        chatRoomId = message.chatRoomId,
+        chatroomId = message.chatRoomId,
         senderId = message.senderId,
         receiverId = message.receiverId,
         content = message.content,
-        createdAt = message.createdAt
+        isRead = message.isRead,
+        createdAt = message.createdAt ?: LocalDateTime.now(),
     )
 }
