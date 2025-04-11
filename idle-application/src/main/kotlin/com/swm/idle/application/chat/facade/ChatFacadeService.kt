@@ -43,7 +43,7 @@ class ChatFacadeService(
         messageService.read(request, userId)
 
         val readMessage = ReadMessage(
-            chatRoomId = request.chatRoomId,
+            chatRoomId = request.chatroomId,
             receiverId = request.opponentId,
             readUserId = userId
         )
