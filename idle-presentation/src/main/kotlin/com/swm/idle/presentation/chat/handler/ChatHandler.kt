@@ -15,6 +15,7 @@ class ChatHandler(
     @EventListener
     fun handleSendMessage(sendMessage: ChatMessage) {
         messageTemplate.convertAndSend("/sub/${sendMessage.receiverId}", ChatMessageResponse(sendMessage))
+        messageTemplate.convertAndSend("/sub/${sendMessage.senderId}", ChatMessageResponse(sendMessage))
     }
 
     @EventListener
