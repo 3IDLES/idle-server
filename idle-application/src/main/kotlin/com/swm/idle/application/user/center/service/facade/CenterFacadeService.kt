@@ -78,6 +78,7 @@ class CenterFacadeService(
                 ?: throw CenterException.NotFoundException()
 
         return GetCenterProfileResponse(
+            id = center.id,
             centerName = center.centerName,
             officeNumber = center.officeNumber,
             roadNameAddress = center.roadNameAddress,
@@ -94,6 +95,7 @@ class CenterFacadeService(
         val center = centerService.getById(centerId)
 
         return GetCenterProfileResponse(
+            id = center.id,
             centerName = center.centerName,
             officeNumber = center.officeNumber,
             roadNameAddress = center.roadNameAddress,
