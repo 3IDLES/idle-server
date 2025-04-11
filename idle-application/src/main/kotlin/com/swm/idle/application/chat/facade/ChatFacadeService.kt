@@ -6,14 +6,12 @@ import com.swm.idle.application.common.security.getUserAuthentication
 import com.swm.idle.application.notification.domain.DeviceTokenService
 import com.swm.idle.application.user.carer.domain.CarerService
 import com.swm.idle.application.user.center.service.domain.CenterService
-import com.swm.idle.domain.chat.entity.jpa.ChatMessage
 import com.swm.idle.domain.chat.event.ChatRedisPublisher
 import com.swm.idle.domain.chat.vo.ChatRoomSummaryInfo
 import com.swm.idle.domain.chat.vo.ReadMessage
 import com.swm.idle.infrastructure.fcm.chat.ChatNotificationService
 import com.swm.idle.support.common.uuid.UuidCreator
 import com.swm.idle.support.transfer.chat.*
-import kotlinx.coroutines.*
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -33,35 +31,23 @@ class ChatFacadeService(
 
     @Transactional
     fun sendMessage(request: SendChatMessageRequest, userId: UUID) {
-        val message = ChatMessage(
-            chatRoomId = UUID.fromString(request.chatroomId),
-            content = request.content,
-            senderId = userId,
-            receiverId = UUID.fromString(request.receiverId),
-        )
-        runBlocking{
-            launch { messageService.save(message) }
-            launch { redisPublisher.publish(message) }
-            launch {
-                val token = deviceTokenService.findByUserId(message.receiverId)
-                notificationService.send(message, request.senderName, token)
-            }
-        }
+        val message = messageService.save(request, userId)
+        redisPublisher.publish(message)
 
+        val token = deviceTokenService.findByUserId(message.receiverId)
+        notificationService.send(message, request.senderName, token)
     }
 
     @Transactional
-    fun readMessage(request: ReadChatMessagesReqeust, userId: UUID){
-        runBlocking {
-            launch { messageService.read(request, userId) }
-            launch {
-                val redisMessage = ReadMessage(
-                    chatRoomId = request.chatRoomId,
-                    receiverId = request.opponentId,
-                    readUserId = userId)
-                redisPublisher.publish(redisMessage)
-            }
-        }
+    fun readMessage(request: ReadChatMessagesReqeust, userId: UUID) {
+        messageService.read(request, userId)
+
+        val readMessage = ReadMessage(
+            chatRoomId = request.chatRoomId,
+            receiverId = request.opponentId,
+            readUserId = userId
+        )
+        redisPublisher.publish(readMessage)
     }
 
     @Transactional
