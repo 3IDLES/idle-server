@@ -1,6 +1,8 @@
 package com.swm.idle.presentation.chat.config
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import org.springframework.context.annotation.Configuration
 import org.springframework.messaging.converter.DefaultContentTypeResolver
 import org.springframework.messaging.converter.MappingJackson2MessageConverter
@@ -30,19 +32,19 @@ class WebSocketConfig(
             .setAllowedOriginPatterns("*")
     }
 
-    override fun configureMessageConverters(messageConverters: MutableList<MessageConverter>): Boolean {
+    override fun configureMessageConverters(messageConverters: MutableList<MessageConverter?>): Boolean {
         val resolver = DefaultContentTypeResolver()
-            .also {
-                it.defaultMimeType = MimeTypeUtils.APPLICATION_JSON
-            }
+        resolver.defaultMimeType = MimeTypeUtils.APPLICATION_JSON
 
-        messageConverters.add(
-            MappingJackson2MessageConverter()
-                .also {
-                    it.objectMapper = ObjectMapper()
-                    it.contentTypeResolver = resolver
-                }
-        )
+        val objectMapper = ObjectMapper()
+            .registerModule(JavaTimeModule())
+            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+
+        val converter = MappingJackson2MessageConverter()
+        converter.objectMapper = objectMapper
+        converter.contentTypeResolver = resolver
+
+        messageConverters.add(converter)
         return false
     }
 }
