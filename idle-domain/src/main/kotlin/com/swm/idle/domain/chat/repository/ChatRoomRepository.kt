@@ -11,6 +11,8 @@ import java.util.*
 @Repository
 interface ChatRoomRepository : JpaRepository<ChatRoom, UUID> {
 
+    fun findByCarerIdAndCenterId(carerId: UUID, centerId: UUID): ChatRoom?
+
     @Query("""
     WITH FilteredChatRooms AS (
         SELECT
