@@ -1,12 +1,15 @@
 package com.swm.idle.support.transfer.user.center
 
 import io.swagger.v3.oas.annotations.media.Schema
+import java.util.*
 
 @Schema(
     name = "GetCenterProfileResponse",
     description = "센터 프로필 상세 조회"
 )
 data class GetCenterProfileResponse(
+    @Schema(description = "센터 id")
+    val id: UUID,
     @Schema(description = "센터 이름")
     val centerName: String,
     @Schema(description = "대표자(담당자) 연락처")
