@@ -6,7 +6,7 @@ import com.swm.idle.application.common.security.getUserAuthentication
 import com.swm.idle.application.notification.domain.DeviceTokenService
 import com.swm.idle.application.user.carer.domain.CarerService
 import com.swm.idle.application.user.center.service.domain.CenterService
-import com.swm.idle.domain.chat.event.ChatRedisPublisher
+import com.swm.idle.domain.chat.event.ChatRedisTemplate
 import com.swm.idle.domain.chat.vo.ChatRoomSummaryInfo
 import com.swm.idle.domain.chat.vo.ReadMessage
 import com.swm.idle.infrastructure.fcm.chat.ChatNotificationService
@@ -19,7 +19,7 @@ import java.util.*
 @Service
 @Transactional(readOnly = true)
 class ChatFacadeService(
-    private val redisPublisher: ChatRedisPublisher,
+    private val chatRedisTemplate: ChatRedisTemplate,
     private val messageService: ChatMessageService,
     private val notificationService: ChatNotificationService,
     private val deviceTokenService: DeviceTokenService,
@@ -32,8 +32,9 @@ class ChatFacadeService(
     @Transactional
     fun sendMessage(request: SendChatMessageRequest, userId: UUID) {
         val message = messageService.save(request, userId)
-        redisPublisher.publish(message)
+        chatRedisTemplate.publish(message)
 
+        if (chatRedisTemplate.isChatting(message.receiverId)) return
         val token = deviceTokenService.findByUserId(message.receiverId)
         notificationService.send(message, request.senderName, token)
     }
@@ -47,7 +48,7 @@ class ChatFacadeService(
             receiverId = request.opponentId,
             readUserId = userId
         )
-        redisPublisher.publish(readMessage)
+        chatRedisTemplate.publish(readMessage)
     }
 
     @Transactional
@@ -86,34 +87,6 @@ class ChatFacadeService(
             summary.map {
                 val carer = carerService.getById(it.opponentId)
                 it.copy(opponentName = carer.name, opponentProfileImageUrl = carer.profileImageUrl)
-            }
-        }
-    }
-
-    fun getSingleChatRoomInfo(chatRoomId: UUID, opponentId: UUID,isCarer: Boolean): ChatRoomSummaryInfo {
-        val (carerId, centerId) = if (isCarer) {
-            getUserAuthentication().userId to opponentId
-        } else {
-            opponentId to getUserAuthentication().userId
-        }
-
-        val chatRoomSummaryInfo = chatroomService.getByCenterWithCarer(
-            centerId = centerId,
-            carerId =carerId,
-            isCarer)
-
-        return if (isCarer) {
-            val center = centerService.getById(centerId)
-            chatRoomSummaryInfo.also {
-                it.opponentName = center.centerName
-                it.opponentProfileImageUrl = center.profileImageUrl
-            }
-
-        }else {
-            val carer = carerService.getById(carerId)
-            chatRoomSummaryInfo.also {
-                it.opponentName = carer.name
-                it.opponentProfileImageUrl = carer.profileImageUrl
             }
         }
     }

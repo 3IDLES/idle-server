@@ -13,7 +13,8 @@ interface ChatRoomRepository : JpaRepository<ChatRoom, UUID> {
 
     fun findByCarerIdAndCenterId(carerId: UUID, centerId: UUID): ChatRoom?
 
-    @Query("""
+    @Query(
+        """
     WITH FilteredChatRooms AS (
         SELECT
             cr.id AS chat_room_id,
@@ -29,6 +30,7 @@ interface ChatRoomRepository : JpaRepository<ChatRoom, UUID> {
         FROM chat_message cm
         WHERE cm.chat_room_id IN (SELECT chat_room_id FROM FilteredChatRooms)
           AND cm.is_read = false
+          AND cm.receiverId = :userId
         GROUP BY cm.chat_room_id
     )
     
@@ -47,10 +49,12 @@ interface ChatRoomRepository : JpaRepository<ChatRoom, UUID> {
         ORDER BY id DESC
         LIMIT 1
     ) cm;
-""", nativeQuery = true)
+""", nativeQuery = true
+    )
     fun carerFindChatRooms(@Param("userId") userId: UUID): List<ChatRoomSummaryInfoProjection>
 
-    @Query("""
+    @Query(
+        """
     WITH FilteredChatRooms AS (
         SELECT
             cr.id AS chat_room_id,
@@ -66,6 +70,7 @@ interface ChatRoomRepository : JpaRepository<ChatRoom, UUID> {
         FROM chat_message cm
         WHERE cm.chat_room_id IN (SELECT chat_room_id FROM FilteredChatRooms)
           AND cm.is_read = false
+          AND cm.receiverId = :userId
         GROUP BY cm.chat_room_id
     )
     
@@ -84,85 +89,7 @@ interface ChatRoomRepository : JpaRepository<ChatRoom, UUID> {
         ORDER BY id DESC
         LIMIT 1
     ) cm;
-""", nativeQuery = true)
+""", nativeQuery = true
+    )
     fun centerFindChatRooms(@Param("userId") userId: UUID): List<ChatRoomSummaryInfoProjection>
-
-
-    @Query("""
-    WITH FilteredChatRooms AS (
-        SELECT
-            cr.id AS chat_room_id,
-            cr.center_id 
-        FROM chat_room cr
-        WHERE cr.carer_id = :carerId
-        AND cr.center_id =:centerId
-    ),
-    
-    UnreadMessageCounts AS (
-        SELECT 
-            cm.chat_room_id,
-            COUNT(*) AS unread_count
-        FROM chat_message cm
-        WHERE cm.chat_room_id IN (SELECT chat_room_id FROM FilteredChatRooms)
-          AND cm.is_read = false
-        GROUP BY cm.chat_room_id
-    )
-    
-    SELECT
-        fcr.chat_room_id AS chatRoomId,
-        fcr.center_id AS opponentId,
-        umc.unread_count AS unreadCount,  
-        cm.content AS lastMessage,
-        cm.created_at AS lastMessageTime
-    FROM FilteredChatRooms fcr
-    JOIN UnreadMessageCounts umc ON fcr.chat_room_id = umc.chat_room_id
-    JOIN LATERAL (
-        SELECT content, created_at
-        FROM chat_message
-        WHERE chat_room_id = fcr.chat_room_id AND is_read = false
-        ORDER BY id DESC
-        LIMIT 1
-    ) cm;
-""", nativeQuery = true)
-    fun carerFindSingleChatRoom(@Param("centerId") centerId: UUID,
-                                @Param("carerId") carerId: UUID): ChatRoomSummaryInfoProjection
-
-    @Query("""
-    WITH FilteredChatRooms AS (
-        SELECT
-            cr.id AS chat_room_id,
-            cr.carer_id 
-        FROM chat_room cr
-        WHERE cr.carer_id = :carerId
-        AND cr.center_id =:centerId
-    ),
-    
-    UnreadMessageCounts AS (
-        SELECT 
-            cm.chat_room_id,
-            COUNT(*) AS unread_count
-        FROM chat_message cm
-        WHERE cm.chat_room_id IN (SELECT chat_room_id FROM FilteredChatRooms)
-          AND cm.is_read = false
-        GROUP BY cm.chat_room_id
-    )
-    
-    SELECT
-        fcr.chat_room_id AS chatRoomId,
-        fcr.carer_id AS opponentId,
-        umc.unread_count AS unreadCount,  
-        cm.content AS lastMessage,
-        cm.created_at AS lastMessageTime
-    FROM FilteredChatRooms fcr
-    JOIN UnreadMessageCounts umc ON fcr.chat_room_id = umc.chat_room_id
-    JOIN LATERAL (
-        SELECT content, created_at
-        FROM chat_message
-        WHERE chat_room_id = fcr.chat_room_id AND is_read = false
-        ORDER BY id DESC
-        LIMIT 1
-    ) cm;
-""", nativeQuery = true)
-    fun centerFindSingleChatRoom(@Param("centerId") centerId: UUID,
-                                 @Param("carerId") carerId: UUID): ChatRoomSummaryInfoProjection
 }

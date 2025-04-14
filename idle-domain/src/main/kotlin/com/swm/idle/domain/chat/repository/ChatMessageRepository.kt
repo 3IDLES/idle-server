@@ -2,6 +2,7 @@ package com.swm.idle.domain.chat.repository
 
 import com.swm.idle.domain.chat.entity.jpa.ChatMessage
 import io.lettuce.core.dynamic.annotation.Param
+import jakarta.transaction.Transactional
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
@@ -10,7 +11,8 @@ import java.util.*
 
 @Repository
 interface ChatMessageRepository : JpaRepository<ChatMessage, UUID> {
-    @Modifying
+    @Transactional
+    @Modifying(clearAutomatically = true)
     @Query("""
     UPDATE ChatMessage cm 
     SET cm.isRead = true 
