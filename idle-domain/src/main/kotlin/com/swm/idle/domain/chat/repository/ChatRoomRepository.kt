@@ -29,6 +29,7 @@ interface ChatRoomRepository : JpaRepository<ChatRoom, UUID> {
         FROM chat_message cm
         WHERE cm.chat_room_id IN (SELECT chat_room_id FROM FilteredChatRooms)
           AND cm.is_read = false
+          AND cm.receiverId = :userId
         GROUP BY cm.chat_room_id
     )
     
@@ -66,6 +67,7 @@ interface ChatRoomRepository : JpaRepository<ChatRoom, UUID> {
         FROM chat_message cm
         WHERE cm.chat_room_id IN (SELECT chat_room_id FROM FilteredChatRooms)
           AND cm.is_read = false
+          AND cm.receiverId = :userId
         GROUP BY cm.chat_room_id
     )
     
