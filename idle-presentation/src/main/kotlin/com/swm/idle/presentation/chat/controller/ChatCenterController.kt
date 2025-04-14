@@ -25,8 +25,4 @@ class ChatCenterController(
     override fun recentMessages(chatroomId: UUID, messageId: UUID?): List<ChatMessageResponse> {
         return chatMessageService.getRecentMessages(chatroomId, messageId)
     }
-
-    override fun carerSingleChatroomSummary(chatroomId: UUID, opponentId: UUID): ChatRoomSummaryInfo {
-        return chatMessageService.getSingleChatRoomInfo(chatroomId, opponentId, false)
-    }
 }

@@ -90,32 +90,4 @@ class ChatFacadeService(
             }
         }
     }
-
-    fun getSingleChatRoomInfo(chatRoomId: UUID, opponentId: UUID,isCarer: Boolean): ChatRoomSummaryInfo {
-        val (carerId, centerId) = if (isCarer) {
-            getUserAuthentication().userId to opponentId
-        } else {
-            opponentId to getUserAuthentication().userId
-        }
-
-        val chatRoomSummaryInfo = chatroomService.getByCenterWithCarer(
-            centerId = centerId,
-            carerId =carerId,
-            isCarer)
-
-        return if (isCarer) {
-            val center = centerService.getById(centerId)
-            chatRoomSummaryInfo.also {
-                it.opponentName = center.centerName
-                it.opponentProfileImageUrl = center.profileImageUrl
-            }
-
-        }else {
-            val carer = carerService.getById(carerId)
-            chatRoomSummaryInfo.also {
-                it.opponentName = carer.name
-                it.opponentProfileImageUrl = carer.profileImageUrl
-            }
-        }
-    }
 }
