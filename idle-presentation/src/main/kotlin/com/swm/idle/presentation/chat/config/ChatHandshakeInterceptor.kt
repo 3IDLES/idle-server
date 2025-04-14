@@ -1,6 +1,7 @@
 package com.swm.idle.presentation.chat.config
 
 import com.swm.idle.application.common.properties.JwtTokenProperties
+import com.swm.idle.domain.chat.event.ChatRedisTemplate
 import com.swm.idle.support.security.util.JwtTokenProvider
 import org.springframework.http.server.ServerHttpRequest
 import org.springframework.http.server.ServerHttpResponse
@@ -8,10 +9,12 @@ import org.springframework.http.server.ServletServerHttpRequest
 import org.springframework.stereotype.Component
 import org.springframework.web.socket.WebSocketHandler
 import org.springframework.web.socket.server.HandshakeInterceptor
+import java.time.Duration
 
 @Component
 class ChatHandshakeInterceptor(
     private val jwtTokenProperties: JwtTokenProperties,
+    private val redisTemplate : ChatRedisTemplate,
     ): HandshakeInterceptor {
 
     override fun beforeHandshake(
@@ -29,7 +32,11 @@ class ChatHandshakeInterceptor(
                 return false
             }
 
-            attributes["userId"] = claims.customClaims["userId"] as String
+            val userId = claims.customClaims["userId"] as String
+            attributes["userId"] = userId
+
+            redisTemplate.setSession(userId, Duration.ofHours(24))
+
             return true
         }
         return false

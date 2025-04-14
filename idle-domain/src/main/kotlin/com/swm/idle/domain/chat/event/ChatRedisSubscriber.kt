@@ -21,17 +21,17 @@ class ChatRedisSubscriber(
         val actualJson = objectMapper.readTree(rawJson).asText()
         val jsonNode = objectMapper.readTree(actualJson)
 
-        when (jsonNode.get(ChatRedisPublisher.TYPE).asText()) {
-            ChatRedisPublisher.SEND_MESSAGE -> {
+        when (jsonNode.get(ChatRedisTemplate.TYPE).asText()) {
+            ChatRedisTemplate.SEND_MESSAGE -> {
                 val chatMessage: ChatMessage = objectMapper.treeToValue(
-                    jsonNode.get(ChatRedisPublisher.DATA), ChatMessage::class.java
+                    jsonNode.get(ChatRedisTemplate.DATA), ChatMessage::class.java
                 )
 
                 eventPublisher.publishEvent(chatMessage)
             }
-            ChatRedisPublisher.READ_MESSAGE -> {
+            ChatRedisTemplate.READ_MESSAGE -> {
                 val readMessage: ReadMessage = objectMapper.treeToValue(
-                    jsonNode.get(ChatRedisPublisher.DATA), ReadMessage::class.java
+                    jsonNode.get(ChatRedisTemplate.DATA), ReadMessage::class.java
                 )
 
                 eventPublisher.publishEvent(readMessage)

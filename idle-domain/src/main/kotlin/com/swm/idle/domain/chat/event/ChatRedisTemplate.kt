@@ -6,12 +6,25 @@ import com.swm.idle.domain.chat.entity.jpa.ChatMessage
 import com.swm.idle.domain.chat.vo.ReadMessage
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Component
+import java.time.Duration
+import java.util.*
 
 @Component
-class ChatRedisPublisher(
+class ChatRedisTemplate(
     private val redisTemplate: RedisTemplate<String, Any>,
     private val objectMapper: ObjectMapper
 ) {
+    fun isChatting(userId: UUID): Boolean {
+        return redisTemplate.hasKey(userId.toString())
+    }
+
+    fun delete(userId: String) {
+        redisTemplate.delete(userId)
+    }
+
+    fun setSession(userId: String, duration: Duration) {
+        redisTemplate.opsForValue().set(userId,duration)
+    }
 
     fun publish(chatMessage: ChatMessage) {
         val message = objectMapper.writeValueAsString(
