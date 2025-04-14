@@ -37,22 +37,4 @@ class ChatRoomService (val chatroomRepository: ChatRoomRepository){
             count = projection.getUnreadCount(),
             opponentId = projection.getOpponentId()
         )
-
-    fun getByCenterWithCarer(centerId: UUID, carerId: UUID, isCarer: Boolean): ChatRoomSummaryInfo {
-        val projections: ChatRoomSummaryInfoProjection
-
-        if(isCarer) {
-            projections = chatroomRepository.carerFindSingleChatRoom(
-                centerId = centerId,
-                carerId = carerId
-            )
-        }else {
-            projections = chatroomRepository.centerFindSingleChatRoom(
-                centerId = centerId,
-                carerId = carerId
-            )
-        }
-
-        return mappingChatRoomSummaryInfo(projections)
-    }
 }
