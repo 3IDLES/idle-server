@@ -23,7 +23,7 @@ class ChatRedisTemplate(
     }
 
     fun setSession(userId: String, duration: Duration) {
-        redisTemplate.opsForValue().set(userId,duration)
+        redisTemplate.opsForValue().set(userId,"active",duration)
     }
 
     fun publish(chatMessage: ChatMessage) {
