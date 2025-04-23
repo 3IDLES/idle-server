@@ -1,4 +1,4 @@
-# 🧡 케어밋 - 쉽고 빠르게 만나는 집 근처 요양 일자리 🧡
+#  케어밋 - 쉽고 빠르게 만나는 집 근처 요양 일자리 
 
 <img width="900" alt="ppt_표지" src="https://github.com/user-attachments/assets/a022bac8-ad7e-4948-a796-7b1522c617dd">
 
@@ -17,17 +17,58 @@
   </tr>
 </table>
 
-[👉 랜딩 페이지 바로가기](https://caremeet.kr)
+<br>
+<br>
+<br>
 
-<br><br>
+# 서비스 설명
 
-<img width="900" alt="image" src="https://github.com/user-attachments/assets/5bdd9988-f197-4482-82df-9a45fbb9062a">
+- 요양보호사 구직 사이트의 특징을 분석하여, 센터와 요양보호사 간 구인·구직 프로세스를 보다 편리하게 지원하는 애플리케이션입니다.
+- 워크넷에 매일 업데이트되는 공지를 크롤링하여, 사용자의 위치를 기반으로 가까운 순서대로 센터 구인 공고를 제공합니다. 이를 통해 보호사는 구직을 위해 센터에 전화하거나 채팅으로 직접 문의할 수 있습니다.
 
-<br><br>
+<br>
+<br>
+<br>
 
-<img width="900" alt="image" src="https://github.com/user-attachments/assets/8ce335f2-e890-4ee0-ac7b-40a13cf20ad5">
+#  Server Tech Stack
 
-## 🌟 Features
+| 📆 진행 기간 | 2025.01 ~ 운영 중 |
+|-------------|------------------|
+| 🤖 백엔드 사용 기술 | Kotlin, Spring Boot, Spring Batch, Data JPA, MySQL, Redis |
+| ⚙️ 인프라 사용 기술 | Docker, GitHub Actions, Firebase Cloud Message, Sentry,<br> AWS (VPC, Internet Gateway, NAT Gateway, Route Table, Security Group, EC2, RDS 등) |
+
+<br>
+<br>
+<br>
+
+# AWS 클라우드 구조
+
+![image](https://github.com/user-attachments/assets/e8af5059-55c1-485e-b330-283a3c729d10)
+
+
+- VPC 기반의 클라우드 인프라를 구성하여, 퍼블릭/프라이빗 서브넷, Bastion Host, NAT Gateway, ALB 등을 통해 보안성과 가용성을 확보했습니다.
+- 또한, 개발/운영 환경을 분리하고, RDS와 ElastiCache 등을 활용해 안정적인 서비스 운영이 가능한 구조를 설계했습니다.
+
+<br>
+<br>
+<br>
+
+# 애플리케이션 구조
+
+![image](https://github.com/user-attachments/assets/859c3093-3e8b-4fd4-839f-aec189cd32e4)
+
+- ALB를 통해 외부 요청을 수신하고, Dev/Prod 환경에 따라 트래픽을 분산시켜 안정성과 확장성을 확보했습니다.
+- Bastion Server를 통해서만 내부 자원(MySQL, Redis 등)에 접근 가능하도록 설정하여 보안성을 강화했습니다.
+- GitHub와 GitAction을 연동해 CI/CD 자동화를 구현하고, Bastion을 통해 서버에 배포하도록 구성했습니다.
+- Redis는 Session Storage 용도외에도 Pub/Sub 모델을 적용해 채팅메시지 전송에 이벤트 처리로 활용했습니다.
+
+<br>
+<br>
+<br>
+
+
+
+# Features
 
 ### 👉 요양 보호사 기능
 
@@ -106,13 +147,11 @@
   </tr>
 </table>
 
-## 🚩 Server Tech Stack(작성 중)
+<br><br><br>
+# 👍 서비스 성과
 
+<img width="900" alt="image" src="https://github.com/user-attachments/assets/5bdd9988-f197-4482-82df-9a45fbb9062a">
 
+<br><br>
 
-## 👟 Sprint
-<a href="https://www.notion.so/f5756a8f29e549358f87872802293cda">
-<img width="1066" alt="image" src="https://github.com/user-attachments/assets/51c8e0e2-57dc-4bed-a4c8-f9e41f084f73"></a>
-
-
-[스프린트 회고 보러가기](https://www.notion.so/f5756a8f29e549358f87872802293cda)
+<img width="900" alt="image" src="https://github.com/user-attachments/assets/8ce335f2-e890-4ee0-ac7b-40a13cf20ad5">
