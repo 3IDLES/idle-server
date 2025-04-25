@@ -1,0 +1,96 @@
+package com.swm.idle.batch.crawler
+
+import io.github.oshai.kotlinlogging.KotlinLogging
+import org.openqa.selenium.By
+import org.openqa.selenium.WebDriver
+import org.openqa.selenium.support.ui.ExpectedConditions
+import org.openqa.selenium.support.ui.WebDriverWait
+import java.time.Duration
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+
+class WorknetPageParser {
+    private var postingCount = 0
+    private var crawlingUrl: String = ""
+    private var lastPageJobPostingCount: Int = 1
+    private var pageCount: Int = 1
+
+    private val logger = KotlinLogging.logger { }
+
+    init {
+        val driver = DriverInitializer.init()
+        driver.safeUse {
+            getCrawlingURL()
+            moveToPage(driver)
+            getPostingCount(driver)
+            calculatePageInfo()
+            LoggingPageResult()
+        }
+    }
+
+    fun isOverPage(currentPage: Int): Boolean {
+        return currentPage > pageCount
+    }
+
+    fun getFetchCount(currentPage: Int): Int {
+        if (currentPage == pageCount && lastPageJobPostingCount > 0) {
+            return lastPageJobPostingCount
+        }
+        return CrawlerConsts.JOB_POSTING_COUNT_PER_PAGE.getIntValue()
+    }
+
+    fun getAccessURL(currentPage: Int): String {
+        return crawlingUrl.replace(
+            Regex("pageIndex=\\d+"),
+            "pageIndex=$currentPage")
+    }
+
+    private fun getCrawlingURL() {
+        crawlingUrl = CrawlerConsts.CRAWLING_TARGET_URL_FORMAT.value
+            .replace("{yesterday}", LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")))
+            .replace("{pageIndex}", "1")
+    }
+
+    private fun moveToPage(driver: WebDriver) {
+        driver.get(crawlingUrl)
+        WebDriverWait(driver, Duration.ofSeconds(10))
+            .until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath(
+                    CrawlerConsts.JOB_POSTING_COUNT.value
+                )))
+    }
+
+    private fun getPostingCount(driver: WebDriver) {
+        postingCount = driver
+            .findElement(By.xpath(CrawlerConsts.JOB_POSTING_COUNT.value))
+            .text
+            .replace(",", "")
+            .toInt()
+            .takeIf { it > 0 }
+            ?: run {
+                throw Exception("크롤링 할 공고가 없습니다.")
+            }
+    }
+
+    private fun calculatePageInfo() {
+        pageCount =
+            (postingCount + CrawlerConsts.JOB_POSTING_COUNT_PER_PAGE.getIntValue() - 1) /
+                    CrawlerConsts.JOB_POSTING_COUNT_PER_PAGE.getIntValue()
+        lastPageJobPostingCount =
+            postingCount % CrawlerConsts.JOB_POSTING_COUNT_PER_PAGE.getIntValue()
+    }
+
+    private fun LoggingPageResult() {
+        logger.info { "PageCount : ${pageCount}" }
+        logger.info { "PostingCount : ${postingCount}" }
+        logger.info { "LastPage JobCount : ${lastPageJobPostingCount}" }
+    }
+
+    private fun <T> WebDriver.safeUse(block: (WebDriver) -> T): T {
+        try {
+            return block(this)
+        } finally {
+            this.quit()
+        }
+    }
+}
