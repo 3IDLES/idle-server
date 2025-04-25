@@ -3,7 +3,6 @@ package com.swm.idle.batch.job
 import com.swm.idle.batch.common.dto.CrawledJobPostingDto
 import com.swm.idle.batch.step.PostingProcessor
 import com.swm.idle.batch.step.PostingReader
-import com.swm.idle.batch.step.PostingReader.Companion.nextPage
 import com.swm.idle.domain.jobposting.entity.jpa.CrawledJobPosting
 import jakarta.persistence.EntityManagerFactory
 import org.springframework.batch.core.Step
@@ -22,7 +21,6 @@ import org.springframework.batch.item.ItemWriter
 import org.springframework.batch.item.database.JpaItemWriter
 import org.springframework.core.task.SimpleAsyncTaskExecutor
 import org.springframework.transaction.PlatformTransactionManager
-import java.util.concurrent.atomic.AtomicInteger
 
 @Configuration
 @EnableBatchProcessing
@@ -34,7 +32,6 @@ class JobConfig(
 
     @Bean
     fun crawlingJob(): Job {
-        nextPage = AtomicInteger(1)
         return JobBuilder("crawlingJob", jobRepository)
             .start(crawlStep())
             .preventRestart()
