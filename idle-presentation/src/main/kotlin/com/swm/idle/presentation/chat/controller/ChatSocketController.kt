@@ -14,17 +14,31 @@ class ChatSocketController (
     private val chatMessageService: ChatFacadeService,
 ) {
 
-    @MessageMapping("/send")
-    fun sendMessage(@Payload request: SendChatMessageRequest,
+    @MessageMapping("/send/carer")
+    fun carerSendMessage(@Payload request: SendChatMessageRequest,
                              headerAccessor: SimpMessageHeaderAccessor) {
         val userId = UUID.fromString(headerAccessor.sessionAttributes?.get("userId") as String)
-        chatMessageService.sendMessage(request, userId)
+        chatMessageService.carerSend(request, userId)
     }
 
-    @MessageMapping("/read")
-    fun read(@Payload request: ReadChatMessagesReqeust,
+    @MessageMapping("/read/carer")
+    fun carerRead(@Payload request: ReadChatMessagesReqeust,
                       headerAccessor: SimpMessageHeaderAccessor) {
         val userId = UUID.fromString(headerAccessor.sessionAttributes?.get("userId") as String)
-        chatMessageService.readMessage(request, userId)
+        chatMessageService.carerRead(request, userId)
+    }
+
+    @MessageMapping("/send/center")
+    fun centerSendMessage(@Payload request: SendChatMessageRequest,
+                    headerAccessor: SimpMessageHeaderAccessor) {
+        val userId = UUID.fromString(headerAccessor.sessionAttributes?.get("userId") as String)
+        chatMessageService.centerSend(request, userId)
+    }
+
+    @MessageMapping("/read/center")
+    fun centerRead(@Payload request: ReadChatMessagesReqeust,
+             headerAccessor: SimpMessageHeaderAccessor) {
+        val userId = UUID.fromString(headerAccessor.sessionAttributes?.get("userId") as String)
+        chatMessageService.centerRead(request, userId)
     }
 }
