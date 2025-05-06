@@ -10,6 +10,7 @@ import com.swm.idle.application.user.center.service.domain.CenterService
 import com.swm.idle.domain.chat.event.ChatRedisTemplate
 import com.swm.idle.domain.chat.vo.ChatRoomSummaryInfo
 import com.swm.idle.domain.chat.vo.ReadMessage
+import com.swm.idle.domain.user.center.entity.jpa.CenterManager
 import com.swm.idle.domain.user.center.exception.CenterException
 import com.swm.idle.domain.user.center.vo.BusinessRegistrationNumber
 import com.swm.idle.infrastructure.fcm.chat.ChatNotificationService
@@ -34,28 +35,28 @@ class ChatFacadeService(
 ) {
 
     @Transactional
-    fun carerSend(request: SendChatMessageRequest, userId: UUID) {
-        val message = messageService.save(request, userId)
+    fun carerSend(request: SendChatMessageRequest, carerId: UUID) {
+        val message = messageService.save(request, carerId)
         chatRedisTemplate.publish(message)
 
-        for(centerManager in centerManagers()) {
-            if (chatRedisTemplate.isChatting(centerManager.id)) continue
+        for(manager in getManagersByCenterId(UUID.fromString(request.receiverId))) {
+            if (chatRedisTemplate.isChatting(manager.id)) continue
 
-            val token = deviceTokenService.findByUserId(centerManager.id)
+            val token = deviceTokenService.findByUserId(manager.id)
             notificationService.send(message, request.senderName, token)
         }
     }
 
-    private fun centerManagers() = centerManagerService
-        .findAllByCenterBusinessRegistrationNumber(
-            BusinessRegistrationNumber(
-                getCenter().businessRegistrationNumber
-            )
-        )?: emptyList()
+    private fun getManagersByCenterId(centerId:UUID): List<CenterManager> {
+        val businessNumber = BusinessRegistrationNumber(centerService.getById(centerId).businessRegistrationNumber)
+        val centerManagers = centerManagerService.findAllByCenterBusinessRegistrationNumber(businessNumber)?: emptyList()
+        return centerManagers
+    }
 
     @Transactional
-    fun centerSend(request: SendChatMessageRequest, userId: UUID) {
-        val message = messageService.save(request, getCenter().id)
+    fun centerSend(request: SendChatMessageRequest, managerId: UUID) {
+        val centerId = getCenterId(managerId)
+        val message = messageService.save(request, centerId)
         chatRedisTemplate.publish(message)
 
         if (chatRedisTemplate.isChatting(message.receiverId)) return
@@ -65,25 +66,26 @@ class ChatFacadeService(
     }
 
     @Transactional
-    fun carerRead(request: ReadChatMessagesReqeust, userId: UUID) {
-        messageService.read(request, userId)
+    fun carerRead(request: ReadChatMessagesReqeust, carerId: UUID) {
+        messageService.read(request, carerId)
 
         val readMessage = ReadMessage(
             chatRoomId = request.chatroomId,
             receiverId = request.opponentId,
-            readUserId = userId
+            readUserId = carerId
         )
         chatRedisTemplate.publish(readMessage)
     }
 
     @Transactional
-    fun centerRead(request: ReadChatMessagesReqeust, userId: UUID) {
-        messageService.read(request, getCenter().id)
+    fun centerRead(request: ReadChatMessagesReqeust, managerId: UUID) {
+        val centerId = getCenterId(managerId)
+        messageService.read(request, centerId)
 
         val readMessage = ReadMessage(
             chatRoomId = request.chatroomId,
             receiverId = request.opponentId,
-            readUserId = userId
+            readUserId = centerId
         )
         chatRedisTemplate.publish(readMessage)
     }
@@ -92,7 +94,7 @@ class ChatFacadeService(
     fun createChatroom(request: CreateChatRoomRequest, isCarer: Boolean):CreateChatRoomResponse {
         val (carerId, centerId) =
             if (isCarer) getUserAuthentication().userId to request.opponentId
-            else request.opponentId to getCenter().id
+            else request.opponentId to getCenterIdByAuthentication()
 
         val chatRoomId = chatroomService.create(
                 carerId = carerId,
@@ -100,6 +102,14 @@ class ChatFacadeService(
         )
 
         return CreateChatRoomResponse(chatRoomId)
+    }
+
+    fun getCenterIdByAuthentication():UUID {
+        val managerId = getUserAuthentication().userId
+        val manager = centerManagerService.getById(managerId)
+        val businessNumber = BusinessRegistrationNumber(manager.centerBusinessRegistrationNumber)
+        val center = centerService.findByBusinessRegistrationNumber(businessNumber)?: throw CenterException.NotFoundException()
+        return center.id
     }
 
     fun getRecentMessages(chatRoomId: UUID, messageId: UUID?): List<ChatMessageResponse> {
@@ -110,10 +120,8 @@ class ChatFacadeService(
     }
 
     fun getChatroomSummary(isCarer: Boolean): List<ChatRoomSummaryInfo> {
-        val userId: UUID =
-            if (isCarer) getUserAuthentication().userId
-            else getCenter().id
-
+        val userId: UUID = if (isCarer) getUserAuthentication().userId
+        else getCenterIdByAuthentication()
 
         val summary = chatroomService.findChatroomSummaries(userId, isCarer)
 
@@ -130,11 +138,10 @@ class ChatFacadeService(
         }
     }
 
-    private fun getCenter() = getUserAuthentication().userId.let { centerManagerId ->
-        centerManagerService.getById(centerManagerId).let {
-            centerService.findByBusinessRegistrationNumber(
-                BusinessRegistrationNumber(it.centerBusinessRegistrationNumber)
-            ) ?: throw CenterException.NotFoundException()
-        }
+    private fun getCenterId(managerId:UUID): UUID {
+        val manager = centerManagerService.getById(managerId)
+        val businessNumber = BusinessRegistrationNumber(manager.centerBusinessRegistrationNumber)
+        val center = centerService.findByBusinessRegistrationNumber(businessNumber)?: throw CenterException.NotFoundException()
+        return center.id
     }
 }
