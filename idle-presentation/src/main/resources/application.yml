@@ -33,8 +33,7 @@ spring:
 springdoc:
   swagger-ui:
     enabled: true
-    path: /swagger-ui.html
-
+    path: ${SERVER_PREFIX}/swagger-ui.html
 ---
 spring:
   config:
