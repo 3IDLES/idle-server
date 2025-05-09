@@ -1,9 +1,6 @@
 name: Production Server Deployer (CD)
 
-on:
-  push:
-    branches:
-      - main
+on: workflow_dispatch
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -31,118 +28,56 @@ jobs:
           response=$(curl -s canhazip.com)
           echo "ip=$response" >> "$GITHUB_OUTPUT"
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: 'ap-northeast-2'
-
-      - name: Add GitHub Actions IP
-        run: |
-          aws ec2 authorize-security-group-ingress \
-              --group-id ${{ secrets.SECURITY_GROUP_ID }} \
-              --protocol tcp \
-              --port 22 \
-              --cidr ${{ steps.publicip.outputs.ip }}/32
-
-      - name: SSH to Bastion and Install Docker if not present on Production server
+      - name: Install Docker if not present
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ vars.BASTION_HOST }}
-          username: ${{ vars.BASTION_USERNAME }}
+          host: ${{ vars.INSTANCE_HOST }}
+          username: ${{ vars.INSTANCE_USERNAME }}
           key: ${{ secrets.INSTANCE_PEM_KEY }}
           script: |
-            if [ ! -f private_key.pem ]; then
-              echo "${{ secrets.INSTANCE_PEM_KEY }}" > private_key.pem
-              chmod 600 private_key.pem
+            if ! command -v docker >/dev/null 2>&1; then
+              echo "Installing Docker..."
+              sudo apt-get update
+              sudo apt-get install -y docker.io
+            else
+              echo "Docker already installed."
             fi
-            ssh -f -N -M -S my-cicd-socket -o StrictHostKeyChecking=no -i private_key.pem -L 2222:${{ vars.INSTANCE_HOST }}:22 ec2-user@${{ vars.BASTION_HOST }}
-            ssh -o StrictHostKeyChecking=no -i private_key.pem -p 2222 ubuntu@localhost << 'EOF'
-              echo "Connected to Private Subnet productionServer via SSH Tunneling"
-              if ! command -v docker >/dev/null 2>&1; then
-                echo "Installing Docker..."
-                sudo apt-get update
-                sudo apt-get install -y docker.io
-              else
-                echo "Docker already installed."
-              fi
-              if ! command -v docker-compose >/dev/null 2>&1; then
-                echo "Installing Docker Compose..."
-                sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-                sudo chmod +x /usr/local/bin/docker-compose
-              else
-                echo "Docker Compose already installed."
-              fi
-            EOF
-            ssh -S my-cicd-socket -O exit ec2-user@${{ vars.BASTION_HOST }}
-            rm -f private_key.pem
+            if ! command -v docker-compose >/dev/null 2>&1; then
+              echo "Installing Docker Compose..."
+              sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+              sudo chmod +x /usr/local/bin/docker-compose
+            else
+              echo "Docker Compose already installed."
+            fi
 
       - name: Configuration Env file
         uses: appleboy/ssh-action@master
+        env:
+          VARS_CONTEXT: ${{ toJson(vars) }}
+          SECRETS_CONTEXT: ${{ toJson(secrets) }}
         with:
-          host: ${{ vars.BASTION_HOST }}
-          username: ${{ vars.BASTION_USERNAME }}
+          host: ${{ vars.INSTANCE_HOST }}
+          username: ${{ vars.INSTANCE_USERNAME }}
           key: ${{ secrets.INSTANCE_PEM_KEY }}
+          envs: VARS_CONTEXT,SECRETS_CONTEXT
           script: |
-            if [ ! -f private_key.pem ]; then
-              echo "${{ secrets.INSTANCE_PEM_KEY }}" > private_key.pem
-              chmod 600 private_key.pem
-            fi
-            ssh -f -N -M -S my-cicd-socket -o StrictHostKeyChecking=no -i private_key.pem -L 2222:${{ vars.INSTANCE_HOST }}:22 ec2-user@${{ vars.BASTION_HOST }}
-            ssh -o StrictHostKeyChecking=no -i private_key.pem -p 2222 ubuntu@localhost << 'EOF'
-              echo "Connected to Private Subnet productionServer via SSH Tunneling"
-              cd ~/app/docker
+            cd ~/app/docker/idle-presentation
+            jq -s '.[0] * .[1]' <(echo "$VARS_CONTEXT") <(echo "$SECRETS_CONTEXT") \
+              | jq -r 'to_entries | map(select(.key != "INSTANCE_PEM_KEY")) | map("\(.key)=\(.value)") | .[]' > .env
 
-              echo "VARS_CONTEXT: ${{ toJson(vars) }}"
-              echo "SECRETS_CONTEXT: ${{ toJson(secrets) }}"
-
-              VARS_CONTEXT_JSON='${{ toJson(vars) }}'
-              SECRETS_CONTEXT_JSON='${{ toJson(secrets) }}'
-
-              echo "$VARS_CONTEXT_JSON" > vars_context.json
-              echo "$SECRETS_CONTEXT_JSON" > secrets_context.json
-
-              jq -s '.[0] * .[1]' vars_context.json secrets_context.json \
-                | jq -r 'to_entries | map(select(.key != "INSTANCE_PEM_KEY")) | map("\(.key)=\(.value)") | .[]' > .env
-
-              echo ".env file generated:"
-              cat .env
-            EOF
-            ssh -S my-cicd-socket -O exit ec2-user@${{ vars.BASTION_HOST }}
-            rm -f private_key.pem
-
-      - name: SSH to Bastion and deploy to Production server
+      - name: Deploy to Production server
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ vars.BASTION_HOST }}
-          username: ${{ vars.BASTION_USERNAME }}
+          host: ${{ vars.INSTANCE_HOST }}
+          username: ${{ vars.INSTANCE_USERNAME }}
           key: ${{ secrets.INSTANCE_PEM_KEY }}
           script: |
-            if [ ! -f private_key.pem ]; then
-              echo "${{ secrets.INSTANCE_PEM_KEY }}" > private_key.pem
-              chmod 600 private_key.pem
+            sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+            sudo docker pull public.ecr.aws/e4z1s9l7/caremeet:latest
+            if [ $(sudo docker ps -q -f name=caremeet_server_prod) ]; then
+              sudo docker stop caremeet_server_prod
+              sudo docker rm caremeet_server_prod
             fi
-            ssh -f -N -M -S my-cicd-socket -o StrictHostKeyChecking=no -i private_key.pem -L 2222:${{ vars.INSTANCE_HOST }}:22 ec2-user@${{ vars.BASTION_HOST }}
-            ssh -o StrictHostKeyChecking=no -i private_key.pem -p 2222 ubuntu@localhost << 'EOF'
-              echo "Connected to Private Subnet productionServer via SSH Tunneling"
-              sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-              sudo docker pull public.ecr.aws/e4z1s9l7/caremeet:latest
-              if [ $(sudo docker ps -q -f name=caremeet_server_prod) ]; then
-                sudo docker stop caremeet_server_prod
-                sudo docker rm caremeet_server_prod
-              fi
-              sudo docker run --name caremeet_server_prod --env-file ./app/docker/.env \
-              -e SPRING_PROFILES_ACTIVE=prod \
-              -d -p 8081:8081 public.ecr.aws/e4z1s9l7/caremeet:latest
-            EOF
-            ssh -S my-cicd-socket -O exit ec2-user@${{ vars.BASTION_HOST }}
-            rm -f private_key.pem
-
-      - name: Remove GitHub Actions IP
-        run: |
-          aws ec2 revoke-security-group-ingress \
-              --group-id ${{ secrets.SECURITY_GROUP_ID }} \
-              --protocol tcp \
-              --port 22 \
-              --cidr ${{ steps.publicip.outputs.ip }}/32
+            sudo docker run --name caremeet_server_prod --env-file ./app/docker/.env \
+            -e SPRING_PROFILES_ACTIVE=prod \
+            -d -p 8081:8081 public.ecr.aws/e4z1s9l7/caremeet:latest
