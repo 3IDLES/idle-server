@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   spring:
     image: public.ecr.aws/${ECR_REGISTRY_ALIAS}/caremeet:${VERSION:-latest}
@@ -16,20 +17,26 @@ services:
       - mysql
       - redis
     networks:
-      - redis-caremeet-net
-      - mysql-caremeet-net
+      - caremeet-net
 
   mysql:
     image: mysql:8.0.33
     container_name: mysql_dev
     environment:
-      MYSQL_DATABASE: caremeet
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       TZ: Asia/Seoul
+    command: >
+      bash -c "docker-entrypoint.sh mysqld &
+               sleep 10 && 
+               mysql -u root -p${DB_PASSWORD} -e 'CREATE DATABASE IF NOT EXISTS \`caremeet\`;' &&
+               mysql -u root -p${DB_PASSWORD} -e 'CREATE DATABASE IF NOT EXISTS \`caremeet-dev\`;' &&
+               wait"
     ports:
       - "3306:3306"
+    volumes:
+      - mysql-volume:/var/lib/mysql
     networks:
-      - mysql-caremeet-net
+      - caremeet-net
 
   redis:
     image: redis:7.2.5
@@ -43,12 +50,10 @@ services:
       - redis-volume:/data
     restart: unless-stopped
     networks:
-      - redis-caremeet-net
+      - caremeet-net
 
 networks:
-  mysql-caremeet-net:
-    driver: bridge
-  redis-caremeet-net:
+  caremeet-net:
     driver: bridge
 
 volumes:
