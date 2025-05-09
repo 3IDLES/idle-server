@@ -26,7 +26,6 @@ services:
       - "3306:3306"
     volumes:
       - mysql-volume:/var/lib/mysql
-      - ./idle-presentation/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     networks:
       - caremeet-net
 
