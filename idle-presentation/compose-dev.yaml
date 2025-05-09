@@ -4,7 +4,7 @@ services:
   spring:
     image: public.ecr.aws/${ECR_REGISTRY_ALIAS}/caremeet:${VERSION:-latest}
     volumes:
-      - spring-volume:/path/to/spring/data
+      - spring-volume:/path/to/spring/data  # 스프링 전용 볼륨
     environment:
       - VERSION=${VERSION:-latest}
       - SPRING_PROFILES_ACTIVE=dev
@@ -27,17 +27,14 @@ services:
       TZ: Asia/Seoul
     command: >
       bash -c "docker-entrypoint.sh mysqld &
-               until mysql -u root -p${DB_PASSWORD} -e 'SELECT 1'; do 
-                 echo 'Waiting for MySQL to be ready...'; 
-                 sleep 5; 
-               done &&
+               sleep 10 && 
                mysql -u root -p${DB_PASSWORD} -e 'CREATE DATABASE IF NOT EXISTS \`caremeet\`;' &&
                mysql -u root -p${DB_PASSWORD} -e 'CREATE DATABASE IF NOT EXISTS \`caremeet-dev\`;' &&
                wait"
     ports:
       - "3306:3306"
     volumes:
-      - mysql-volume:/var/lib/mysql
+      - mysql-volume:/var/lib/mysql  # MySQL 전용 볼륨
     networks:
       - caremeet-net
 
@@ -62,3 +59,4 @@ networks:
 volumes:
   mysql-volume:
   redis-volume:
+  spring-volume:  # 스프링 전용 볼륨 정의
