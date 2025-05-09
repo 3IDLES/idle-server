@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   spring:
+    container_name: caremeet_server_dev
     image: public.ecr.aws/${ECR_REGISTRY_ALIAS}/caremeet:${VERSION:-latest}
     environment:
       - VERSION=${VERSION:-latest}
