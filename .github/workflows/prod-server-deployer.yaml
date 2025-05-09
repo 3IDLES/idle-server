@@ -134,7 +134,7 @@ jobs:
               fi
               sudo docker run --name caremeet_server_prod --env-file ./app/docker/.env \
               -e SPRING_PROFILES_ACTIVE=prod \
-              -d -p 8080:8080 public.ecr.aws/e4z1s9l7/caremeet:latest
+              -d -p 8081:8081 public.ecr.aws/e4z1s9l7/caremeet:latest
             EOF
             ssh -S my-cicd-socket -O exit ec2-user@${{ vars.BASTION_HOST }}
             rm -f private_key.pem
