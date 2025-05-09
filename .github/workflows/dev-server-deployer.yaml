@@ -35,7 +35,7 @@ jobs:
           username: ${{ vars.INSTANCE_USERNAME }}
           key: ${{ secrets.INSTANCE_PEM_KEY }}
           source: "./idle-presentation/compose-dev.yaml"
-          target: "~/app/docker/idle-presentation/"
+          target: "~/app/docker/"
           overwrite: true
 
       - name: Copy init.sql to server
@@ -45,7 +45,7 @@ jobs:
           username: ${{ vars.INSTANCE_USERNAME }}
           key: ${{ secrets.INSTANCE_PEM_KEY }}
           source: "./idle-presentation/init.sql"
-          target: "~/app/docker/idle-presentation/"
+          target: "~/app/docker/"
           overwrite: true
 
       - name: Install Docker if not present
