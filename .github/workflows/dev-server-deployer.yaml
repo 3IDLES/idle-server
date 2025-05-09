@@ -93,5 +93,6 @@ jobs:
           key: ${{ secrets.INSTANCE_PEM_KEY }}
           script: |
             echo "${{ secrets.DOCKER_PASSWORD }}" | sudo docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+            docker-compose -f ~/app/docker/idle-presentation/compose-dev.yaml down
             sudo docker-compose -f ~/app/docker/idle-presentation/compose-dev.yaml pull
             sudo docker-compose -f ~/app/docker/idle-presentation/compose-dev.yaml up -d --force-recreate
