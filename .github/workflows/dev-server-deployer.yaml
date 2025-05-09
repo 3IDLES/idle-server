@@ -28,16 +28,6 @@ jobs:
           response=$(curl -s canhazip.com)
           echo "ip=$response" >> "$GITHUB_OUTPUT"
 
-      - name: Copy init.sql to server
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ vars.INSTANCE_HOST }}
-          username: ${{ vars.INSTANCE_USERNAME }}
-          key: ${{ secrets.INSTANCE_PEM_KEY }}
-          source: "./idle-presentation/init.sql"
-          target: "~/app/docker"
-          overwrite: true
-
       - name: Copy Docker Compose file to server
         uses: appleboy/scp-action@master
         with:
@@ -45,6 +35,16 @@ jobs:
           username: ${{ vars.INSTANCE_USERNAME }}
           key: ${{ secrets.INSTANCE_PEM_KEY }}
           source: "./idle-presentation/compose-dev.yaml"
+          target: "~/app/docker"
+          overwrite: true
+
+      - name: Copy init.sql to server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ vars.INSTANCE_HOST }}
+          username: ${{ vars.INSTANCE_USERNAME }}
+          key: ${{ secrets.INSTANCE_PEM_KEY }}
+          source: "./idle-presentation/init.sql"
           target: "~/app/docker"
           overwrite: true
 
