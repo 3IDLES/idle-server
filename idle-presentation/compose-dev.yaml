@@ -27,7 +27,10 @@ services:
       TZ: Asia/Seoul
     command: >
       bash -c "docker-entrypoint.sh mysqld &
-               sleep 10 && 
+               until mysql -u root -p${DB_PASSWORD} -e 'SELECT 1'; do 
+                 echo 'Waiting for MySQL to be ready...'; 
+                 sleep 5; 
+               done &&
                mysql -u root -p${DB_PASSWORD} -e 'CREATE DATABASE IF NOT EXISTS \`caremeet\`;' &&
                mysql -u root -p${DB_PASSWORD} -e 'CREATE DATABASE IF NOT EXISTS \`caremeet-dev\`;' &&
                wait"
