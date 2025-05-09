@@ -4,7 +4,7 @@ services:
   spring:
     image: public.ecr.aws/${ECR_REGISTRY_ALIAS}/caremeet:${VERSION:-latest}
     volumes:
-      - mysql-volume:/var/lib/mysql
+      - spring-volume:/path/to/spring/data
     environment:
       - VERSION=${VERSION:-latest}
       - SPRING_PROFILES_ACTIVE=dev
