@@ -45,7 +45,7 @@ jobs:
           username: ${{ vars.INSTANCE_USERNAME }}
           key: ${{ secrets.INSTANCE_PEM_KEY }}
           source: "./idle-presentation/init.sql"
-          target: "~/app/docker/init.sql"
+          target: "~/app/docker/idle-presentation/init.sql"
           overwrite: true
 
       - name: Install Docker if not present
