@@ -78,6 +78,8 @@ jobs:
               sudo docker stop caremeet_server_prod
               sudo docker rm caremeet_server_prod
             fi
-            sudo docker run --name caremeet_server_prod --env-file ./app/docker/idle-presentation/.env \
+            sudo docker run --name caremeet_server_prod \
+            --network caremeet_net \  
+            --env-file ./app/docker/idle-presentation/.env \
             -e SPRING_PROFILES_ACTIVE=prod \
             -d -p 8081:8081 public.ecr.aws/e4z1s9l7/caremeet:latest
