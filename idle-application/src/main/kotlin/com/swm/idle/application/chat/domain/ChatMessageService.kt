@@ -25,7 +25,7 @@ class ChatMessageService (
 
     @Transactional
     fun read(request: ReadChatMessagesReqeust, readUserId: UUID) {
-        chatMessageRepository.readByChatroomId(request.chatroomId, readUserId)
+        chatMessageRepository.readByChatroomId(UUID.fromString(request.chatroomId), readUserId)
     }
 
     @Transactional
