@@ -21,5 +21,6 @@ class ChatHandler(
     @EventListener
     fun handleReadMessage(readMessage: ReadMessage) {
         messageTemplate.convertAndSend("/sub/${readMessage.receiverId}", ReadNoti(readMessage))
+        messageTemplate.convertAndSend("/sub/${readMessage.readUserId}", ReadNoti(readMessage))
     }
 }
