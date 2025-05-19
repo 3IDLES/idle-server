@@ -70,8 +70,8 @@ class ChatFacadeService(
         messageService.read(request, carerId)
 
         val readMessage = ReadMessage(
-            chatRoomId = request.chatroomId,
-            receiverId = request.opponentId,
+            chatRoomId = UUID.fromString(request.chatroomId),
+            receiverId = UUID.fromString(request.opponentId),
             readUserId = carerId
         )
         chatRedisTemplate.publish(readMessage)
@@ -83,8 +83,8 @@ class ChatFacadeService(
         messageService.read(request, centerId)
 
         val readMessage = ReadMessage(
-            chatRoomId = request.chatroomId,
-            receiverId = request.opponentId,
+            chatRoomId = UUID.fromString(request.chatroomId),
+            receiverId = UUID.fromString(request.opponentId),
             readUserId = centerId
         )
         chatRedisTemplate.publish(readMessage)
