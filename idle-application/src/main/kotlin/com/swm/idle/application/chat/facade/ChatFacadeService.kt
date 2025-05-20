@@ -42,7 +42,7 @@ class ChatFacadeService(
         for(manager in getManagersByCenterId(UUID.fromString(request.receiverId))) {
             if (chatRedisTemplate.isChatting(manager.id)) continue
 
-            val token = deviceTokenService.findByUserId(manager.id)
+            val token = deviceTokenService.findByUserId(manager.id)?:continue
             notificationService.send(message, request.senderName, token)
         }
     }
@@ -61,7 +61,7 @@ class ChatFacadeService(
 
         if (chatRedisTemplate.isChatting(message.receiverId)) return
 
-        val token = deviceTokenService.findByUserId(message.receiverId)
+        val token = deviceTokenService.findByUserId(message.receiverId)?:return
         notificationService.send(message, request.senderName, token)
     }
 
