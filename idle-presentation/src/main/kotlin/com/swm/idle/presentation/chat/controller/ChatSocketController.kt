@@ -18,27 +18,27 @@ class ChatSocketController (
     fun carerSendMessage(@Payload request: SendChatMessageRequest,
                              headerAccessor: SimpMessageHeaderAccessor) {
         val userId = UUID.fromString(headerAccessor.sessionAttributes?.get("userId") as String)
-        chatMessageService.carerSend(request, userId)
+        chatMessageService.send(request, userId, true)
     }
 
     @MessageMapping("/read/carer")
     fun carerRead(@Payload request: ReadChatMessagesReqeust,
                       headerAccessor: SimpMessageHeaderAccessor) {
         val userId = UUID.fromString(headerAccessor.sessionAttributes?.get("userId") as String)
-        chatMessageService.carerRead(request, userId)
+        chatMessageService.read(request, userId, true)
     }
 
     @MessageMapping("/send/center")
     fun centerSendMessage(@Payload request: SendChatMessageRequest,
                     headerAccessor: SimpMessageHeaderAccessor) {
         val userId = UUID.fromString(headerAccessor.sessionAttributes?.get("userId") as String)
-        chatMessageService.centerSend(request, userId)
+        chatMessageService.send(request, userId, false)
     }
 
     @MessageMapping("/read/center")
     fun centerRead(@Payload request: ReadChatMessagesReqeust,
              headerAccessor: SimpMessageHeaderAccessor) {
         val userId = UUID.fromString(headerAccessor.sessionAttributes?.get("userId") as String)
-        chatMessageService.centerRead(request, userId)
+        chatMessageService.read(request, userId, false)
     }
 }

@@ -5,5 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 data class ReadChatMessagesReqeust @JsonCreator constructor(
     @JsonProperty("chatroomId") val chatroomId: String,
-    @JsonProperty("opponentId")val opponentId: String
+    @JsonProperty("opponentId")val opponentId: String,
+    @JsonProperty("messageSequence")val messageSequence: String
 )

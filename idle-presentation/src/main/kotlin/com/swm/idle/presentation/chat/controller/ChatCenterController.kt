@@ -22,7 +22,7 @@ class ChatCenterController(
         return chatMessageService.getChatroomSummary(false)
     }
 
-    override fun recentMessages(chatroomId: UUID, messageId: UUID?): List<ChatMessageResponse> {
-        return chatMessageService.getRecentMessages(chatroomId, messageId)
+    override fun recentMessages(chatroomId: UUID, messageId: UUID?): ChatMessageResponse {
+        return chatMessageService.getRecentMessages(chatroomId, messageId, false)
     }
 }

@@ -14,6 +14,50 @@ class ChatRedisTemplate(
     private val redisTemplate: RedisTemplate<String, Any>,
     private val objectMapper: ObjectMapper
 ) {
+
+    fun removeUnreadChatRoom(receiverId: String, chatRoomId: UUID) {
+        val key = "unread_chatroom:${receiverId}"
+        redisTemplate.opsForSet().remove(key, chatRoomId.toString())
+    }
+
+    fun addUnreadChatRoom(receiverId: String, chatRoomId: String) {
+        val key = "unread_chatroom:${receiverId}"
+        redisTemplate.opsForSet().add(key, chatRoomId)
+    }
+
+    fun updateReadSequence(chatRoomId: String, messageSequence: String, userId: UUID) {
+        val key = "chatroom_read_sequence:$chatRoomId:$userId"
+        redisTemplate.opsForValue().set(key, messageSequence.toLong())
+    }
+
+    fun getReadSequence(userId: UUID, chatRoomId: UUID) : Long{
+        val key = "chatroom_read_sequence:$chatRoomId:$userId"
+        return redisTemplate.opsForValue().get(key)?.toString()?.toLong() ?: 0L
+    }
+
+    fun getChatRoomSequence(chatRoomId: String): Long {
+        val key = "chatroom_sequence:$chatRoomId"
+        return redisTemplate.opsForValue().increment(key)?:1L
+    }
+
+    fun getUnreadChatRooms(userId: UUID): Set<String> {
+        val key = "unread_chatroom:$userId"
+        val members = redisTemplate.opsForSet().members(key) ?: return emptySet()
+        return members.mapNotNull { it as? String }.toSet()
+    }
+
+    fun getReadSequences(userId: UUID, chatRoomIds: Set<String>): Map<String, Long> {
+        if (chatRoomIds.isEmpty()) return emptyMap()
+
+        val keys = chatRoomIds.map { chatRoomId -> "chatroom_read_sequence:$chatRoomId:$userId" }
+        val values = redisTemplate.opsForValue().multiGet(keys) ?: emptyList()
+
+        return keys.zip(values).associate { (key, value) ->
+            val chatRoomId = key.split(":")[1]
+            chatRoomId to (value as? Long ?: 0L)
+        }
+    }
+
     fun isChatting(userId: UUID): Boolean {
         return redisTemplate.hasKey(userId.toString())
     }
