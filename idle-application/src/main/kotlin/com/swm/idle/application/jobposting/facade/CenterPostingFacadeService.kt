@@ -37,7 +37,7 @@ import java.util.*
 
 @Service
 @Transactional(readOnly = true)
-class CenterJobPostingFacadeService(
+class CenterPostingFacadeService(
     private val jobPostingService: JobPostingService,
     private val jobPostingLifeAssistanceService: JobPostingLifeAssistanceService,
     private val jobPostingWeekdayService: JobPostingWeekdayService,
@@ -56,13 +56,7 @@ class CenterJobPostingFacadeService(
 
     @Transactional
     suspend fun create(request: CreateJobPostingRequest) {
-        val centerId =
-            centerManagerService.getById(getUserAuthentication().userId).let {
-                centerService.findByBusinessRegistrationNumber(
-                    BusinessRegistrationNumber(it.centerBusinessRegistrationNumber)
-                )?.id
-            } ?: throw CenterException.NotFoundException()
-
+        val centerId = getCenterId()
         val geoCodeSearchResult = geoCodeService.search(request.roadNameAddress)
 
         val jobPosting = jobPostingService.create(
@@ -127,6 +121,16 @@ class CenterJobPostingFacadeService(
         }
     }
 
+    private fun getCenterId(): UUID {
+        val centerId =
+            centerManagerService.getById(getUserAuthentication().userId).let {
+                centerService.findByBusinessRegistrationNumber(
+                    BusinessRegistrationNumber(it.centerBusinessRegistrationNumber)
+                )?.id
+            } ?: throw CenterException.NotFoundException()
+        return centerId
+    }
+
     private fun createBodyMessage(jobPosting: JobPosting): String {
         val filteredLotNumberAddress = jobPosting.lotNumberAddress.split(" ")
             .take(3)
@@ -140,10 +144,10 @@ class CenterJobPostingFacadeService(
 
     @Transactional
     fun update(
-        jobPostingId: UUID,
+        postingId: UUID,
         request: UpdateJobPostingRequest,
     ) {
-        val jobPosting = jobPostingService.getById(jobPostingId)
+        val jobPosting = jobPostingService.getById(postingId)
 
         val shouldUpdateAddress =
             request.roadNameAddress != null && request.lotNumberAddress != null
