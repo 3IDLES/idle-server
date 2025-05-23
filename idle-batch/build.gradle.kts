@@ -12,6 +12,7 @@ dependencies {
     implementation(project(":idle-application"))
     implementation(project(":idle-infrastructure:client"))
 
+    implementation(libs.spring.boot.starter.data.redis)
     implementation(rootProject.libs.spring.boot.starter.batch)
     implementation(rootProject.libs.selenium.java)
     implementation(libs.mysql.connector.java)
