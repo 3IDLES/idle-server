@@ -3,22 +3,24 @@ package com.swm.idle.support.transfer.jobposting.carer
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.swm.idle.domain.common.dto.CrawlingJobPostingPreviewDto
 import com.swm.idle.domain.jobposting.enums.JobPostingType
-import com.swm.idle.support.transfer.common.ScrollResponse
+import com.swm.idle.support.transfer.common.CrawlingScrollResponse
 import io.swagger.v3.oas.annotations.media.Schema
 import java.util.*
 
 @Schema(
     name = "CrawlingJobPostingScrollResponse",
-    description = "외부 구인 공고 전체 조회 API(3km 내 검색)"
+    description = "외부 구인 공고 전체 조회 API(1km 내 검색)"
 )
 data class CrawlingJobPostingScrollResponse(
     override val items: List<CrawlingJobPostingDto>,
     override val next: UUID?,
     override val total: Int,
-) : ScrollResponse<CrawlingJobPostingScrollResponse.CrawlingJobPostingDto, UUID?>(
+    override val nextDistance: Int,
+) : CrawlingScrollResponse<CrawlingJobPostingScrollResponse.CrawlingJobPostingDto, UUID?>(
     items = items,
     next = next,
     total = total,
+    nextDistance = nextDistance
 ) {
 
     data class CrawlingJobPostingDto(
@@ -40,7 +42,7 @@ data class CrawlingJobPostingScrollResponse(
         @Schema(description = "공고 모집 마감 기한")
         val applyDeadline: String,
 
-        @Schema(description = "직선 거리", example = "760(단위 : 미터)")
+        @Schema(description = "직선 거리 (*km 이내 위치)", example = "1(단위 : 키로미터)")
         val distance: Int,
 
         @get:JsonProperty("isFavorite")
@@ -76,13 +78,13 @@ data class CrawlingJobPostingScrollResponse(
 
         fun from(
             items: List<CrawlingJobPostingPreviewDto>,
-            next: UUID?,
-            total: Int,
+            distance: Long
         ): CrawlingJobPostingScrollResponse {
             return CrawlingJobPostingScrollResponse(
                 items = items.map(CrawlingJobPostingDto::from),
-                next = next,
-                total = total,
+                next = items.lastOrNull()?.crawledJobPosting?.id,
+                total = items.size,
+                nextDistance = distance.toInt()
             )
         }
 
