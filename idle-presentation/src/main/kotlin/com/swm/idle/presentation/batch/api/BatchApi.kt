@@ -16,5 +16,5 @@ interface BatchApi {
     @Operation(summary = "배치 엔트포인트 실행 API")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    fun launchBatch()
+    fun launchBatch(day: Long = 0)
 }

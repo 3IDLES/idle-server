@@ -6,8 +6,11 @@ import com.swm.idle.batch.crawler.WorknetPostParser
 import org.springframework.batch.item.ItemStreamReader
 import java.util.concurrent.atomic.AtomicInteger
 
-class PostingReader: ItemStreamReader<List<CrawledJobPostingDto>> {
-    val pageParser: WorknetPageParser = WorknetPageParser()
+class PostingReader(
+    dayOffset: Long = 0
+) : ItemStreamReader<List<CrawledJobPostingDto>> {
+
+    val pageParser: WorknetPageParser = WorknetPageParser(dayOffset)
 
     companion object {
         var pageIndex = AtomicInteger(1)
