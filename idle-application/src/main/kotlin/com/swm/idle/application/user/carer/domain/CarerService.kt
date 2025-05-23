@@ -111,4 +111,8 @@ class CarerService(
         return carerQueryRepository.findAllByLocationWithinRadius(location)
     }
 
+    fun getByIds(carerIds: Set<UUID>): List<Carer> {
+        return carerJpaRepository.findAllById(carerIds)
+    }
+
 }

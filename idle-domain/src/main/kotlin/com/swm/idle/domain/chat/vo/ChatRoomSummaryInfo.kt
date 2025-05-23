@@ -8,32 +8,32 @@ data class ChatRoomSummaryInfo(
     val chatRoomId: UUID,
     val lastMessage: String,
     val lastMessageTime: LocalDateTime,
-    val count: Int,
-    val opponentId: UUID,
-    var opponentName: String,
-    var opponentProfileImageUrl: String?,
+    var count: Long,
+    var opponentId: UUID,
+    var opponentName: String = "알 수 없음",
+    var opponentProfileImageUrl: String? = null
 ) {
-    constructor(chatRoomId: ByteArray,
-                lastMessage: String,
-                lastMessageTime: LocalDateTime,
-                count: Int,
-                opponentId: ByteArray,
-        ) : this(
-        fromByteArray(chatRoomId),
-        lastMessage,
-        lastMessageTime,
-        count,
-        fromByteArray(opponentId),
-        "알 수 없음",
-        null,
+    constructor(
+        chatRoomId: ByteArray,
+        opponentId: ByteArray,
+        lastMessage: String,
+        lastMessageTime: LocalDateTime,
+        count: Long
+    ) : this(
+        chatRoomId = fromByteArray(chatRoomId),
+        opponentId =fromByteArray(opponentId),
+        lastMessage = lastMessage,
+        lastMessageTime = lastMessageTime,
+        count= count,
     )
 
     companion object {
         fun fromByteArray(array: ByteArray): UUID {
             val buffer = ByteBuffer.wrap(array)
-            val mostSigBits = buffer.getLong()
-            val leastSigBits = buffer.getLong()
+            val mostSigBits = buffer.long
+            val leastSigBits = buffer.long
             return UUID(mostSigBits, leastSigBits)
         }
     }
 }
+

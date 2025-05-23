@@ -66,4 +66,8 @@ class CenterService(
             ?: throw PersistenceException.ResourceNotFound("Center(id=$centerId)를 찾을 수 없습니다")
     }
 
+    fun getByIds(centerIds : Set<UUID>) : List<Center> {
+        return centerJpaRepository.findAllById(centerIds)
+    }
+
 }
