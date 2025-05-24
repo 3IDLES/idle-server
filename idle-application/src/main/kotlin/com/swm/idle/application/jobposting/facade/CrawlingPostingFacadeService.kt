@@ -36,7 +36,7 @@ class CrawlingPostingFacadeService(
                 next = nextCursor,
                 location = location,
                 distance = distance,
-                limit = request.limit + 1 - result.size.toLong()
+                limit = request.limit  - result.size.toLong()
             )
 
             if(currentBatch.isEmpty()) zeroCount++
