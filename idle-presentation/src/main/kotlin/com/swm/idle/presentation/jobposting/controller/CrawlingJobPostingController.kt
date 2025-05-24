@@ -3,7 +3,6 @@ package com.swm.idle.presentation.jobposting.controller
 import com.swm.idle.application.jobposting.facade.CrawlingPostingFacadeService
 import com.swm.idle.presentation.jobposting.api.CrawlingJobPostingApi
 import com.swm.idle.support.transfer.common.CrawlingCursorScrollRequest
-import com.swm.idle.support.transfer.common.CursorScrollRequest
 import com.swm.idle.support.transfer.jobposting.carer.CrawlingJobPostingFavoriteResponse
 import com.swm.idle.support.transfer.jobposting.carer.CrawlingJobPostingScrollResponse
 import com.swm.idle.support.transfer.jobposting.common.CrawlingJobPostingResponse
