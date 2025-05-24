@@ -84,7 +84,7 @@ class ChatFacadeService(
             chatRoomId = UUID.fromString(request.chatroomId),
             receiverId = UUID.fromString(request.opponentId),
             readUserId = userId,
-            messageSequence = UUID.fromString(request.messageSequence)
+            messageSequence = request.messageSequence.toLong()
         )
         chatRedisTemplate.publish(readMessage)
     }
