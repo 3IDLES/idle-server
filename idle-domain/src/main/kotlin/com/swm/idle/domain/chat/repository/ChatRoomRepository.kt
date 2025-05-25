@@ -15,12 +15,12 @@ interface ChatRoomRepository : JpaRepository<ChatRoom, UUID> {
 
     @Query("""
     SELECT 
-        cr.id,
-        cr.carer_id,
-        cr.center_id,
-        cm.content,
-        cm.created_at,
-        cm.sequence
+        cr.id          AS chatRoomId,
+        cr.carer_id    AS carerId,
+        cr.center_id   AS centerId,
+        cm.content     AS lastMessage,
+        cm.created_at  AS lastMessageTime,
+        cm.sequence    AS lastSequence
     FROM chat_room cr
     JOIN LATERAL (
         SELECT cm.content, cm.created_at, cm.sequence
