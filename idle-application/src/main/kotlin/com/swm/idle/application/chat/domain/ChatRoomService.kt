@@ -9,7 +9,6 @@ import java.util.*
 @Service
 class ChatRoomService(
     val chatroomRepository: ChatRoomRepository,
-    private val chatRoomRepository: ChatRoomRepository
 ){
 
     fun create(carerId: UUID, centerId: UUID): UUID {
@@ -24,7 +23,7 @@ class ChatRoomService(
 
     fun findChatRoomsWithLastMessages(roomIds: Set<String>, isCarer: Boolean): List<ChatRoomSummaryInfo> {
         val uuidSet = roomIds.map(UUID::fromString).toSet()
-        val projections = chatRoomRepository.findChatRoomsWithLastMessages(uuidSet)
+        val projections = chatroomRepository.findChatRoomsWithLastMessages(uuidSet)
 
         return projections.map { projection ->
             val opponentId = if (isCarer) projection.getCenterId() else projection.getCarerId()
