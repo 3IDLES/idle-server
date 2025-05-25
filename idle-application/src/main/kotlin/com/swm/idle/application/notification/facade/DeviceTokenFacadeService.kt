@@ -15,16 +15,21 @@ class DeviceTokenFacadeService(
     @Transactional
     fun createDeviceToken(deviceToken: String, userType: UserType) {
         val userId = getUserAuthentication().userId
-        deviceTokenService.findByDeviceToken(deviceToken)?.let {
-            if (it.userId != userId) {
-                deviceTokenService.updateDeviceTokenUserId(it, userId)
-            }
-        } ?: deviceTokenService.save(
-            userId = userId,
-            deviceToken = deviceToken,
-            userType = userType,
-        )
+
+        val existingTokenByDevice = deviceTokenService.findByDeviceToken(deviceToken)
+        val existingTokenByUser = deviceTokenService.findByUserId(userId)
+
+        if (existingTokenByDevice != null) {
+            deviceTokenService.deleteByDeviceToken(deviceToken)
+        }
+
+        if (existingTokenByUser == null) {
+            deviceTokenService.save(userId, deviceToken, userType)
+        } else {
+            deviceTokenService.updateDeviceTokenUserId(existingTokenByUser, deviceToken)
+        }
     }
+
 
     @Transactional
     fun deleteDeviceToken(deviceToken: String) {

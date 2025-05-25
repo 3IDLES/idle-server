@@ -27,10 +27,10 @@ class DeviceTokenService(
 
     @Transactional
     fun updateDeviceTokenUserId(
-        deviceToken: DeviceToken,
-        userId: UUID,
+        deviceTokenEntity: DeviceToken,
+        newToken: String,
     ) {
-        deviceToken.updateUserId(userId)
+        deviceTokenEntity.updateToken(newToken)
     }
 
     @Transactional

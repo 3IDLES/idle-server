@@ -29,8 +29,8 @@ class DeviceToken(
     var userType: UserType = userType
         private set
 
-    fun updateUserId(userId: UUID) {
-        this.userId = userId
+    fun updateToken(token: String) {
+        this.deviceToken = token
     }
 
 }
