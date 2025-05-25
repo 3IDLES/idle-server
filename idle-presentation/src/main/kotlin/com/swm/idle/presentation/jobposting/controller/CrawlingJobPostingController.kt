@@ -11,19 +11,19 @@ import java.util.*
 
 @RestController
 class CrawlingJobPostingController(
-    private val crawlingJobPostingFacadeService: CrawlingPostingFacadeService,
+    private val crawlingPostingFacadeService: CrawlingPostingFacadeService,
 ) : CrawlingJobPostingApi {
 
     override fun getCrawlingJobPostingDetail(crawlingJobPostingId: UUID): CrawlingJobPostingResponse {
-        return crawlingJobPostingFacadeService.getCrawlingJobPosting(crawlingJobPostingId)
+        return crawlingPostingFacadeService.getCrawlingJobPosting(crawlingJobPostingId)
     }
 
     override fun getCrawlingJobPostings(request: CrawlingCursorScrollRequest): CrawlingJobPostingScrollResponse {
-        return crawlingJobPostingFacadeService.getCrawlingPostingsInRange(request)
+        return crawlingPostingFacadeService.getCrawlingPostingsInRange(request)
     }
 
     override fun getFavoriteCrawlingJobPostings(): CrawlingJobPostingFavoriteResponse {
-        return crawlingJobPostingFacadeService.getFavoriteCrawlingJobPostings()
+        return crawlingPostingFacadeService.getFavoriteCrawlingJobPostings()
     }
 
 }
