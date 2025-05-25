@@ -1,18 +1,13 @@
-package com.swm.idle.domain.chat.event
+package com.swm.idle.domain.chat.repository
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.swm.idle.domain.chat.config.ChatRedisConfig
-import com.swm.idle.domain.chat.entity.jpa.ChatMessage
-import com.swm.idle.domain.chat.vo.ReadMessage
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Component
 import java.time.Duration
 import java.util.*
 
 @Component
-class ChatRedisTemplate(
+class ChatRedisRepository(
     private val redisTemplate: RedisTemplate<String, String>,
-    private val objectMapper: ObjectMapper
 ) {
 
     fun removeUnreadChatRoom(receiverId: String, chatRoomId: UUID) {
@@ -43,7 +38,7 @@ class ChatRedisTemplate(
     fun getUnreadChatRooms(userId: UUID): Set<String> {
         val key = "unread_chatroom:$userId"
         val members = redisTemplate.opsForSet().members(key) ?: return emptySet()
-        return members.mapNotNull { it as? String }.toSet()
+        return members.mapNotNull { it }.toSet()
     }
 
     fun getReadSequences(userId: UUID, chatRoomIds: Set<String>): Map<String, Long> {
@@ -51,7 +46,6 @@ class ChatRedisTemplate(
 
         val keys = chatRoomIds.map { chatRoomId -> "chatroom_read_sequence:$chatRoomId:$userId" }
         val values = redisTemplate.opsForValue().multiGet(keys) ?: emptyList()
-
         return keys.zip(values).associate { (key, value) ->
             val chatRoomId = key.split(":")[1]
             chatRoomId to (value?.toLongOrNull() ?: 0L)
@@ -68,26 +62,5 @@ class ChatRedisTemplate(
 
     fun setSession(userId: String, duration: Duration) {
         redisTemplate.opsForValue().set(userId,"active",duration)
-    }
-
-    fun publish(chatMessage: ChatMessage) {
-        val message = objectMapper.writeValueAsString(
-            mapOf(TYPE to SEND_MESSAGE, DATA to chatMessage)
-        )
-        redisTemplate.convertAndSend(ChatRedisConfig.CHATROOM, message)
-    }
-
-    fun publish(readMessage: ReadMessage) {
-        val message = objectMapper.writeValueAsString(
-            mapOf(TYPE to READ_MESSAGE, DATA to readMessage)
-        )
-        redisTemplate.convertAndSend(ChatRedisConfig.CHATROOM, message)
-    }
-
-    companion object{
-        const val TYPE = "ty"
-        const val DATA = "dt"
-        const val SEND_MESSAGE = "sm"
-        const val READ_MESSAGE = "rm"
     }
 }

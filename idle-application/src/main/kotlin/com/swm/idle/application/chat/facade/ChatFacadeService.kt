@@ -8,7 +8,8 @@ import com.swm.idle.application.user.carer.domain.CarerService
 import com.swm.idle.application.user.center.service.domain.CenterManagerService
 import com.swm.idle.application.user.center.service.domain.CenterService
 import com.swm.idle.domain.chat.entity.jpa.ChatMessage
-import com.swm.idle.domain.chat.event.ChatRedisTemplate
+import com.swm.idle.domain.chat.event.ChatRedisPublisher
+import com.swm.idle.domain.chat.repository.ChatRedisRepository
 import com.swm.idle.domain.chat.vo.ChatRoomSummaryInfo
 import com.swm.idle.domain.chat.vo.ReadMessage
 import com.swm.idle.domain.user.carer.entity.jpa.Carer
@@ -26,7 +27,7 @@ import java.util.*
 @Service
 class ChatFacadeService(
     private val centerManagerService: CenterManagerService,
-    private val chatRedisTemplate: ChatRedisTemplate,
+    private val chatRedisPublisher: ChatRedisPublisher,
     private val messageService: ChatMessageService,
     private val notificationService: ChatNotificationService,
     private val deviceTokenService: DeviceTokenService,
@@ -34,18 +35,19 @@ class ChatFacadeService(
     private val chatroomService: ChatRoomService,
     private val centerService: CenterService,
     private val carerService: CarerService,
+    private val chatRedisRepository: ChatRedisRepository,
 ) {
 
     @Transactional
     fun send(request: SendChatMessageRequest, inputId: UUID, isCarer: Boolean) {
         val userId = if(isCarer) inputId else  getCenterId(inputId)
-        val sequence = chatRedisTemplate.getChatRoomSequence(request.chatroomId)
+        val sequence = chatRedisRepository.getChatRoomSequence(request.chatroomId)
         val message = messageService.save(request, userId, sequence)
 
-        chatRedisTemplate.addUnreadChatRoom(request.receiverId, request.chatroomId)
-        chatRedisTemplate.updateReadSequence(request.chatroomId, message.sequence.toString(), userId)
+        chatRedisRepository.addUnreadChatRoom(request.receiverId, request.chatroomId)
+        chatRedisRepository.updateReadSequence(request.chatroomId, message.sequence.toString(), userId)
 
-        chatRedisTemplate.publish(message)
+        chatRedisPublisher.publish(message)
 
         sendNotification(message, request, isCarer)
     }
@@ -57,13 +59,13 @@ class ChatFacadeService(
     ) {
         if(isCarer) {
             for (manager in getManagersByCenterId(UUID.fromString(request.receiverId))) {
-                if (chatRedisTemplate.isChatting(manager.id)) continue
+                if (chatRedisRepository.isChatting(manager.id)) continue
 
                 val token = deviceTokenService.findByUserId(manager.id) ?: continue
                 notificationService.send(message, request.senderName, token)
             }
         }else{
-            if (chatRedisTemplate.isChatting(message.receiverId)) return
+            if (chatRedisRepository.isChatting(message.receiverId)) return
             val token = deviceTokenService.findByUserId(message.receiverId) ?: return
             notificationService.send(message, request.senderName, token)
         }
@@ -78,8 +80,8 @@ class ChatFacadeService(
     @Transactional
     fun read(request: ReadChatMessageRequest, inputId: UUID, isCarer: Boolean) {
         val userId = if(isCarer) inputId else  getCenterId(inputId)
-        chatRedisTemplate.removeUnreadChatRoom(request.chatroomId, userId)
-        chatRedisTemplate.updateReadSequence(request.chatroomId, request.sequence, userId)
+        chatRedisRepository.removeUnreadChatRoom(request.chatroomId, userId)
+        chatRedisRepository.updateReadSequence(request.chatroomId, request.sequence, userId)
 
         val readMessage = ReadMessage(
             chatRoomId = UUID.fromString(request.chatroomId),
@@ -87,7 +89,7 @@ class ChatFacadeService(
             readUserId = userId,
             sequence = request.sequence.toLong()
         )
-        chatRedisTemplate.publish(readMessage)
+        chatRedisPublisher.publish(readMessage)
     }
 
     private fun getCenterId(managerId:UUID): UUID {
@@ -131,7 +133,7 @@ class ChatFacadeService(
 
         val chatRoom = chatroomService.getById(chatRoomId)
         val opponentId = if (isCarer) chatRoom.centerId else chatRoom.carerId
-        val opponentReadSequence = chatRedisTemplate.getReadSequence(opponentId, chatRoomId)
+        val opponentReadSequence = chatRedisRepository.getReadSequence(opponentId, chatRoomId)
 
         return ChatMessageResponse(messageInfo, opponentReadSequence)
     }
@@ -139,8 +141,8 @@ class ChatFacadeService(
     @Transactional(readOnly = true)
     fun getChatroomSummary(isCarer: Boolean): List<ChatRoomSummaryInfo> {
         val userId = if (isCarer) getUserAuthentication().userId else getCenterIdByAuthentication()
-        val unreadChatRoomIds = chatRedisTemplate.getUnreadChatRooms(userId)
-        val readSequences = chatRedisTemplate.getReadSequences(userId, unreadChatRoomIds)
+        val unreadChatRoomIds = chatRedisRepository.getUnreadChatRooms(userId)
+        val readSequences = chatRedisRepository.getReadSequences(userId, unreadChatRoomIds)
         val summaries = chatroomService.findChatRoomsWithLastMessages(unreadChatRoomIds, isCarer)
 
         val opponentIds = summaries.map { it.opponentId }.toSet()
