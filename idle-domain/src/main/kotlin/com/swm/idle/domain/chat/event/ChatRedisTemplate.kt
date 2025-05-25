@@ -11,7 +11,7 @@ import java.util.*
 
 @Component
 class ChatRedisTemplate(
-    private val redisTemplate: RedisTemplate<String, Any>,
+    private val redisTemplate: RedisTemplate<String, String>,
     private val objectMapper: ObjectMapper
 ) {
 
@@ -27,12 +27,12 @@ class ChatRedisTemplate(
 
     fun updateReadSequence(chatRoomId: String, messageSequence: String, userId: UUID) {
         val key = "chatroom_read_sequence:$chatRoomId:$userId"
-        redisTemplate.opsForValue().set(key, messageSequence.toLong())
+        redisTemplate.opsForValue().set(key, messageSequence)
     }
 
     fun getReadSequence(userId: UUID, chatRoomId: UUID) : Long{
         val key = "chatroom_read_sequence:$chatRoomId:$userId"
-        return redisTemplate.opsForValue().get(key)?.toString()?.toLong() ?: 0L
+        return redisTemplate.opsForValue().get(key)?.toLong() ?: 0L
     }
 
     fun getChatRoomSequence(chatRoomId: String): Long {
@@ -54,7 +54,7 @@ class ChatRedisTemplate(
 
         return keys.zip(values).associate { (key, value) ->
             val chatRoomId = key.split(":")[1]
-            chatRoomId to (value as? Long ?: 0L)
+            chatRoomId to (value?.toLongOrNull() ?: 0L)
         }
     }
 
