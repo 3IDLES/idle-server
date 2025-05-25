@@ -1,7 +1,7 @@
 package com.swm.idle.presentation.chat.controller
 
 import com.swm.idle.application.chat.facade.ChatFacadeService
-import com.swm.idle.support.transfer.chat.ReadChatMessagesReqeust
+import com.swm.idle.support.transfer.chat.ReadChatMessageRequest
 import com.swm.idle.support.transfer.chat.SendChatMessageRequest
 import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.messaging.handler.annotation.Payload
@@ -22,8 +22,8 @@ class ChatSocketController (
     }
 
     @MessageMapping("/read/carer")
-    fun carerRead(@Payload request: ReadChatMessagesReqeust,
-                      headerAccessor: SimpMessageHeaderAccessor) {
+    fun carerRead(@Payload request: ReadChatMessageRequest,
+                  headerAccessor: SimpMessageHeaderAccessor) {
         val userId = UUID.fromString(headerAccessor.sessionAttributes?.get("userId") as String)
         chatMessageService.read(request, userId, true)
     }
@@ -36,8 +36,8 @@ class ChatSocketController (
     }
 
     @MessageMapping("/read/center")
-    fun centerRead(@Payload request: ReadChatMessagesReqeust,
-             headerAccessor: SimpMessageHeaderAccessor) {
+    fun centerRead(@Payload request: ReadChatMessageRequest,
+                   headerAccessor: SimpMessageHeaderAccessor) {
         val userId = UUID.fromString(headerAccessor.sessionAttributes?.get("userId") as String)
         chatMessageService.read(request, userId, false)
     }

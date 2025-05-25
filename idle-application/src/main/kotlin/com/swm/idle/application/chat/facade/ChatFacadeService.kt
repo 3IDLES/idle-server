@@ -75,7 +75,7 @@ class ChatFacadeService(
     }
 
     @Transactional
-    fun read(request: ReadChatMessagesReqeust, inputId: UUID, isCarer: Boolean) {
+    fun read(request: ReadChatMessageRequest, inputId: UUID, isCarer: Boolean) {
         val userId = if(isCarer) inputId else  getCenterId(inputId)
         chatRedisTemplate.removeUnreadChatRoom(request.chatroomId, userId)
         chatRedisTemplate.updateReadSequence(request.chatroomId, request.sequence, userId)
