@@ -1,4 +1,4 @@
--- V4__change_chat_message_sequence.sql
+-- V5__change_chat_message_sequence.sql
 
 ALTER TABLE chat_message
 DROP COLUMN is_read;
