@@ -7,12 +7,12 @@ data class ReadNoti(
     val chatroomId: UUID,
     val readByUserId: UUID,
     val type: ChatMessageType,
-    val messageSequence:Long
+    val sequence:Long
 ) {
     constructor(message: ReadMessage) : this(
         readByUserId = message.readUserId,
         chatroomId = message.chatRoomId,
         type = ChatMessageType.READ,
-        messageSequence = message.messageSequence
+        sequence = message.sequence
     )
 }

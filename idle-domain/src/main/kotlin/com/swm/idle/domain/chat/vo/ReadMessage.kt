@@ -6,4 +6,4 @@ data class ReadMessage(
     val chatRoomId: UUID,
     val receiverId: UUID,
     val readUserId: UUID,
-    val messageSequence:Long)
+    val sequence:Long)

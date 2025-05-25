@@ -12,6 +12,7 @@ data class ChatMessageInfo(
     val receiverId: UUID,
     val content: String,
     val createdAt: LocalDateTime,
+    val sequence: Long,
 ) {
     constructor(message: ChatMessage) : this(
         type = ChatMessageType.MESSAGE,
@@ -21,5 +22,6 @@ data class ChatMessageInfo(
         receiverId = message.receiverId,
         content = message.content,
         createdAt = message.createdAt ?: LocalDateTime.now(),
+        sequence = message.sequence,
     )
 }

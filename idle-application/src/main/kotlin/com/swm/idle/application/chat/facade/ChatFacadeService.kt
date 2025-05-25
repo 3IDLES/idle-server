@@ -78,13 +78,13 @@ class ChatFacadeService(
     fun read(request: ReadChatMessagesReqeust, inputId: UUID, isCarer: Boolean) {
         val userId = if(isCarer) inputId else  getCenterId(inputId)
         chatRedisTemplate.removeUnreadChatRoom(request.chatroomId, userId)
-        chatRedisTemplate.updateReadSequence(request.chatroomId, request.messageSequence, userId)
+        chatRedisTemplate.updateReadSequence(request.chatroomId, request.sequence, userId)
 
         val readMessage = ReadMessage(
             chatRoomId = UUID.fromString(request.chatroomId),
             receiverId = UUID.fromString(request.opponentId),
             readUserId = userId,
-            messageSequence = request.messageSequence.toLong()
+            sequence = request.sequence.toLong()
         )
         chatRedisTemplate.publish(readMessage)
     }
