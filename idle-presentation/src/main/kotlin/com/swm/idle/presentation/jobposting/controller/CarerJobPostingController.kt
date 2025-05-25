@@ -1,10 +1,8 @@
 package com.swm.idle.presentation.jobposting.controller
 
-import com.swm.idle.application.common.converter.PointConverter
 import com.swm.idle.application.common.security.getUserAuthentication
-import com.swm.idle.application.jobposting.facade.CarerJobPostingFacadeService
+import com.swm.idle.application.jobposting.facade.CarerPostingFacadeService
 import com.swm.idle.application.jobposting.facade.JobPostingFavoriteFacadeService
-import com.swm.idle.application.user.carer.domain.CarerService
 import com.swm.idle.presentation.jobposting.api.CarerJobPostingApi
 import com.swm.idle.support.transfer.common.CursorScrollRequest
 import com.swm.idle.support.transfer.jobposting.carer.CarerAppliedJobPostingScrollResponse
@@ -17,8 +15,7 @@ import java.util.*
 
 @RestController
 class CarerJobPostingController(
-    private val carerJobPostingFacadeService: CarerJobPostingFacadeService,
-    private val carerService: CarerService,
+    private val carerJobPostingFacadeService: CarerPostingFacadeService,
     private val jobPostingFavoriteFacadeService: JobPostingFavoriteFacadeService,
 ) : CarerJobPostingApi {
 
@@ -27,28 +24,13 @@ class CarerJobPostingController(
     }
 
     override fun getJobPostings(request: CursorScrollRequest): CarerJobPostingScrollResponse {
-        val carer = carerService.getById(getUserAuthentication().userId)
-
-        val location = PointConverter.convertToPoint(
-            latitude = carer.latitude.toDouble(),
-            longitude = carer.longitude.toDouble(),
-        )
-
-        return carerJobPostingFacadeService.getJobPostingsInRange(
-            request = request,
-            location = location
-        )
+        return carerJobPostingFacadeService.getJobPostingsInRange(request)
     }
 
     override fun getAppliedJobPostings(
         request: CursorScrollRequest,
     ): CarerAppliedJobPostingScrollResponse {
-        val carer = carerService.getById(getUserAuthentication().userId)
-
-        return carerJobPostingFacadeService.getAppliedJobPostings(
-            request = request,
-            carerId = carer.id
-        )
+        return carerJobPostingFacadeService.getAppliedJobPostings(request)
     }
 
     override fun createJobPostingFavorite(
@@ -70,17 +52,7 @@ class CarerJobPostingController(
     }
 
     override fun getMyFavoriteJobPostings(): JobPostingFavoriteResponse {
-        val carer = carerService.getById(getUserAuthentication().userId)
-
-        val location = PointConverter.convertToPoint(
-            latitude = carer.latitude.toDouble(),
-            longitude = carer.longitude.toDouble(),
-        )
-
-        return carerJobPostingFacadeService.getMyFavoriteJobPostings(
-            carer = carer,
-            location = location,
-        )
+        return carerJobPostingFacadeService.getMyFavoriteJobPostings()
     }
 
 }

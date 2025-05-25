@@ -12,21 +12,23 @@ import org.springframework.stereotype.Component
 class CrawlingJobLauncher(
     private val jobLauncher: JobLauncher,
     private val jobRegistry: JobRegistry,
-    private val crawlingJobConfig: JobConfig,
 ) {
 
-    @Scheduled(cron = "0 0 23 * * *")
+    @Scheduled(cron = "0 0 22 * * *")
     fun scheduleJob() {
         val jobParameters: JobParameters = JobParametersBuilder()
             .addLong("timestamp", System.currentTimeMillis())
+            .addLong("day", 0L)
             .toJobParameters()
 
-        jobLauncher.run(crawlingJobConfig.crawlingJob(), jobParameters)
+        jobLauncher.run(jobRegistry.getJob("crawlingJob"), jobParameters)
     }
 
-    fun jobStart() {
+
+    fun jobStart(dayOffset: Long = 0) {
         val jobParameters: JobParameters = JobParametersBuilder()
             .addLong("timestamp", System.currentTimeMillis())
+            .addLong("day", dayOffset)
             .toJobParameters()
 
         jobLauncher.run(jobRegistry.getJob("crawlingJob"), jobParameters)

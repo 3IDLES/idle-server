@@ -11,17 +11,6 @@ import java.util.*
 
 @Repository
 interface ChatMessageRepository : JpaRepository<ChatMessage, UUID> {
-    @Transactional
-    @Modifying(clearAutomatically = true)
-    @Query("""
-    UPDATE ChatMessage cm 
-    SET cm.isRead = true 
-    WHERE cm.chatRoomId = :chatroomId 
-    AND cm.isRead = false
-    AND cm.receiverId = :readUserId 
-    """)
-    fun readByChatroomId(@Param("chatroomId") chatroomId: UUID, @Param("readUserId") readUserId: UUID)
-
     @Query(value = """
     SELECT * 
     FROM chat_message 

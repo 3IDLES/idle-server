@@ -5,4 +5,5 @@ import java.util.*
 data class ReadMessage(
     val chatRoomId: UUID,
     val receiverId: UUID,
-    val readUserId: UUID,)
+    val readUserId: UUID,
+    val sequence:Long)

@@ -26,7 +26,7 @@ interface ChatCenterApi {
     @GetMapping("/chatrooms/{chatroom-id}/messages")
     @ResponseStatus(HttpStatus.OK)
     fun recentMessages(@PathVariable(value = "chatroom-id") chatroomId: UUID,
-                       @RequestParam(value = "message-id", required = false) messageId: UUID?): List<ChatMessageResponse>
+                       @RequestParam(value = "message-id", required = false) messageId: UUID?): ChatMessageResponse
 
         @Secured
     @Operation(summary = "센터장의 채팅방 요약 목록 조회 API")

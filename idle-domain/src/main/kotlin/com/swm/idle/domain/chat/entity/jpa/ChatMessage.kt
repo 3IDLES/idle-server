@@ -13,6 +13,7 @@ class ChatMessage(
     senderId: UUID,
     receiverId: UUID,
     content: String,
+    sequence: Long,
 ) : BaseEntity() {
 
     @Column(updatable = false)
@@ -32,7 +33,8 @@ class ChatMessage(
         private set
 
     @Column(updatable = false)
-    val isRead: Boolean = false
+    var sequence: Long = sequence
+        private set
 
     init {
         require(content.isNotBlank()) { "채팅 메시지는 최소 1자 이상 입력해야 합니다." }

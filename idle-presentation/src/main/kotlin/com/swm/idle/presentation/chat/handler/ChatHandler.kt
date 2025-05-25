@@ -2,7 +2,7 @@ package com.swm.idle.presentation.chat.handler
 
 import com.swm.idle.domain.chat.entity.jpa.ChatMessage
 import com.swm.idle.domain.chat.vo.ReadMessage
-import com.swm.idle.support.transfer.chat.ChatMessageResponse
+import com.swm.idle.support.transfer.chat.ChatMessageSocketResponse
 import com.swm.idle.support.transfer.chat.ReadNoti
 import org.springframework.context.event.EventListener
 import org.springframework.messaging.simp.SimpMessageSendingOperations
@@ -14,8 +14,8 @@ class ChatHandler(
 ) {
     @EventListener
     fun handleSendMessage(sendMessage: ChatMessage) {
-        messageTemplate.convertAndSend("/sub/${sendMessage.receiverId}", ChatMessageResponse(sendMessage))
-        messageTemplate.convertAndSend("/sub/${sendMessage.senderId}", ChatMessageResponse(sendMessage))
+        messageTemplate.convertAndSend("/sub/${sendMessage.receiverId}", ChatMessageSocketResponse(sendMessage))
+        messageTemplate.convertAndSend("/sub/${sendMessage.senderId}", ChatMessageSocketResponse(sendMessage))
     }
 
     @EventListener

@@ -12,7 +12,6 @@ import com.swm.idle.application.user.carer.domain.CarerService
 import com.swm.idle.application.user.center.service.domain.CenterService
 import com.swm.idle.domain.common.dto.JobPostingPreviewDto
 import com.swm.idle.domain.common.enums.EntityStatus
-import com.swm.idle.domain.user.carer.entity.jpa.Carer
 import com.swm.idle.support.transfer.common.CursorScrollRequest
 import com.swm.idle.support.transfer.jobposting.carer.CarerAppliedJobPostingScrollResponse
 import com.swm.idle.support.transfer.jobposting.carer.CarerJobPostingResponse
@@ -23,7 +22,7 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class CarerJobPostingFacadeService(
+class CarerPostingFacadeService(
     private val jobPostingWeekdayService: JobPostingWeekdayService,
     private val jobPostingLifeAssistanceService: JobPostingLifeAssistanceService,
     private val jobPostingApplyMethodService: JobPostingApplyMethodService,
@@ -35,18 +34,12 @@ class CarerJobPostingFacadeService(
 ) {
 
     fun getJobPostingDetail(jobPostingId: UUID): CarerJobPostingResponse {
-        val carer = getUserAuthentication().userId.let {
-            carerService.getById(it)
-        }
-
-        val jobPosting = jobPostingService.getById(jobPostingId)
+        val carer = carerService.getById(getUserAuthentication().userId)
+        val posting = jobPostingService.getById(jobPostingId)
 
         val distance = jobPostingService.calculateDistance(
-            jobPosting,
-            PointConverter.convertToPoint(
-                latitude = carer.latitude.toDouble(),
-                longitude = carer.longitude.toDouble(),
-            )
+            posting,
+            PointConverter.convertToPoint(carer)
         )
 
         val weekdays = jobPostingWeekdayService.findByJobPostingId(jobPostingId)?.map { it.weekday }
@@ -65,10 +58,10 @@ class CarerJobPostingFacadeService(
             carerId = carer.id,
         )
 
-        val center = centerService.getById(jobPosting.centerId)
+        val center = centerService.getById(posting.centerId)
 
         return CarerJobPostingResponse.of(
-            jobPosting = jobPosting,
+            jobPosting = posting,
             weekdays = weekdays,
             lifeAssistances = lifeAssistances,
             applyMethods = applyMethods,
@@ -81,8 +74,10 @@ class CarerJobPostingFacadeService(
 
     fun getJobPostingsInRange(
         request: CursorScrollRequest,
-        location: Point,
     ): CarerJobPostingScrollResponse {
+        val carer = carerService.getById(getUserAuthentication().userId)
+        val location = PointConverter.convertToPoint(carer)
+
         val (items, next) = scrollByCarerLocationInRange(
             location = location,
             next = request.next,
@@ -112,10 +107,7 @@ class CarerJobPostingFacadeService(
             limit = limit + 1,
         )
 
-        val carerLocation = PointConverter.convertToPoint(
-            latitude = carer.latitude.toDouble(),
-            longitude = carer.longitude.toDouble(),
-        )
+        val carerLocation = PointConverter.convertToPoint(carer)
 
         for (jobPostingPreviewDto in jobPostingPreviewDtos) {
             jobPostingPreviewDto.distance = jobPostingService.calculateDistance(
@@ -134,14 +126,11 @@ class CarerJobPostingFacadeService(
         return items to newNext
     }
 
-    fun getAppliedJobPostings(
-        request: CursorScrollRequest,
-        carerId: UUID,
-    ): CarerAppliedJobPostingScrollResponse {
+    fun getAppliedJobPostings(request: CursorScrollRequest): CarerAppliedJobPostingScrollResponse {
         val (items, next) = scrollByCarerApplyHistory(
             next = request.next,
             limit = request.limit,
-            carerId = carerId,
+            carerId = getUserAuthentication().userId
         )
 
         return CarerAppliedJobPostingScrollResponse.from(
@@ -163,14 +152,8 @@ class CarerJobPostingFacadeService(
             carerId = carerId,
         )
 
-        val carerLocation = getUserAuthentication().userId.let {
-            carerService.getById(it)
-        }.let {
-            PointConverter.convertToPoint(
-                latitude = it.latitude.toDouble(),
-                longitude = it.longitude.toDouble(),
-            )
-        }
+        val carer = carerService.getById(getUserAuthentication().userId)
+        val carerLocation = PointConverter.convertToPoint(carer)
 
         for (jobPostingPreviewDto in JobPostingPreviewDtos) {
             jobPostingService.calculateDistance(
@@ -189,20 +172,17 @@ class CarerJobPostingFacadeService(
         return items to newNext
     }
 
-    fun getMyFavoriteJobPostings(
-        carer: Carer,
-        location: Point,
-    ): JobPostingFavoriteResponse {
+    fun getMyFavoriteJobPostings(): JobPostingFavoriteResponse {
+        val carer = carerService.getById(getUserAuthentication().userId)
+        val location = PointConverter.convertToPoint(carer)
+
         val jobPostingPreviewDtos: List<JobPostingPreviewDto>? =
             jobPostingService.findAllFavorites(carer.id)
 
         jobPostingPreviewDtos?.map { jobPostingPreviewDto ->
             val distance = jobPostingService.calculateDistance(
                 jobPostingPreviewDto.jobPosting,
-                PointConverter.convertToPoint(
-                    latitude = carer.latitude.toDouble(),
-                    longitude = carer.longitude.toDouble(),
-                )
+                location
             )
 
             JobPostingFavoriteResponse.MyFavoriteJobPostingDto.of(

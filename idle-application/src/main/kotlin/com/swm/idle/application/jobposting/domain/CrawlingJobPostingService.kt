@@ -4,7 +4,7 @@ import com.swm.idle.domain.common.dto.CrawlingJobPostingPreviewDto
 import com.swm.idle.domain.common.exception.PersistenceException
 import com.swm.idle.domain.jobposting.entity.jpa.CrawledJobPosting
 import com.swm.idle.domain.jobposting.repository.jpa.CrawlingJobPostingJpaRepository
-import com.swm.idle.domain.jobposting.repository.querydsl.CrawlingJobPostingSpatialQueryRepository
+import com.swm.idle.domain.jobposting.repository.redis.RedisJobPostingRepository
 import org.locationtech.jts.geom.Point
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -15,32 +15,25 @@ import java.util.*
 @Transactional(readOnly = true)
 class CrawlingJobPostingService(
     private val crawlingJobPostingJpaRepository: CrawlingJobPostingJpaRepository,
-    private val crawlingJobPostingSpatialQueryRepository: CrawlingJobPostingSpatialQueryRepository,
+    private val redisJobPostingRepository: RedisJobPostingRepository,
 ) {
-
-    @Transactional
-    fun saveAll(crawledJobPostings: List<CrawledJobPosting>) {
-        crawlingJobPostingJpaRepository.saveAll(crawledJobPostings)
-    }
 
     fun getById(crawlingJobPostingId: UUID): CrawledJobPosting {
         return crawlingJobPostingJpaRepository.findByIdOrNull(crawlingJobPostingId)
             ?: throw PersistenceException.ResourceNotFound("크롤링한 구인 공고(id=$crawlingJobPostingId)를 찾을 수 없습니다")
     }
 
-    fun findAllByCarerLocationInRange(
-        carerId: UUID,
-        location: Point,
+    fun findAllInRange(
         next: UUID?,
-        limit: Long,
+        location: Point,
+        distance: Long,
+        limit: Long
     ): List<CrawlingJobPostingPreviewDto> {
-        return crawlingJobPostingSpatialQueryRepository.findAllInRange(
-            carerId = carerId,
-            location = location,
-            next = next,
-            limit = limit,
-        )
+        val postingIds = redisJobPostingRepository.findByLocationAndDistance(location, distance, limit, next)
+        val postings = crawlingJobPostingJpaRepository.findAllById(postingIds)
+        return postings.map { CrawlingJobPostingPreviewDto(it, distance.toInt()) }
     }
+
 
     fun calculateDistance(
         crawledJobPosting: CrawledJobPosting,

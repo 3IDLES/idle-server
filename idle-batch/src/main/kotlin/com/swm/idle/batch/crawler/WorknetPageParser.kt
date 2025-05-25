@@ -9,7 +9,7 @@ import java.time.Duration
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class WorknetPageParser {
+class WorknetPageParser(dayOffset: Long = 0) {
     private var postingCount = 0
     private var crawlingUrl: String = ""
     private var lastPageJobPostingCount: Int = 1
@@ -20,7 +20,7 @@ class WorknetPageParser {
     init {
         val driver = DriverInitializer.init()
         driver.safeUse {
-            getCrawlingURL()
+            getCrawlingURL(dayOffset)
             moveToPage(driver)
             getPostingCount(driver)
             calculatePageInfo()
@@ -45,9 +45,10 @@ class WorknetPageParser {
             "pageIndex=$currentPage")
     }
 
-    private fun getCrawlingURL() {
+    private fun getCrawlingURL(dayOffset: Long) {
+        val targetDate = LocalDate.now().minusDays(dayOffset)
         crawlingUrl = CrawlerConsts.CRAWLING_TARGET_URL_FORMAT.value
-            .replace("{yesterday}", LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")))
+            .replace("{yesterday}", targetDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")))
             .replace("{pageIndex}", "1")
     }
 
