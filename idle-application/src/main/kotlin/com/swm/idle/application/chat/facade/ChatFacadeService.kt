@@ -43,6 +43,7 @@ class ChatFacadeService(
         val message = messageService.save(request, userId, sequence)
 
         chatRedisTemplate.addUnreadChatRoom(request.receiverId, request.chatroomId)
+        chatRedisTemplate.updateReadSequence(request.chatroomId, message.sequence.toString(), userId)
 
         chatRedisTemplate.publish(message)
 
