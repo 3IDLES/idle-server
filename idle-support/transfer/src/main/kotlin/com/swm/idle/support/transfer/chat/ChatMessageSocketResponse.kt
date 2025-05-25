@@ -12,6 +12,7 @@ class ChatMessageSocketResponse(
     val senderId: UUID,
     val content: String,
     val createdAt: LocalDateTime,
+    val sequence: Long,
 ) {
     constructor(message: ChatMessage) : this(
         type = ChatMessageType.MESSAGE,
@@ -21,5 +22,6 @@ class ChatMessageSocketResponse(
         senderId = message.senderId,
         content = message.content,
         createdAt = message.createdAt ?: LocalDateTime.now(),
+        sequence = message.sequence,
     )
 }
