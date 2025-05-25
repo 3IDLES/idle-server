@@ -32,7 +32,7 @@ class ChatRoomService(
                 opponentId,
                 projection.getLastMessage(),
                 projection.getLastMessageTime(),
-                projection.getLastSequence()
+                projection.getLastSequence()?:1L
             )
         }
     }
