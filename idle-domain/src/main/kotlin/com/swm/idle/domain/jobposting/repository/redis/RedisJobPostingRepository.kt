@@ -16,6 +16,17 @@ import java.util.*
 class RedisJobPostingRepository(
     private val redisTemplate: RedisTemplate<String, String>,
 ) {
+    /**
+     * Retrieves a list of job posting UUIDs located within a specified distance from a given geographic point, with optional pagination.
+     *
+     * If `next` is null, returns up to `limit` UUIDs of job postings within the radius. If `next` is provided, returns the next page of UUIDs after the specified UUID, ordered by proximity.
+     *
+     * @param location The geographic point to search around.
+     * @param distance The search radius in kilometers.
+     * @param limit The maximum number of UUIDs to return.
+     * @param next The UUID to start pagination after, or null to start from the beginning.
+     * @return A list of job posting UUIDs matching the location and distance criteria, paginated if `next` is provided.
+     */
     fun findByLocationAndDistance(
         location: Point,
         distance: Long,
@@ -37,6 +48,11 @@ class RedisJobPostingRepository(
         return getPagedGeoUuids(keys, circle, next, limit)
     }
 
+    /**
+     * Generates Redis keys for job postings geospatial data for the current day and the previous 12 days.
+     *
+     * @return A list of Redis key strings in the format "job_postings_geo_YYYYMMDD" for the last 13 days.
+     */
     private fun makeRedisKeys(): List<String> {
         val today = LocalDate.now()
         val keys = (0..12).map { offset ->
@@ -46,6 +62,16 @@ class RedisJobPostingRepository(
         return keys
     }
 
+    /**
+     * Retrieves all job posting UUIDs within the specified geospatial circle across multiple Redis keys.
+     *
+     * Iterates through the provided Redis keys, performing a geospatial radius query for each,
+     * and collects UUIDs of job postings located within the given circle.
+     *
+     * @param keys List of Redis keys to search for job postings.
+     * @param circle Geospatial area to search within.
+     * @return Mutable list of UUIDs for job postings found within the specified area.
+     */
     private fun findPostingIds(
         keys: List<String>,
         circle: Circle
@@ -63,6 +89,17 @@ class RedisJobPostingRepository(
         return ids
     }
 
+    /**
+     * Retrieves a paginated list of job posting UUIDs within a specified geospatial area, starting after a given UUID.
+     *
+     * Collects UUIDs from the provided Redis keys that fall within the given circle, sorts them by ascending distance from the center, and returns up to the specified limit of UUIDs following the `next` UUID.
+     *
+     * @param keys List of Redis keys to search for geospatial job postings.
+     * @param circle The geospatial area to search within.
+     * @param next The UUID after which to start pagination.
+     * @param limit The maximum number of UUIDs to return.
+     * @return A list of UUIDs representing job postings after the `next` UUID, ordered by proximity.
+     */
     fun getPagedGeoUuids(
         keys: List<String>,
         circle: Circle,

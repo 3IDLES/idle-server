@@ -14,6 +14,9 @@ class CrawlingJobLauncher(
     private val jobRegistry: JobRegistry,
 ) {
 
+    /**
+     * Schedules and launches the "crawlingJob" batch job daily at 22:00 with the current timestamp and a day offset of 0.
+     */
     @Scheduled(cron = "0 0 22 * * *")
     fun scheduleJob() {
         val jobParameters: JobParameters = JobParametersBuilder()
@@ -25,6 +28,11 @@ class CrawlingJobLauncher(
     }
 
 
+    /**
+     * Manually triggers the "crawlingJob" batch job with a specified day offset.
+     *
+     * @param dayOffset The offset in days to include as a job parameter. Defaults to 0.
+     */
     fun jobStart(dayOffset: Long = 0) {
         val jobParameters: JobParameters = JobParametersBuilder()
             .addLong("timestamp", System.currentTimeMillis())

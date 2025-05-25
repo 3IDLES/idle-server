@@ -11,7 +11,14 @@ import java.util.*
 
 @Repository
 interface ChatMessageRepository : JpaRepository<ChatMessage, UUID> {
-    @Query(value = """
+    /**
+                          * Retrieves up to 50 most recent chat messages from a specific chat room with IDs less than the given message ID.
+                          *
+                          * @param chatroomId The unique identifier of the chat room.
+                          * @param messageId The message ID threshold; only messages with IDs less than this value are returned.
+                          * @return A list of up to 50 `ChatMessage` entities ordered by descending ID.
+                          */
+                         @Query(value = """
     SELECT * 
     FROM chat_message 
     WHERE chat_room_id = :chatroomId 

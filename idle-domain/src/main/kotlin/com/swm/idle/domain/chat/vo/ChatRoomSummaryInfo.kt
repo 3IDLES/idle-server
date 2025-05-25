@@ -28,6 +28,12 @@ data class ChatRoomSummaryInfo(
     )
 
     companion object {
+        /**
+         * Converts a 16-byte array into a UUID.
+         *
+         * @param array A byte array containing the most and least significant bits of a UUID.
+         * @return The UUID represented by the byte array.
+         */
         fun fromByteArray(array: ByteArray): UUID {
             val buffer = ByteBuffer.wrap(array)
             val mostSigBits = buffer.long

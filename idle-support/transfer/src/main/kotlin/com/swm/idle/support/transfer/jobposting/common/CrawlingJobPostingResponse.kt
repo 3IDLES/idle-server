@@ -75,6 +75,15 @@ data class CrawlingJobPostingResponse(
 ) {
 
     companion object {
+        /**
+         * Creates a [CrawlingJobPostingResponse] from a [CrawledJobPosting] entity.
+         *
+         * Maps the fields from the given job posting entity to a response object, including favorite status and distance.
+         *
+         * @param isFavorite Indicates whether the job posting is marked as favorite.
+         * @param distance Distance to the job posting location in meters.
+         * @return A [CrawlingJobPostingResponse] representing the detailed job posting information.
+         */
         fun from(
             posting: CrawledJobPosting,
             isFavorite: Boolean,

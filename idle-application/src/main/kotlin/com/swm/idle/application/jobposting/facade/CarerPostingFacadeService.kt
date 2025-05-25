@@ -33,6 +33,14 @@ class CarerPostingFacadeService(
     private val jobPostingFavoriteService: JobPostingFavoriteService,
 ) {
 
+    /**
+     * Retrieves detailed information about a specific job posting for the authenticated carer.
+     *
+     * Assembles job posting details including associated weekdays, life assistance types, apply methods, center information, distance from the carer, application status, and favorite status.
+     *
+     * @param jobPostingId The unique identifier of the job posting to retrieve.
+     * @return A response containing comprehensive job posting details tailored to the authenticated carer.
+     */
     fun getJobPostingDetail(jobPostingId: UUID): CarerJobPostingResponse {
         val carer = carerService.getById(getUserAuthentication().userId)
         val posting = jobPostingService.getById(jobPostingId)
@@ -72,6 +80,14 @@ class CarerPostingFacadeService(
         )
     }
 
+    /**
+     * Retrieves a paginated list of job postings within range of the authenticated carer's location.
+     *
+     * Uses the carer's current location to find nearby job postings and returns them in a scrollable response format.
+     *
+     * @param request Cursor-based pagination request containing the next cursor and limit.
+     * @return A scroll response containing job postings near the carer, the next cursor, and the total count in the current page.
+     */
     fun getJobPostingsInRange(
         request: CursorScrollRequest,
     ): CarerJobPostingScrollResponse {
@@ -91,6 +107,16 @@ class CarerPostingFacadeService(
         )
     }
 
+    /**
+     * Retrieves a paginated list of job posting previews within range of the specified location for the authenticated carer.
+     *
+     * Calculates the distance from each job posting to the carer's location and determines the next pagination cursor.
+     *
+     * @param location The geographic point to search from.
+     * @param next The pagination cursor indicating the starting point for the next page, or null to start from the beginning.
+     * @param limit The maximum number of job postings to return.
+     * @return A pair containing the list of job posting previews (with distances set) and the next cursor UUID, or null if there are no more results.
+     */
     private fun scrollByCarerLocationInRange(
         location: Point,
         next: UUID?,
@@ -126,6 +152,12 @@ class CarerPostingFacadeService(
         return items to newNext
     }
 
+    /**
+     * Retrieves a paginated list of job postings that the authenticated carer has applied to.
+     *
+     * @param request The cursor-based pagination request.
+     * @return A scroll response containing applied job postings, the next pagination cursor, and the total count.
+     */
     fun getAppliedJobPostings(request: CursorScrollRequest): CarerAppliedJobPostingScrollResponse {
         val (items, next) = scrollByCarerApplyHistory(
             next = request.next,
@@ -140,6 +172,14 @@ class CarerPostingFacadeService(
         )
     }
 
+    /**
+     * Retrieves a paginated list of job postings the specified carer has applied to, including distance from the carer's current location.
+     *
+     * @param carerId The unique identifier of the carer whose application history is being queried.
+     * @param next The pagination cursor indicating the starting point for the next page, or null to start from the beginning.
+     * @param limit The maximum number of job postings to return.
+     * @return A pair containing the list of job posting previews (with distance calculated) and the next pagination cursor, or null if there are no more results.
+     */
     private fun scrollByCarerApplyHistory(
         carerId: UUID,
         next: UUID?,
@@ -172,6 +212,11 @@ class CarerPostingFacadeService(
         return items to newNext
     }
 
+    /**
+     * Retrieves all job postings favorited by the authenticated carer, including the distance from the carer's current location.
+     *
+     * @return A response containing the list of favorite job postings with distance information.
+     */
     fun getMyFavoriteJobPostings(): JobPostingFavoriteResponse {
         val carer = carerService.getById(getUserAuthentication().userId)
         val location = PointConverter.convertToPoint(carer)

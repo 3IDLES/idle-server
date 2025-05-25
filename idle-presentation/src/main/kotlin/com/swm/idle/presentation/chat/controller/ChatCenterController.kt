@@ -18,10 +18,22 @@ class ChatCenterController(
         return chatMessageService.createChatroom(request,false)
     }
 
+    /**
+     * Retrieves summary information for all chat rooms in the center.
+     *
+     * @return A list of chat room summary information.
+     */
     override fun centerChatroomSummary(): List<ChatRoomSummaryInfo> {
         return chatMessageService.getChatroomSummary(false)
     }
 
+    /**
+     * Retrieves recent chat messages for a specified chat room.
+     *
+     * @param chatroomId The unique identifier of the chat room.
+     * @param messageId An optional message ID to fetch messages after this point.
+     * @return A response containing recent chat messages for the given chat room.
+     */
     override fun recentMessages(chatroomId: UUID, messageId: UUID?): ChatMessageResponse {
         return chatMessageService.getRecentMessages(chatroomId, messageId, false)
     }

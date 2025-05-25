@@ -24,6 +24,12 @@ interface CrawlingJobPostingApi {
     @ResponseStatus(HttpStatus.OK)
     fun getCrawlingJobPostingDetail(@PathVariable(value = "crawling-job-posting-id") crawlingJobPostingId: UUID): CrawlingJobPostingResponse
 
+    /**
+     * Retrieves a paginated list of crawling job postings based on the provided cursor scroll request.
+     *
+     * @param request The cursor scroll request containing pagination and filtering criteria.
+     * @return A response containing the list of crawling job postings and pagination information.
+     */
     @Secured
     @Operation(summary = "크롤링 공고 전체 조회 API")
     @GetMapping

@@ -39,12 +39,25 @@ class WorknetPageParser(dayOffset: Long = 0) {
         return CrawlerConsts.JOB_POSTING_COUNT_PER_PAGE.getIntValue()
     }
 
+    /**
+     * Generates the URL for accessing a specific page of job postings.
+     *
+     * Replaces the page index parameter in the base crawling URL with the given page number.
+     *
+     * @param currentPage The page number to access.
+     * @return The URL for the specified page.
+     */
     fun getAccessURL(currentPage: Int): String {
         return crawlingUrl.replace(
             Regex("pageIndex=\\d+"),
             "pageIndex=$currentPage")
     }
 
+    /**
+     * Constructs the crawling URL by substituting the target date, offset by the specified number of days, and setting the page index to 1.
+     *
+     * @param dayOffset The number of days to subtract from the current date to determine the target date for the URL.
+     */
     private fun getCrawlingURL(dayOffset: Long) {
         val targetDate = LocalDate.now().minusDays(dayOffset)
         crawlingUrl = CrawlerConsts.CRAWLING_TARGET_URL_FORMAT.value

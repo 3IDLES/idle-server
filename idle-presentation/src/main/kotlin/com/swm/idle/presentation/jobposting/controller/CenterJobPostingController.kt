@@ -16,14 +16,30 @@ class CenterJobPostingController(
     private val centerJobPostingFacadeService: CenterPostingFacadeService,
 ) : CenterJobPostingApi {
 
+    /**
+     * Creates a new job posting with the provided request data.
+     *
+     * Initiates the creation process asynchronously by delegating to the facade service.
+     */
     override suspend fun createJobPosting(request: CreateJobPostingRequest) {
         centerJobPostingFacadeService.create(request = request)
     }
 
+    /**
+     * Updates an existing job posting with new information.
+     *
+     * @param jobPostingId The unique identifier of the job posting to update.
+     * @param request The update request containing new job posting details.
+     */
     override fun updateJobPosting(jobPostingId: UUID, request: UpdateJobPostingRequest) {
         centerJobPostingFacadeService.update(jobPostingId, request)
     }
 
+    /**
+     * Deletes the job posting identified by the given UUID.
+     *
+     * @param jobPostingId The unique identifier of the job posting to delete.
+     */
     override fun deleteJobPosting(jobPostingId: UUID) {
         centerJobPostingFacadeService.delete(jobPostingId)
     }

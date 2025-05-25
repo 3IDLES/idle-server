@@ -54,6 +54,15 @@ class CenterPostingFacadeService(
     private val createJobPostingEventPublisher: CreateJobPostingEventPublisher,
 ) {
 
+    /**
+     * Creates a new job posting for the authenticated center, including related entities and notifications.
+     *
+     * Retrieves the center ID for the authenticated user, geocodes the provided address, and creates a job posting with location data.
+     * Concurrently creates associated life assistance, weekdays, and apply methods if provided.
+     * Notifies all carers within the job posting's location radius by sending notifications to their registered devices.
+     *
+     * @param request The details required to create the job posting, including address, life assistance, weekdays, and apply methods.
+     */
     @Transactional
     suspend fun create(request: CreateJobPostingRequest) {
         val centerId = getCenterId()
@@ -121,6 +130,12 @@ class CenterPostingFacadeService(
         }
     }
 
+    /**
+     * Retrieves the UUID of the center associated with the currently authenticated center manager.
+     *
+     * @return The UUID of the center.
+     * @throws CenterException.NotFoundException if the center cannot be found for the authenticated user.
+     */
     private fun getCenterId(): UUID {
         val centerId =
             centerManagerService.getById(getUserAuthentication().userId).let {
@@ -131,6 +146,14 @@ class CenterPostingFacadeService(
         return centerId
     }
 
+    /**
+     * Constructs a notification message summarizing key details of a job posting.
+     *
+     * The message includes the first three segments of the lot number address, care level, calculated age from birth year, and gender.
+     *
+     * @param jobPosting The job posting from which to extract details.
+     * @return A formatted message string for notifications.
+     */
     private fun createBodyMessage(jobPosting: JobPosting): String {
         val filteredLotNumberAddress = jobPosting.lotNumberAddress.split(" ")
             .take(3)
@@ -142,6 +165,15 @@ class CenterPostingFacadeService(
                 jobPosting.gender.value
     }
 
+    /**
+     * Updates an existing job posting with new details, including optional address and related entities.
+     *
+     * If both road name and lot number addresses are provided, updates the job posting's location using geocoding.
+     * Also updates associated life assistance, weekdays, and apply methods if present in the request.
+     *
+     * @param postingId The unique identifier of the job posting to update.
+     * @param request The update request containing new job posting details.
+     */
     @Transactional
     fun update(
         postingId: UUID,

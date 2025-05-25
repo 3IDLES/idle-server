@@ -76,6 +76,15 @@ data class CrawlingJobPostingScrollResponse(
 
     companion object {
 
+        /**
+         * Creates a `CrawlingJobPostingScrollResponse` from a list of job posting previews and a distance value.
+         *
+         * Converts each preview DTO to a `CrawlingJobPostingDto`, sets the `next` value to the last item's ID (or null if the list is empty), assigns the total number of items, and sets the next distance in kilometers.
+         *
+         * @param items List of job posting preview DTOs to include in the response.
+         * @param distance Distance in kilometers to the next item for pagination.
+         * @return A populated `CrawlingJobPostingScrollResponse` representing the paginated job postings.
+         */
         fun from(
             items: List<CrawlingJobPostingPreviewDto>,
             distance: Long

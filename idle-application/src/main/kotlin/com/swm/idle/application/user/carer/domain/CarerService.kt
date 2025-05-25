@@ -107,10 +107,22 @@ class CarerService(
         carerJpaRepository.deleteById(id)
     }
 
+    /**
+     * Retrieves all carers located within a certain radius of the specified geographic point.
+     *
+     * @param location The geographic point to search around.
+     * @return A list of carers within the radius, or null if none are found.
+     */
     fun findAllByLocationWithinRadius(location: Point): List<Carer>? {
         return carerQueryRepository.findAllByLocationWithinRadius(location)
     }
 
+    /**
+     * Retrieves a list of Carer entities matching the given set of IDs.
+     *
+     * @param carerIds Set of UUIDs representing the Carer entities to retrieve.
+     * @return List of Carer entities corresponding to the provided IDs. If no matches are found, returns an empty list.
+     */
     fun getByIds(carerIds: Set<UUID>): List<Carer> {
         return carerJpaRepository.findAllById(carerIds)
     }

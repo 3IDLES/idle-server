@@ -11,8 +11,21 @@ import java.util.*
 @Repository
 interface ChatRoomRepository : JpaRepository<ChatRoom, UUID> {
 
-    fun findByCarerIdAndCenterId(carerId: UUID, centerId: UUID): ChatRoom?
+    /**
+ * Retrieves a chat room matching the specified carer and center IDs.
+ *
+ * @param carerId The unique identifier of the carer.
+ * @param centerId The unique identifier of the center.
+ * @return The matching ChatRoom, or null if none exists.
+ */
+fun findByCarerIdAndCenterId(carerId: UUID, centerId: UUID): ChatRoom?
 
+    /**
+     * Retrieves summary information for the specified chat rooms, including details of the most recent message in each room.
+     *
+     * @param chatRoomIds Set of chat room UUIDs to query.
+     * @return A list of projections containing chat room details and the latest message for each specified chat room.
+     */
     @Query("""
     SELECT 
         cr.id,

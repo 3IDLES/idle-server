@@ -22,6 +22,14 @@ class CrawlingPostingFacadeService(
     private val carerService: CarerService,
     private val jobPostingFavoriteService: JobPostingFavoriteService,
 ) {
+    /**
+     * Retrieves a paginated list of job postings within a specified distance from the authenticated carer's location.
+     *
+     * The search expands the distance incrementally until the requested number of postings is found, the maximum distance (30 units) is reached, or three consecutive searches yield no results. Results are accumulated using cursor-based pagination.
+     *
+     * @param request The scroll request containing pagination and distance parameters.
+     * @return A scroll response with the collected job postings and the final search distance used.
+     */
     fun getCrawlingPostingsInRange(request: CrawlingCursorScrollRequest): CrawlingJobPostingScrollResponse {
         val carer = carerService.getById(getUserAuthentication().userId)
         val location = PointConverter.convertToPoint(carer)
@@ -55,6 +63,12 @@ class CrawlingPostingFacadeService(
         return CrawlingJobPostingScrollResponse.from(result, distance)
     }
 
+    /**
+     * Retrieves detailed information about a specific job posting, including its distance from the authenticated carer and favorite status.
+     *
+     * @param postingId The unique identifier of the job posting to retrieve.
+     * @return A response containing the job posting details, the distance from the carer, and whether it is marked as a favorite.
+     */
     fun getCrawlingJobPosting(postingId: UUID): CrawlingJobPostingResponse {
         val carer = carerService.getById(getUserAuthentication().userId)
         val posting = crawlingJobPostingService.getById(postingId)
@@ -66,6 +80,13 @@ class CrawlingPostingFacadeService(
         return CrawlingJobPostingResponse.from(posting, isFavorite, distance)
     }
 
+    /**
+     * Retrieves the authenticated carer's favorite job postings with distance information.
+     *
+     * Returns a response containing a list of the carer's favorite job postings, each including the distance from the carer's current location.
+     *
+     * @return A response object with favorite job postings and their respective distances.
+     */
     fun getFavoriteCrawlingJobPostings(): CrawlingJobPostingFavoriteResponse {
         val carer = carerService.getById(getUserAuthentication().userId)
         val carerPoint = PointConverter.convertToPoint(carer)

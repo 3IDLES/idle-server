@@ -61,11 +61,24 @@ class CenterService(
         )
     }
 
+    /**
+     * Retrieves a Center entity by its unique identifier.
+     *
+     * @param centerId The UUID of the Center to retrieve.
+     * @return The Center entity with the specified ID.
+     * @throws PersistenceException.ResourceNotFound if no Center with the given ID exists.
+     */
     fun getById(centerId: UUID): Center {
         return centerJpaRepository.findByIdOrNull(centerId)
             ?: throw PersistenceException.ResourceNotFound("Center(id=$centerId)를 찾을 수 없습니다")
     }
 
+    /**
+     * Retrieves a list of Center entities matching the provided set of center IDs.
+     *
+     * @param centerIds Set of UUIDs representing the IDs of the centers to retrieve.
+     * @return List of Center entities corresponding to the given IDs. If no centers are found for some IDs, those are omitted from the result.
+     */
     fun getByIds(centerIds : Set<UUID>) : List<Center> {
         return centerJpaRepository.findAllById(centerIds)
     }

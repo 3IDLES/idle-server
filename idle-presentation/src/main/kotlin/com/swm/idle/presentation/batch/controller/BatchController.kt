@@ -8,5 +8,10 @@ import org.springframework.web.bind.annotation.RestController
 class BatchController(
     private val jobLauncher: CrawlingJobLauncher,
 ) : BatchApi {
-    override fun launchBatch(day: Long) = jobLauncher.jobStart(day)
+    /**
+ * Initiates a batch crawling job for the specified day.
+ *
+ * @param day The day for which the batch job should be started, represented as a long value.
+ */
+override fun launchBatch(day: Long) = jobLauncher.jobStart(day)
 }

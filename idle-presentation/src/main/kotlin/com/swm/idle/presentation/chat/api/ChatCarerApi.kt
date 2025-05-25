@@ -21,7 +21,14 @@ interface ChatCarerApi {
     @ResponseStatus(HttpStatus.OK)
     fun createChatroom(request: CreateChatRoomRequest): CreateChatRoomResponse
 
-    @Secured
+    /**
+                        * Retrieves recent chat messages for the specified chat room, optionally starting from a given message ID.
+                        *
+                        * @param chatroomId The unique identifier of the chat room.
+                        * @param messageId An optional message ID to fetch messages after this point.
+                        * @return A response containing recent chat messages for the chat room.
+                        */
+                       @Secured
     @Operation(summary = "보호사의 최근 채팅 메시지 조회 API")
     @GetMapping("/chatrooms/{chatroom-id}/messages")
     @ResponseStatus(HttpStatus.OK)

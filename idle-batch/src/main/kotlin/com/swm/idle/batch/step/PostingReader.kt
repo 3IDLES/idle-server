@@ -16,6 +16,13 @@ class PostingReader(
         var pageIndex = AtomicInteger(1)
     }
 
+    /**
+     * Retrieves the next page of crawled job postings as a list.
+     *
+     * Returns `null` if all available pages have been read, signaling the end of the data stream.
+     *
+     * @return A list of `CrawledJobPostingDto` objects for the current page, or `null` if no more pages are available.
+     */
     override fun read(): List<CrawledJobPostingDto>? {
         val accessIndex = pageIndex.getAndIncrement()
 

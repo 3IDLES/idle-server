@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.ResponseStatus
 @RequestMapping("/api/v2/batch", produces = ["application/json;charset=utf-8"])
 interface BatchApi {
 
+    /**
+     * Triggers the execution of the batch endpoint.
+     *
+     * @param day Optional day value to specify the batch execution context. Defaults to 0 if not provided.
+     */
     @Hidden
     @Operation(summary = "배치 엔트포인트 실행 API")
     @GetMapping
