@@ -10,9 +10,9 @@ class ChatRedisRepository(
     private val redisTemplate: RedisTemplate<String, String>,
 ) {
 
-    fun removeUnreadChatRoom(receiverId: String, chatRoomId: UUID) {
+    fun removeUnreadChatRoom(receiverId: UUID, chatRoomId: String) {
         val key = "unread_chatroom:${receiverId}"
-        redisTemplate.opsForSet().remove(key, chatRoomId.toString())
+        redisTemplate.opsForSet().remove(key, chatRoomId)
     }
 
     fun addUnreadChatRoom(receiverId: String, chatRoomId: String) {
