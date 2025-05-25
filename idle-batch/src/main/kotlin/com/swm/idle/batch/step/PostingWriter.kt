@@ -44,7 +44,6 @@ class PostingWriter(
                 Point(posting.location.x, posting.location.y),
                 posting.id.toString()
             )
-            println("Added to Redis: ${posting.id} -> $added")
         }
 
         redisTemplate.expire(redisKey, Duration.ofDays(13-dayOffset))
