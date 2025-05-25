@@ -16,6 +16,11 @@ import java.util.*
 class RedisJobPostingRepository(
     private val redisTemplate: RedisTemplate<String, String>,
 ) {
+    companion object {
+            private const val REDIS_TTL_DAYS = 13L
+            private const val REDIS_KEY_PREFIX = "job_postings_geo_"
+        }
+
     fun findByLocationAndDistance(
         location: Point,
         distance: Long,
@@ -39,9 +44,9 @@ class RedisJobPostingRepository(
 
     private fun makeRedisKeys(): List<String> {
         val today = LocalDate.now()
-        val keys = (0..12).map { offset ->
-            val date = today.minusDays(offset.toLong())
-            "job_postings_geo_${date.format(DateTimeFormatter.BASIC_ISO_DATE)}"
+        val keys = (0 until REDIS_TTL_DAYS).map { offset ->
+            val date = today.minusDays(offset)
+            "$REDIS_KEY_PREFIX${date.format(DateTimeFormatter.BASIC_ISO_DATE)}"
         }
         return keys
     }

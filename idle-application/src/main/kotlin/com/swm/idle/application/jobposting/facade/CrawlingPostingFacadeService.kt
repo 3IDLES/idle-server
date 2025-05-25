@@ -22,6 +22,10 @@ class CrawlingPostingFacadeService(
     private val carerService: CarerService,
     private val jobPostingFavoriteService: JobPostingFavoriteService,
 ) {
+    companion object {
+        private const val MAX_SEARCH_DISTANCE = 30L
+    }
+
     fun getCrawlingPostingsInRange(request: CrawlingCursorScrollRequest): CrawlingJobPostingScrollResponse {
         val carer = carerService.getById(getUserAuthentication().userId)
         val location = PointConverter.convertToPoint(carer)
@@ -31,7 +35,7 @@ class CrawlingPostingFacadeService(
         var nextCursor: UUID? = request.next
 
         val result = mutableListOf<CrawlingJobPostingPreviewDto>()
-        while (result.size < request.limit && distance <= 30) {
+        while (result.size < request.limit && distance <= MAX_SEARCH_DISTANCE) {
             val currentBatch = crawlingJobPostingService.findAllInRange(
                 next = nextCursor,
                 location = location,
