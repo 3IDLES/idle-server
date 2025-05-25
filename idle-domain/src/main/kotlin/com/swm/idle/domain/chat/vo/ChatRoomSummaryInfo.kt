@@ -21,11 +21,11 @@ data class ChatRoomSummaryInfo(
         count: Long
     ) : this(
         chatRoomId = fromByteArray(chatRoomId),
-        opponentId =fromByteArray(opponentId),
         lastMessage = lastMessage,
         lastMessageTime = lastMessageTime,
         count= count,
-    )
+        opponentId =fromByteArray(opponentId),
+        )
 
     companion object {
         fun fromByteArray(array: ByteArray): UUID {
