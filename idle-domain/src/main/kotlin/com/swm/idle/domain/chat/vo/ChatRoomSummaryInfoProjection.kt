@@ -8,5 +8,5 @@ interface ChatRoomSummaryInfoProjection {
     fun getCenterId(): ByteArray
     fun getLastMessage(): String
     fun getLastMessageTime(): LocalDateTime
-    fun getLastSequence(): Long
+    fun getLastSequence(): Long?
 }
