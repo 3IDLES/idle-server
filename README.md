@@ -21,46 +21,87 @@
 <br>
 <br>
 
-# 서비스 설명
+# 🧾 서비스 설명
 
-- 요양보호사 구직 사이트의 특징을 분석하여, 센터와 요양보호사 간 구인·구직 프로세스를 보다 편리하게 지원하는 애플리케이션입니다.
-- 워크넷에 매일 업데이트되는 공지를 크롤링하여, 사용자의 위치를 기반으로 가까운 순서대로 센터 구인 공고를 제공합니다. 이를 통해 보호사는 구직을 위해 센터에 전화하거나 채팅으로 직접 문의할 수 있습니다.
+- 본 서비스는 **요양보호사 구직 시장의 특징을 분석**하여,  
+  요양 센터와 요양보호사 간의 **구인·구직 과정을 보다 간편하게 지원**하는 애플리케이션입니다.
 
-<br>
-<br>
-<br>
+- **워크넷에 매일 등록되는 요양보호사 구인 공고와 위도 경도 기반위치 정보를 자동 크롤링**하여 수집하고,  
+  이를 사용자에게 필요한 정보만으로 정재하여 **위치 정보를 기반으로 가까운 공고**를 제공합니다.
 
-#  Server Tech Stack
+- 요양보호사는 관심 있는 공고에 대해 **센터에 전화하거나, 채팅 기능을 통해 직접 문의**할 수 있습니다.
 
-| 📆 진행 기간 | 2025.01 ~ 운영 중 |
-|-------------|------------------|
-| 🤖 백엔드 사용 기술 | Kotlin, Spring Boot, Spring Batch, Data JPA, MySQL, Redis |
-| ⚙️ 인프라 사용 기술 | Docker, GitHub Actions, Firebase Cloud Message, Sentry,<br> AWS (VPC, Internet Gateway, NAT Gateway, Route Table, Security Group, EC2, RDS 등) |
+> 👉 불필요한 탐색 없이, **위치 기반으로 실시간 맞춤 공고**를 확인하고,  
+> **즉시 소통 가능한 채널**을 통해 효율적인 구직 활동을 지원합니다.
 
 <br>
 <br>
 <br>
 
-# AWS 클라우드 구조
+# 🛠️ Server Tech Stack
 
-![image](https://github.com/user-attachments/assets/e8af5059-55c1-485e-b330-283a3c729d10)
+| 항목 | 내용 |
+|------|------|
+| 📆 진행 기간 | 2025.01 ~ 운영 중 |
+| 🤖 백엔드 기술 스택 | Kotlin, Spring Boot, Spring Batch, Spring Data JPA, MySQL, Redis, S3 |
+| ⚙️ 인프라 기술 스택 | Docker, GitHub Actions, Firebase Cloud Messaging, Sentry, Nginx, <br>AWS (VPC, Internet Gateway, NAT Gateway, Route Table, Security Group, EC2, RDS 등)<br> → 이후 비용 문제로 **Home Server 환경으로 이전** |
 
+<br>
+<br>
+<br>
 
-- VPC 기반의 클라우드 인프라를 구성하여, 퍼블릭/프라이빗 서브넷, Bastion Host, NAT Gateway, ALB 등을 통해 보안성과 가용성을 확보했습니다.
-- 또한, 개발/운영 환경을 분리하고, RDS와 ElastiCache 등을 활용해 안정적인 서비스 운영이 가능한 구조를 설계했습니다.
+# 🏠 홈 서버 구조
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/6443ceab-3ec4-4b3c-b62c-09b696fcbec9" alt="홈 서버 구조 다이어그램" />
+</p>
 
+🖥️ **고정 IP 및 외부 접근 설정**  
+Ubuntu가 설치된 노트북에서 **DHCP 설정을 비활성화**하여 내부 IP를 고정하고,  
+공유기에서 **포트 포워딩**을 통해 외부에서 접속 가능한 홈 서버 환경을 구축하였습니다.<br>
+
+🌐 **Dynamic DNS를 통한 도메인 연결**  
+공인 IP가 주기적으로 변경되는 문제를 해결하기 위해,  
+**Dynamic DNS 서비스를 사용**하여 IP 변경 시에도 도메인으로 서버에 안정적으로 접근할 수 있도록 구성했습니다.<br>
+
+🔐 **보안 설정 및 SSL 처리**  
+- SSH 접속은 **RSA 키 기반 인증**으로 보안을 강화하였습니다.  
+- 443 포트로 들어오는 HTTPS 요청에 대해서는 **Nginx에서 SSL Termination**을 적용해 암호화를 처리하였습니다.<br>
+
+🔁 **Nginx 리버스 프록시 구성**  
+Nginx에서 `/caremeet-dev`, `/caremeet` 등의 경로에 따라  
+각기 다른 포트에서 실행 중인 **개발용 및 운영용 애플리케이션 서버**로 트래픽을 분기하였습니다.
 <br>
 <br>
 <br>
 
 # 애플리케이션 구조
 
-![image](https://github.com/user-attachments/assets/859c3093-3e8b-4fd4-839f-aec189cd32e4)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/c004d2c9-5544-45d9-8977-82383f8c6744" alt="애플리케이션 구조 다이어그램" />
+</p>
 
-- ALB를 통해 외부 요청을 수신하고, Dev/Prod 환경에 따라 트래픽을 분산시켜 안정성과 확장성을 확보했습니다.
-- Bastion Server를 통해서만 내부 자원(MySQL, Redis 등)에 접근 가능하도록 설정하여 보안성을 강화했습니다.
-- GitHub와 GitAction을 연동해 CI/CD 자동화를 구현하고, Bastion을 통해 서버에 배포하도록 구성했습니다.
-- Redis는 Session Storage 용도외에도 Pub/Sub 모델을 적용해 채팅메시지 전송에 이벤트 처리로 활용했습니다.
+
+✅ **리버스 프록시 및 보안 구성**  
+Nginx를 통해 외부 요청을 수신하고, URL 경로(`/caremeet-dev`, `/caremeet`)에 따라 트래픽을 개발 환경과 운영 환경으로 분기하도록 리버스 프록시를 설정했습니다.  
+또한, HTTPS 및 WebSocket Secure(wss)에 대해 SSL 인증서를 적용하여 **보안 통신**을 지원하였습니다.<br>
+
+🔒 **내부 리소스 보안 강화**  
+MySQL, Redis 등 내부 리소스는 외부에서 직접 접근할 수 없도록 구성하고, **SSH 터널링**을 통해서만 접근 가능하게 설정하여 네트워크 보안성을 높였습니다.<br>
+
+⚙️ **CI/CD 자동화 구성**  
+GitHub Actions를 활용해 CI/CD 파이프라인을 자동화하였고, 빌드된 이미지는 **AWS ECR (Elastic Container Registry)** 에 저장된 후 배포되었습니다.<br>
+
+📡 **Redis 활용**  
+채팅 세션 저장소 및 Pub/Sub 메시지 브로커로 사용되어, 실시간 채팅 전송 및 수신을 지원하였습니다.
+
+채팅 메시지 시퀀스 데이터를 Redis에 저장하고,
+이를 MySQL의 채팅방 메타데이터와 조합하여
+사용자의 채팅방 목록을 효율적으로 조회할 수 있도록 구성하였습니다.
+
+또한, GEO 기반 자료구조를 통해
+사용자의 위치를 기준으로 주변 공고 및 채팅방을 빠르게 조회하는
+고속 처리 쿼리 모델로도 활용되었습니다.
+Redis는 다음과 같은 하이브리드 구조로 활용되었습니다:
 
 <br>
 <br>
